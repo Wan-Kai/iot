@@ -9,7 +9,7 @@ const ServerData = Mock.mock({
       ID: "@ip",
       "port|0-10000": 1,
       "gateway|1": ["on", "off"],
-      time: "@date('yyyy-MM-dd')"
+      time: "@date('yyyy-MM-dd HH:mm:ss')"
     }
   ]
 });

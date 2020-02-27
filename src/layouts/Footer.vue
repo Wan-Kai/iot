@@ -1,5 +1,5 @@
 <template>
-  <div>design by @Daodi</div>
+  <div>武汉卓目科技有限公司</div>
 </template>
 
 <script>

@@ -1,52 +1,61 @@
 <template>
-  <a-layout id="components-layout-demo-responsive" style="min-height: 100%">
-    <a-layout-sider
-      breakpoint="lg"
-      collapsedWidth="0"
-      @collapse="onCollapse"
-      @breakpoint="onBreakpoint"
-    >
-      <div class="logo" />
-      <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['1']">
-        <a-sub-menu key="sub1">
-          <span slot="title"><a-icon type="hdd" />基础管理</span>
-          <a-menu-item key="1">网络服务器</a-menu-item>
-          <a-menu-item key="2">消息</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub2">
-          <span slot="title"><a-icon type="api" />网关</span>
-          <a-menu-item key="3">网关管理</a-menu-item>
-          <a-menu-item key="4">日志流水</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub3">
-          <span slot="title"><a-icon type="interation" />节点</span>
-          <a-menu-item key="5">节点管理</a-menu-item>
-          <a-menu-item key="6">日志流水</a-menu-item>
-        </a-sub-menu>
-        <a-menu-item key="7"><a-icon type="profile" />应用管理</a-menu-item>
-        <a-menu-item key="8"><a-icon type="idcard" />账号管理</a-menu-item>
-      </a-menu>
-    </a-layout-sider>
-    <a-layout>
-      <a-layout-header :style="{ background: '#fff', padding: 0 }">
-        <Header />
-      </a-layout-header>
-
-      <a-layout-content :style="{ margin: '24px 16px 0' }">
-        <div
+  <a-layout id="components-layout-demo-top-side-2" style="min-height: 100%">
+    <a-layout-header class="header">
+      <Header />
+    </a-layout-header>
+    <a-layout style="min-height: 100%">
+      <a-layout-sider
+        breakpoint="lg"
+        collapsedWidth="0"
+        @collapse="onCollapse"
+        @breakpoint="onBreakpoint"
+        style="background: #fff"
+      >
+        <a-menu theme="light" mode="inline" :defaultSelectedKeys="['2']">
+          <a-menu-item key="1"><a-icon type="idcard" />首页</a-menu-item>
+          <a-sub-menu key="sub1">
+            <span slot="title"><a-icon type="hdd" />基础管理</span>
+            <a-menu-item key="2">网络服务器</a-menu-item>
+            <a-menu-item key="3">消息</a-menu-item>
+          </a-sub-menu>
+          <a-sub-menu key="sub2">
+            <span slot="title"><a-icon type="api" />网关</span>
+            <a-menu-item key="4">网关管理</a-menu-item>
+            <a-menu-item key="5">日志流水</a-menu-item>
+          </a-sub-menu>
+          <a-sub-menu key="sub3">
+            <span slot="title"><a-icon type="interation" />节点</span>
+            <a-menu-item key="6">节点管理</a-menu-item>
+            <a-menu-item key="7">日志流水</a-menu-item>
+          </a-sub-menu>
+          <a-menu-item key="8"><a-icon type="profile" />应用管理</a-menu-item>
+          <a-menu-item key="9"><a-icon type="idcard" />账号管理</a-menu-item>
+          <Authorized :authority="['admin']">
+            <a-menu-item key="10"><a-icon type="user" />管理员管理</a-menu-item>
+          </Authorized>
+        </a-menu>
+      </a-layout-sider>
+      <a-layout style="padding: 0 24px 24px">
+        <a-breadcrumb style="margin: 16px 0; text-align: left">
+          <a-breadcrumb-item>
+            <a-icon type="home" />
+            网络服务器
+          </a-breadcrumb-item>
+        </a-breadcrumb>
+        <a-layout-content
           :style="{
-            padding: 0,
             background: '#fff',
-            minHeight: '360px',
-            minWidth: '800px'
+            padding: 0,
+            margin: 0,
+            minHeight: '280px'
           }"
         >
           <router-view />
-        </div>
-      </a-layout-content>
-      <a-layout-footer style="textAlign: center">
-        <Footer />
-      </a-layout-footer>
+        </a-layout-content>
+        <a-layout-footer class="footer">
+          <Footer />
+        </a-layout-footer>
+      </a-layout>
     </a-layout>
   </a-layout>
 </template>
@@ -55,6 +64,11 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 export default {
+  data() {
+    return {
+      collapsed: false
+    };
+  },
   methods: {
     onCollapse(collapsed, type) {
       console.log(collapsed, type);
@@ -71,9 +85,22 @@ export default {
 </script>
 
 <style>
-#components-layout-demo-responsive .logo {
-  height: 32px;
+.header {
+  background: #1c8c6b;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  padding: 0;
+}
+.footer {
+  height: 25px;
+  text-align: center;
+}
+#components-layout-demo-top-side-2 .logo {
+  width: 120px;
+  height: 31px;
   background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
+  margin: 16px 28px 16px 0;
+  float: left;
 }
 </style>

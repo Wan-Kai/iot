@@ -2,6 +2,11 @@
 import { post } from "./axios";
 
 export default {
+  login: {
+    login: data => {
+      return post("/admin/login", data);
+    }
+  },
   interServer: {
     // 发送登录信息
     getServerData: data => {

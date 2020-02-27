@@ -17,7 +17,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
-    path: "/user",
+    path: "/",
     hideInMenu: true,
     meta: { authority: ["admin", "user", "guest"] },
     component: () =>
@@ -25,7 +25,7 @@ const routes = [
     children: [
       //login
       {
-        path: "/user",
+        path: "/",
         redirect: "/user/login"
       },
       {
@@ -33,19 +33,28 @@ const routes = [
         name: "login",
         component: () =>
           import(
-            /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServer.vue"
+            /* webpackChunkName: "dashboard" */ "../components/Login/loginForm.vue"
+          )
+      },
+      {
+        path: "/user/register",
+        name: "register",
+        hideInMenu: true,
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ "../components/Login/registerForm.vue"
           )
       }
     ]
   },
   {
-    path: "/",
+    path: "/dashboard",
     component: () =>
       import(/* webpackChunkName: "user" */ "../layouts/BasicLayout.vue"),
     children: [
       // dashboard
       {
-        path: "/",
+        path: "/dashboard",
         redirect: "/dashboard/internetServer"
       },
       {

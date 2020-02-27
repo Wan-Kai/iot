@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import API from "./utils/api";
+import Authorized from "./components/Authorized";
 
 import {
   Button,
@@ -14,7 +15,12 @@ import {
   Divider,
   Switch,
   Tag,
-  Dropdown
+  Dropdown,
+  Form,
+  Input,
+  Checkbox,
+  Card,
+  message
 } from "ant-design-vue";
 
 require("./mock/mock");
@@ -29,7 +35,13 @@ Vue.use(Divider);
 Vue.use(Switch);
 Vue.use(Tag);
 Vue.use(Dropdown);
+Vue.use(Form);
+Vue.use(Input);
+Vue.use(Checkbox);
+Vue.use(Card);
+Vue.component("Authorized", Authorized);
 Vue.prototype.$api = API;
+Vue.prototype.$message = message;
 
 Vue.config.productionTip = false;
 

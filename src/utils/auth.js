@@ -1,5 +1,9 @@
+import { getUserId } from "../store/login";
+
 export function getCurrentAuthority() {
-  return ["user"];
+  const userId = [];
+  userId.push(getUserId());
+  return userId;
 }
 
 export function check(authority) {

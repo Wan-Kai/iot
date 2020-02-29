@@ -29,6 +29,10 @@ const routes = [
         redirect: "/user/login"
       },
       {
+        path: "/user",
+        redirect: "/user/login"
+      },
+      {
         path: "/user/login",
         name: "login",
         component: () =>
@@ -40,6 +44,7 @@ const routes = [
         path: "/user/register",
         name: "register",
         hideInMenu: true,
+        hideChildrenInMenu: true,
         component: () =>
           import(
             /* webpackChunkName: "dashboard" */ "../components/Login/registerForm.vue"

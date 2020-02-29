@@ -60,9 +60,12 @@
           </a>
           <div class="iot_userNameForm_item_register">
             没有账号，
-            <a href="" class="iot_userNameForm_item_register_text">
-              注册一个
-            </a>
+            <router-link
+              to="/user/register"
+              id="router"
+              class="iot_userNameForm_item_register_text"
+              >注册一个</router-link
+            >
           </div>
         </div>
       </a-form-item>

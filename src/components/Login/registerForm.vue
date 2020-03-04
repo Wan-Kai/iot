@@ -1,309 +1,167 @@
 <template>
   <a-card
-    class="loginForm"
+    class="registerForm"
     :style="{
       padding: 0
     }"
   >
-    <div class="iot_login_layout_text">
-      <a class="iot_login_layout_text_content">注册</a>
+    <div class="iot_register_layout_text">
+      <a class="iot_register_layout_text_content">注册</a>
     </div>
-    <a-form :form="form" @submit="handleSubmit">
-      <a-form-item v-bind="formItemLayout" label="E-mail">
+    <a-form :form="form">
+      <a-form-item class="iot_register_phoneNumber">
         <a-input
           v-decorator="[
-            'email',
+            'phoneNumber',
             {
-              rules: [
-                {
-                  type: 'email',
-                  message: 'The input is not valid E-mail!'
-                },
-                {
-                  required: true,
-                  message: 'Please input your E-mail!'
-                }
-              ]
+              initialValue: phoneNumber,
+              rules: [{ required: true, message: '请输入手机号' }]
             }
           ]"
-        />
+          placeholder="手机号"
+        >
+          <a-icon slot="prefix" type="phone" style="color: rgba(0,0,0,.25)" />
+        </a-input>
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="Password">
+      <a-form-item class="iot_register_note" :layout="inline">
+        <a-input
+          style="width: 70%;float: left"
+          v-decorator="[
+            'note',
+            {
+              initialValue: phoneNumber,
+              rules: [{ required: true, message: '请输入短信验证码' }]
+            }
+          ]"
+          placeholder="短信验证码"
+        >
+          <a-icon slot="prefix" type="mail" style="color: rgba(0,0,0,.25)" />
+        </a-input>
+        <a-button type="primary" class="register_form_note_button">
+          发送验证码
+        </a-button>
+      </a-form-item>
+      <a-form-item class="iot_register_password">
         <a-input
           v-decorator="[
             'password',
             {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please input your password!'
-                },
-                {
-                  validator: validateToNextPassword
-                }
-              ]
+              initialValue: password,
+              rules: [{ required: true, message: '请输入用户密码' }]
             }
           ]"
           type="password"
-        />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="Confirm Password">
-        <a-input
-          v-decorator="[
-            'confirm',
-            {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please confirm your password!'
-                },
-                {
-                  validator: compareToFirstPassword
-                }
-              ]
-            }
-          ]"
-          type="password"
-          @blur="handleConfirmBlur"
-        />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout">
-        <span slot="label">
-          Nickname&nbsp;
-          <a-tooltip title="What do you want others to call you?">
-            <a-icon type="question-circle-o" />
-          </a-tooltip>
-        </span>
-        <a-input
-          v-decorator="[
-            'nickname',
-            {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please input your nickname!',
-                  whitespace: true
-                }
-              ]
-            }
-          ]"
-        />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="Habitual Residence">
-        <a-cascader
-          v-decorator="[
-            'residence',
-            {
-              initialValue: ['zhejiang', 'hangzhou', 'xihu'],
-              rules: [
-                {
-                  type: 'array',
-                  required: true,
-                  message: 'Please select your habitual residence!'
-                }
-              ]
-            }
-          ]"
-          :options="residences"
-        />
-      </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="Phone Number">
-        <a-input
-          v-decorator="[
-            'phone',
-            {
-              rules: [
-                { required: true, message: 'Please input your phone number!' }
-              ]
-            }
-          ]"
-          style="width: 100%"
+          placeholder="用户密码"
         >
-          <a-select
-            slot="addonBefore"
-            v-decorator="['prefix', { initialValue: '86' }]"
-            style="width: 70px"
-          >
-            <a-select-option value="86">
-              +86
-            </a-select-option>
-            <a-select-option value="87">
-              +87
-            </a-select-option>
-          </a-select>
+          <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
         </a-input>
       </a-form-item>
-      <a-form-item v-bind="formItemLayout" label="Website">
-        <a-auto-complete
+      <a-form-item class="iot_register_second_password">
+        <a-input
           v-decorator="[
-            'website',
-            { rules: [{ required: true, message: 'Please input website!' }] }
+            'secondPassword',
+            {
+              initialValue: password,
+              rules: [{ required: true, message: '请输入用户密码' }]
+            }
           ]"
-          placeholder="website"
-          @change="handleWebsiteChange"
+          type="password"
+          placeholder="确认用户密码"
         >
-          <template slot="dataSource">
-            <a-select-option
-              v-for="website in autoCompleteResult"
-              :key="website"
-            >
-              {{ website }}
-            </a-select-option>
-          </template>
-          <a-input />
-        </a-auto-complete>
-      </a-form-item>
-      <a-form-item
-        v-bind="formItemLayout"
-        label="Captcha"
-        extra="We must make sure that your are a human."
-      >
-        <a-row :gutter="8">
-          <a-col :span="12">
-            <a-input
-              v-decorator="[
-                'captcha',
-                {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Please input the captcha you got!'
-                    }
-                  ]
-                }
-              ]"
-            />
-          </a-col>
-          <a-col :span="12">
-            <a-button>Get captcha</a-button>
-          </a-col>
-        </a-row>
-      </a-form-item>
-      <a-form-item v-bind="tailFormItemLayout">
-        <a-checkbox v-decorator="['agreement', { valuePropName: 'checked' }]">
-          I have read the
-          <a href="">
-            agreement
-          </a>
-        </a-checkbox>
-      </a-form-item>
-      <a-form-item v-bind="tailFormItemLayout">
-        <a-button type="primary" html-type="submit">
-          Register
+          <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
+        </a-input>
+        <a-button type="primary" class="register_form_submit_button">
+          注册
         </a-button>
+        <div class="iot_register_text_content">
+          已有账号，
+          <router-link to="/user/login" id="router" class="iot_register_text"
+            >返回登录</router-link
+          >
+        </div>
       </a-form-item>
     </a-form>
   </a-card>
 </template>
 
 <script>
-const residences = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    value: "jiangsu",
-    label: "Jiangsu",
-    children: [
-      {
-        value: "nanjing",
-        label: "Nanjing",
-        children: [
-          {
-            value: "zhonghuamen",
-            label: "Zhong Hua Men"
-          }
-        ]
-      }
-    ]
-  }
-];
-
 export default {
   data() {
+    this.form = this.$form.createForm(this);
     return {
-      confirmDirty: false,
-      residences,
-      autoCompleteResult: [],
-      formItemLayout: {
-        labelCol: {
-          xs: { span: 24 },
-          sm: { span: 8 }
-        },
-        wrapperCol: {
-          xs: { span: 24 },
-          sm: { span: 16 }
-        }
-      },
-      tailFormItemLayout: {
-        wrapperCol: {
-          xs: {
-            span: 24,
-            offset: 0
-          },
-          sm: {
-            span: 16,
-            offset: 8
-          }
-        }
-      }
+      phoneNumber: "",
+      password: ""
     };
-  },
-  beforeCreate() {
-    this.form = this.$form.createForm(this, { name: "register" });
   },
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      this.form.validateFieldsAndScroll((err, values) => {
+      this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
         }
       });
     },
-    handleConfirmBlur(e) {
-      const value = e.target.value;
-      this.confirmDirty = this.confirmDirty || !!value;
-    },
-    compareToFirstPassword(rule, value, callback) {
-      const form = this.form;
-      if (value && value !== form.getFieldValue("password")) {
-        callback("Two passwords that you enter is inconsistent!");
-      } else {
-        callback();
-      }
-    },
-    validateToNextPassword(rule, value, callback) {
-      const form = this.form;
-      if (value && this.confirmDirty) {
-        form.validateFields(["confirm"], { force: true });
-      }
-      callback();
-    },
-    handleWebsiteChange(value) {
-      let autoCompleteResult;
-      if (!value) {
-        autoCompleteResult = [];
-      } else {
-        autoCompleteResult = [".com", ".org", ".net"].map(
-          domain => `${value}${domain}`
-        );
-      }
-      this.autoCompleteResult = autoCompleteResult;
+    handleSelectChange(value) {
+      console.log(value);
+      this.form.setFieldsValue({
+        note: `Hi, ${value === "male" ? "man" : "lady"}!`
+      });
     }
   }
 };
 </script>
+
+<style>
+.registerForm {
+  margin: auto;
+  width: 400px;
+  height: 410px;
+}
+.iot_register_layout_text {
+  height: 40px;
+  text-align: center;
+  color: black;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.iot_register_layout_text_content {
+  color: black;
+  letter-spacing: 2px;
+}
+.iot_register_phoneNumber {
+  margin-bottom: 12px;
+}
+.iot_register_note {
+  margin-bottom: 12px;
+}
+.iot_register_password {
+  margin-bottom: 12px;
+}
+.iot_register_second_password {
+  margin-bottom: 12px;
+}
+.register_form_note_button {
+  float: right;
+  width: 30%;
+  text-align: center;
+  font-variant-position: initial;
+  color: #1eaf84;
+  background: transparent;
+  border-color: #1eaf84;
+}
+.register_form_submit_button {
+  width: 100%;
+  background: #1eaf84;
+  border-radius: 1px;
+  border-color: #1eaf84;
+  margin-top: 18px;
+}
+.iot_register_text_content {
+  float: right;
+  margin-top: 20px;
+}
+.iot_register_text {
+  color: #1eaf84;
+}
+</style>

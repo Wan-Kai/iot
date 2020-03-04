@@ -1,8 +1,8 @@
-import { getUserId } from "../store/login";
+import { getKey, getLoginState } from "../store/login";
 
 export function getCurrentAuthority() {
   const userId = [];
-  userId.push(getUserId());
+  userId.push(getKey());
   return userId;
 }
 
@@ -12,6 +12,8 @@ export function check(authority) {
 }
 
 export function isLogin() {
-  const current = getCurrentAuthority();
-  return current && current[0] !== "guest";
+  if (getLoginState() === "1") {
+    return true;
+  }
+  return false;
 }

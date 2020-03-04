@@ -13,18 +13,16 @@
       :form="form"
       class="login-form"
     >
-      <a-form-item class="iot_userNameForm">
+      <a-form-item class="iot_login_userNameForm">
         <a-input
           v-decorator="[
             'username',
             {
               initialValue: username,
-              rules: [
-                { required: true, message: 'Please input your username!' }
-              ]
+              rules: [{ required: true, message: '请输入用户名' }]
             }
           ]"
-          placeholder="Username"
+          placeholder="用户名"
         >
           <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
         </a-input>
@@ -35,13 +33,11 @@
             'password',
             {
               initialValue: password,
-              rules: [
-                { required: true, message: 'Please input your password!' }
-              ]
+              rules: [{ required: true, message: '请输入用户密码' }]
             }
           ]"
           type="password"
-          placeholder="Password"
+          placeholder="密码"
         >
           <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
         </a-input>
@@ -52,7 +48,7 @@
           @click="handleSubmit"
           class="login-form-button"
         >
-          Log in
+          登录
         </a-button>
         <div class="iot_userNameForm_item_layout">
           <a href="" class="iot_userNameForm_item_forget">
@@ -97,10 +93,10 @@ export default {
               userId: res.data.admin[0]["userId"],
               sessionKey: res.data.admin[0]["sessionKey"]
             });
+
+            console.log(res.data.admin);
           });
-          setTimeout(() => {
-            this.$router.replace("/dashboard");
-          }, 800);
+          this.$router.replace("/admin/dashboard");
         } else {
           console.log("Login Form in wrong");
           this.$message.error("登录失败!");
@@ -124,10 +120,10 @@ export default {
   margin-bottom: 8px;
 }
 .iot_login_layout_text_content {
-  color: grey;
+  color: black;
   letter-spacing: 2px;
 }
-.iot_userNameForm {
+.iot_login_userNameForm {
   margin-bottom: 8px;
 }
 .iot_userNameForm_item_layout {

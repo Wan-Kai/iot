@@ -20,7 +20,10 @@ import {
   Input,
   Checkbox,
   Card,
-  message
+  message,
+  Breadcrumb,
+  Row,
+  Col
 } from "ant-design-vue";
 
 require("./mock/mock");
@@ -39,6 +42,9 @@ Vue.use(Form);
 Vue.use(Input);
 Vue.use(Checkbox);
 Vue.use(Card);
+Vue.use(Breadcrumb);
+Vue.use(Row);
+Vue.use(Col);
 Vue.component("Authorized", Authorized);
 Vue.prototype.$api = API;
 Vue.prototype.$message = message;

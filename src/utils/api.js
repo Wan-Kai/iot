@@ -11,6 +11,9 @@ export default {
     // 发送登录信息
     getServerData: data => {
       return post("/admin/server/data", data);
+    },
+    getMessage: data => {
+      return post("/admin/server/message", data);
     }
   }
 };

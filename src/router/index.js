@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import findLast from "lodash/findLast";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 import { check, isLogin } from "../utils/auth";
 
 Vue.use(VueRouter);
@@ -17,15 +19,15 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
-    path: "/",
+    path: "/user",
     hideInMenu: true,
-    meta: { authority: ["admin", "user", "guest"] },
+    meta: { authority: ["admin", "user", "guest"], title: "根", icon: "home" },
     component: () =>
       import(/* webpackChunkName: "user" */ "../layouts/BlackLayout.vue"),
     children: [
       //login
       {
-        path: "/",
+        path: "/user",
         redirect: "/user/login"
       },
       {
@@ -35,6 +37,7 @@ const routes = [
       {
         path: "/user/login",
         name: "login",
+        meta: { title: "登录" },
         component: () =>
           import(
             /* webpackChunkName: "dashboard" */ "../components/Login/loginForm.vue"
@@ -43,6 +46,7 @@ const routes = [
       {
         path: "/user/register",
         name: "register",
+        meta: { title: "注册" },
         hideInMenu: true,
         hideChildrenInMenu: true,
         component: () =>
@@ -53,45 +57,55 @@ const routes = [
     ]
   },
   {
-    path: "/dashboard",
+    path: "/admin",
+    meta: { title: "本地" },
     component: () =>
       import(/* webpackChunkName: "user" */ "../layouts/BasicLayout.vue"),
     children: [
       // dashboard
       {
-        path: "/dashboard",
-        redirect: "/dashboard/internetServer"
+        path: "/admin/dashboard",
+        redirect: "/admin/dashboard/internetServer"
       },
       {
-        path: "/dashboard",
+        path: "/admin/dashboard",
         name: "dashboard",
         meta: {
           icon: "dashboard",
-          title: "仪表盘",
+          title: "控制面板",
           authority: ["admin", "user"]
         },
         component: { render: h => h("router-view") },
         children: [
           {
-            path: "/dashboard/internetServer",
+            path: "/admin/dashboard/internetServer",
             name: "internetServer",
             meta: { title: "网络服务器" },
             component: () =>
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServer.vue"
               )
+          },
+          {
+            path: "/admin/dashboard/internetServer/addInternetServer",
+            name: "addInternetServer",
+            meta: { title: "添加服务器" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/addInternetServer.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/message",
+            name: "message",
+            meta: { title: "消息" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/message.vue"
+              )
           }
           // {
-          //   path: "/dashboard/message",
-          //   name: "message",
-          //   meta: { title: "消息" },
-          //   component: () =>
-          //       import(
-          //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/message.vue"
-          //           )
-          // },
-          // {
-          //   path: "/dashboard/gatewayManage",
+          //   path: "/admin/dashboard/gatewayManage",
           //   name: "gatewayManage",
           //   meta: { title: "网关管理" },
           //   component: () =>
@@ -100,9 +114,9 @@ const routes = [
           //           )
           // },
           // {
-          //   path: "/dashboard/iLogFlow",
+          //   path: "/admin/dashboard/iLogFlow",
           //   name: "logFlow",
-          //   meta: { title: "网关日志流水" },
+          //   meta: { title: "日志流水" },
           //   component: () =>
           //       import(
           //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/ilogFlow.vue"
@@ -118,16 +132,16 @@ const routes = [
           //           )
           // },
           // {
-          //   path: "/dashboard/nLogFlow",
+          //   path: "/admin/dashboard/nLogFlow",
           //   name: "nLogFlow",
-          //   meta: { title: "节点日志流水" },
+          //   meta: { title: "日志流水" },
           //   component: () =>
           //       import(
           //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/nLogFlow.vue"
           //           )
           // },
           // {
-          //   path: "/dashboard/appManage",
+          //   path: "/admin/dashboard/appManage",
           //   name: "appManage",
           //   meta: { title: "应用管理" },
           //   component: () =>
@@ -187,19 +201,28 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if (to.path !== from.path) {
+    NProgress.start();
+  }
   const record = findLast(to.matched, record => record.meta.authority);
   if (record && !check(record.meta.authority)) {
-    if (isLogin() && to.path !== "user/login") {
+    if (!isLogin() && to.path !== "/user/login") {
       next({
-        path: "user/login"
+        path: "/user/login"
       });
+      console.log(11111);
     } else if (to.path !== "/403") {
       next({
         path: "/403"
       });
+      console.log(22222);
     }
+    NProgress.done();
   }
   next();
 });
 
+router.afterEach(() => {
+  NProgress.done();
+});
 export default router;

@@ -6,10 +6,12 @@
 const state = {
   all: {
     username: "",
-    isLogin: "out",
-    userId: "guest",
+    isLogin: "",
+    userId: "",
     sessionKey: ""
-  }
+  },
+  isLogin: "0",
+  key: "guest"
 };
 
 // getters
@@ -18,8 +20,12 @@ const getters = {};
 // actions
 const actions = {};
 
-export function getUserId() {
-  return state.all.userId;
+export function getKey() {
+  return state.key;
+}
+
+export function getLoginState() {
+  return state.isLogin;
 }
 
 // mutations

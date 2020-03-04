@@ -5,6 +5,9 @@ import * as login from "./userInfo";
 mock.mock(`/admin/server/data`, "post", () => {
   return serverData.ServerData;
 });
+mock.mock(`/admin/server/message`, "post", () => {
+  return serverData.Message;
+});
 
 mock.mock(`/admin/login`, "post", () => {
   return login.userInfo;

@@ -12,5 +12,11 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     login
+  },
+  getters: {
+    getAttr: state => key => {
+      if (!state[key]) state[key] = JSON.parse(localStorage.getItem(key));
+      return state[key];
+    }
   }
 });

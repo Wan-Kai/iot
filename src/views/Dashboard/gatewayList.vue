@@ -4,7 +4,7 @@
       <a-input-search
         class="iot_view_gatewayManege_list_top_search"
         placeholder="请输入要查找的内容"
-        style="width: 200px"
+        style="width: 300px"
       />
       <div class="iot_view_gatewayManege_list_top_right">
         <a-button type="primary" icon="plus">

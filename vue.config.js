@@ -6,7 +6,7 @@ module.exports = {
           "primary-color": "#1EAF84",
           "link-color": "#1EAF84",
           "border-radius-base": "2px",
-          "font-size-base": "11px"
+          "font-size-base": "12px"
         },
         javascriptEnabled: true
       }

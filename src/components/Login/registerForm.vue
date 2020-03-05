@@ -25,7 +25,7 @@
       </a-form-item>
       <a-form-item class="iot_register_note" :layout="inline">
         <a-input
-          style="width: 70%;float: left"
+          class="iot_register_note_input"
           v-decorator="[
             'note',
             {
@@ -115,7 +115,7 @@ export default {
 <style>
 .registerForm {
   margin: auto;
-  width: 400px;
+  width: 30%;
   height: 410px;
 }
 .iot_register_layout_text {
@@ -125,11 +125,19 @@ export default {
   font-size: 20px;
   margin-bottom: 8px;
 }
+.iot_register_note_input {
+  width: 70%;
+  float: left;
+  line-height: 30px;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
 .iot_register_layout_text_content {
   color: black;
   letter-spacing: 2px;
 }
 .iot_register_phoneNumber {
+  margin-top: 30px;
   margin-bottom: 12px;
 }
 .iot_register_note {
@@ -142,6 +150,8 @@ export default {
   margin-bottom: 12px;
 }
 .register_form_note_button {
+  height: 32px;
+  font-size: 12px;
   float: right;
   width: 30%;
   text-align: center;
@@ -149,6 +159,8 @@ export default {
   color: #1eaf84;
   background: transparent;
   border-color: #1eaf84;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
 }
 .register_form_submit_button {
   width: 100%;

@@ -4,6 +4,9 @@ import findLast from "lodash/findLast";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { check, isLogin } from "../utils/auth";
+import FirstStep from "../components/Login/retrieveStepForms/first";
+import SecondStep from "../components/Login/retrieveStepForms/second";
+import ThirdStep from "../components/Login/retrieveStepForms/third";
 
 Vue.use(VueRouter);
 
@@ -53,6 +56,31 @@ const routes = [
           import(
             /* webpackChunkName: "dashboard" */ "../components/Login/registerForm.vue"
           )
+      },
+      {
+        path: "/user/retrieve",
+        name: "retrieve",
+        meta: { title: "找回密码" },
+        hideInMenu: true,
+        hideChildrenInMenu: true,
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ "../components/Login/retrieveForm.vue"
+          ),
+        children: [
+          {
+            path: "/user/retrieve",
+            redirect: "/user/retrieve/step"
+          },
+          {
+            path: "/user/retrieve/step",
+            components: {
+              step1: FirstStep,
+              step2: SecondStep,
+              step3: ThirdStep
+            }
+          }
+        ]
       }
     ]
   },

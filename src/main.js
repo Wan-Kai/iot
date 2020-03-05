@@ -27,7 +27,8 @@ import {
   Breadcrumb,
   Row,
   Col,
-  Tabs
+  Tabs,
+  Steps
 } from "ant-design-vue";
 
 require("./mock/mock");
@@ -50,6 +51,7 @@ Vue.use(Breadcrumb);
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Tabs);
+Vue.use(Steps);
 Vue.component("Authorized", Authorized);
 Vue.prototype.$api = API;
 Vue.prototype.$message = message;

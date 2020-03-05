@@ -51,14 +51,17 @@
           登录
         </a-button>
         <div class="iot_userNameForm_item_layout">
-          <a href="" class="iot_userNameForm_item_forget">
-            忘记密码
-          </a>
+          <router-link
+            to="/user/retrieve/step"
+            id="retrieve"
+            class="iot_userNameForm_item_retrieve_text"
+            >找回密码</router-link
+          >
           <div class="iot_userNameForm_item_register">
             没有账号，
             <router-link
               to="/user/register"
-              id="router"
+              id="register"
               class="iot_userNameForm_item_register_text"
               >注册一个</router-link
             >
@@ -114,8 +117,8 @@ export default {
 <style>
 .loginForm {
   margin: auto;
-  width: 400px;
-  height: 290px;
+  width: 30%;
+  height: 320px;
 }
 .iot_login_layout_text {
   height: 40px;
@@ -129,12 +132,13 @@ export default {
   letter-spacing: 2px;
 }
 .iot_login_userNameForm {
-  margin-bottom: 8px;
+  margin-top: 30px;
+  margin-bottom: 12px;
 }
 .iot_userNameForm_item_layout {
   margin-top: 10px;
 }
-.iot_userNameForm_item_forget {
+.iot_userNameForm_item_retrieve_text {
   float: left;
   color: #1eaf84;
 }
@@ -155,6 +159,6 @@ export default {
   background: #1eaf84;
   border-radius: 1px;
   border-color: #1eaf84;
-  font-size: 16px;
+  font-size: 14px;
 }
 </style>

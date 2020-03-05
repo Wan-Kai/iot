@@ -40,7 +40,7 @@ export default {
 }
 .iot_search {
   width: 270px;
-  height: 30px;
+  height: 28px;
   background-color: transparent;
   color: transparent;
   horiz-align: center;

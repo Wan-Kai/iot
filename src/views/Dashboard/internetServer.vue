@@ -4,7 +4,6 @@
       <a-input-search
         class="iot_view_internetServer_top_search"
         placeholder="请输入要查找的内容"
-        style="width: 200px"
       />
       <a-button
         class="iot_view_internetServer_top_add"
@@ -100,8 +99,15 @@ export default {
 </script>
 
 <style>
+.ant-input {
+  height: 28px;
+  line-height: 28px;
+}
 .iot_view_internetServer_top_search {
   float: left;
+  height: 26px;
+  line-height: 26px;
+  width: 300px;
 }
 .iot_view_internetServer_top_add {
   float: right;

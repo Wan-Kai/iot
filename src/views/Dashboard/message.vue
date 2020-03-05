@@ -4,7 +4,7 @@
       <a-input-search
         class="iot_view_message_top_search"
         placeholder="请输入要查找的内容"
-        style="width: 200px"
+        style="width: 300px;height: 26px"
       />
     </div>
     <div class="iot_view_message_table_layout">
@@ -87,6 +87,8 @@ export default {
   margin-top: 14px;
   margin-bottom: 14px;
   padding-bottom: 30px;
+  height: 26px;
+  line-height: 26px;
 }
 .iot_view_message_top_search {
   float: left;

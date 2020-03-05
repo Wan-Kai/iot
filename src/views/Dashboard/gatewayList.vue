@@ -96,6 +96,18 @@ export default {
       columns,
       interData: []
     };
+  },
+  beforeMount() {
+    this.$api.gateway
+      .gatewayData({
+        page: 0
+      })
+      .then(res => {
+        this.interData = res.data.gatewayTableData;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 };
 </script>

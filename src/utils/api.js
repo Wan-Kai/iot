@@ -15,5 +15,11 @@ export default {
     getMessage: data => {
       return post("/admin/server/message", data);
     }
+  },
+  gateway: {
+    //获取表格数据
+    gatewayData: data => {
+      return post("/admin/gateway/data", data);
+    }
   }
 };

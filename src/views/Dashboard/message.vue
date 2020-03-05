@@ -84,8 +84,8 @@ export default {
 <style scoped>
 .iot_view_internetServer_top {
   width: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 14px;
+  margin-bottom: 14px;
   padding-bottom: 30px;
 }
 .iot_view_message_top_search {

@@ -108,8 +108,8 @@ export default {
 }
 .iot_view_internetServer_top {
   width: 100%;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 14px;
+  margin-bottom: 14px;
   padding-bottom: 30px;
 }
 .iot_view_internetServer_top_button_text {
@@ -123,6 +123,6 @@ export default {
 }
 .ant-table-thead > tr > th,
 .ant-table-tbody > tr > td {
-  padding: 10px 10px;
+  padding: 8px 8px;
 }
 </style>

@@ -9,6 +9,7 @@
         collapsedWidth="0"
         @collapse="onCollapse"
         @breakpoint="onBreakpoint"
+        class="iot_basicLayout_sider"
         style="background: #fff"
       >
         <a-menu
@@ -74,7 +75,7 @@
           </Authorized>
         </a-menu>
       </a-layout-sider>
-      <a-layout style="padding: 0 24px 24px">
+      <a-layout style="padding: 0 18px 18px">
         <div class="iot_view_dashboard_title">
           <p style="float: left;">
             <a-icon type="home" style="padding-right: 5px" />{{ name.title }}
@@ -86,8 +87,8 @@
             padding: 0,
             margin: 0,
             minHeight: '280px',
-            paddingLeft: '20px',
-            paddingRight: '20px'
+            paddingLeft: '14px',
+            paddingRight: '14px'
           }"
         >
           <router-view />
@@ -151,16 +152,44 @@ export default {
 .footer {
   height: 25px;
 }
+.iot_basicLayout_sider {
+}
 .iot_view_dashboard_title {
   margin-top: 10px;
   float: left;
 }
 .iot_menu_base {
-  font-size: 14px;
 }
 .ant-menu-inline .ant-menu-item,
 .ant-menu-inline .ant-menu-submenu-title {
-  font-size: 14px;
+  font-size: 12px;
+}
+.ant-menu-vertical > .ant-menu-item,
+.ant-menu-vertical-left > .ant-menu-item,
+.ant-menu-vertical-right > .ant-menu-item,
+.ant-menu-inline > .ant-menu-item,
+.ant-menu-vertical > .ant-menu-submenu > .ant-menu-submenu-title,
+.ant-menu-vertical-left > .ant-menu-submenu > .ant-menu-submenu-title,
+.ant-menu-vertical-right > .ant-menu-submenu > .ant-menu-submenu-title,
+.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+  height: 36px;
+  line-height: 36px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+
+.ant-menu-sub.ant-menu-inline > .ant-menu-item,
+.ant-menu-sub.ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+  height: 32px;
+  line-height: 32px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+.ant-menu-vertical .ant-menu-item:not(:last-child),
+.ant-menu-vertical-left .ant-menu-item:not(:last-child),
+.ant-menu-vertical-right .ant-menu-item:not(:last-child),
+.ant-menu-inline .ant-menu-item:not(:last-child) {
+  margin-bottom: 2px;
 }
 #components-layout-demo-top-side-2 .logo {
   width: 120px;

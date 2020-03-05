@@ -6,7 +6,7 @@ module.exports = {
           "primary-color": "#1EAF84",
           "link-color": "#1EAF84",
           "border-radius-base": "2px",
-          "font-size-base": "13px"
+          "font-size-base": "11px"
         },
         javascriptEnabled: true
       }
@@ -20,5 +20,8 @@ module.exports = {
       maskIcon: "favicon.ico",
       msTileImage: "favicon.ico"
     }
+  },
+  chainWebpack(config) {
+    config.entry("main").add("babel-polyfill");
   }
 };

@@ -16,6 +16,7 @@
           mode="inline"
           :defaultSelectedKeys="['2']"
           forceSubMenuRender="true"
+          class="iot_menu_base"
         >
           <a-menu-item key="1"><a-icon type="idcard" />首页</a-menu-item>
           <a-sub-menu key="sub1">
@@ -138,6 +139,8 @@ export default {
 </script>
 
 <style>
+.iot_menu_height {
+}
 .header {
   background: #1c8c6b;
   width: 100%;
@@ -151,6 +154,13 @@ export default {
 .iot_view_dashboard_title {
   margin-top: 10px;
   float: left;
+}
+.iot_menu_base {
+  font-size: 14px;
+}
+.ant-menu-inline .ant-menu-item,
+.ant-menu-inline .ant-menu-submenu-title {
+  font-size: 14px;
 }
 #components-layout-demo-top-side-2 .logo {
   width: 120px;

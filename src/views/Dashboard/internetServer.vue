@@ -92,16 +92,14 @@ export default {
   methods: {
     handleSubmit() {
       setTimeout(() => {
-        this.$router.replace(
-          "/admin/dashboard/internetServer/addInternetServer"
-        );
-      }, 800);
+        this.$router.push("/admin/dashboard/internetServer/addInternetServer");
+      }, 100);
     }
   }
 };
 </script>
 
-<style scoped>
+<style>
 .iot_view_internetServer_top_search {
   float: left;
 }
@@ -121,5 +119,10 @@ export default {
 }
 .iot_view_internetServer_table {
   font-size: 10px;
+  line-height: 8px;
+}
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
+  padding: 10px 10px;
 }
 </style>

@@ -3,8 +3,8 @@ import Mock from "mockjs";
 const ServerData = Mock.mock({
   status: "OK",
   type: "ID",
-  ServerDataSize: 6,
-  "serverData|6": [
+  ServerDataSize: 8,
+  "serverData|8": [
     {
       ID: "@ip",
       "port|0-10000": 1,

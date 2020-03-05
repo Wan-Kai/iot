@@ -19,6 +19,7 @@
           <a href="javascript:;">查看</a>
         </span>
       </a-table>
+      <a-button class="iot_view_message_button">删除</a-button>
     </div>
   </div>
 </template>
@@ -91,5 +92,9 @@ export default {
   float: left;
 }
 .iot_view_message_table {
+}
+.iot_view_message_button {
+  float: left;
+  margin-top: -48px;
 }
 </style>

@@ -19,35 +19,35 @@ const service = axios.create({
   timeout: 10000
 });
 
-// const that = this;
-// // request拦截器
-// service.interceptors.request.use(
-//   config => {
-//     return config;
-//   },
-//   error => {
-//     Promise.reject(error);
-//   }
-// );
-// // response 拦截器
-// service.interceptors.response.use(
-//   response => {
-//     let res = {};
-//     res.status = response.status;
-//     res.data = response.data;
-//     return res;
-//   },
-//   error => {
-//     if (error.response && error.response.status === 404) {
-//       that.$router.push({ path: "/404" });
-//     } else if (error.response && error.response.status === 403) {
-//       store.commit("$_removeStorage");
-//       alert("登录失效，请重新登录！");
-//       that.$router.push({ path: "/user/login" });
-//     }
-//     return Promise.reject(error.response);
-//   }
-// );
+const that = this;
+// request拦截器
+service.interceptors.request.use(
+  config => {
+    return config;
+  },
+  error => {
+    Promise.reject(error);
+  }
+);
+// response 拦截器
+service.interceptors.response.use(
+  response => {
+    let res = {};
+    res.status = response.status;
+    res.data = response.data;
+    return res;
+  },
+  error => {
+    if (error.response && error.response.status === 404) {
+      that.$router.push({ path: "/404" });
+    } else if (error.response && error.response.status === 403) {
+      that.$store.commit("login/reset");
+      alert("登录失效，请重新登录！");
+      that.$router.push({ path: "/user/login" });
+    }
+    return Promise.reject(error.response);
+  }
+);
 
 //get方法
 export function get(url, data = {}) {

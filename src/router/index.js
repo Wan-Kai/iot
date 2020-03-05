@@ -19,7 +19,7 @@ const routes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
-    path: "/user",
+    path: "/",
     hideInMenu: true,
     meta: { authority: ["admin", "user", "guest"], title: "根", icon: "home" },
     component: () =>
@@ -27,7 +27,7 @@ const routes = [
     children: [
       //login
       {
-        path: "/user",
+        path: "/",
         redirect: "/user/login"
       },
       {
@@ -103,16 +103,16 @@ const routes = [
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/message.vue"
               )
+          },
+          {
+            path: "/admin/dashboard/gatewayManage",
+            name: "gatewayManage",
+            meta: { title: "网关管理" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/gatewayManage.vue"
+              )
           }
-          // {
-          //   path: "/admin/dashboard/gatewayManage",
-          //   name: "gatewayManage",
-          //   meta: { title: "网关管理" },
-          //   component: () =>
-          //       import(
-          //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/gatewayManage.vue"
-          //           )
-          // },
           // {
           //   path: "/admin/dashboard/iLogFlow",
           //   name: "logFlow",
@@ -218,7 +218,12 @@ router.beforeEach((to, from, next) => {
       console.log(22222);
     }
     NProgress.done();
+    console.log(33333);
   }
+  console.log(44444);
+  console.log(record);
+  console.log(isLogin());
+
   next();
 });
 

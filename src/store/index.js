@@ -16,7 +16,7 @@ export default new Vuex.Store({
   getters: {
     getAttr: state => key => {
       if (!state[key]) state[key] = JSON.parse(localStorage.getItem(key));
-      return state[key];
+      return state.login.all[key];
     }
   }
 });

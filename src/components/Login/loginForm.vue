@@ -93,10 +93,15 @@ export default {
               userId: res.data.admin[0]["userId"],
               sessionKey: res.data.admin[0]["sessionKey"]
             });
-
             console.log(res.data.admin);
+            this.$store.commit("login/setLogin", {
+              isLogin: "1",
+              key: "admin"
+            });
           });
-          this.$router.replace("/admin/dashboard");
+          setTimeout(() => {
+            this.$router.push("/admin/dashboard");
+          }, 300);
         } else {
           console.log("Login Form in wrong");
           this.$message.error("登录失败!");
@@ -150,5 +155,6 @@ export default {
   background: #1eaf84;
   border-radius: 1px;
   border-color: #1eaf84;
+  font-size: 16px;
 }
 </style>

@@ -23,7 +23,8 @@ import {
   message,
   Breadcrumb,
   Row,
-  Col
+  Col,
+  Tabs
 } from "ant-design-vue";
 
 require("./mock/mock");
@@ -45,6 +46,7 @@ Vue.use(Card);
 Vue.use(Breadcrumb);
 Vue.use(Row);
 Vue.use(Col);
+Vue.use(Tabs);
 Vue.component("Authorized", Authorized);
 Vue.prototype.$api = API;
 Vue.prototype.$message = message;

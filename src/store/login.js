@@ -10,22 +10,31 @@ const state = {
     userId: "",
     sessionKey: ""
   },
-  isLogin: "0",
-  key: "guest"
+  login: {
+    isLogin: "0",
+    key: "guest"
+  }
 };
 
 // getters
-const getters = {};
+const getters = {
+  getUserId: function(state) {
+    return state.all.userId;
+  },
+  getSessionkey: function(state) {
+    return state.all.sessionKey;
+  }
+};
 
 // actions
 const actions = {};
 
 export function getKey() {
-  return state.key;
+  return state.login.key;
 }
 
 export function getLoginState() {
-  return state.isLogin;
+  return state.login.isLogin;
 }
 
 // mutations
@@ -33,6 +42,17 @@ const mutations = {
   setUser(state, all) {
     //设置参数
     state.all = all;
+  },
+  setLogin(state, login) {
+    state.login = login;
+  },
+  reset() {
+    state.all.username = "";
+    state.all.isLogin = "";
+    state.all.userId = "";
+    state.all.sessionKey = "";
+    state.login.isLogin = "0";
+    state.login.key = "guest";
   }
 };
 

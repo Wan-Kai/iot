@@ -6,18 +6,23 @@
         :required="true"
         :label-col="{ span: 4 }"
         :wrapper-col="{ span: 12 }"
+        class="iot_view_internetServer_add_formItem"
       >
-        <a-input v-decorator="['name']" style="width: 100%;margin-left: 10px" />
+        <a-input
+          v-decorator="['name']"
+          style="width: 60%;float: left;height: 28px"
+        />
       </a-form-item>
       <a-form-item
         label="主机名："
         :required="true"
         :label-col="{ span: 4 }"
         :wrapper-col="{ span: 12 }"
+        class="iot_view_internetServer_add_formItem"
       >
         <a-input
           v-decorator="['pc_name']"
-          style="width: 100%;margin-left: 10px"
+          style="width: 60%;float: left;height: 28px"
         />
       </a-form-item>
       <a-form-item
@@ -25,6 +30,7 @@
         :required="true"
         :label-col="{ span: 4 }"
         :wrapper-col="{ span: 12 }"
+        class="iot_view_internetServer_add_formItem"
       >
         <a-switch
           checkedChildren="开"
@@ -41,6 +47,7 @@
         :wrapper-col="{ span: 12 }"
         :label="getLabel(index)"
         :required="true"
+        class="iot_view_internetServer_add_formItem"
       >
         <a-input
           v-decorator="[
@@ -49,7 +56,7 @@
               validateTrigger: ['change', 'blur']
             }
           ]"
-          style="width: 100%;margin-left: 10px"
+          style="width: 60%;float: left;height: 28px"
         />
       </a-form-item>
       <a-row>
@@ -146,6 +153,9 @@ export default {
 .iot_view_internetServer_add_form {
   padding-top: 20px;
   padding-right: 5px;
+}
+.iot_view_internetServer_add_formItem {
+  margin-bottom: 14px;
 }
 .iot_view_internetServer_add_form_left {
   float: left;

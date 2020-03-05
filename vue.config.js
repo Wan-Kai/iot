@@ -5,7 +5,8 @@ module.exports = {
         modifyVars: {
           "primary-color": "#1EAF84",
           "link-color": "#1EAF84",
-          "border-radius-base": "2px"
+          "border-radius-base": "2px",
+          "font-size-base": "13px"
         },
         javascriptEnabled: true
       }

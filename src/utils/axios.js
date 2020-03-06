@@ -19,7 +19,6 @@ const service = axios.create({
   timeout: 10000
 });
 
-const that = this;
 // request拦截器
 service.interceptors.request.use(
   config => {
@@ -39,11 +38,11 @@ service.interceptors.response.use(
   },
   error => {
     if (error.response && error.response.status === 404) {
-      that.$router.push({ path: "/404" });
+      this.$router.push({ path: "/404" });
     } else if (error.response && error.response.status === 403) {
-      that.$store.commit("login/reset");
+      this.$store.commit("login/reset");
       alert("登录失效，请重新登录！");
-      that.$router.push({ path: "/user/login" });
+      this.$router.push({ path: "/user/login" });
     }
     return Promise.reject(error.response);
   }

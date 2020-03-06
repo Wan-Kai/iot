@@ -124,6 +124,24 @@ const routes = [
               )
           },
           {
+            path: "/admin/dashboard/internetServer/check/:id",
+            name: "checkInternetServer",
+            meta: { title: "查看服务器" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServerBoard/check.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/internetServer/edit/:id",
+            name: "editInternetServer",
+            meta: { title: "编辑服务器" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServerBoard/edit.vue"
+              )
+          },
+          {
             path: "/admin/dashboard/message",
             name: "message",
             meta: { title: "消息" },

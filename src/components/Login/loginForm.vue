@@ -97,6 +97,9 @@ export default {
               sessionKey: res.data.admin[0]["sessionKey"]
             });
             console.log(res.data.admin);
+            console.log("gettttttt");
+            let item = this.$store.getters.getLoginState;
+            console.log(item);
             this.$store.commit("login/setLogin", {
               isLogin: "1",
               key: "admin"

@@ -17,14 +17,7 @@ const state = {
 };
 
 // getters
-const getters = {
-  getUserId: function(state) {
-    return state.all.userId;
-  },
-  getSessionkey: function(state) {
-    return state.all.sessionKey;
-  }
-};
+const getters = {};
 
 // actions
 const actions = {};
@@ -46,7 +39,7 @@ const mutations = {
   setLogin(state, login) {
     state.login = login;
   },
-  reset() {
+  reset(state) {
     state.all.username = "";
     state.all.isLogin = "";
     state.all.userId = "";

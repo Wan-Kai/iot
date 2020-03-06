@@ -120,6 +120,7 @@ export default {
 }
 .iot_view_gatewayManege_list_top_search {
   float: left;
+  margin-top: 5px;
 }
 .iot_view_gatewayManege_list_top_right {
   float: right;

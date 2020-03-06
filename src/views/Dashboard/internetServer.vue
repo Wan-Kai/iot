@@ -29,10 +29,11 @@
           </a-tag>
         </span>
         <span slot="time"> 创建时间</span>
-        <span slot="action">
-          <a href="javascript:;">查看</a>
+        <span slot="action" slot-scope="text, record"
+          >>
+          <a @click="checkRouter(record)">查看</a>
           <a-divider type="vertical" />
-          <a href="javascript:;">编辑</a>
+          <a @click="editRouter(record)">编辑</a>
         </span>
       </a-table>
     </div>
@@ -93,6 +94,20 @@ export default {
       setTimeout(() => {
         this.$router.push("/admin/dashboard/internetServer/addInternetServer");
       }, 100);
+    },
+    checkRouter(data) {
+      let id = data["ID"];
+      this.$router.push(
+        "/admin/dashboard/internetServer/check/".concat(id.toString())
+      );
+      console.log(id);
+    },
+    editRouter(data) {
+      let id = data["ID"];
+      this.$router.push(
+        "/admin/dashboard/internetServer/edit/".concat(id.toString())
+      );
+      console.log(data);
     }
   }
 };

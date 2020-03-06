@@ -23,7 +23,7 @@
           <a-icon slot="prefix" type="phone" style="color: rgba(0,0,0,.25)" />
         </a-input>
       </a-form-item>
-      <a-form-item class="iot_register_note" :layout="inline">
+      <a-form-item class="iot_register_note">
         <a-input
           class="iot_register_note_input"
           v-decorator="[

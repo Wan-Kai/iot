@@ -24,13 +24,13 @@
       <a-button
         v-if="current == steps.length - 1"
         type="primary"
-        @click="$message.success('Processing complete!')"
+        @click="successSubmit"
       >
         完成
       </a-button>
-      <a-button v-if="current > 0" style="margin-left: 8px" @click="prev">
-        上一步
-      </a-button>
+      <!--      <a-button v-if="current > 0" style="margin-left: 8px" @click="prev">-->
+      <!--        上一步-->
+      <!--      </a-button>-->
     </div>
   </a-card>
 </template>
@@ -58,19 +58,38 @@ export default {
   },
   methods: {
     next() {
-      if (this.current < 3) this.current++;
+      if (this.current === 0) {
+        let note = this.$store.getters.getRetrieveNote;
+        if (note.note === "888888") {
+          this.current++;
+        } else {
+          this.$message.error("请输入验证码： 888888 (六个8)");
+        }
+      } else if (this.current === 1) {
+        if (this.$store.getters.getStep2State) {
+          this.current++;
+        } else {
+          this.$message.error("请求错误，请检查是否填写相应数据");
+        }
+      } else {
+        this.current = 0;
+      }
     },
     prev() {
       if (this.current > 0) this.current--;
     },
     getStepName() {
-      if (this.current == 1) {
+      if (this.current === 1) {
         return "step2";
-      } else if (this.current == 2) {
+      } else if (this.current === 2) {
         return "step3";
       } else {
         return "step1";
       }
+    },
+    successSubmit() {
+      this.$message.success("请重新登录");
+      this.$router.push("/user/login");
     }
   },
   components: {}
@@ -81,7 +100,7 @@ export default {
 .retrieveForm {
   margin: auto;
   width: 30%;
-  height: 320px;
+  height: 340px;
 }
 .iot_retrieve_content {
   margin-top: 30px;

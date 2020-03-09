@@ -1,10 +1,15 @@
 <template>
-  <div class="iot_view_internetServer_add_form">
-    <a-form :form="form" @submit="handleSubmit" layout="vertical">
+  <a-layout style="background: #fff;padding: 0 14px 0">
+    <a-form
+      :form="form"
+      @submit="handleSubmit"
+      layout="vertical"
+      class="iot_view_internetServer_add_form"
+    >
       <a-form-item
         label="名称："
         :required="true"
-        :label-col="{ span: 2 }"
+        :label-col="{ span: 3 }"
         :wrapper-col="{ span: 12 }"
         class="iot_view_internetServer_add_formItem"
       >
@@ -16,7 +21,7 @@
       <a-form-item
         label="主机名："
         :required="true"
-        :label-col="{ span: 2 }"
+        :label-col="{ span: 3 }"
         :wrapper-col="{ span: 12 }"
         class="iot_view_internetServer_add_formItem"
       >
@@ -28,7 +33,7 @@
       <a-form-item
         label="是否启用网关发现："
         :required="true"
-        :label-col="{ span: 2 }"
+        :label-col="{ span: 3 }"
         :wrapper-col="{ span: 12 }"
         class="iot_view_internetServer_add_formItem"
       >
@@ -43,7 +48,7 @@
       <a-form-item
         v-for="(k, index) in form.getFieldValue('keys')"
         :key="k"
-        :label-col="{ span: 2 }"
+        :label-col="{ span: 3 }"
         :wrapper-col="{ span: 12 }"
         :label="getLabel(index)"
         :required="true"
@@ -60,7 +65,7 @@
         />
       </a-form-item>
       <a-row>
-        <a-col :span="2"> </a-col>
+        <a-col :span="3"> </a-col>
         <a-col :span="12">
           <div class="iot_view_internetServer_add_form_left">
             <a-button type="primary" @click="handleSubmit">确定</a-button>
@@ -69,7 +74,7 @@
         </a-col>
       </a-row>
     </a-form>
-  </div>
+  </a-layout>
 </template>
 
 <script>
@@ -151,8 +156,7 @@ export default {
 
 <style scoped>
 .iot_view_internetServer_add_form {
-  padding-top: 25px;
-  padding-left: 25px;
+  padding: 20px 5px;
 }
 .iot_view_internetServer_add_formItem {
   margin-bottom: 14px;

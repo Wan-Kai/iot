@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <a-layout style="background: #fff;padding: 0 14px 0">
     <div class="iot_view_internetServer_top">
       <a-input-search
         class="iot_view_message_top_search"
@@ -15,13 +15,13 @@
         style="min-width: auto"
         class="iot_view_message_table"
       >
-        <span slot="action">
-          <a href="javascript:;">查看</a>
+        <span slot="action" slot-scope="text, record">
+          <a @click="checkRouter(record)">查看</a>
         </span>
       </a-table>
       <a-button class="iot_view_message_button">删除</a-button>
     </div>
-  </div>
+  </a-layout>
 </template>
 
 <script>
@@ -77,11 +77,20 @@ export default {
       .catch(err => {
         console.log(err);
       });
+  },
+  methods: {
+    checkRouter(data) {
+      let id = data["title"];
+      this.$router.push(
+        "/admin/dashboard/messageBoard/check/".concat(id.toString())
+      );
+      console.log(id);
+    }
   }
 };
 </script>
 
-<style scoped>
+<style>
 .iot_view_internetServer_top {
   width: 100%;
   margin-top: 14px;
@@ -98,5 +107,13 @@ export default {
 .iot_view_message_button {
   float: left;
   margin-top: -48px;
+}
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
+  padding: 8px 8px;
+}
+.ant-input {
+  height: 28px;
+  line-height: 28px;
 }
 </style>

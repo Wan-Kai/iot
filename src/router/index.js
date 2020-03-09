@@ -86,29 +86,39 @@ const routes = [
   },
   {
     path: "/admin",
-    meta: { title: "本地" },
+    name: "local",
+    meta: { title: "IOT" },
     component: () =>
       import(/* webpackChunkName: "user" */ "../layouts/BasicLayout.vue"),
     children: [
       // dashboard
       {
         path: "/admin/dashboard",
-        redirect: "/admin/dashboard/internetServer"
+        redirect: "/admin/dashboard/init"
       },
       {
-        path: "/admin/dashboard",
-        name: "dashboard",
-        meta: {
-          icon: "dashboard",
-          title: "控制面板",
-          authority: ["admin", "user"]
-        },
+        path: "/admin/dashboard/init",
+        name: "init",
+        meta: { title: "首页" },
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ "../views/Dashboard/index.vue"
+          )
+      },
+      //网络服务器
+      {
+        path: "/admin/dashboard/internetServer",
+        name: "internetServer",
+        meta: { title: "网络服务器" },
         component: { render: h => h("router-view") },
         children: [
           {
             path: "/admin/dashboard/internetServer",
-            name: "internetServer",
-            meta: { title: "网络服务器" },
+            redirect: "/admin/dashboard/internetServer/init"
+          },
+          {
+            path: "/admin/dashboard/internetServer/init",
+            meta: { title: "" },
             component: () =>
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServer.vue"
@@ -120,7 +130,7 @@ const routes = [
             meta: { title: "添加服务器" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/addInternetServer.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServerBoard/addInternetServer.vue"
               )
           },
           {
@@ -140,72 +150,127 @@ const routes = [
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServerBoard/edit.vue"
               )
-          },
+          }
+        ]
+      },
+
+      //消息
+      {
+        path: "/admin/dashboard/message",
+        name: "message",
+        meta: { title: "消息" },
+        component: { render: h => h("router-view") },
+        children: [
           {
             path: "/admin/dashboard/message",
-            name: "message",
-            meta: { title: "消息" },
+            redirect: "/admin/dashboard/message/init"
+          },
+          {
+            path: "/admin/dashboard/message/init",
+            meta: { title: "" },
             component: () =>
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/message.vue"
               )
           },
           {
+            path: "/admin/dashboard/messageBoard/check/:title",
+            name: "checkMessage",
+            meta: { title: "查看消息" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/messageBoard/check.vue"
+              )
+          }
+        ]
+      },
+
+      //网关管理
+      {
+        path: "/admin/dashboard/gatewayManage",
+        name: "gatewayManage",
+        meta: { title: "网关管理" },
+        component: { render: h => h("router-view") },
+        children: [
+          {
             path: "/admin/dashboard/gatewayManage",
-            name: "gatewayManage",
-            meta: { title: "网关管理" },
+            redirect: "/admin/dashboard/gatewayManage/init"
+          },
+          {
+            path: "/admin/dashboard/gatewayManage/init",
+            name: "init",
+            meta: { title: "" },
             component: () =>
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/gatewayManage.vue"
               )
+          },
+          {
+            path: "/admin/dashboard/gatewayListBoard/check/:number",
+            name: "checkGatewayManage",
+            meta: { title: "查看网关" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/gatewayListBoard/check.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/gatewayListBoard/edit/:number",
+            name: "editGatewayManage",
+            meta: { title: "编辑网关" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/gatewayListBoard/edit.vue"
+              )
           }
-          // {
-          //   path: "/admin/dashboard/iLogFlow",
-          //   name: "logFlow",
-          //   meta: { title: "日志流水" },
-          //   component: () =>
-          //       import(
-          //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/ilogFlow.vue"
-          //           )
-          // },
-          // {
-          //   path: "/dashboard/nodeManage",
-          //   name: "nodeManage",
-          //   meta: { title: "节点管理" },
-          //   component: () =>
-          //       import(
-          //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeManage.vue"
-          //           )
-          // },
-          // {
-          //   path: "/admin/dashboard/nLogFlow",
-          //   name: "nLogFlow",
-          //   meta: { title: "日志流水" },
-          //   component: () =>
-          //       import(
-          //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/nLogFlow.vue"
-          //           )
-          // },
-          // {
-          //   path: "/admin/dashboard/appManage",
-          //   name: "appManage",
-          //   meta: { title: "应用管理" },
-          //   component: () =>
-          //       import(
-          //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManage.vue"
-          //           )
-          // },
-          // {
-          //   path: "/dashboard/usersManage",
-          //   name: "usersManage",
-          //   meta: { title: "用户管理" },
-          //   component: () =>
-          //       import(
-          //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/usersManage.vue"
-          //           )
-          // }
         ]
       }
+
+      // {
+      //   path: "/admin/dashboard/iLogFlow",
+      //   name: "logFlow",
+      //   meta: { title: "日志流水" },
+      //   component: () =>
+      //       import(
+      //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/ilogFlow.vue"
+      //           )
+      // },
+      // {
+      //   path: "/dashboard/nodeManage",
+      //   name: "nodeManage",
+      //   meta: { title: "节点管理" },
+      //   component: () =>
+      //       import(
+      //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeManage.vue"
+      //           )
+      // },
+      // {
+      //   path: "/admin/dashboard/nLogFlow",
+      //   name: "nLogFlow",
+      //   meta: { title: "日志流水" },
+      //   component: () =>
+      //       import(
+      //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/nLogFlow.vue"
+      //           )
+      // },
+      // {
+      //   path: "/admin/dashboard/appManage",
+      //   name: "appManage",
+      //   meta: { title: "应用管理" },
+      //   component: () =>
+      //       import(
+      //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManage.vue"
+      //           )
+      // },
+      // {
+      //   path: "/dashboard/usersManage",
+      //   name: "usersManage",
+      //   meta: { title: "用户管理" },
+      //   component: () =>
+      //       import(
+      //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/usersManage.vue"
+      //           )
+      // }
     ]
   },
   {
@@ -256,19 +321,13 @@ router.beforeEach((to, from, next) => {
       next({
         path: "/user/login"
       });
-      console.log(11111);
     } else if (to.path !== "/403") {
       next({
         path: "/403"
       });
-      console.log(22222);
     }
     NProgress.done();
-    console.log(33333);
   }
-  console.log(44444);
-  console.log(record);
-  console.log(isLogin());
 
   next();
 });

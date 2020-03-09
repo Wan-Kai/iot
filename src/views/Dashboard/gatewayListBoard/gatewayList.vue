@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <a-layout style="background: #fff;padding: 0 14px 0">
     <div class="iot_view_gatewayManege_list_top">
       <a-input-search
         class="iot_view_gatewayManege_list_top_search"
@@ -8,10 +8,13 @@
       />
       <div class="iot_view_gatewayManege_list_top_right">
         <a-button type="primary" icon="plus">
-          添加
+          节点注册
         </a-button>
         <a-button icon="download" style="margin-left: 20px">
           批量导入
+        </a-button>
+        <a-button icon="download" style="margin-left: 20px">
+          批量导出
         </a-button>
       </div>
     </div>
@@ -27,19 +30,19 @@
         </a-tag>
       </span>
 
-      <span slot="action">
-        <a href="javascript:;">查看</a>
+      <span slot="action" slot-scope="text, record">
+        <a @click="checkRouter(record)">查看</a>
         <a-divider type="vertical" />
-        <a href="javascript:;">编辑</a>
+        <a @click="editRouter(record)">编辑</a>
       </span>
     </a-table>
-  </div>
+  </a-layout>
 </template>
 
 <script>
 const columns = [
   {
-    title: "网络编号",
+    title: "网关编号",
     dataIndex: "number",
     key: "number"
   },
@@ -108,15 +111,30 @@ export default {
       .catch(err => {
         console.log(err);
       });
+  },
+  methods: {
+    checkRouter(data) {
+      let id = data["number"];
+      this.$router.push(
+        "/admin/dashboard/gatewayListBoard/check/".concat(id.toString())
+      );
+      console.log(id);
+    },
+    editRouter(data) {
+      let id = data["number"];
+      this.$router.push(
+        "/admin/dashboard/gatewayListBoard/edit/".concat(id.toString())
+      );
+      console.log(data);
+    }
   }
 };
 </script>
 
-<style scoped>
+<style>
 .iot_view_gatewayManege_list_top {
   width: 100%;
-  margin-bottom: 20px;
-  padding-bottom: 30px;
+  margin-bottom: 14px;
 }
 .iot_view_gatewayManege_list_top_search {
   float: left;
@@ -126,6 +144,10 @@ export default {
   float: right;
 }
 .iot_view_gatawayManage_table {
-  line-height: 1;
+  margin-top: 5px;
+}
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
+  padding: 8px 8px;
 }
 </style>

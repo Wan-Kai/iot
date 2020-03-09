@@ -8,7 +8,9 @@
     <a-layout-content class="iot_login_layout_content">
       <router-view />
     </a-layout-content>
-    <a-layout-footer style="textAlign: center" class="iot_basic_footer">
+    <a-layout-footer
+      style="textAlign: center;background-color: #f0f0f0;padding-bottom: 5px"
+    >
       <Footer />
     </a-layout-footer>
   </a-layout>
@@ -39,10 +41,6 @@ export default {
 }
 .iot_login_layout_content {
   padding-top: 120px;
-  background-color: #f0f0f0;
-}
-
-.iot_basic_footer {
   background-color: #f0f0f0;
 }
 </style>

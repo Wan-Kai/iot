@@ -15,11 +15,14 @@
         <a-menu
           theme="light"
           mode="inline"
-          :defaultSelectedKeys="['2']"
           forceSubMenuRender="true"
           class="iot_menu_base"
         >
-          <a-menu-item key="1"><a-icon type="idcard" />首页</a-menu-item>
+          <a-menu-item key="1">
+            <router-link to="/admin/dashboard">
+              <a-icon type="idcard" />首页
+            </router-link>
+          </a-menu-item>
           <a-sub-menu key="sub1">
             <span slot="title"><a-icon type="hdd" />基础管理</span>
             <a-menu-item key="2">
@@ -75,24 +78,27 @@
           </Authorized>
         </a-menu>
       </a-layout-sider>
-      <a-layout style="padding: 0 18px 18px">
+      <a-layout style="padding: 0 18px 5px">
         <div class="iot_view_dashboard_title">
-          <p style="float: left;">
-            <a-icon type="home" style="padding-right: 5px" />{{ name.title }}
-          </p>
+          <a-breadcrumb class="iot_breadcrumb">
+            <a-breadcrumb-item v-for="(item, index) in list" :key="item.name">
+              <router-link
+                v-if="item.name != name && index != 0"
+                :to="{ path: item.path === '' ? '/' : item.path }"
+                >{{ item.meta.title }}</router-link
+              >
+              <span v-else>{{ item.meta.title }}</span>
+            </a-breadcrumb-item>
+          </a-breadcrumb>
         </div>
-        <a-layout-content
+        <a-layout
           :style="{
-            background: '#fff',
-            padding: 0,
             margin: 0,
-            minHeight: '280px',
-            paddingLeft: '14px',
-            paddingRight: '14px'
+            minHeight: '280px'
           }"
         >
           <router-view />
-        </a-layout-content>
+        </a-layout>
         <a-layout-footer class="footer">
           <Footer />
         </a-layout-footer>
@@ -128,8 +134,10 @@ export default {
       console.log(broken);
     },
     getName() {
-      this.$route.matched.forEach(record => this.list.push(record.meta));
-      this.name = this.list.pop();
+      this.list = [];
+      this.$route.matched.forEach(record => this.list.push(record));
+      console.log(this.list);
+      this.name = this.$route.name;
     }
   },
   components: {
@@ -157,6 +165,11 @@ export default {
 .iot_view_dashboard_title {
   margin-top: 10px;
   float: left;
+}
+.iot_breadcrumb {
+  float: left;
+  display: block;
+  margin-bottom: 10px;
 }
 .iot_menu_base {
 }

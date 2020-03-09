@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <a-layout style="background: #fff;padding: 0 14px 0">
     <div>
       <a-tabs
         defaultActiveKey="1"
@@ -15,11 +15,11 @@
         </a-tab-pane>
       </a-tabs>
     </div>
-  </div>
+  </a-layout>
 </template>
 
 <script>
-import gatewayList from "./gatewayList";
+import gatewayList from "./gatewayListBoard/gatewayList";
 export default {
   data() {
     return {};

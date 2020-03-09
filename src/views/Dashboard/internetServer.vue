@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <a-layout style="background: #fff;padding: 0 14px 0">
     <div class="iot_view_internetServer_top">
       <a-input-search
         class="iot_view_internetServer_top_search"
@@ -29,15 +29,14 @@
           </a-tag>
         </span>
         <span slot="time"> 创建时间</span>
-        <span slot="action" slot-scope="text, record"
-          >>
+        <span slot="action" slot-scope="text, record">
           <a @click="checkRouter(record)">查看</a>
           <a-divider type="vertical" />
           <a @click="editRouter(record)">编辑</a>
         </span>
       </a-table>
     </div>
-  </div>
+  </a-layout>
 </template>
 
 <script>
@@ -131,7 +130,6 @@ export default {
   width: 100%;
   margin-top: 14px;
   margin-bottom: 14px;
-  padding-bottom: 30px;
 }
 .iot_view_internetServer_top_button_text {
   color: white;

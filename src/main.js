@@ -28,7 +28,8 @@ import {
   Row,
   Col,
   Tabs,
-  Steps
+  Steps,
+  Pagination
 } from "ant-design-vue";
 
 require("./mock/mock");
@@ -52,6 +53,7 @@ Vue.use(Row);
 Vue.use(Col);
 Vue.use(Tabs);
 Vue.use(Steps);
+Vue.use(Pagination);
 Vue.component("Authorized", Authorized);
 Vue.prototype.$api = API;
 Vue.prototype.$message = message;

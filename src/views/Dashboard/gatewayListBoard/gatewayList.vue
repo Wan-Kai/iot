@@ -10,12 +10,56 @@
         <a-button type="primary" icon="plus">
           节点注册
         </a-button>
-        <a-button icon="download" style="margin-left: 20px">
+        <a-button
+          icon="download"
+          style="margin-left: 20px"
+          @click="showModalIn"
+        >
           批量导入
         </a-button>
-        <a-button icon="download" style="margin-left: 20px">
+        <a-modal v-model="visibleIn" title="Title" onOk="handleOk">
+          <template slot="footer">
+            <a-button key="back" @click="handleCancelIn">Return</a-button>
+            <a-button
+              key="submit"
+              type="primary"
+              :loading="loadingIn"
+              @click="handleOkIn"
+            >
+              Submit
+            </a-button>
+          </template>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </a-modal>
+        <a-button
+          icon="download"
+          style="margin-left: 20px"
+          @click="showModalOut"
+        >
           批量导出
         </a-button>
+        <a-modal v-model="visibleOut" title="Title" onOk="handleOk">
+          <template slot="footer">
+            <a-button key="back" @click="handleCancelOut">Return</a-button>
+            <a-button
+              key="submit"
+              type="primary"
+              :loading="loadingIn"
+              @click="handleOkOut"
+            >
+              Submit
+            </a-button>
+          </template>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </a-modal>
       </div>
     </div>
     <a-table
@@ -97,7 +141,13 @@ export default {
   data() {
     return {
       columns,
-      interData: []
+      interData: [],
+
+      loadingIn: false,
+      visibleIn: false,
+
+      loadingOut: false,
+      visibleOut: false
     };
   },
   beforeMount() {
@@ -126,6 +176,34 @@ export default {
         "/admin/dashboard/gatewayListBoard/edit/".concat(id.toString())
       );
       console.log(data);
+    },
+
+    showModalIn() {
+      this.visibleIn = true;
+    },
+    handleOkIn() {
+      this.loadingIn = true;
+      setTimeout(() => {
+        this.visibleIn = false;
+        this.loadingIn = false;
+      }, 3000);
+    },
+    handleCancelIn() {
+      this.visibleIn = false;
+    },
+
+    showModalOut() {
+      this.visibleOut = true;
+    },
+    handleOkOut() {
+      this.loadingOut = true;
+      setTimeout(() => {
+        this.visibleOut = false;
+        this.loadingOut = false;
+      }, 3000);
+    },
+    handleCancelOut() {
+      this.visibleOut = false;
     }
   }
 };

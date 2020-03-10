@@ -29,7 +29,8 @@ import {
   Col,
   Tabs,
   Steps,
-  Pagination
+  Pagination,
+  Modal
 } from "ant-design-vue";
 
 require("./mock/mock");
@@ -54,6 +55,7 @@ Vue.use(Col);
 Vue.use(Tabs);
 Vue.use(Steps);
 Vue.use(Pagination);
+Vue.use(Modal);
 Vue.component("Authorized", Authorized);
 Vue.prototype.$api = API;
 Vue.prototype.$message = message;

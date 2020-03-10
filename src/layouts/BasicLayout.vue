@@ -12,12 +12,7 @@
         class="iot_basicLayout_sider"
         style="background: #fff"
       >
-        <a-menu
-          theme="light"
-          mode="inline"
-          forceSubMenuRender="true"
-          class="iot_menu_base"
-        >
+        <a-menu theme="light" mode="inline" class="iot_menu_base">
           <a-menu-item key="1">
             <router-link to="/admin/dashboard">
               <a-icon type="idcard" />首页
@@ -158,12 +153,12 @@ export default {
   padding: 0;
 }
 .footer {
-  height: 25px;
+  line-height: 1;
 }
 .iot_basicLayout_sider {
 }
 .iot_view_dashboard_title {
-  margin-top: 10px;
+  padding-top: 10px;
   float: left;
 }
 .iot_breadcrumb {

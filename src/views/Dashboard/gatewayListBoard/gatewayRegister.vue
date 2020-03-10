@@ -4,21 +4,14 @@
       :form="form"
       @submit="handleSubmit"
       layout="vertical"
-      class="iot_view_internetServer_edit_form"
+      class="iot_view_internetServer_add_form"
     >
-      <a-form-item
-        label="主机名："
-        :required="true"
-        :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
-      >
-        <span style="float: left">{{ $route.params.id }}</span>
-      </a-form-item>
       <a-form-item
         label="名称："
         :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 12 }"
+        class="iot_view_internetServer_add_formItem"
       >
         <a-input
           v-decorator="['name']"
@@ -31,17 +24,11 @@
 
 <script>
 export default {
-  data() {
-    return {};
-  },
+  data() {},
   methods: {
     handleSubmit() {}
   }
 };
 </script>
 
-<style>
-.iot_view_internetServer_edit_form {
-  padding: 20px 5px;
-}
-</style>
+<style scoped></style>

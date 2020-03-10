@@ -1,6 +1,6 @@
 <template>
   <div class="iot_footer_text">
-    <div class="iot_line"></div>
+    <div class="iot_footer_line" />
     武汉卓目科技有限公司
   </div>
 </template>
@@ -11,14 +11,17 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .iot_footer_text {
   color: #b0b0b0;
 }
-.iot_line {
+.iot_footer_line {
   width: 100%;
   height: 1px;
-  border-top: solid #c0c0c0 1px;
-  padding-bottom: 4px;
+  border-top: solid #dddddd 1px;
+  padding: 4px 0;
+}
+.ant-layout-footer {
+  padding: 12px 14px 0;
 }
 </style>

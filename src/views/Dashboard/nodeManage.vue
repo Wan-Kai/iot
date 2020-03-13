@@ -1,85 +1,81 @@
 <template>
-  <a-layout style="background: #fff;padding: 0 14px 0">
+  <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_nodeManage_top">
-      <div class="iot_view_nodeManage_top_right">
-        <a-input-group compact style="float: left;width: 70%">
-          <a-input
-            style="width: 20%;float: left;text-align: left"
-            placeholder="请输入编号查询"
-          />
-          <a-select style="width: 20%;float: left;text-align: left">
-            <a-select-option value="test">研发测试</a-select-option>
-            <a-select-option value="sell">销售</a-select-option>
-          </a-select>
-          <a-button style="float: left" icon="search" />
-        </a-input-group>
-        <a-button type="primary" icon="plus" @click="add">
-          节点注册
-        </a-button>
-        <a-button
-          icon="download"
-          style="margin-left: 20px"
-          @click="showModalIn"
-        >
-          批量导入
-        </a-button>
-        <a-modal v-model="visibleIn" title="节点批量导入" onOk="handleOk">
-          <template slot="footer">
-            <a-button key="back" @click="handleCancelIn">取消</a-button>
-          </template>
-          <p>
-            说明：仅支持扩展名为xlsx、csv格式的文件导入，<a>下载导入模板</a>
-          </p>
-          <p>
-            <a-button style="margin-right: 8px">
-              <a-icon type="folder-add" />
-              选择文件
-            </a-button>
-            {{ this.address }}
-          </p>
+      <a-row>
+        <a-col :span="8">
+          <a-input-group compact style="float: left;width: 100%">
+            <a-input
+              style="width: 40%;float: left;text-align: left"
+              placeholder="请输入编号查询"
+            />
+            <a-select style="width: 40%;float: left;text-align: left">
+              <a-select-option value="test">研发测试</a-select-option>
+              <a-select-option value="sell">销售</a-select-option>
+            </a-select>
+            <a-button style="float: left" icon="search" />
+          </a-input-group>
+        </a-col>
+        <a-col :span="8" :offset="8">
+          <a-button type="primary" icon="plus" @click="add">
+            节点注册
+          </a-button>
+          <a-button style="margin: 0 22px" icon="download" @click="showModalIn">
+            批量导入
+          </a-button>
+          <a-modal v-model="visibleIn" title="节点批量导入" onOk="handleOk">
+            <template slot="footer">
+              <a-button key="back" @click="handleCancelIn">取消</a-button>
+            </template>
+            <p>
+              说明：仅支持扩展名为xlsx、csv格式的文件导入，<a>下载导入模板</a>
+            </p>
+            <p>
+              <a-button style="margin-right: 8px">
+                <a-icon type="folder-add" />
+                选择文件
+              </a-button>
+              {{ this.address }}
+            </p>
 
-          <p style="color: red">
+            <p style="color: red">
+              <a-button
+                key="submit"
+                type="primary"
+                :loading="loadingIn"
+                @click="handleOkIn"
+                style="margin-right: 8px"
+              >
+                确定
+              </a-button>
+              {{ this.warning }}
+            </p>
+
+            <a-card class="iot_view_nodeManage_in_card">
+              <p style="margin-bottom: 0">Some contents...</p>
+              <p style="margin-bottom: 0">Some contents...</p>
+            </a-card>
+          </a-modal>
+          <a-button icon="download" @click="showModalOut">
+            批量导出
+          </a-button>
+          <a-modal v-model="visibleOut" title="节点批量导出" onOk="handleOk">
+            <template slot="footer">
+              <a-button key="back" @click="handleCancelOut">取消</a-button>
+            </template>
+            <p>内容尚待确定</p>
             <a-button
               key="submit"
               type="primary"
               :loading="loadingIn"
-              @click="handleOkIn"
-              style="margin-right: 8px"
+              @click="handleOkOut"
             >
               确定
             </a-button>
-            {{ this.warning }}
-          </p>
-
-          <a-card class="iot_view_nodeManage_in_card">
-            <p style="margin-bottom: 0">Some contents...</p>
-            <p style="margin-bottom: 0">Some contents...</p>
-          </a-card>
-        </a-modal>
-        <a-button
-          icon="download"
-          style="margin-left: 20px"
-          @click="showModalOut"
-        >
-          批量导出
-        </a-button>
-        <a-modal v-model="visibleOut" title="节点批量导出" onOk="handleOk">
-          <template slot="footer">
-            <a-button key="back" @click="handleCancelOut">取消</a-button>
-          </template>
-          <p>内容尚待确定</p>
-          <a-button
-            key="submit"
-            type="primary"
-            :loading="loadingIn"
-            @click="handleOkOut"
-          >
-            确定
-          </a-button>
-        </a-modal>
-      </div>
+          </a-modal>
+        </a-col>
+      </a-row>
     </div>
-    <div>
+    <div class="iot_view_nodeManage_table_layout">
       <a-table
         :columns="columns"
         :dataSource="interData"
@@ -109,6 +105,8 @@
 </template>
 
 <script>
+import ARow from "ant-design-vue/es/grid/Row";
+import ACol from "ant-design-vue/es/grid/Col";
 const columns = [
   {
     title: "节点编号(DevEUI)",
@@ -163,6 +161,7 @@ const columns = [
   }
 ];
 export default {
+  components: { ACol, ARow },
   data() {
     return {
       columns,
@@ -257,7 +256,8 @@ export default {
   float: left;
   margin-top: 5px;
 }
-.iot_view_nodeManage_top_right {
+.iot_view_nodeManage_table_layout {
+  min-height: fit-content;
 }
 .iot_view_nodeManage_in_card {
   height: 200px;

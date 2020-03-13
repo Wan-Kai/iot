@@ -1,5 +1,5 @@
 <template>
-  <a-layout style="background: #fff;padding: 0 14px 0">
+  <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <a-form
       :form="form"
       @submit="handleSubmit"

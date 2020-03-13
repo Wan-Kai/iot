@@ -23,7 +23,7 @@
             }
           ]"
           placeholder="用户名"
-          style="font-size: 14px"
+          style="font-size: 14px;text-align: left"
         >
           <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
         </a-input>
@@ -39,7 +39,7 @@
           ]"
           type="password"
           placeholder="密码"
-          style="font-size: 14px"
+          style="font-size: 14px;text-align: left"
         >
           <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
         </a-input>

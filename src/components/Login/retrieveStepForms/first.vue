@@ -16,6 +16,7 @@
           }
         ]"
         placeholder="请输入手机号"
+        style="text-align: left"
       >
         <a-icon slot="prefix" type="mobile" style="color: rgba(0,0,0,.25)" />
       </a-input>
@@ -26,6 +27,7 @@
         class="iot_login_retrieve_step1_note_input"
         @change="noteChange"
         placeholder="短信验证码"
+        style="text-align: left"
         v-decorator="[
           'note',
           {

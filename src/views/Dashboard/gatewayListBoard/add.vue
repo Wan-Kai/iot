@@ -1,5 +1,7 @@
 <template>
-  <a-layout style="background: #fff;padding: 22px 14px 0">
+  <a-layout
+    style="background: #fff;padding: 22px 14px 0;min-height: fit-content"
+  >
     <a-row
       style="background: #fff"
       type="flex"

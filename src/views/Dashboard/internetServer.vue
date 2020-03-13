@@ -1,5 +1,5 @@
 <template>
-  <a-layout style="background: #fff;padding: 0 14px 0">
+  <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_internetServer_top">
       <a-input-search
         class="iot_view_internetServer_top_search"
@@ -134,6 +134,7 @@ export default {
 .iot_view_internetServer_top_search {
   float: left;
   width: 300px;
+  text-align: left;
 }
 .iot_view_internetServer_top_add {
   float: right;
@@ -147,6 +148,7 @@ export default {
   color: white;
 }
 .iot_view_internetServer_table_layout {
+  min-height: fit-content;
 }
 .iot_view_internetServer_table {
   font-size: 10px;

@@ -1,5 +1,5 @@
 <template>
-  <a-layout class="login" style="min-height: 100%">
+  <a-layout class="login" style="min-height: 100%;height: 100%">
     <a-layout-header :style="{ padding: 0 }" class="iot_header_head">
       <div class="iot_header_head_logo">
         <img src="../assets/logo.png" />
@@ -34,11 +34,13 @@ export default {
   box-shadow: 0px 7px 7px -7px #5e5e5e;
 }
 .iot_header_head_logo {
-  float: left;
+  height: 50px;
+  display: flex;
   padding-left: 20px;
 }
 .iot_login_layout_content {
   padding-top: 120px;
   background-color: #f0f0f0;
+  height: 100%;
 }
 </style>

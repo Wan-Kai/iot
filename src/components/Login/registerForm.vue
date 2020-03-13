@@ -19,6 +19,7 @@
             }
           ]"
           placeholder="手机号"
+          style="text-align: left"
         >
           <a-icon slot="prefix" type="phone" style="color: rgba(0,0,0,.25)" />
         </a-input>
@@ -34,6 +35,7 @@
             }
           ]"
           placeholder="短信验证码"
+          style="text-align: left"
         >
           <a-icon slot="prefix" type="mail" style="color: rgba(0,0,0,.25)" />
         </a-input>
@@ -52,6 +54,7 @@
           ]"
           type="password"
           placeholder="用户密码"
+          style="text-align: left"
         >
           <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
         </a-input>
@@ -67,6 +70,7 @@
           ]"
           type="password"
           placeholder="确认用户密码"
+          style="text-align: left"
         >
           <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
         </a-input>

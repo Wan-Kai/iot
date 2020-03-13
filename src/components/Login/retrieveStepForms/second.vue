@@ -2,6 +2,7 @@
   <a-form class="iot_login_retrieve_step2" :form="form">
     <a-form-item class="iot_login_retrieve_step1_pre_password">
       <a-input
+        style="text-align: left"
         @change="submitOldPassword"
         v-decorator="['pre_password']"
         placeholder="请输入原密码"
@@ -12,6 +13,7 @@
 
     <a-form-item class="iot_login_retrieve_step1_now_password">
       <a-input
+        style="text-align: left"
         @change="submitNewPassword"
         v-decorator="['now_password']"
         placeholder="请输入新密码"
@@ -28,6 +30,7 @@
       <a-input
         @change="confirmPassword"
         placeholder="请输入确认密码"
+        style="text-align: left"
         v-decorator="['confirm_password']"
       >
         <a-icon slot="prefix" type="key" style="color: rgba(0,0,0,.25)" />

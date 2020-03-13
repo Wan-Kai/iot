@@ -51,6 +51,7 @@ export default {
   color: transparent;
   horiz-align: center;
   margin-left: 15px;
+  text-align: left;
 }
 .iot_user {
   float: right;

@@ -7,6 +7,7 @@
 <style lang="less">
 .app {
   height: 100%;
+  min-height: 100%;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

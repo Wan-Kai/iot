@@ -1,5 +1,5 @@
 <template>
-  <a-layout style="background: #fff;padding: 0 14px 0">
+  <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_ilogFlow_top">
       <a-input-group compact>
         <a-input
@@ -131,6 +131,7 @@ export default {
   margin-bottom: 14px;
 }
 .iot_view_ilogFlow_table_layout {
+  min-height: fit-content;
 }
 .iot_view_ilogFlow_table {
   font-size: 10px;

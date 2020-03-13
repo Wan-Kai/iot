@@ -1,9 +1,12 @@
 <template>
-  <a-layout id="components-layout-demo-top-side-2" style="min-height: 100%">
+  <a-layout
+    id="components-layout-demo-top-side-2"
+    style="min-height: 100%;height: 100%"
+  >
     <a-layout-header class="header">
       <Header />
     </a-layout-header>
-    <a-layout style="min-height: 100%">
+    <a-layout style="height: 100%">
       <a-layout-sider
         breakpoint="lg"
         collapsedWidth="0"
@@ -73,7 +76,7 @@
           </Authorized>
         </a-menu>
       </a-layout-sider>
-      <a-layout style="padding: 0 18px 5px">
+      <a-layout style="padding: 0 18px 5px;min-height: 100%">
         <div class="iot_view_dashboard_title">
           <a-breadcrumb class="iot_breadcrumb">
             <a-breadcrumb-item v-for="(item, index) in list" :key="item.name">
@@ -156,6 +159,7 @@ export default {
   line-height: 1;
 }
 .iot_basicLayout_sider {
+  min-height: 100%;
 }
 .iot_view_dashboard_title {
   padding-top: 10px;

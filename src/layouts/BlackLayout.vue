@@ -8,9 +8,7 @@
     <a-layout-content class="iot_login_layout_content">
       <router-view />
     </a-layout-content>
-    <a-layout-footer
-      style="text-align: center;background-color: #f0f0f0;position: absolute;bottom: 0;width: 100%"
-    >
+    <a-layout-footer style="text-align: center;background-color: #f0f0f0;">
       <Footer />
     </a-layout-footer>
   </a-layout>

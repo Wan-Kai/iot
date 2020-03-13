@@ -85,7 +85,7 @@ export default {
           return `${value.value} 条/页`;
         },
         showSizeChanger: true,
-        pageSizeOptions: ["5", "10", "15", "20"],
+        pageSizeOptions: ["5", "10"],
         onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize)
       }
     };

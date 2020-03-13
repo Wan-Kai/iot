@@ -88,7 +88,7 @@ export default {
         defaultPageSize: 5,
         showTotal: total => `共 ${total} 条数据`,
         showSizeChanger: true,
-        pageSizeOptions: ["5", "10", "15", "20"],
+        pageSizeOptions: ["5", "10"],
         buildOptionText(value) {
           return `${value.value} 条/页`;
         },

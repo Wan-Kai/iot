@@ -18,7 +18,7 @@ const Message = Mock.mock({
   status: "OK",
   type: "",
   MessageSize: 6,
-  "message|6": [
+  "message|30": [
     {
       title: "@title",
       time: "@date('yyyy-MM-dd HH:mm:ss')"

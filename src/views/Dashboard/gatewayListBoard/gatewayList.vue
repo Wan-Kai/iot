@@ -194,7 +194,7 @@ export default {
         defaultPageSize: 10,
         showTotal: total => `共 ${total} 条数据`,
         showSizeChanger: true,
-        pageSizeOptions: ["5", "10", "15", "20"],
+        pageSizeOptions: ["5", "10"],
         buildOptionText(value) {
           return `${value.value} 条/页`;
         },
@@ -284,7 +284,7 @@ export default {
 .iot_view_gatewayList_button_layout {
   position: fixed;
   float: left;
-  margin-top: -32px;
+  margin-top: -46px;
 }
 
 .iot_view_gatewayList_delete_button {

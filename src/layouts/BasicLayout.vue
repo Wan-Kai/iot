@@ -90,9 +90,9 @@
           </a-breadcrumb>
         </div>
         <a-layout
-          :style="{
-            margin: 0,
-            minHeight: '280px'
+          style="{
+            margin: 0;
+            min-height: fit-content;
           }"
         >
           <router-view />

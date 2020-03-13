@@ -4,7 +4,6 @@
       <a-input-search
         class="iot_view_message_top_search"
         placeholder="请输入要查找的内容"
-        style="width: 300px;height: 26px"
       />
     </div>
     <div class="iot_view_message_table_layout">
@@ -14,12 +13,22 @@
         :dataSource="interData"
         style="min-width: auto"
         class="iot_view_message_table"
+        :pagination="pagination"
+        rowKey="id"
       >
         <span slot="action" slot-scope="text, record">
-          <a @click="checkRouter(record)">查看</a>
+          <a @click="showModal(record)">查看</a>
         </span>
       </a-table>
       <a-button class="iot_view_message_button">删除</a-button>
+      <a-modal v-model="visible" title="消息" onOk="handleOk">
+        <template slot="footer">
+          <a-button key="back" @click="handleCancel">关闭</a-button>
+        </template>
+        <p>标题：{{ this.title }}</p>
+        <p>时间：{{ this.messageDetail.time }}</p>
+        <p>内容：{{ this.messageDetail.content }}</p>
+      </a-modal>
     </div>
   </a-layout>
 </template>
@@ -63,7 +72,28 @@ export default {
     return {
       columns,
       interData: [],
-      rowSelection
+      rowSelection,
+      title: "",
+
+      messageDetail: {
+        title: "",
+        time: "",
+        content: ""
+      },
+
+      visible: false,
+
+      pagination: {
+        size: "small",
+        defaultPageSize: 5,
+        showTotal: total => `共 ${total} 条数据`,
+        showSizeChanger: true,
+        pageSizeOptions: ["5", "10", "15", "20"],
+        buildOptionText(value) {
+          return `${value.value} 条/页`;
+        },
+        onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize)
+      }
     };
   },
   beforeMount() {
@@ -79,12 +109,25 @@ export default {
       });
   },
   methods: {
-    checkRouter(data) {
-      let id = data["title"];
-      this.$router.push(
-        "/admin/dashboard/messageBoard/check/".concat(id.toString())
-      );
-      console.log(id);
+    showModal(record) {
+      console.log(record);
+      this.visible = true;
+      this.title = record.title.toString(); //检索条件
+
+      this.$api.interServer
+        .getMessageDetail({
+          title: this.title
+        })
+        .then(res => {
+          this.messageDetail = res.data.messageDetail[0];
+          console.log(this.messageDetail);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    handleCancel() {
+      this.visible = false;
     }
   }
 };
@@ -101,6 +144,7 @@ export default {
 }
 .iot_view_message_top_search {
   float: left;
+  width: 300px;
 }
 .iot_view_message_table {
 }
@@ -112,8 +156,8 @@ export default {
 .ant-table-tbody > tr > td {
   padding: 8px 8px;
 }
-.ant-input {
-  height: 28px;
-  line-height: 28px;
-}
+/*.ant-input {*/
+/*  height: 28px;*/
+/*  line-height: 28px;*/
+/*}*/
 </style>

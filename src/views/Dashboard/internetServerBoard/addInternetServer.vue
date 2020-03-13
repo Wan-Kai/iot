@@ -65,8 +65,7 @@
         />
       </a-form-item>
       <a-row>
-        <a-col :span="3"> </a-col>
-        <a-col :span="12">
+        <a-col :span="12" :offset="3">
           <div class="iot_view_internetServer_add_form_left">
             <a-button type="primary" @click="handleSubmit">确定</a-button>
             <a-button style="margin-left: 30px">取消</a-button>
@@ -81,7 +80,9 @@
 let id = 0;
 export default {
   data() {
-    return {};
+    return {
+      gatewayOn: false
+    };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
@@ -93,15 +94,15 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
+          if (this.gatewayOn) {
+            console.log(this.gatewayOn);
+          } else {
+            console.log(this.gatewayOn);
+          }
         }
       });
     },
-    handleSelectChange(value) {
-      console.log(value);
-      this.form.setFieldsValue({
-        note: `Hi, ${value === "male" ? "man" : "lady"}!`
-      });
-    },
+
     remove(k) {
       const { form } = this;
       // can use data-binding to get
@@ -111,7 +112,6 @@ export default {
       form.setFieldsValue({
         keys: keys.filter(key => key.toString() !== k.toString())
       });
-      console.log(k);
     },
     add() {
       const { form } = this;
@@ -123,9 +123,6 @@ export default {
       form.setFieldsValue({
         keys: nextKeys
       });
-      console.log(keys);
-      const ks = form.getFieldValue("keys");
-      console.log(ks);
     },
     getLabel(index) {
       if (index == 0) {
@@ -137,6 +134,8 @@ export default {
       }
     },
     stateChange(state) {
+      this.gatewayOn = !this.gatewayOn;
+      console.log(this.gatewayOn);
       if (state) {
         id = 0;
         this.add();
@@ -146,7 +145,6 @@ export default {
         let item;
         for (item in this.form.getFieldValue("keys")) {
           this.remove(item);
-          console.log(item);
         }
       }
     }
@@ -163,5 +161,8 @@ export default {
 }
 .iot_view_internetServer_add_form_left {
   float: left;
+}
+.ant-form-item {
+  margin-bottom: 10px;
 }
 </style>

@@ -7,8 +7,8 @@
         style="width: 300px"
       />
       <div class="iot_view_gatewayManege_list_top_right">
-        <a-button type="primary" icon="plus">
-          节点注册
+        <a-button type="primary" icon="plus" @click="add">
+          添加
         </a-button>
         <a-button
           icon="download"
@@ -17,23 +17,38 @@
         >
           批量导入
         </a-button>
-        <a-modal v-model="visibleIn" title="Title" onOk="handleOk">
+        <a-modal v-model="visibleIn" title="节点批量导入" onOk="handleOk">
           <template slot="footer">
-            <a-button key="back" @click="handleCancelIn">Return</a-button>
+            <a-button key="back" @click="handleCancelIn">取消</a-button>
+          </template>
+          <p>
+            说明：仅支持扩展名为xlsx、csv格式的文件导入，<a>下载导入模板</a>
+          </p>
+          <p>
+            <a-button style="margin-right: 8px">
+              <a-icon type="folder-add" />
+              选择文件
+            </a-button>
+            {{ this.address }}
+          </p>
+
+          <p style="color: red">
             <a-button
               key="submit"
               type="primary"
               :loading="loadingIn"
               @click="handleOkIn"
+              style="margin-right: 8px"
             >
-              Submit
+              确定
             </a-button>
-          </template>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+            {{ this.warning }}
+          </p>
+
+          <a-card class="iot_view_gatewayList_in_card">
+            <p style="margin-bottom: 0">Some contents...</p>
+            <p style="margin-bottom: 0">Some contents...</p>
+          </a-card>
         </a-modal>
         <a-button
           icon="download"
@@ -42,48 +57,68 @@
         >
           批量导出
         </a-button>
-        <a-modal v-model="visibleOut" title="Title" onOk="handleOk">
+        <a-modal v-model="visibleOut" title="节点批量导出" onOk="handleOk">
           <template slot="footer">
-            <a-button key="back" @click="handleCancelOut">Return</a-button>
-            <a-button
-              key="submit"
-              type="primary"
-              :loading="loadingIn"
-              @click="handleOkOut"
-            >
-              Submit
-            </a-button>
+            <a-button key="back" @click="handleCancelOut">取消</a-button>
           </template>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <p>内容尚待确定</p>
+          <a-button
+            key="submit"
+            type="primary"
+            :loading="loadingIn"
+            @click="handleOkOut"
+          >
+            确定
+          </a-button>
         </a-modal>
       </div>
     </div>
-    <a-table
-      :columns="columns"
-      :dataSource="interData"
-      style="min-width: auto"
-      class="iot_view_gatawayManage_table"
-    >
-      <span slot="state" slot-scope="tags">
-        <a-tag :color="tags === 'on' ? 'green' : 'red'" :key="tags">
-          {{ tags.toUpperCase() }}
-        </a-tag>
-      </span>
+    <div>
+      <a-table
+        :rowSelection="rowSelection"
+        :columns="columns"
+        :dataSource="interData"
+        style="min-width: auto"
+        class="iot_view_gatawayManage_table"
+        :pagination="pagination"
+        rowKey="id"
+      >
+        <span slot="state" slot-scope="tags">
+          <a-tag :color="tags === 'on' ? 'green' : 'red'" :key="tags">
+            {{ tags.toUpperCase() }}
+          </a-tag>
+        </span>
 
-      <span slot="action" slot-scope="text, record">
-        <a @click="checkRouter(record)">查看</a>
-        <a-divider type="vertical" />
-        <a @click="editRouter(record)">编辑</a>
-      </span>
-    </a-table>
+        <span slot="action" slot-scope="text, record">
+          <a @click="checkRouter(record)">查看</a>
+          <a-divider type="vertical" />
+          <a @click="editRouter(record)">编辑</a>
+        </span>
+      </a-table>
+      <div class="iot_view_gatewayList_button_layout">
+        <a-button class="iot_view_gatewayList_delete_button">删除</a-button>
+        <a-button class="iot_view_gatewayList_export_button">导出</a-button>
+      </div>
+    </div>
   </a-layout>
 </template>
 
 <script>
+const rowSelection = {
+  onChange: (selectedRowKeys, selectedRows) => {
+    console.log(
+      `selectedRowKeys: ${selectedRowKeys}`,
+      "selectedRows: ",
+      selectedRows
+    );
+  },
+  onSelect: (record, selected, selectedRows) => {
+    console.log(record, selected, selectedRows);
+  },
+  onSelectAll: (selected, selectedRows, changeRows) => {
+    console.log(selected, selectedRows, changeRows);
+  }
+};
 const columns = [
   {
     title: "网关编号",
@@ -143,11 +178,28 @@ export default {
       columns,
       interData: [],
 
+      rowSelection,
+
       loadingIn: false,
       visibleIn: false,
 
       loadingOut: false,
-      visibleOut: false
+      visibleOut: false,
+
+      address: "E/admin",
+      warning: "警告信息",
+
+      pagination: {
+        size: "small",
+        defaultPageSize: 10,
+        showTotal: total => `共 ${total} 条数据`,
+        showSizeChanger: true,
+        pageSizeOptions: ["5", "10", "15", "20"],
+        buildOptionText(value) {
+          return `${value.value} 条/页`;
+        },
+        onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize)
+      }
     };
   },
   beforeMount() {
@@ -164,18 +216,19 @@ export default {
   },
   methods: {
     checkRouter(data) {
-      let id = data["number"];
-      this.$router.push(
-        "/admin/dashboard/gatewayListBoard/check/".concat(id.toString())
-      );
-      console.log(id);
+      this.$router.push({
+        name: "checkGatewayManage",
+        query: { number: data["number"], id: "1" }
+      });
     },
     editRouter(data) {
-      let id = data["number"];
-      this.$router.push(
-        "/admin/dashboard/gatewayListBoard/edit/".concat(id.toString())
-      );
-      console.log(data);
+      this.$router.push({
+        name: "checkGatewayManage",
+        query: { number: data["number"], id: "3" }
+      });
+    },
+    add() {
+      this.$router.push({ name: "addGatewayManage" });
     },
 
     showModalIn() {
@@ -223,6 +276,21 @@ export default {
 }
 .iot_view_gatawayManage_table {
   margin-top: 5px;
+}
+.iot_view_gatewayList_in_card {
+  height: 200px;
+  background: #dddddd;
+}
+.iot_view_gatewayList_button_layout {
+  position: fixed;
+  float: left;
+  margin-top: -32px;
+}
+
+.iot_view_gatewayList_delete_button {
+}
+.iot_view_gatewayList_export_button {
+  margin-left: 10px;
 }
 .ant-table-thead > tr > th,
 .ant-table-tbody > tr > td {

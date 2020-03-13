@@ -172,15 +172,6 @@ const routes = [
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/message.vue"
               )
-          },
-          {
-            path: "/admin/dashboard/messageBoard/check/:title",
-            name: "checkMessage",
-            meta: { title: "查看消息" },
-            component: () =>
-              import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/messageBoard/check.vue"
-              )
           }
         ]
       },
@@ -215,44 +206,90 @@ const routes = [
               )
           },
           {
-            path: "/admin/dashboard/gatewayListBoard/edit/:number",
-            name: "editGatewayManage",
-            meta: { title: "编辑网关" },
+            path: "/admin/dashboard/gatewayListBoard/add",
+            name: "addGatewayManage",
+            meta: { title: "添加网关" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/gatewayListBoard/edit.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/gatewayListBoard/add.vue"
+              )
+          }
+        ]
+      },
+
+      //日志流水
+      {
+        path: "/admin/dashboard/iLogFlow",
+        name: "logFlow",
+        meta: { title: "日志流水" },
+        component: { render: h => h("router-view") },
+        children: [
+          {
+            path: "/admin/dashboard/iLogFlow",
+            redirect: "/admin/dashboard/iLogFlow/init"
+          },
+          {
+            path: "/admin/dashboard/iLogFlow/init",
+            name: "init",
+            meta: { title: "" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/ilogFlow.vue"
+              )
+          }
+        ]
+      },
+      {
+        path: "/admin/dashboard/nodeManage",
+        name: "nodeManage",
+        meta: { title: "节点管理" },
+        component: { render: h => h("router-view") },
+        children: [
+          {
+            path: "/admin/dashboard/nodeManage",
+            redirect: "/admin/dashboard/nodeManage/init"
+          },
+          {
+            path: "/admin/dashboard/nodeManage/init",
+            name: "init",
+            meta: { title: "" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeManage.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/nodeManage/check/:number",
+            name: "checkNodeManage",
+            meta: { title: "查看节点" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeBoard/check.vue"
+              )
+          }
+        ]
+      },
+      {
+        path: "/admin/dashboard/nLogFlow",
+        name: "nLogFlow",
+        meta: { title: "日志流水" },
+        component: { render: h => h("router-view") },
+        children: [
+          {
+            path: "/admin/dashboard/nLogFlow",
+            redirect: "/admin/dashboard/nLogFlow/init"
+          },
+          {
+            path: "/admin/dashboard/nLogFlow/init",
+            name: "init",
+            meta: { title: "" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/nLogFlow.vue"
               )
           }
         ]
       }
-
-      // {
-      //   path: "/admin/dashboard/iLogFlow",
-      //   name: "logFlow",
-      //   meta: { title: "日志流水" },
-      //   component: () =>
-      //       import(
-      //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/ilogFlow.vue"
-      //           )
-      // },
-      // {
-      //   path: "/dashboard/nodeManage",
-      //   name: "nodeManage",
-      //   meta: { title: "节点管理" },
-      //   component: () =>
-      //       import(
-      //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeManage.vue"
-      //           )
-      // },
-      // {
-      //   path: "/admin/dashboard/nLogFlow",
-      //   name: "nLogFlow",
-      //   meta: { title: "日志流水" },
-      //   component: () =>
-      //       import(
-      //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/nLogFlow.vue"
-      //           )
-      // },
       // {
       //   path: "/admin/dashboard/appManage",
       //   name: "appManage",

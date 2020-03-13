@@ -26,4 +26,29 @@ const Message = Mock.mock({
   ]
 });
 
-export { ServerData, Message };
+const Check = Mock.mock({
+  status: "OK",
+  type: "",
+  check: [
+    {
+      "port|0-10000": 1,
+      "gateway|1": ["on", "off"],
+      time: "@date('yyyy-MM-dd HH:mm:ss')",
+      otherData: "@name"
+    }
+  ]
+});
+
+const Message_Detail = Mock.mock({
+  status: "OK",
+  type: "",
+  messageDetail: [
+    {
+      title: "@title",
+      time: "@date('yyyy-MM-dd HH:mm:ss')",
+      content: "@name"
+    }
+  ]
+});
+
+export { ServerData, Message, Check, Message_Detail };

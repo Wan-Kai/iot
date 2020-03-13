@@ -6,6 +6,7 @@
         placeholder="input search text"
         class="iot_search"
         @search="onSearch"
+        size="small"
       />
     </div>
     <div class="iot_user">
@@ -29,7 +30,12 @@
 
 <script>
 export default {
-  name: "Header"
+  data() {
+    return {};
+  },
+  methods: {
+    onSearch() {}
+  }
 };
 </script>
 
@@ -40,7 +46,7 @@ export default {
 }
 .iot_search {
   width: 270px;
-  height: 28px;
+  height: 26px;
   background-color: transparent;
   color: transparent;
   horiz-align: center;

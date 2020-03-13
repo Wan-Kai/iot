@@ -30,7 +30,7 @@
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="sub2">
-            <span slot="title"><a-icon type="api" />网关</span>
+            <span slot="title"><a-icon type="gateway" />网关</span>
             <a-menu-item key="4">
               <router-link to="/admin/dashboard/gatewayManage"
                 >网关管理</router-link

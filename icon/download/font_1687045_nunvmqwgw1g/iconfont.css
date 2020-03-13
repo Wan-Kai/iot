@@ -1,0 +1,29 @@
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1583995413703'); /* IE9 */
+  src: url('iconfont.eot?t=1583995413703#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAREAAsAAAAACMQAAAP1AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDHAqFAIQ2ATYCJAMQCwoABCAFhG0HSBuoBxEVnHPJfhzGMcn2oTF8fTTR2Pfggd6z3iSTbjZdwQfbX9XBLsrYdsAQs1tzjkBOmKjJkpxFj7aYPBTSSzM6uKZ+bCADyrPR5hJZFpU4wHHygLqBWjSEcQ/wrOZzAi9DAAYRpCHKV6xeHx2JPEsAonuXTm3QAzpkRrpAR2BK2CiriNlo6MoU5Towy/q9eEOO0EFBU5EX1u5YoT2ln7d68Ukd7RytuYHAb84C8NtABdIACaJzoq0tqhNIQ8X4xEoKAF35RIHnrZ4fefHJ6STBVGQ6/eWBQEUBYUKWuRExT6ouGF9jQMDzIwyo8OKTDgVxOV0HzIAFhBcQw+4mUdD8/fzdPcIifHw8PIbZp9efv3zLgcBAx4wGCxaYp20KXLS0kX1mDI9lDpy2TSxc2N5uz90QuM0xzZa8wB8HjFlaf/3x0SemnQp1jg5YuLFf/cUHQxrWNzosmBbYyegUYJ9av3ZdfYSf1drA3GjZtOAmwH5PddiHGeqYrVM3o3hYhxpWa32brYGnw9HIbm/sMUZctMesc1SCUZ4XbNGrrQ3HiNFbWmMjr6hmdBFsCY/XBxk8KVQsXZw3Z+XcAV0WDDhat2jerdyhbdPUNzQ46+Ia2PlqxJS11oP+toPXs5Yqd46vsp9Y1cA617ejb/KIwrE1848qtQpfLVv06+W5pX3LwvC5F3f7dfEy5hwYM7t8nnKwq/uiLguHMGpR2wtza8/t86fYzOPd+28NP6oPvK1ty6tT01q75uDBtU22c3he5Rqmq6Xr3qi0bVzi3P6izdk58XMKerwvXTdhOiWjy0ecdycE9/ORVnREddGhg6iu9HboUF1YfNmpFoguV87HRwtGgSXKnTJ9IPguSVjii5Xj5bJQB2UKckPWKcoi0ZE4RTH0vZGvUr8qr51/naelVMuA87ZcpCY8HpP4vexJ8Vaexb/p5v3jvj3rj7/FK44t4l9j/of/MGi0uAzkr+grlPVSvpOROP9qccVLkLREg6MqMRQXOMnlw/0mFP6fVBDo+Hug4EI4qOjEoZKYBhpm8sCETikwSKXSdjO+9EVFSFcghQkAAi92gYIHp0DFixuoJN4DjQDegQkvoYKB4NXuwK19bnMUzBUrKP7gSu5INerGTr+heTe5+IUW+YUyODfEQRQOX7FDaWLJ8DGJKgEJt3CB67BpGHphj6UGVrU/hCEl3SgouR1tHAmUU6gCCn/AKbEOGc3VJvL9G2S8NXKSUffD+oLEwPUPYoGoAHqVdYXqDmX44MNIKEXMNCJYC1zQgholwECfPM5DJRWwFXy9g5AaUVFZ0L2i3cMtgEE+UjZt1zP7jtzaYi5arF/eVvitKKmgHY0AAAAA') format('woff2'),
+  url('iconfont.woff?t=1583995413703') format('woff'),
+  url('iconfont.ttf?t=1583995413703') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1583995413703#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-wifi:before {
+  content: "\e65f";
+}
+
+.icon-heartbeat:before {
+  content: "\e7f1";
+}
+
+.icon-router_icon:before {
+  content: "\e6b9";
+}
+

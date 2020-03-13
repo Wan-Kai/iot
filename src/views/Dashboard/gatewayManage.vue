@@ -7,11 +7,11 @@
         size="small"
         style="text-align: left"
       >
-        <a-tab-pane tab="网关列表" key="1">
+        <a-tab-pane tab="网关列表" key="1" style="height: 100%">
           <gatewayList />
         </a-tab-pane>
-        <a-tab-pane tab="网关分布图" key="2">
-          暂定
+        <a-tab-pane tab="网关分布图" key="2" style="height: 100%">
+          <gateawayMap />
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -20,12 +20,14 @@
 
 <script>
 import gatewayList from "./gatewayListBoard/gatewayList";
+import gateawayMap from "./gatewayListBoard/gatewayMap";
 export default {
   data() {
     return {};
   },
   components: {
-    gatewayList
+    gatewayList,
+    gateawayMap
   },
   methods: {
     callback(key) {

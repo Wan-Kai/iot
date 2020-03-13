@@ -9,7 +9,7 @@
       <router-view />
     </a-layout-content>
     <a-layout-footer
-      style="textAlign: center;background-color: #f0f0f0;padding-bottom: 5px"
+      style="text-align: center;background-color: #f0f0f0;position: absolute;bottom: 0;width: 100%"
     >
       <Footer />
     </a-layout-footer>

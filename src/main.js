@@ -7,6 +7,11 @@ import router from "./router";
 import store from "./store";
 import API from "./utils/api";
 import Authorized from "./components/Authorized";
+import echarts from "echarts";
+
+// 手动引入 ECharts 各模块来减小打包体积
+import "echarts/lib/chart/bar";
+import "echarts/lib/component/tooltip";
 
 import {
   Button,
@@ -30,7 +35,11 @@ import {
   Tabs,
   Steps,
   Pagination,
-  Modal
+  Modal,
+  Cascader,
+  DatePicker,
+  Tooltip,
+  Select
 } from "ant-design-vue";
 
 require("./mock/mock");
@@ -56,9 +65,14 @@ Vue.use(Tabs);
 Vue.use(Steps);
 Vue.use(Pagination);
 Vue.use(Modal);
+Vue.use(Cascader);
+Vue.use(DatePicker);
+Vue.use(Tooltip);
+Vue.use(Select);
 Vue.component("Authorized", Authorized);
 Vue.prototype.$api = API;
 Vue.prototype.$message = message;
+Vue.prototype.$echarts = echarts;
 
 Vue.config.productionTip = false;
 

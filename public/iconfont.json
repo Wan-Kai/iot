@@ -1,0 +1,58 @@
+{
+  "id": "1687045",
+  "name": "iot",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1001058",
+      "name": "状态",
+      "font_class": "iconfkzt",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    },
+    {
+      "icon_id": "2205437",
+      "name": "端口",
+      "font_class": "port",
+      "unicode": "e750",
+      "unicode_decimal": 59216
+    },
+    {
+      "icon_id": "5127554",
+      "name": "time",
+      "font_class": "time",
+      "unicode": "e832",
+      "unicode_decimal": 59442
+    },
+    {
+      "icon_id": "7239762",
+      "name": "gateway",
+      "font_class": "gateway",
+      "unicode": "e732",
+      "unicode_decimal": 59186
+    },
+    {
+      "icon_id": "11349299",
+      "name": "wifi",
+      "font_class": "wifi",
+      "unicode": "e65f",
+      "unicode_decimal": 58975
+    },
+    {
+      "icon_id": "11650805",
+      "name": "heartbeat",
+      "font_class": "heartbeat",
+      "unicode": "e7f1",
+      "unicode_decimal": 59377
+    },
+    {
+      "icon_id": "2284779",
+      "name": "router_icon",
+      "font_class": "router_icon",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    }
+  ]
+}

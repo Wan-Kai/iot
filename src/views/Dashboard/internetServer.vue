@@ -20,6 +20,8 @@
         :dataSource="interData"
         style="min-width: auto"
         class="iot_view_internetServer_table"
+        :pagination="pagination"
+        rowKey="id"
       >
         //style="min-width: min-content" :scroll="{ x: min-content, y:
         min-content }"
@@ -73,7 +75,19 @@ export default {
   data() {
     return {
       columns,
-      interData: []
+      interData: [],
+
+      pagination: {
+        size: "small",
+        defaultPageSize: 5,
+        showTotal: total => `共 ${total} 条数据`,
+        buildOptionText(value) {
+          return `${value.value} 条/页`;
+        },
+        showSizeChanger: true,
+        pageSizeOptions: ["5", "10", "15", "20"],
+        onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize)
+      }
     };
   },
   beforeMount() {
@@ -113,14 +127,12 @@ export default {
 </script>
 
 <style>
-.ant-input {
-  height: 28px;
-  line-height: 28px;
-}
+/*.ant-input {*/
+/*  height: 30px;*/
+/*  line-height: 28px;*/
+/*}*/
 .iot_view_internetServer_top_search {
   float: left;
-  height: 26px;
-  line-height: 26px;
   width: 300px;
 }
 .iot_view_internetServer_top_add {

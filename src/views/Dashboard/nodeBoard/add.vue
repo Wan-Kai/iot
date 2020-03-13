@@ -1,9 +1,11 @@
 <template>
-  <span>{{ $route.params.number }}</span>
+  <div></div>
 </template>
 
 <script>
-export default {};
+export default {
+  name: "add"
+};
 </script>
 
 <style scoped></style>

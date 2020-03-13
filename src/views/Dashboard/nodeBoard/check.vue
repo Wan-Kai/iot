@@ -10,11 +10,11 @@
       </a-row>
       <div class="iot_line" />
       <a-row type="flex" justify="space-around" style="margin-top: 8px">
-        <a-col :span="5" style="width: 15%">
+        <a-col :span="6" style="width: 15%">
           <a-row type="flex" justify="space-around" align="middle">
             <a-col :span="8" style="height: 100%">
               <span
-                class="iconfont icon-router_icon"
+                class="iconfont icon-iconfkzt"
                 style="font-size: 34px;color: #1eaf84;height: 12px;"
               ></span>
             </a-col>
@@ -24,7 +24,7 @@
             </a-col>
           </a-row>
         </a-col>
-        <a-col :span="5" style="width: 15%">
+        <a-col :span="6" style="width: 15%">
           <a-row type="flex" justify="space-around" align="middle">
             <a-col :span="8" style="height: 100%">
               <span
@@ -33,12 +33,12 @@
               ></span>
             </a-col>
             <a-col :span="16" style="text-align: left">
-              <div style="font-size: 8px;color: #b0b0b0">信号</div>
+              <div style="font-size: 8px;color: #b0b0b0">信号强度</div>
               <div style="font-size: 12px">30</div>
             </a-col>
           </a-row>
         </a-col>
-        <a-col :span="5" style="width: 15%">
+        <a-col :span="6" style="width: 15%">
           <a-row type="flex" justify="space-around" align="middle">
             <a-col :span="8" style="height: 100%">
               <span
@@ -47,26 +47,12 @@
               ></span>
             </a-col>
             <a-col :span="16" style="text-align: left">
-              <div style="font-size: 8px;color: #b0b0b0">上行</div>
-              <div style="font-size: 12px">其他</div>
+              <div style="font-size: 8px;color: #b0b0b0">所在网关</div>
+              <div style="font-size: 12px">B454DS51651DS</div>
             </a-col>
           </a-row>
         </a-col>
-        <a-col :span="5" style="width: 15%">
-          <a-row type="flex" justify="space-around" align="middle">
-            <a-col :span="8" style="height: 100%">
-              <span
-                class="iconfont icon-router_icon"
-                style="font-size: 34px;color: #1eaf84;"
-              ></span>
-            </a-col>
-            <a-col :span="16" style="text-align: left">
-              <div style="font-size: 8px;color: #b0b0b0">下行</div>
-              <div style="font-size: 12px">其他</div>
-            </a-col>
-          </a-row>
-        </a-col>
-        <a-col :span="5" style="width: 15%">
+        <a-col :span="6" style="width: 15%">
           <a-row type="flex" justify="space-around" align="middle">
             <a-col :span="8" style="height: 100%">
               <span
@@ -94,13 +80,10 @@
           style="text-align: left;padding-top: 0;height: min-content"
         >
           <a-tab-pane tab="详细信息" key="1" style="height: auto">
-            <Detail />
+            <detailData />
           </a-tab-pane>
-          <a-tab-pane tab="最新一帧上行数据" key="2" style="height: auto">
-            暂定
-          </a-tab-pane>
-          <a-tab-pane tab="配置修改" key="3" style="height: auto">
-            <DeployEdit />
+          <a-tab-pane tab="配置修改" key="2" style="height: auto">
+            <deployEdit />
           </a-tab-pane>
         </a-tabs>
       </div>
@@ -110,13 +93,13 @@
 
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
-import Detail from "./detailData";
-import DeployEdit from "./deployEdit";
+import detailData from "./detailData";
+import deployEdit from "./deployEdit";
 export default {
   components: {
     ARow,
-    Detail,
-    DeployEdit
+    detailData,
+    deployEdit
   },
   data() {
     return {
@@ -143,7 +126,5 @@ export default {
 }
 .ant-card-wider-padding .ant-card-body {
   padding: 16px 8px;
-}
-.iot_view_gatewayList_check_form {
 }
 </style>

@@ -97,8 +97,12 @@
         </span>
       </a-table>
       <div class="iot_view_nodeManage_button_layout">
-        <a-button class="iot_view_nodeManage_delete_button">删除</a-button>
-        <a-button class="iot_view_nodeManage_export_button">导出</a-button>
+        <a-button class="iot_view_nodeManage_delete_button" icon="delete"
+          >删除</a-button
+        >
+        <a-button class="iot_view_nodeManage_export_button" icon="download"
+          >导出</a-button
+        >
       </div>
     </div>
   </a-layout>
@@ -202,7 +206,11 @@ export default {
       });
   },
   methods: {
-    add() {},
+    add() {
+      this.$router.push({
+        name: "addNodeManage"
+      });
+    },
     checkRouter(data) {
       this.$router.push({
         name: "checkNodeManage",
@@ -252,10 +260,6 @@ export default {
   margin-bottom: 14px;
   margin-top: 14px;
 }
-.iot_view_nodeManage_top_search {
-  float: left;
-  margin-top: 5px;
-}
 .iot_view_nodeManage_table_layout {
   min-height: fit-content;
 }
@@ -266,7 +270,7 @@ export default {
 .iot_view_nodeManage_button_layout {
   position: fixed;
   float: left;
-  margin-top: -46px;
+  margin-top: -40px;
 }
 .iot_view_nodeManage_delete_button {
 }

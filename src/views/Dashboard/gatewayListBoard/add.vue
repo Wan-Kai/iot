@@ -20,13 +20,13 @@
               class="iot_view_gatewayList_add_formitem"
               label="网关名称："
               :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 18 }"
             >
               <a-input
                 v-decorator="['gatewayName']"
                 size="small"
-                style="width: 100%;float: left"
+                style="width: 100%;float: left;text-align: left"
               />
             </a-form-item>
 
@@ -34,13 +34,13 @@
               class="iot_view_gatewayList_add_formitem"
               label="网关ID："
               :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 18 }"
             >
               <a-input
                 v-decorator="['gatewayID']"
                 size="small"
-                style="width: 100%;float: left"
+                style="width: 100%;float: left;text-align: left"
               >
               </a-input>
             </a-form-item>
@@ -48,12 +48,12 @@
               class="iot_view_gatewayList_add_formitem"
               label="网络服务器："
               :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 18 }"
             >
               <a-cascader
                 v-decorator="['internetServer']"
-                style="width: 100%;float: left"
+                style="width: 100%;float: left;text-align: left"
                 size="small"
                 :options="internetServer_options"
                 placeholder=""
@@ -64,12 +64,12 @@
               class="iot_view_gatewayList_add_formitem"
               label="通信模式："
               :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 18 }"
             >
               <a-cascader
                 v-decorator="['communicationMode']"
-                style="width: 100%;float: left"
+                style="width: 100%;float: left;text-align: left"
                 size="small"
                 :options="communicationMode_options"
                 placeholder=""
@@ -79,12 +79,12 @@
               class="iot_view_gatewayList_add_formitem"
               label="频段："
               :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 18 }"
             >
               <a-cascader
                 v-decorator="['band']"
-                style="width: 100%;float: left"
+                style="width: 100%;float: left;text-align: left"
                 size="small"
                 :options="band_options"
                 placeholder=""
@@ -94,46 +94,52 @@
               class="iot_view_gatewayList_add_formitem"
               label="网关描述："
               :required="false"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 18 }"
             >
               <a-textarea
                 placeholder="请填写网关描述，最多100个汉字"
-                v-decorator="['band']"
+                v-decorator="['description']"
                 :rows="4"
-                style="width: 100%;float: left;"
+                style="width: 100%;float: left;text-align: left"
               />
             </a-form-item>
             <a-form-item
               class="iot_view_gatewayList_add_formitem"
               label="位置信息："
               :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 18 }"
             >
-              <div style="display: inherit">
-                <p style="margin-bottom: 2px;text-align: left">所在区域</p>
-                <a-cascader
-                  v-decorator="['band']"
-                  style="width: 100%;float: left;margin-bottom: 12px"
-                  size="small"
-                  :options="band_options"
-                  placeholder=""
-                />
+              <p style="margin-bottom: 2px;text-align: left">所在区域</p>
+              <a-cascader
+                v-decorator="['area']"
+                style="width: 100%;float: left;text-align: left"
+                size="small"
+                :options="area_options"
+                placeholder=""
+              />
+            </a-form-item>
+            <a-form-item
+              class="iot_view_gatewayList_add_formitem"
+              :required="true"
+            >
+              <a-col :offset="6">
                 <p style="margin-bottom: 2px;text-align: left">详细位置</p>
                 <a-input
                   v-decorator="['address']"
                   size="small"
-                  style="width: 100%;float: left"
+                  style="width: 100%;float: left;text-align: left;margin-bottom: 12px"
                 />
-              </div>
+              </a-col>
             </a-form-item>
           </a-form>
           <a-row>
-            <a-col :span="20" :offset="4" style="text-align: left">
+            <a-col :span="18" :offset="6" style="text-align: left">
               <a-button type="primary">保存</a-button>
-              <a-button style="margin: 0 16px">取消</a-button>
-              <a-button type="danger" icon="delete">删除设备</a-button>
+              <a-button style="margin: 0 16px" @click="handleBack"
+                >取消</a-button
+              >
             </a-col>
           </a-row>
         </a-row>
@@ -205,13 +211,32 @@ const band_options = [
     ]
   }
 ];
+const area_options = [
+  {
+    value: "hubei",
+    label: "湖北省",
+    children: [
+      {
+        value: "wuhan",
+        label: "武汉市",
+        children: [
+          {
+            value: "hongshan",
+            label: "洪山区"
+          }
+        ]
+      }
+    ]
+  }
+];
 export default {
   components: { ACol, ARow },
   data() {
     return {
       internetServer_options,
       communicationMode_options,
-      band_options
+      band_options,
+      area_options
     };
   },
 
@@ -226,7 +251,10 @@ export default {
   },
 
   methods: {
-    handleSubmit() {}
+    handleSubmit() {},
+    handleBack() {
+      this.$router.push("/admin/dashboard/gatewayManage");
+    }
   }
 };
 </script>

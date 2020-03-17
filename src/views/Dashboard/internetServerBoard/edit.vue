@@ -21,7 +21,7 @@
       >
         <a-input
           v-decorator="['port']"
-          style="width: 60%;float: left;height: 28px"
+          style="width: 60%;float: left;height: 28px;text-align: left"
         />
       </a-form-item>
       <a-form-item
@@ -32,7 +32,7 @@
       >
         <a-input
           v-decorator="['gateway']"
-          style="width: 60%;float: left;height: 28px"
+          style="width: 60%;float: left;height: 28px;text-align: left"
         />
       </a-form-item>
       <a-form-item
@@ -43,9 +43,44 @@
       >
         <a-input
           v-decorator="['message']"
-          style="width: 60%;float: left;height: 28px"
+          style="width: 60%;float: left;height: 28px;text-align: left"
         />
       </a-form-item>
+
+      <a-form-item
+        label="是否启用网关发现："
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 12 }"
+      >
+        <a-switch
+          checkedChildren="开"
+          unCheckedChildren="关"
+          @change="stateChange"
+          style="margin-left: 10px;float: left"
+        />
+      </a-form-item>
+
+      <a-form-item
+        v-for="(k, index) in internetServer_edit_form.getFieldValue('keys')"
+        :key="k"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 12 }"
+        :label="getLabel(index)"
+        :required="true"
+        class="iot_view_internetServer_add_formItem"
+      >
+        <a-input
+          v-decorator="[
+            `names[${k}]`,
+            {
+              validateTrigger: ['change', 'blur']
+            }
+          ]"
+          style="width: 60%;float: left;height: 28px;text-align: left"
+        />
+      </a-form-item>
+
       <a-row>
         <a-col :span="12" :offset="3">
           <div class="iot_view_internetServer_edit_form_left">
@@ -58,17 +93,69 @@
 </template>
 
 <script>
+let id = 0;
 export default {
   data() {
-    return {};
+    return {
+      gatewayOn: false
+    };
   },
   beforeCreate() {
     this.internetServer_edit_form = this.$form.createForm(this, {
       name: "internetServer_edit_form"
     });
+    this.internetServer_edit_form.getFieldDecorator("keys", {
+      initialValue: [],
+      preserve: true
+    });
   },
   methods: {
-    handleSubmit() {}
+    handleSubmit() {},
+    remove(k) {
+      const { internetServer_edit_form } = this;
+      // can use data-binding to get
+      const keys = internetServer_edit_form.getFieldValue("keys");
+
+      // can use data-binding to set
+      internetServer_edit_form.setFieldsValue({
+        keys: keys.filter(key => key.toString() !== k.toString())
+      });
+    },
+    add() {
+      const { internetServer_edit_form } = this;
+      // can use data-binding to get
+      const keys = internetServer_edit_form.getFieldValue("keys");
+      const nextKeys = keys.concat(id++);
+      // can use data-binding to set
+      // important! notify form to detect changes
+      internetServer_edit_form.setFieldsValue({
+        keys: nextKeys
+      });
+    },
+    getLabel(index) {
+      if (index == 0) {
+        return "间隔（每天）：";
+      } else if (index == 1) {
+        return "发射频率（Hz）：";
+      } else {
+        return "发送数据率：";
+      }
+    },
+    stateChange(state) {
+      this.gatewayOn = !this.gatewayOn;
+      console.log(this.gatewayOn);
+      if (state) {
+        id = 0;
+        this.add();
+        this.add();
+        this.add();
+      } else {
+        let item;
+        for (item in this.internetServer_edit_form.getFieldValue("keys")) {
+          this.remove(item);
+        }
+      }
+    }
   }
 };
 </script>

@@ -39,7 +39,9 @@ import {
   Cascader,
   DatePicker,
   Tooltip,
-  Select
+  Select,
+  Radio,
+  Transfer
 } from "ant-design-vue";
 
 require("./mock/mock");
@@ -69,6 +71,8 @@ Vue.use(Cascader);
 Vue.use(DatePicker);
 Vue.use(Tooltip);
 Vue.use(Select);
+Vue.use(Radio);
+Vue.use(Transfer);
 Vue.component("Authorized", Authorized);
 Vue.prototype.$api = API;
 Vue.prototype.$message = message;

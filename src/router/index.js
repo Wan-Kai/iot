@@ -197,7 +197,7 @@ const routes = [
               )
           },
           {
-            path: "/admin/dashboard/gatewayListBoard/check/:number",
+            path: "/admin/dashboard/gatewayListBoard/check",
             name: "checkGatewayManage",
             meta: { title: "查看网关" },
             component: () =>
@@ -259,12 +259,21 @@ const routes = [
               )
           },
           {
-            path: "/admin/dashboard/nodeManage/check/:number",
+            path: "/admin/dashboard/nodeManage/check",
             name: "checkNodeManage",
             meta: { title: "查看节点" },
             component: () =>
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeBoard/check.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/nodeManage/add",
+            name: "addNodeManage",
+            meta: { title: "添加节点" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeBoard/add.vue"
               )
           }
         ]
@@ -289,25 +298,103 @@ const routes = [
               )
           }
         ]
+      },
+      {
+        path: "/admin/dashboard/appManage",
+        name: "appManage",
+        meta: { title: "应用管理" },
+        component: { render: h => h("router-view") },
+        children: [
+          {
+            path: "/admin/dashboard/appManage",
+            redirect: "/admin/dashboard/appManage/init"
+          },
+          {
+            path: "/admin/dashboard/appManage/init",
+            name: "init",
+            meta: { title: "" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManage.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/appManage/add",
+            name: "addApp",
+            meta: { title: "应用申请" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManageBoard/add.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/appManageBoard/edit",
+            name: "checkApp",
+            meta: { title: "应用查看" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManageBoard/check.vue"
+              )
+          }
+        ]
+      },
+      {
+        path: "/admin/dashboard/usersManage",
+        name: "usersManage",
+        meta: { title: "账号管理" },
+        component: { render: h => h("router-view") },
+        children: [
+          {
+            path: "/admin/dashboard/usersManage",
+            redirect: "/admin/dashboard/usersManage/init"
+          },
+          {
+            path: "/admin/dashboard/usersManage/init",
+            name: "usersManage",
+            meta: { title: "" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/usersManage.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/usersManage/add",
+            name: "addUser",
+            meta: { title: "账号添加" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/usersManageBoard/add.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/usersManage/check",
+            name: "checkUser",
+            meta: { title: "账号查看" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/usersManageBoard/check.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/usersManage/edit",
+            name: "editUser",
+            meta: { title: "账号编辑" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/usersManageBoard/edit.vue"
+              )
+          }
+        ]
+      },
+      {
+        path: "/admin/dashboard/personData",
+        name: "personData",
+        meta: { title: "个人资料" },
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ "../views/Dashboard/personData.vue"
+          )
       }
-      // {
-      //   path: "/admin/dashboard/appManage",
-      //   name: "appManage",
-      //   meta: { title: "应用管理" },
-      //   component: () =>
-      //       import(
-      //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManage.vue"
-      //           )
-      // },
-      // {
-      //   path: "/dashboard/usersManage",
-      //   name: "usersManage",
-      //   meta: { title: "用户管理" },
-      //   component: () =>
-      //       import(
-      //           /* webpackChunkName: "dashboard" */ "../views/Dashboard/usersManage.vue"
-      //           )
-      // }
     ]
   },
   {

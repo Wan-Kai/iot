@@ -96,8 +96,12 @@
         </span>
       </a-table>
       <div class="iot_view_gatewayList_button_layout">
-        <a-button class="iot_view_gatewayList_delete_button">删除</a-button>
-        <a-button class="iot_view_gatewayList_export_button">导出</a-button>
+        <a-button class="iot_view_gatewayList_delete_button" icon="delete"
+          >删除</a-button
+        >
+        <a-button class="iot_view_gatewayList_export_button" icon="download"
+          >导出</a-button
+        >
       </div>
     </div>
   </a-layout>
@@ -265,11 +269,10 @@ export default {
 <style>
 .iot_view_gatewayManege_list_top {
   width: 100%;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 .iot_view_gatewayManege_list_top_search {
   float: left;
-  margin-top: 5px;
 }
 .iot_view_gatewayManege_list_top_right {
   float: right;
@@ -284,7 +287,7 @@ export default {
 .iot_view_gatewayList_button_layout {
   position: fixed;
   float: left;
-  margin-top: -46px;
+  margin-top: -40px;
 }
 
 .iot_view_gatewayList_delete_button {

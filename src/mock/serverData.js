@@ -26,6 +26,18 @@ const Message = Mock.mock({
   ]
 });
 
+const Deleted_Message = Mock.mock({
+  status: "OK",
+  type: "",
+  MessageSize: 6,
+  "deletedMessage|30": [
+    {
+      title: "@title",
+      time: "@date('yyyy-MM-dd HH:mm:ss')"
+    }
+  ]
+});
+
 const Check = Mock.mock({
   status: "OK",
   type: "",
@@ -51,4 +63,4 @@ const Message_Detail = Mock.mock({
   ]
 });
 
-export { ServerData, Message, Check, Message_Detail };
+export { ServerData, Message, Check, Message_Detail, Deleted_Message };

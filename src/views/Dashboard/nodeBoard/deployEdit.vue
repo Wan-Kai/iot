@@ -16,73 +16,61 @@
           >
             <a-form-item
               class="iot_view_node_deployEdit_formitem"
-              label="网关名称："
+              label="入网方式："
               :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
-              <a-input
-                v-decorator="['gatewayName']"
-                size="small"
-                style="width: 100%;float: left"
-              />
+              <a-radio-group
+                @change="radioOnChange"
+                v-model="value"
+                style="float: left"
+              >
+                <a-radio :value="1">OTAA</a-radio>
+                <a-radio :value="2">ABP</a-radio>
+              </a-radio-group>
             </a-form-item>
 
             <a-form-item
               class="iot_view_node_deployEdit_formitem"
-              label="网关ID："
+              label="协议版本："
               :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
+            >
+              <a-cascader
+                v-decorator="['agreementVision']"
+                style="width: 100%;float: left;text-align: left"
+                size="small"
+                :options="agreementVision_option"
+                placeholder=""
+              />
+            </a-form-item>
+            <a-form-item
+              class="iot_view_node_deployEdit_formitem"
+              label="节点名称："
+              :required="true"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
               <a-input
-                v-decorator="['gatewayID']"
+                v-decorator="['nodeName']"
                 size="small"
-                style="width: 100%;float: left"
+                style="width: 100%;float: left;text-align: left"
               >
               </a-input>
             </a-form-item>
-            <a-form-item
-              class="iot_view_node_deployEdit_formitem"
-              label="网络服务器："
-              :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
-            >
-              <a-cascader
-                v-decorator="['internetServer']"
-                style="width: 100%;float: left"
-                size="small"
-                :options="internetServer_options"
-                placeholder=""
-              />
-            </a-form-item>
 
-            <a-form-item
-              class="iot_view_node_deployEdit_formitem"
-              label="通信模式："
-              :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
-            >
-              <a-cascader
-                v-decorator="['communicationMode']"
-                style="width: 100%;float: left"
-                size="small"
-                :options="communicationMode_options"
-                placeholder=""
-              />
-            </a-form-item>
             <a-form-item
               class="iot_view_node_deployEdit_formitem"
               label="频段："
               :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
               <a-cascader
                 v-decorator="['band']"
-                style="width: 100%;float: left"
+                style="width: 100%;float: left;text-align: left"
                 size="small"
                 :options="band_options"
                 placeholder=""
@@ -90,53 +78,191 @@
             </a-form-item>
             <a-form-item
               class="iot_view_node_deployEdit_formitem"
-              label="网关描述："
-              :required="false"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              label="Class："
+              :required="true"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
-              <a-textarea
-                placeholder="请填写网关描述，最多100个汉字"
-                v-decorator="['band']"
-                :rows="4"
-                style="width: 100%;float: left;"
+              <a-cascader
+                v-decorator="['class']"
+                style="width: 100%;float: left;text-align: left"
+                size="small"
+                :options="class_options"
+                placeholder=""
               />
             </a-form-item>
             <a-form-item
               class="iot_view_node_deployEdit_formitem"
-              label="位置信息："
+              label="节点编号(DevEUI)："
               :required="true"
-              :label-col="{ span: 4 }"
-              :wrapper-col="{ span: 20 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
-              <div style="display: inherit">
-                <p style="margin-bottom: 2px;text-align: left">所在区域</p>
-                <a-cascader
-                  v-decorator="['band']"
-                  style="width: 100%;float: left;margin-bottom: 12px"
-                  size="small"
-                  :options="band_options"
-                  placeholder=""
-                />
-                <p style="margin-bottom: 2px;text-align: left">详细位置</p>
-                <a-input
-                  v-decorator="['address']"
-                  size="small"
-                  style="width: 100%;float: left"
-                />
-              </div>
+              <a-input
+                v-decorator="['DevEUI']"
+                size="small"
+                style="width: 100%;float: left;text-align: left"
+              >
+              </a-input>
+            </a-form-item>
+            <a-form-item
+              class="iot_view_node_deployEdit_formitem"
+              label="应用编号(AppEUI)："
+              :required="true"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
+            >
+              <a-input
+                v-decorator="['AppEUI']"
+                size="small"
+                style="width: 100%;float: left;text-align: left"
+              >
+              </a-input>
+            </a-form-item>
+            <a-form-item
+              class="iot_view_node_deployEdit_formitem"
+              label="AppKey："
+              :required="true"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
+            >
+              <a-input
+                v-decorator="['AppKey']"
+                size="small"
+                style="width: 100%;float: left;text-align: left"
+              >
+              </a-input>
+            </a-form-item>
+
+            <a-form-item
+              v-for="(k, index) in nodeDeployForm.getFieldValue('keys')"
+              :key="k"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
+              :label="getLabel(index)"
+              :required="true"
+              class="iot_view_node_deployEdit_formitem"
+            >
+              <a-input
+                v-decorator="[
+                  `names[${k}]`,
+                  {
+                    validateTrigger: ['change', 'blur']
+                  }
+                ]"
+                size="small"
+                style="width: 100%;float: left;text-align: left"
+              />
+            </a-form-item>
+
+            <a-form-item
+              class="iot_view_node_deployEdit_formitem"
+              label="超时周期(分钟)："
+              :required="true"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
+            >
+              <a-input
+                v-decorator="['AppKey']"
+                size="small"
+                style="width: 100%;float: left;text-align: left"
+              >
+              </a-input>
+            </a-form-item>
+            <a-form-item
+              class="iot_view_node_deployEdit_formitem"
+              label="使用状态："
+              :required="true"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
+            >
+              <a-cascader
+                v-decorator="['state']"
+                style="width: 100%;float: left;text-align: left"
+                size="small"
+                :options="state_options"
+                placeholder=""
+              />
+            </a-form-item>
+            <a-form-item
+              class="iot_view_node_deployEdit_formitem"
+              label="节点描述："
+              :required="false"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
+            >
+              <a-textarea
+                placeholder="请填写节点描述，最多100个汉字"
+                v-decorator="['band']"
+                :rows="4"
+                style="width: 100%;float: left;text-align: left"
+              />
             </a-form-item>
           </a-form>
           <a-row>
-            <a-col :span="20" :offset="4">
-              <a-button type="primary">保存</a-button>
-              <a-button style="margin: 0 16px">取消</a-button>
-              <a-button type="danger" icon="delete">删除设备</a-button>
+            <a-col :span="16" :offset="8">
+              <div style="display: flex">
+                <a-button type="primary">保存</a-button>
+                <a-button style="margin: 0 16px">取消</a-button>
+                <a-button type="danger" icon="delete">删除设备</a-button>
+              </div>
             </a-col>
           </a-row>
         </a-row>
       </a-col>
       <a-col :span="12">
+        <a-form
+          :form="nodeDeployFormSecond"
+          @submit="handleSubmitSecond"
+          layout="vertical"
+          class="iot_view_node_deployEdit_form"
+        >
+          <a-form-item
+            class="iot_view_node_deployEdit_formitem"
+            label="地理位置："
+            :required="true"
+            :label-col="{ span: 6 }"
+            :wrapper-col="{ span: 14 }"
+          >
+            <a-switch
+              checkedChildren="开"
+              unCheckedChildren="关"
+              @change="stateChange"
+              style="float: left"
+            />
+          </a-form-item>
+          <a-form-item
+            v-if="areaShow"
+            class="iot_view_node_deployEdit_formitem"
+            label="所在区域："
+            :required="true"
+            :label-col="{ span: 6 }"
+            :wrapper-col="{ span: 14 }"
+          >
+            <a-cascader
+              v-decorator="['area']"
+              style="width: 100%;float: left;text-align: left"
+              size="small"
+              :options="area_option"
+              placeholder=""
+            />
+          </a-form-item>
+          <a-form-item
+            v-if="areaShow"
+            class="iot_view_node_deployEdit_formitem"
+            label="详细位置："
+            :required="true"
+            :label-col="{ span: 6 }"
+            :wrapper-col="{ span: 14 }"
+          >
+            <a-input
+              v-decorator="['areaDetail']"
+              size="small"
+              style="width: 100%;float: left;text-align: left"
+            >
+            </a-input>
+          </a-form-item>
+        </a-form>
         <img
           src="../../../assets/map.png"
           style="height: 384px;display: inherit"
@@ -149,40 +275,15 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-const internetServer_options = [
+let id = 0;
+const state_options = [
   {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
-  }
-];
-const communicationMode_options = [
+    value: "test",
+    label: "测试"
+  },
   {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
+    value: "environment",
+    label: "环境"
   }
 ];
 const band_options = [
@@ -203,13 +304,72 @@ const band_options = [
     ]
   }
 ];
+const class_options = [
+  {
+    value: "zhejiang",
+    label: "Zhejiang",
+    children: [
+      {
+        value: "hangzhou",
+        label: "Hangzhou",
+        children: [
+          {
+            value: "xihu",
+            label: "West Lake"
+          }
+        ]
+      }
+    ]
+  }
+];
+const agreementVision_option = [
+  {
+    value: "zhejiang",
+    label: "Zhejiang",
+    children: [
+      {
+        value: "hangzhou",
+        label: "Hangzhou",
+        children: [
+          {
+            value: "xihu",
+            label: "West Lake"
+          }
+        ]
+      }
+    ]
+  }
+];
+const area_option = [
+  {
+    value: "hubei",
+    label: "湖北省",
+    children: [
+      {
+        value: "wuhan",
+        label: "武汉市",
+        children: [
+          {
+            value: "hongshan",
+            label: "洪山区"
+          }
+        ]
+      }
+    ]
+  }
+];
 export default {
   components: { ACol, ARow },
   data() {
     return {
-      internetServer_options,
-      communicationMode_options,
-      band_options
+      state_options,
+      class_options,
+      band_options,
+      agreementVision_option,
+      area_option,
+
+      areaShow: false,
+      value: 1
     };
   },
 
@@ -221,10 +381,64 @@ export default {
       initialValue: [],
       preserve: true
     });
+    this.nodeDeployFormSecond = this.$form.createForm(this, {
+      name: "nodeDeployForm"
+    });
+    this.nodeDeployFormSecond.getFieldDecorator("keys", {
+      initialValue: [],
+      preserve: true
+    });
   },
 
   methods: {
-    handleSubmit() {}
+    handleSubmit() {},
+    handleSubmitSecond() {},
+    radioOnChange(e) {
+      if (e.target.value === 1) {
+        let item;
+        for (item in this.nodeDeployForm.getFieldValue("keys")) {
+          this.remove(item);
+        }
+      } else if (e.target.value === 2) {
+        id = 0;
+        this.add();
+        this.add();
+        this.add();
+      }
+    },
+    remove(k) {
+      const { nodeDeployForm } = this;
+      // can use data-binding to get
+      const keys = nodeDeployForm.getFieldValue("keys");
+
+      // can use data-binding to set
+      nodeDeployForm.setFieldsValue({
+        keys: keys.filter(key => key.toString() !== k.toString())
+      });
+    },
+    add() {
+      const { nodeDeployForm } = this;
+      // can use data-binding to get
+      const keys = nodeDeployForm.getFieldValue("keys");
+      const nextKeys = keys.concat(id++);
+      // can use data-binding to set
+      // important! notify form to detect changes
+      nodeDeployForm.setFieldsValue({
+        keys: nextKeys
+      });
+    },
+    getLabel(index) {
+      if (index == 0) {
+        return "NwksKey：";
+      } else if (index == 1) {
+        return "FCntUp：";
+      } else {
+        return "FCntDn：";
+      }
+    },
+    stateChange() {
+      this.areaShow = !this.areaShow;
+    }
   }
 };
 </script>

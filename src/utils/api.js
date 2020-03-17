@@ -21,6 +21,9 @@ export default {
     //消息
     getMessageDetail: data => {
       return post("/admin/server/message/detail", data);
+    },
+    deleteMessage: data => {
+      return post("/admin/server/message/delete", data);
     }
   },
   gateway: {
@@ -41,6 +44,22 @@ export default {
     },
     nlogFlowData: data => {
       return post("/admin/gateway/nlogFlow/data", data);
+    }
+  },
+  appManage: {
+    appData: data => {
+      return post("/admin/app/data", data);
+    },
+    getAppDetail: data => {
+      return post("/admin/app/detail", data);
+    },
+    appNodeData: data => {
+      return post("/admin/app/nodeData", data);
+    }
+  },
+  usersManage: {
+    usersData: data => {
+      return post("/admin/users/data", data);
     }
   }
 };

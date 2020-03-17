@@ -54,20 +54,30 @@
               <router-link to="/admin/dashboard/nLogFlow">日志流水</router-link>
             </a-menu-item>
           </a-sub-menu>
-          <a-menu-item key="8">
-            <router-link to="/admin/dashboard/appManage">
-              <a-icon type="profile" />
-              应用管理
-            </router-link>
-          </a-menu-item>
-          <a-menu-item key="9">
-            <router-link to="/admin/dashboard/usersManage">
-              <a-icon type="idcard" />
-              用户管理
-            </router-link>
-          </a-menu-item>
-          <Authorized :authority="['admin']">
+          <a-sub-menu key="sub4">
+            <span slot="title"><a-icon type="profile" />应用</span>
+            <a-menu-item key="8">
+              <router-link to="/admin/dashboard/appManage">
+                应用管理
+              </router-link>
+            </a-menu-item>
+          </a-sub-menu>
+          <a-sub-menu key="sub5">
+            <span slot="title"><a-icon type="idcard" />账号</span>
+            <a-menu-item key="9">
+              <router-link to="/admin/dashboard/usersManage">
+                账号管理
+              </router-link>
+            </a-menu-item>
             <a-menu-item key="10">
+              <router-link to="/admin/dashboard/personData">
+                个人资料
+              </router-link>
+            </a-menu-item>
+          </a-sub-menu>
+
+          <Authorized :authority="['admin']">
+            <a-menu-item key="11">
               <router-link to="/admin/dashboard/iLogFlow">
                 <a-icon type="user" />
                 管理员管理

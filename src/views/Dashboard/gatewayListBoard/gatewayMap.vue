@@ -17,7 +17,6 @@
       <a-col :span="8">
         <div style="margin-top: 8px">
           <a-input-search
-            size="small"
             class="iot_view_gatewayMap_top_search"
             placeholder="请输入要查找的内容"
           />

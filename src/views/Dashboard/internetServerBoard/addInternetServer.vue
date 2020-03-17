@@ -10,31 +10,33 @@
         label="名称："
         :required="true"
         :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
+        :wrapper-col="{ span: 7 }"
         class="iot_view_internetServer_add_formItem"
       >
         <a-input
+          size="small"
           v-decorator="['name']"
-          style="width: 60%;float: left;height: 28px"
+          style="float: left;text-align: left"
         />
       </a-form-item>
       <a-form-item
         label="主机名："
         :required="true"
         :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
+        :wrapper-col="{ span: 7 }"
         class="iot_view_internetServer_add_formItem"
       >
         <a-input
+          size="small"
           v-decorator="['pc_name']"
-          style="width: 60%;float: left;height: 28px"
+          style="float: left;text-align: left"
         />
       </a-form-item>
       <a-form-item
         label="是否启用网关发现："
         :required="true"
         :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
+        :wrapper-col="{ span: 7 }"
         class="iot_view_internetServer_add_formItem"
       >
         <a-switch
@@ -49,26 +51,27 @@
         v-for="(k, index) in form.getFieldValue('keys')"
         :key="k"
         :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
+        :wrapper-col="{ span: 7 }"
         :label="getLabel(index)"
         :required="true"
         class="iot_view_internetServer_add_formItem"
       >
         <a-input
+          size="small"
           v-decorator="[
             `names[${k}]`,
             {
               validateTrigger: ['change', 'blur']
             }
           ]"
-          style="width: 60%;float: left;height: 28px"
+          style="float: left;text-align: left"
         />
       </a-form-item>
       <a-row>
-        <a-col :span="12" :offset="3">
+        <a-col :span="7" :offset="3">
           <div class="iot_view_internetServer_add_form_left">
-            <a-button type="primary" @click="handleSubmit">确定</a-button>
-            <a-button style="margin-left: 30px">取消</a-button>
+            <a-button type="primary" html-type="submit">确定</a-button>
+            <a-button style="margin-left: 30px" @click="back">取消</a-button>
           </div>
         </a-col>
       </a-row>
@@ -103,6 +106,9 @@ export default {
       });
     },
 
+    back() {
+      this.$router.push("/admin/dashboard/internetServer");
+    },
     remove(k) {
       const { form } = this;
       // can use data-binding to get
@@ -157,7 +163,7 @@ export default {
   padding: 20px 5px;
 }
 .iot_view_internetServer_add_formItem {
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 .iot_view_internetServer_add_form_left {
   float: left;

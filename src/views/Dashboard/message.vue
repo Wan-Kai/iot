@@ -14,13 +14,18 @@
         style="min-width: auto"
         class="iot_view_message_table"
         :pagination="pagination"
-        rowKey="id"
+        :rowKey="record => record.uid"
       >
         <span slot="action" slot-scope="text, record">
           <a @click="showModal(record)">查看</a>
         </span>
       </a-table>
-      <a-button class="iot_view_message_button">删除</a-button>
+      <a-button
+        class="iot_view_message_button"
+        @click="handleDelete"
+        icon="delete"
+        >删除</a-button
+      >
       <a-modal v-model="visible" title="消息" onOk="handleOk">
         <template slot="footer">
           <a-button key="back" @click="handleCancel">关闭</a-button>
@@ -51,7 +56,7 @@ const columns = [
     scopedSlots: { customRender: "action" }
   }
 ];
-
+let messageSelectedRows = [];
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
     console.log(
@@ -62,6 +67,14 @@ const rowSelection = {
   },
   onSelect: (record, selected, selectedRows) => {
     console.log(record, selected, selectedRows);
+
+    let temp = [];
+    for (let index in selectedRows) {
+      temp.push(selectedRows[index]["title"]);
+      console.log(index, selectedRows[index]["title"]);
+    }
+    messageSelectedRows = temp;
+    console.log(messageSelectedRows);
   },
   onSelectAll: (selected, selectedRows, changeRows) => {
     console.log(selected, selectedRows, changeRows);
@@ -96,6 +109,7 @@ export default {
       }
     };
   },
+  watch: {},
   beforeMount() {
     this.$api.interServer
       .getMessage({
@@ -128,6 +142,19 @@ export default {
     },
     handleCancel() {
       this.visible = false;
+    },
+    handleDelete() {
+      for (let item in messageSelectedRows) {
+        this.$message.success("已删除" + messageSelectedRows[item]);
+      }
+      this.$api.interServer
+        .deleteMessage(messageSelectedRows)
+        .then(res => {
+          this.interData = res.data.deletedMessage;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
@@ -154,7 +181,7 @@ export default {
 }
 .iot_view_message_button {
   float: left;
-  margin-top: -48px;
+  margin-top: -40px;
 }
 .ant-table-thead > tr > th,
 .ant-table-tbody > tr > td {

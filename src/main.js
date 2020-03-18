@@ -41,7 +41,8 @@ import {
   Tooltip,
   Select,
   Radio,
-  Transfer
+  Transfer,
+  List
 } from "ant-design-vue";
 
 require("./mock/mock");
@@ -73,6 +74,7 @@ Vue.use(Tooltip);
 Vue.use(Select);
 Vue.use(Radio);
 Vue.use(Transfer);
+Vue.use(List);
 Vue.component("Authorized", Authorized);
 Vue.prototype.$api = API;
 Vue.prototype.$message = message;

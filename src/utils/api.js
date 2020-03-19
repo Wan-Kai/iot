@@ -42,6 +42,9 @@ export default {
     nodeData: data => {
       return post("/admin/node/data", data);
     },
+    firstPageNodeData: data => {
+      return post("/admin/node/firstData", data);
+    },
     nlogFlowData: data => {
       return post("/admin/gateway/nlogFlow/data", data);
     }

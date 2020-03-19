@@ -46,6 +46,9 @@ mock.mock(`/admin/node/data`, "post", () => {
 mock.mock(`/admin/gateway/nlogFlow/data`, "post", () => {
   return node.NlogFlowData;
 });
+mock.mock(`/admin/node/firstData`, "post", () => {
+  return node.FirstPageNodeData;
+});
 //app
 mock.mock(`/admin/app/data`, "post", () => {
   return app.AppData;

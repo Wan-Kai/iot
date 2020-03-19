@@ -43,11 +43,21 @@
               >
                 <a-cascader
                   v-decorator="['agreementVision']"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                   size="small"
                   :options="agreementVision_option"
                   placeholder=""
                 />
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    prompt text
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
               </a-form-item>
               <a-form-item
                 class="iot_view_node_add_formitem"
@@ -59,7 +69,7 @@
                 <a-input
                   v-decorator="['nodeName']"
                   size="small"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                 >
                 </a-input>
               </a-form-item>
@@ -73,11 +83,21 @@
               >
                 <a-cascader
                   v-decorator="['band']"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                   size="small"
                   :options="band_options"
                   placeholder=""
                 />
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    prompt text
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
               </a-form-item>
               <a-form-item
                 class="iot_view_node_add_formitem"
@@ -88,11 +108,21 @@
               >
                 <a-cascader
                   v-decorator="['class']"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                   size="small"
                   :options="class_options"
                   placeholder=""
                 />
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    prompt text
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
               </a-form-item>
               <a-form-item
                 class="iot_view_node_add_formitem"
@@ -104,9 +134,19 @@
                 <a-input
                   v-decorator="['DevEUI']"
                   size="small"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                 >
                 </a-input>
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    prompt text
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
               </a-form-item>
               <a-form-item
                 class="iot_view_node_add_formitem"
@@ -118,9 +158,19 @@
                 <a-input
                   v-decorator="['AppEUI']"
                   size="small"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                 >
                 </a-input>
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    prompt text
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
               </a-form-item>
               <a-form-item
                 class="iot_view_node_add_formitem"
@@ -132,9 +182,19 @@
                 <a-input
                   v-decorator="['AppKey']"
                   size="small"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                 >
                 </a-input>
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    prompt text
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
               </a-form-item>
 
               <a-form-item
@@ -154,8 +214,18 @@
                     }
                   ]"
                   size="small"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                 />
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    {{ getLabel(index) }}
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
               </a-form-item>
 
               <a-form-item
@@ -168,7 +238,7 @@
                 <a-input
                   v-decorator="['AppKey']"
                   size="small"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                 >
                 </a-input>
               </a-form-item>
@@ -181,7 +251,7 @@
               >
                 <a-cascader
                   v-decorator="['state']"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                   size="small"
                   :options="state_options"
                   placeholder=""
@@ -198,7 +268,7 @@
                   placeholder="请填写节点描述，最多100个汉字"
                   v-decorator="['band']"
                   :rows="4"
-                  style="width: 100%;float: left;text-align: left"
+                  style="width: 90%;float: left;text-align: left"
                 />
               </a-form-item>
             </a-form>
@@ -242,7 +312,7 @@
           >
             <a-cascader
               v-decorator="['area']"
-              style="width: 100%;float: left;text-align: left"
+              style="width: 90%;float: left;text-align: left"
               size="small"
               :options="area_option"
               placeholder=""
@@ -259,9 +329,19 @@
             <a-input
               v-decorator="['areaDetail']"
               size="small"
-              style="width: 100%;float: left;text-align: left"
+              style="width: 90%;float: left;text-align: left"
             >
             </a-input>
+            <a-tooltip placement="rightTop">
+              <template slot="title">
+                prompt text
+              </template>
+              <a-icon
+                type="exclamation-circle"
+                style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+              />
+            </a-tooltip>
           </a-form-item>
         </a-form>
         <img

@@ -24,7 +24,7 @@
               <a-input
                 v-decorator="['gatewayName']"
                 size="small"
-                style="width: 100%;float: left"
+                style="width: 90%;float: left"
               />
             </a-form-item>
 
@@ -38,9 +38,19 @@
               <a-input
                 v-decorator="['gatewayID']"
                 size="small"
-                style="width: 100%;float: left"
+                style="width: 90%;float: left"
               >
               </a-input>
+              <a-tooltip placement="rightTop">
+                <template slot="title">
+                  prompt text
+                </template>
+                <a-icon
+                  type="exclamation-circle"
+                  style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                />
+              </a-tooltip>
             </a-form-item>
             <a-form-item
               class="iot_view_gatewayList_deployEdit_formitem"
@@ -51,11 +61,21 @@
             >
               <a-cascader
                 v-decorator="['internetServer']"
-                style="width: 100%;float: left"
+                style="width: 90%;float: left"
                 size="small"
                 :options="internetServer_options"
                 placeholder=""
               />
+              <a-tooltip placement="rightTop">
+                <template slot="title">
+                  prompt text
+                </template>
+                <a-icon
+                  type="exclamation-circle"
+                  style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                />
+              </a-tooltip>
             </a-form-item>
 
             <a-form-item
@@ -67,11 +87,21 @@
             >
               <a-cascader
                 v-decorator="['communicationMode']"
-                style="width: 100%;float: left"
+                style="width: 90%;float: left"
                 size="small"
                 :options="communicationMode_options"
                 placeholder=""
               />
+              <a-tooltip placement="rightTop">
+                <template slot="title">
+                  prompt text
+                </template>
+                <a-icon
+                  type="exclamation-circle"
+                  style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                />
+              </a-tooltip>
             </a-form-item>
             <a-form-item
               class="iot_view_gatewayList_deployEdit_formitem"
@@ -82,11 +112,21 @@
             >
               <a-cascader
                 v-decorator="['band']"
-                style="width: 100%;float: left"
+                style="width: 90%;float: left"
                 size="small"
                 :options="band_options"
                 placeholder=""
               />
+              <a-tooltip placement="rightTop">
+                <template slot="title">
+                  prompt text
+                </template>
+                <a-icon
+                  type="exclamation-circle"
+                  style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                />
+              </a-tooltip>
             </a-form-item>
             <a-form-item
               class="iot_view_gatewayList_deployEdit_formitem"
@@ -99,7 +139,7 @@
                 placeholder="请填写网关描述，最多100个汉字"
                 v-decorator="['description']"
                 :rows="4"
-                style="width: 100%;float: left;"
+                style="width: 90%;float: left;"
               />
             </a-form-item>
             <a-form-item
@@ -112,7 +152,7 @@
               <p style="text-align: left;margin-bottom: 2px;">所在区域</p>
               <a-cascader
                 v-decorator="['area']"
-                style="width: 100%;float: left"
+                style="width: 90%;float: left"
                 size="small"
                 :options="area_options"
                 placeholder=""
@@ -127,8 +167,18 @@
                 <a-input
                   v-decorator="['address']"
                   size="small"
-                  style="width: 100%;float: left;margin-bottom: 12px"
+                  style="width: 90%;float: left;margin-bottom: 12px"
                 />
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    prompt text
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
               </a-col>
             </a-form-item>
           </a-form>

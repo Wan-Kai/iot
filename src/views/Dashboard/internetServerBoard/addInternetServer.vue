@@ -16,7 +16,7 @@
         <a-input
           size="small"
           v-decorator="['name']"
-          style="float: left;text-align: left"
+          style="float: left;text-align: left;width: 90%"
         />
       </a-form-item>
       <a-form-item
@@ -29,8 +29,18 @@
         <a-input
           size="small"
           v-decorator="['pc_name']"
-          style="float: left;text-align: left"
+          style="float: left;text-align: left;width: 90%"
         />
+        <a-tooltip placement="rightTop">
+          <template slot="title">
+            prompt text
+          </template>
+          <a-icon
+            type="exclamation-circle"
+            style="height: 24px;line-height: 24px;width: 24px;
+          text-align: left;vertical-align: text-top"
+          />
+        </a-tooltip>
       </a-form-item>
       <a-form-item
         label="是否启用网关发现："
@@ -45,6 +55,16 @@
           @change="stateChange"
           style="margin-left: 10px;float: left"
         />
+        <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
+          <template slot="title">
+            prompt text
+          </template>
+          <a-icon
+            type="exclamation-circle"
+            style="height: 24px;line-height: 24px;width: 24px;
+          text-align: left;vertical-align: text-top"
+          />
+        </a-tooltip>
       </a-form-item>
 
       <a-form-item
@@ -64,8 +84,18 @@
               validateTrigger: ['change', 'blur']
             }
           ]"
-          style="float: left;text-align: left"
+          style="float: left;text-align: left;width: 90%"
         />
+        <a-tooltip placement="rightTop">
+          <template slot="title">
+            {{ getLabel(index) }}
+          </template>
+          <a-icon
+            type="exclamation-circle"
+            style="height: 24px;line-height: 24px;width: 24px;
+          text-align: left;vertical-align: text-top"
+          />
+        </a-tooltip>
       </a-form-item>
       <a-row>
         <a-col :span="7" :offset="3">

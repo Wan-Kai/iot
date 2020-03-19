@@ -17,8 +17,18 @@
           <a-input
             size="small"
             v-decorator="['appNumber']"
-            style="float: left;text-align: left"
+            style="float: left;text-align: left;width: 90%"
           />
+          <a-tooltip placement="rightTop">
+            <template slot="title">
+              prompt text
+            </template>
+            <a-icon
+              type="exclamation-circle"
+              style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+            />
+          </a-tooltip>
         </a-form-item>
         <a-form-item
           label="应用名称："
@@ -30,7 +40,7 @@
           <a-input
             size="small"
             v-decorator="['appName']"
-            style="float: left;text-align: left"
+            style="float: left;text-align: left;width: 90%"
           />
         </a-form-item>
         <a-form-item
@@ -43,8 +53,18 @@
           <a-input
             size="small"
             v-decorator="['capacity']"
-            style="float: left;text-align: left"
+            style="float: left;text-align: left;width: 90%"
           />
+          <a-tooltip placement="rightTop">
+            <template slot="title">
+              prompt text
+            </template>
+            <a-icon
+              type="exclamation-circle"
+              style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+            />
+          </a-tooltip>
         </a-form-item>
         <a-form-item
           class="iot_view_app_add_formItem"
@@ -57,7 +77,7 @@
             placeholder="请填写应用描述，最多100个汉字"
             v-decorator="['describe']"
             :rows="4"
-            style="float: left;text-align: left"
+            style="float: left;text-align: left;width: 90%"
           />
         </a-form-item>
         <a-row>

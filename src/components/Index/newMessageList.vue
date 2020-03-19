@@ -34,7 +34,7 @@
       </a-list-item>
     </a-list>
     <div style="display: block">
-      <a>查看更多消息...</a>
+      <a @click="checkMessage">查看更多消息...</a>
     </div>
   </div>
 </template>
@@ -66,6 +66,11 @@ export default {
       interData: [],
       data
     };
+  },
+  methods: {
+    checkMessage() {
+      this.$router.push("/admin/dashboard/message");
+    }
   }
 };
 </script>

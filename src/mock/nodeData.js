@@ -18,6 +18,17 @@ const NodeData = Mock.mock({
   ]
 });
 
+const FirstPageNodeData = Mock.mock({
+  status: "OK",
+  type: "ID",
+  "firstPageNodeData|5": [
+    {
+      nodeNumber: "8808",
+      upTime: "@date('yyyy-MM-dd HH:mm:ss')"
+    }
+  ]
+});
+
 const NlogFlowData = Mock.mock({
   status: "OK",
   type: "nodeId",
@@ -40,4 +51,4 @@ const NlogFlowData = Mock.mock({
   ]
 });
 
-export { NodeData, NlogFlowData };
+export { NodeData, NlogFlowData, FirstPageNodeData };

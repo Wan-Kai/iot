@@ -21,7 +21,8 @@
       >
         <a-input
           v-decorator="['port']"
-          style="width: 60%;float: left;height: 28px;text-align: left"
+          size="small"
+          style="width: 60%;float: left;text-align: left"
         />
       </a-form-item>
       <a-form-item
@@ -32,7 +33,8 @@
       >
         <a-input
           v-decorator="['gateway']"
-          style="width: 60%;float: left;height: 28px;text-align: left"
+          size="small"
+          style="width: 60%;float: left;text-align: left"
         />
       </a-form-item>
       <a-form-item
@@ -43,7 +45,8 @@
       >
         <a-input
           v-decorator="['message']"
-          style="width: 60%;float: left;height: 28px;text-align: left"
+          size="small"
+          style="width: 60%;float: left;text-align: left"
         />
       </a-form-item>
 
@@ -77,7 +80,8 @@
               validateTrigger: ['change', 'blur']
             }
           ]"
-          style="width: 60%;float: left;height: 28px;text-align: left"
+          size="small"
+          style="width: 60%;float: left;text-align: left"
         />
       </a-form-item>
 

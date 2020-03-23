@@ -148,7 +148,7 @@
       <a-col :span="14">
         <div class="iot_amap-gatewayDetail-container">
           <el-amap
-            vid="amapDemo"
+            vid="gateway_detail"
             :center="center"
             :map-manager="amapManager"
             :zoom="zoom"
@@ -188,7 +188,7 @@ export default {
       amapManager,
       events: {
         init(map) {
-          map.setMapStyle("amap://styles/whitesmoke");
+          //map.setMapStyle("amap://styles/whitesmoke");
           AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
             const marker = new SimpleMarker({
               iconLabel: "A",

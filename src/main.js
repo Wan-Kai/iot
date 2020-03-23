@@ -99,6 +99,7 @@ VueAMap.initAMapApiLoader({
     "AMap.PolyEditor",
     "AMap.CircleEditor"
   ],
+  v: "1.4.4",
   uiVersion: "1.0.11" // 版本号
 });
 

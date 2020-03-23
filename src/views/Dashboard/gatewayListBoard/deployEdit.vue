@@ -5,6 +5,7 @@
       type="flex"
       justify="space-between"
       align="top"
+      :gutter="16"
     >
       <a-col :span="10">
         <a-row class="iot_view_gatewayList_deployEdit_form_content">
@@ -191,11 +192,18 @@
           </a-row>
         </a-row>
       </a-col>
-      <a-col :span="12">
-        <img
-          src="../../../assets/map.png"
-          style="height: 384px;display: inherit"
-        />
+      <a-col :span="14">
+        <div class="iot_amap-gatewayEdit-container">
+          <el-amap
+            vid="gateway_edit_map"
+            :center="center"
+            :map-manager="amapManager"
+            :zoom="zoom"
+            :events="events"
+            class="iot_amap_gateawyEdit_demo"
+          >
+          </el-amap>
+        </div>
       </a-col>
     </a-row>
   </a-layout>
@@ -276,6 +284,7 @@ const area_options = [
     ]
   }
 ];
+let amapManager = new VueAMap.AMapManager();
 export default {
   components: { ACol, ARow },
   data() {
@@ -283,7 +292,25 @@ export default {
       internetServer_options,
       communicationMode_options,
       band_options,
-      area_options
+      area_options,
+
+      zoom: 14,
+      center: [114.362272, 30.532565],
+      amapManager,
+      events: {
+        init(map) {
+          //map.setMapStyle("amap://styles/whitesmoke");
+          AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
+            const marker = new SimpleMarker({
+              iconLabel: "A",
+              iconStyle: "blue",
+              map: map,
+              position: map.getCenter()
+            });
+            map.add(marker);
+          });
+        }
+      }
     };
   },
 
@@ -313,5 +340,12 @@ export default {
 .iot_view_gatewayList_deployEdit_formitem {
   margin-bottom: 8px;
   padding-bottom: 0px;
+}
+.iot_amap-gatewayEdit-container {
+  height: 400px;
+  width: 100%;
+}
+.iot_amap_gateawyEdit_demo {
+  height: 400px;
 }
 </style>

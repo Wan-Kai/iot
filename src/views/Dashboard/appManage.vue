@@ -42,14 +42,6 @@
         >
         <a-button icon="download">导出</a-button>
       </div>
-      <a-modal v-model="visible" title="消息" onOk="handleOk">
-        <template slot="footer">
-          <a-button key="back" @click="handleCancel">关闭</a-button>
-        </template>
-        <p>应用编号：{{ this.title }}</p>
-        <p>应用名称：{{ this.messageDetail.appName }}</p>
-        <p>设备分配容量：{{ this.messageDetail.capacity }}</p>
-      </a-modal>
     </div>
   </a-layout>
 </template>
@@ -101,7 +93,6 @@ export default {
     return {
       columns,
       interData: [],
-
       messageDetail: [],
 
       pagination: {

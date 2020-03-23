@@ -5,19 +5,53 @@
         网关分布图
       </p>
     </div>
-    <div>
-      <img
-        src="../../assets/map.png"
-        style="height: 250px;display: inherit;width: 100%"
-      />
+    <div class="iot_amap_gatewayMap_container">
+      <el-amap
+        vid="index_map"
+        :center="center"
+        :map-manager="amapManager"
+        :zoom="zoom"
+        :events="events"
+        class="iot_amap_gateawyMap_demo"
+      >
+      </el-amap>
     </div>
   </a-layout>
 </template>
 
 <script>
+let amapManager = new VueAMap.AMapManager();
 export default {
-  name: "gatewayMap"
+  data() {
+    return {
+      zoom: 14,
+      center: [114.362272, 30.532565],
+      amapManager,
+      events: {
+        init(map) {
+          //map.setMapStyle("amap://styles/whitesmoke");
+          AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
+            const marker = new SimpleMarker({
+              iconLabel: "A",
+              iconStyle: "blue",
+              map: map,
+              position: map.getCenter()
+            });
+            map.add(marker);
+          });
+        }
+      }
+    };
+  }
 };
 </script>
 
-<style scoped></style>
+<style>
+.iot_amap_gatewayMap_container {
+  height: 250px;
+  width: 100%;
+}
+.iot_amap_gateawyMap_demo {
+  height: 250px;
+}
+</style>

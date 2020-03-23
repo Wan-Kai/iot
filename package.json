@@ -12,12 +12,14 @@
   "dependencies": {
     "ant-design-vue": "^1.4.11",
     "axios": "^0.19.2",
+    "babel-polyfill": "^6.26.0",
     "core-js": "^3.6.4",
     "echarts": "^4.6.0",
     "lodash": "latest",
     "nprogress": "^0.2.0",
     "regenerator-runtime": "^0.13.3",
     "vue": "^2.6.11",
+    "vue-amap": "^0.5.10",
     "vue-router": "^3.1.5",
     "vuex": "^3.1.2"
   },

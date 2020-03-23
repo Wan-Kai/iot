@@ -8,7 +8,7 @@ import store from "./store";
 import API from "./utils/api";
 import Authorized from "./components/Authorized";
 import echarts from "echarts";
-
+import VueAMap from "vue-amap";
 // 手动引入 ECharts 各模块来减小打包体积
 import "echarts/lib/chart/bar";
 import "echarts/lib/component/tooltip";
@@ -47,6 +47,8 @@ import {
 
 require("./mock/mock");
 
+Vue.use(VueAMap);
+
 Vue.use(Button);
 Vue.use(Layout);
 Vue.use(Menu);
@@ -81,6 +83,24 @@ Vue.prototype.$message = message;
 Vue.prototype.$echarts = echarts;
 
 Vue.config.productionTip = false;
+
+// 初始化vue-amap
+VueAMap.initAMapApiLoader({
+  // 高德的key
+  key: "abafdec30e675bce4bff374d9c458739",
+  // 插件集合 （插件按需引入）
+  plugin: [
+    "AMap.Autocomplete",
+    "AMap.PlaceSearch",
+    "AMap.Scale",
+    "AMap.OverView",
+    "AMap.ToolBar",
+    "AMap.MapType",
+    "AMap.PolyEditor",
+    "AMap.CircleEditor"
+  ],
+  uiVersion: "1.0.11" // 版本号
+});
 
 new Vue({
   router,

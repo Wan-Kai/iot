@@ -12,6 +12,7 @@
   "dependencies": {
     "ant-design-vue": "^1.4.11",
     "axios": "^0.19.2",
+    "babel-polyfill": "^6.26.0",
     "core-js": "^3.6.4",
     "echarts": "^4.6.0",
     "lodash": "latest",

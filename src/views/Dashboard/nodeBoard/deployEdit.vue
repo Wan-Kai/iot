@@ -5,6 +5,7 @@
       type="flex"
       justify="space-between"
       align="top"
+      :gutter="16"
     >
       <a-col :span="10">
         <a-row class="iot_view_node_deployEdit_form_content">
@@ -290,73 +291,82 @@
           </a-row>
         </a-row>
       </a-col>
-      <a-col :span="12">
-        <a-form
-          :form="nodeDeployFormSecond"
-          @submit="handleSubmitSecond"
-          layout="vertical"
-          class="iot_view_node_deployEdit_form"
-        >
-          <a-form-item
-            class="iot_view_node_deployEdit_formitem"
-            label="地理位置："
-            :required="true"
-            :label-col="{ span: 6 }"
-            :wrapper-col="{ span: 14 }"
+      <a-col :span="14">
+        <div>
+          <a-form
+            :form="nodeDeployFormSecond"
+            @submit="handleSubmitSecond"
+            layout="vertical"
+            class="iot_view_node_deployEdit_form"
           >
-            <a-switch
-              checkedChildren="开"
-              unCheckedChildren="关"
-              @change="stateChange"
-              style="float: left"
-            />
-          </a-form-item>
-          <a-form-item
-            v-if="areaShow"
-            class="iot_view_node_deployEdit_formitem"
-            label="所在区域："
-            :required="true"
-            :label-col="{ span: 6 }"
-            :wrapper-col="{ span: 14 }"
-          >
-            <a-cascader
-              v-decorator="['area']"
-              style="width: 90%;float: left;text-align: left"
-              size="small"
-              :options="area_option"
-              placeholder=""
-            />
-          </a-form-item>
-          <a-form-item
-            v-if="areaShow"
-            class="iot_view_node_deployEdit_formitem"
-            label="详细位置："
-            :required="true"
-            :label-col="{ span: 6 }"
-            :wrapper-col="{ span: 14 }"
-          >
-            <a-input
-              v-decorator="['areaDetail']"
-              size="small"
-              style="width: 90%;float: left;text-align: left"
+            <a-form-item
+              class="iot_view_node_deployEdit_formitem"
+              label="地理位置："
+              :required="true"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 14 }"
             >
-            </a-input>
-            <a-tooltip placement="rightTop">
-              <template slot="title">
-                prompt text
-              </template>
-              <a-icon
-                type="exclamation-circle"
-                style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
+              <a-switch
+                checkedChildren="开"
+                unCheckedChildren="关"
+                @change="stateChange"
+                style="float: left"
               />
-            </a-tooltip>
-          </a-form-item>
-        </a-form>
-        <img
-          src="../../../assets/map.png"
-          style="height: 384px;display: inherit"
-        />
+            </a-form-item>
+            <a-form-item
+              v-if="areaShow"
+              class="iot_view_node_deployEdit_formitem"
+              label="所在区域："
+              :required="true"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 14 }"
+            >
+              <a-cascader
+                v-decorator="['area']"
+                style="width: 90%;float: left;text-align: left"
+                size="small"
+                :options="area_option"
+                placeholder=""
+              />
+            </a-form-item>
+            <a-form-item
+              v-if="areaShow"
+              class="iot_view_node_deployEdit_formitem"
+              label="详细位置："
+              :required="true"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 14 }"
+            >
+              <a-input
+                v-decorator="['areaDetail']"
+                size="small"
+                style="width: 90%;float: left;text-align: left"
+              >
+              </a-input>
+              <a-tooltip placement="rightTop">
+                <template slot="title">
+                  prompt text
+                </template>
+                <a-icon
+                  type="exclamation-circle"
+                  style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                />
+              </a-tooltip>
+            </a-form-item>
+          </a-form>
+        </div>
+        <div class="iot_amap-nodeEdit-container">
+          <el-amap
+            vid="note_edit_map"
+            :center="center"
+            :map-manager="amapManager"
+            :zoom="zoom"
+            :events="events"
+            class="iot_amap_nodeEdit_demo"
+          >
+          </el-amap>
+        </div>
       </a-col>
     </a-row>
   </a-layout>
@@ -448,6 +458,7 @@ const area_option = [
     ]
   }
 ];
+let amapManager = new VueAMap.AMapManager();
 export default {
   components: { ACol, ARow },
   data() {
@@ -459,7 +470,25 @@ export default {
       area_option,
 
       areaShow: false,
-      value: 1
+      value: 1,
+
+      zoom: 14,
+      center: [114.362272, 30.532565],
+      amapManager,
+      events: {
+        init(map) {
+          //map.setMapStyle("amap://styles/whitesmoke");
+          AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
+            const marker = new SimpleMarker({
+              iconLabel: "A",
+              iconStyle: "blue",
+              map: map,
+              position: map.getCenter()
+            });
+            map.add(marker);
+          });
+        }
+      }
     };
   },
 
@@ -543,5 +572,9 @@ export default {
 .iot_view_node_deployEdit_formitem {
   margin-bottom: 8px;
   padding-bottom: 0px;
+}
+.iot_amap-nodeEdit-container {
+  height: 410px;
+  width: 100%;
 }
 </style>

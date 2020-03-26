@@ -5,6 +5,7 @@
       type="flex"
       justify="space-between"
       align="top"
+      :gutter="16"
     >
       <a-col :span="10">
         <div class="iot_view_gatewayList_detail_textCard">
@@ -144,11 +145,18 @@
           </a-row>
         </div>
       </a-col>
-      <a-col :span="12">
-        <img
-          src="../../../assets/map.png"
-          style="height: 384px;display: inherit"
-        />
+      <a-col :span="14">
+        <div class="iot_amap-gatewayDetail-container">
+          <el-amap
+            vid="gateway_detail"
+            :center="center"
+            :map-manager="amapManager"
+            :zoom="zoom"
+            :events="events"
+            class="iot_amap_gateawyNode_demo"
+          >
+          </el-amap>
+        </div>
       </a-col>
     </a-row>
 
@@ -168,10 +176,31 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
+
+let amapManager = new VueAMap.AMapManager();
 export default {
   components: { ACol, ARow },
+
   data() {
-    return {};
+    return {
+      zoom: 14,
+      center: [114.362272, 30.532565],
+      amapManager,
+      events: {
+        init(map) {
+          //map.setMapStyle("amap://styles/whitesmoke");
+          AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
+            const marker = new SimpleMarker({
+              iconLabel: "A",
+              iconStyle: "blue",
+              map: map,
+              position: map.getCenter()
+            });
+            map.add(marker);
+          });
+        }
+      }
+    };
   },
 
   mounted() {
@@ -377,6 +406,11 @@ export default {
 }
 .iot_view_gatewayList_detail_textCard_text_dark {
   background: #f0f0f0;
+}
+.iot_amap-gatewayDetail-container {
+}
+.iot_amap_gateawyNode_demo {
+  height: 384px;
 }
 .iot_view_gatewayList_detail_textCard_text_light {
   background: #fff;

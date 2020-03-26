@@ -98,7 +98,7 @@ const routes = [
       },
       {
         path: "/admin/dashboard/init",
-        name: "init",
+        name: "dashboardInit",
         meta: { title: "首页" },
         component: () =>
           import(
@@ -167,6 +167,7 @@ const routes = [
           },
           {
             path: "/admin/dashboard/message/init",
+            name: "messageInit",
             meta: { title: "" },
             component: () =>
               import(
@@ -189,7 +190,7 @@ const routes = [
           },
           {
             path: "/admin/dashboard/gatewayManage/init",
-            name: "init",
+            name: "gatewayInit",
             meta: { title: "" },
             component: () =>
               import(
@@ -230,7 +231,7 @@ const routes = [
           },
           {
             path: "/admin/dashboard/iLogFlow/init",
-            name: "init",
+            name: "iLogFlowInit",
             meta: { title: "" },
             component: () =>
               import(
@@ -290,7 +291,7 @@ const routes = [
           },
           {
             path: "/admin/dashboard/nLogFlow/init",
-            name: "init",
+            name: "nLogFlowInit",
             meta: { title: "" },
             component: () =>
               import(
@@ -311,7 +312,7 @@ const routes = [
           },
           {
             path: "/admin/dashboard/appManage/init",
-            name: "init",
+            name: "appManageInit",
             meta: { title: "" },
             component: () =>
               import(
@@ -350,7 +351,7 @@ const routes = [
           },
           {
             path: "/admin/dashboard/usersManage/init",
-            name: "usersManage",
+            name: "usersManageInit",
             meta: { title: "" },
             component: () =>
               import(

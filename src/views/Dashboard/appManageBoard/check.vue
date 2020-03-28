@@ -11,21 +11,21 @@
       <div class="iot_line" />
       <a-row style="margin-top: 10px;display: flex">
         <span style="margin-left: 30px;margin-bottom: 8px"
-          >应用名称：{{ this.appName }}</span
+          >应用名称：{{ this.infoData.appName }}</span
         >
         <span style="margin-left: 30px;margin-bottom: 8px"
-          >设备分配容量：{{ this.capacity }}</span
+          >设备分配容量：{{ this.infoData.capacity }}</span
         >
         <span style="margin-left: 30px;margin-bottom: 8px"
-          >设备使用容量：{{ this.usedCapacity }}</span
+          >设备使用容量：{{ this.infoData.usedCapacity }}</span
         >
         <span style="margin-left: 30px;margin-bottom: 8px"
-          >创建时间：{{ this.time }}</span
+          >创建时间：{{ this.infoData.time }}</span
         >
       </a-row>
       <a-row style="display: flex">
         <span style="margin-left: 30px;margin-bottom: 2px"
-          >应用描述：{{ this.description }}</span
+          >应用描述：{{ this.infoData.description }}</span
         >
       </a-row>
     </a-card>
@@ -98,15 +98,17 @@ export default {
   data() {
     return {
       number: "1",
-      appName: "lora100",
-      capacity: "100",
-      usedCapacity: "80",
-      time: "2020-01-20 09:44:16",
-      description: "描述内容描述内容描述内容描述内容描述内容描述内容描述内容",
-      defaultTab: "1",
 
+      infoData: {
+        appName: "lora100",
+        capacity: "100",
+        usedCapacity: "80",
+        time: "2020-01-20 09:44:16",
+        description: "描述内容描述内容描述内容描述内容描述内容描述内容描述内容"
+      },
       nodeVisible: false,
 
+      defaultTab: "1",
       mockData: [],
       targetKeys: []
     };
@@ -114,6 +116,17 @@ export default {
   beforeMount() {
     this.number = this.$route.query.number;
     this.defaultTab = this.$route.query.id;
+
+    this.$api.appManage
+      .appDetailData({
+        id: this.number
+      })
+      .then(res => {
+        this.infoData = res.data.result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   mounted() {
     this.getMock();

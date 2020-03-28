@@ -14,7 +14,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">网关编号：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.number }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_light">
@@ -22,7 +24,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">网关名称：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.name }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
@@ -30,7 +34,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">网关ID：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.id }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_light">
@@ -38,7 +44,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">网络服务器：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.internalServer }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
@@ -46,7 +54,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">通信模式：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.massageMode }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_light">
@@ -54,7 +64,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">频段：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.band }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
@@ -62,7 +74,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">状态：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.state }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_light">
@@ -70,7 +84,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">信号：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.single }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
@@ -80,7 +96,9 @@
               </p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.up }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_light">
@@ -90,7 +108,9 @@
               </p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.down }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
@@ -100,7 +120,9 @@
               </p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.heartTime }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_light">
@@ -108,7 +130,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">添加时间：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.addTime }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
@@ -116,7 +140,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">经纬度：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.location }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_light">
@@ -124,7 +150,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">海拔：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.height }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
@@ -132,7 +160,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">地理位置：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.height }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_gatewayList_detail_textCard_text_light">
@@ -140,7 +170,9 @@
               <p class="iot_view_gatewayList_detail_textCard_p">网关描述：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">答案</p>
+              <p class="iot_view_gatewayList_detail_textCard_p">
+                {{ this.infoData.description }}
+              </p>
             </a-col>
           </a-row>
         </div>
@@ -183,6 +215,28 @@ export default {
 
   data() {
     return {
+      infoData: {
+        number: "",
+        name: "",
+        id: "",
+        internalServer: "",
+        massageMode: "",
+        band: "",
+        state: "",
+        single: "",
+        up: "",
+        down: "",
+        heartTime: "",
+        addTime: "",
+        location: "",
+        height: "",
+        area: "",
+        description: ""
+      },
+
+      echartUp: {},
+      echartDown: {},
+
       zoom: 14,
       center: [114.362272, 30.532565],
       amapManager,
@@ -203,6 +257,19 @@ export default {
     };
   },
 
+  beforeMount() {
+    this.$api.gateway
+      .gatewayDetailData({
+        id: this.number
+      })
+      .then(res => {
+        this.infoData = res.data.result;
+        console.log(res.data.result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   mounted() {
     this.drawLineUp();
     this.drawLineDown();

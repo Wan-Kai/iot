@@ -54,7 +54,9 @@ export function get(url, data = {}) {
   return service({
     url: url,
     method: "get",
-    headers: {},
+    headers: {
+      Authorization: store.getters.getAttr("sessionKey")
+    },
     data: data
   });
 }
@@ -67,11 +69,34 @@ export function post(url, data = {}) {
     method: "post",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      userId: store.getters.getAttr("userId"),
-      sessionKey: store.getters.getAttr("sessionKey")
+      Authorization: store.getters.getAttr("sessionKey")
     },
     data: data
   };
   // sendObject.data=JSON.stringify(data);
   return service(sendObject);
+}
+
+//封装put方法
+export function put(url, data = {}) {
+  return service({
+    url: url,
+    method: "put",
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      Authorization: store.getters.getAttr("sessionKey")
+    },
+    data: JSON.stringify(data)
+  });
+}
+
+//删除方法(resfulAPI常用)
+export function deletes(url) {
+  return service({
+    url: url,
+    method: "delete",
+    headers: {
+      Authorization: store.getters.getAttr("sessionKey")
+    }
+  });
 }

@@ -2,14 +2,14 @@ import Mock from "mockjs";
 
 const AppData = Mock.mock({
   status: "OK",
-  type: "ID",
-  "appData|20": [
+  totalCount: "1",
+  "result|20": [
     {
-      appNumber: "0047SDA4DSA",
-      appName: "测试",
+      id: "0047SDA4DSA",
+      name: "测试",
       capacity: "80",
       usedCapacity: "40",
-      describe: "设备测试",
+      description: "设备测试",
       time: "@date('yyyy-MM-dd HH:mm:ss')"
     }
   ]
@@ -17,23 +17,37 @@ const AppData = Mock.mock({
 
 const AppDetailData = Mock.mock({
   status: "OK",
-  type: "",
+  totalCount: "1",
   appDetail: [
     {
       appNumber: "0047SDA4DSA",
       appName: "测试",
       capacity: "80",
       usedCapacity: "40",
-      describe: "设备测试",
+      description: "设备测试",
       time: "@date('yyyy-MM-dd HH:mm:ss')"
+    }
+  ]
+});
+
+const AppDetailsData = Mock.mock({
+  status: "OK",
+  totalCount: "1",
+  "result|1": [
+    {
+      appName: "lora",
+      capacity: "temp",
+      usedCapacity: "temp",
+      time: "2020-01-20 09:44:16",
+      description: "描述内容描述内容描述内容描述内容描述内容描述内容描述内容"
     }
   ]
 });
 
 const AppNodeData = Mock.mock({
   status: "OK",
-  type: "",
-  "appNodeData|20": [
+  totalCount: "1",
+  "result|20": [
     {
       DevEUI: "0047SDA4DSA",
       nodeName: "测试",
@@ -45,4 +59,4 @@ const AppNodeData = Mock.mock({
   ]
 });
 
-export { AppData, AppDetailData, AppNodeData };
+export { AppData, AppDetailData, AppNodeData, AppDetailsData };

@@ -3,8 +3,8 @@ import Mock from "mockjs";
 const ServerData = Mock.mock({
   status: "OK",
   type: "ID",
-  ServerDataSize: 8,
-  "serverData|8": [
+  totalCount: "8",
+  "result|8": [
     {
       ID: "@ip",
       "port|0-10000": 1,
@@ -17,8 +17,8 @@ const ServerData = Mock.mock({
 const Message = Mock.mock({
   status: "OK",
   type: "",
-  MessageSize: 6,
-  "message|30": [
+  totalCount: "30",
+  "result|30": [
     {
       title: "@title",
       time: "@date('yyyy-MM-dd HH:mm:ss')"
@@ -29,8 +29,8 @@ const Message = Mock.mock({
 const Deleted_Message = Mock.mock({
   status: "OK",
   type: "",
-  MessageSize: 6,
-  "deletedMessage|30": [
+  totalCount: "30",
+  "result|30": [
     {
       title: "@title",
       time: "@date('yyyy-MM-dd HH:mm:ss')"
@@ -40,8 +40,8 @@ const Deleted_Message = Mock.mock({
 
 const Check = Mock.mock({
   status: "OK",
-  type: "",
-  check: [
+  totalCount: "1",
+  "result|1": [
     {
       "port|0-10000": 1,
       "gateway|1": ["on", "off"],
@@ -53,7 +53,7 @@ const Check = Mock.mock({
 
 const Message_Detail = Mock.mock({
   status: "OK",
-  type: "",
+  totalCount: "1",
   messageDetail: [
     {
       title: "@title",

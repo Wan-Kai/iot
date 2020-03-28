@@ -138,8 +138,7 @@ export default {
         ID: this.ID
       })
       .then(res => {
-        this.infoData = res.data.check[0];
-        console.log(this.infoData);
+        this.infoData = res.data.result;
       })
       .catch(err => {
         console.log(err);

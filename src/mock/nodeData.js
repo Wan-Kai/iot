@@ -2,10 +2,10 @@ import Mock from "mockjs";
 
 const NodeData = Mock.mock({
   status: "OK",
-  type: "ID",
-  "nodeData|20": [
+  totalCount: "1",
+  "result|20": [
     {
-      DevEUI: "0047SDA4545DSA",
+      devEUI: "0047SDA4545DSA",
       nodeName: "Lora",
       dBm: "-60",
       frequency: "CN470/CH_00_07",
@@ -18,10 +18,37 @@ const NodeData = Mock.mock({
   ]
 });
 
+const nodeDetailData = Mock.mock({
+  status: "OK",
+  totalCount: "1",
+  "result|1": [
+    {
+      internalState: "在线",
+      sign: "30",
+      gateway: "123456",
+      heartTime: "2017-1-17",
+
+      number: "temp",
+      appNumber: "temp",
+      name: "temp",
+      getIntelWay: "temp",
+      version: "temp",
+      band: "temp",
+      class: "temp",
+      appKey: "temp",
+      utroTime: "temp",
+      useState: "temp",
+      addTime: "temp",
+      area: "temp",
+      description: "temp"
+    }
+  ]
+});
+
 const FirstPageNodeData = Mock.mock({
   status: "OK",
-  type: "ID",
-  "firstPageNodeData|5": [
+  totalCount: "1",
+  "result|5": [
     {
       nodeNumber: "8808",
       upTime: "@date('yyyy-MM-dd HH:mm:ss')"
@@ -31,8 +58,8 @@ const FirstPageNodeData = Mock.mock({
 
 const NlogFlowData = Mock.mock({
   status: "OK",
-  type: "nodeId",
-  "nlogData|20": [
+  totalCount: "1",
+  "result|20": [
     {
       nodeId: "B45sadsa45",
       checkTime: "@date('yyyy-MM-dd HH:mm:ss')",
@@ -51,4 +78,4 @@ const NlogFlowData = Mock.mock({
   ]
 });
 
-export { NodeData, NlogFlowData, FirstPageNodeData };
+export { NodeData, NlogFlowData, FirstPageNodeData, nodeDetailData };

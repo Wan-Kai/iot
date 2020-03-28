@@ -115,7 +115,7 @@ export default {
         page: 0
       })
       .then(res => {
-        this.interData = res.data.ilogData;
+        this.interData = res.data.result;
       })
       .catch(err => {
         console.log(err);

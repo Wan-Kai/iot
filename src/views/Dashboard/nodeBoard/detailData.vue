@@ -14,7 +14,9 @@
               <p class="iot_view_node_detail_textCard_p">节点编号：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.number }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_light">
@@ -22,7 +24,9 @@
               <p class="iot_view_node_detail_textCard_p">应用编号：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.appNumber }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_dark">
@@ -30,7 +34,9 @@
               <p class="iot_view_node_detail_textCard_p">节点名称：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.name }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_light">
@@ -38,7 +44,9 @@
               <p class="iot_view_node_detail_textCard_p">入网方式：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.getIntelWay }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_dark">
@@ -46,7 +54,9 @@
               <p class="iot_view_node_detail_textCard_p">协议版本：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.version }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_light">
@@ -54,7 +64,9 @@
               <p class="iot_view_node_detail_textCard_p">频段：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.band }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_dark">
@@ -62,7 +74,9 @@
               <p class="iot_view_node_detail_textCard_p">Class：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.class }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_light">
@@ -70,7 +84,9 @@
               <p class="iot_view_node_detail_textCard_p">网络状态：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.internalState }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_dark">
@@ -78,7 +94,9 @@
               <p class="iot_view_node_detail_textCard_p">信号：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.sign }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_light">
@@ -86,7 +104,9 @@
               <p class="iot_view_node_detail_textCard_p">所在网关：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.gateway }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_dark">
@@ -94,7 +114,9 @@
               <p class="iot_view_node_detail_textCard_p">AppKey：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.appKey }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_light">
@@ -102,7 +124,9 @@
               <p class="iot_view_node_detail_textCard_p">超时周期(分钟)：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.utroTime }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_dark">
@@ -110,7 +134,9 @@
               <p class="iot_view_node_detail_textCard_p">最后心跳时间：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.heartTime }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_light">
@@ -118,7 +144,9 @@
               <p class="iot_view_node_detail_textCard_p">使用状态：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.useState }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_dark">
@@ -126,7 +154,9 @@
               <p class="iot_view_node_detail_textCard_p">添加时间：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.addTime }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_light">
@@ -134,7 +164,9 @@
               <p class="iot_view_node_detail_textCard_p">地理位置：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.area }}
+              </p>
             </a-col>
           </a-row>
           <a-row class="iot_view_node_detail_textCard_text_dark">
@@ -142,7 +174,9 @@
               <p class="iot_view_node_detail_textCard_p">节点描述：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_node_detail_textCard_p">答案</p>
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.description }}
+              </p>
             </a-col>
           </a-row>
         </div>
@@ -198,10 +232,43 @@ export default {
             map.add(marker);
           });
         }
+      },
+
+      infoData: {
+        internalState: "在线",
+        sign: "30",
+        gateway: "123456",
+        heartTime: "2017-1-17",
+
+        number: "",
+        appNumber: "",
+        name: "",
+        getIntelWay: "",
+        version: "",
+        band: "",
+        class: "",
+        appKey: "",
+        utroTime: "",
+        useState: "",
+        addTime: "",
+        area: "",
+        description: ""
       }
     };
   },
 
+  beforeMount() {
+    this.$api.node
+      .nodeDetailData({
+        id: this.number
+      })
+      .then(res => {
+        this.infoData = res.data.result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   mounted() {
     this.drawLineUp();
     this.drawLineDown();

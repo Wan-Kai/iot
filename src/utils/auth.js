@@ -1,9 +1,9 @@
 import { getKey, getLoginState } from "../store/login";
 
 export function getCurrentAuthority() {
-  const userId = [];
-  userId.push(getKey());
-  return userId;
+  const user = [];
+  user.push(getKey());
+  return user;
 }
 
 export function check(authority) {

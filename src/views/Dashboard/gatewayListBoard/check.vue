@@ -20,7 +20,9 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">网络状态</div>
-              <div style="font-size: 12px">在线</div>
+              <div style="font-size: 12px">
+                {{ this.infoData.internalState }}
+              </div>
             </a-col>
           </a-row>
         </a-col>
@@ -34,7 +36,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">信号</div>
-              <div style="font-size: 12px">30</div>
+              <div style="font-size: 12px">{{ this.infoData.sign }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -48,7 +50,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">上行</div>
-              <div style="font-size: 12px">其他</div>
+              <div style="font-size: 12px">{{ this.infoData.up }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -62,7 +64,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">下行</div>
-              <div style="font-size: 12px">其他</div>
+              <div style="font-size: 12px">{{ this.infoData.down }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -76,7 +78,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">最后心跳时间</div>
-              <div style="font-size: 12px">2017-1-17</div>
+              <div style="font-size: 12px">{{ this.infoData.heartTime }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -120,15 +122,32 @@ export default {
   },
   data() {
     return {
-      number: 0,
+      number: "",
+      infoData: {
+        internalState: "",
+        sign: "",
+        up: "",
+        down: "",
+        heartTime: ""
+      },
 
-      infoData: {},
       defaultTab: "1"
     };
   },
   beforeMount() {
     this.number = this.$route.query.number;
+    console.log(this.number);
     this.defaultTab = this.$route.query.id;
+    this.$api.gateway
+      .gatewayDetailData({
+        id: this.number
+      })
+      .then(res => {
+        this.infoData = res.data.result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {}
 };

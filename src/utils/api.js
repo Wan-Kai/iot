@@ -31,6 +31,9 @@ export default {
     gatewayData: data => {
       return post("/admin/gateway/data", data);
     },
+    gatewayDetailData: data => {
+      return post("/api/gateways", data);
+    },
     ilogFlowData: data => {
       return post("/admin/gateway/ilogFlow/data", data);
     },
@@ -42,6 +45,9 @@ export default {
     nodeData: data => {
       return post("/admin/node/data", data);
     },
+    nodeDetailData: data => {
+      return post("/api/nodes", data);
+    },
     firstPageNodeData: data => {
       return post("/admin/node/firstData", data);
     },
@@ -52,6 +58,9 @@ export default {
   appManage: {
     appData: data => {
       return post("/admin/app/data", data);
+    },
+    appDetailData: data => {
+      return post("/admin/app/details", data);
     },
     getAppDetail: data => {
       return post("/admin/app/detail", data);

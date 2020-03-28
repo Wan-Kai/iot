@@ -52,13 +52,13 @@ import ACol from "ant-design-vue/es/grid/Col";
 const columns = [
   {
     title: "应用编号",
-    dataIndex: "appNumber",
-    key: "appNumber"
+    dataIndex: "id",
+    key: "id"
   },
   {
     title: "应用名称",
-    key: "appName",
-    dataIndex: "appName"
+    key: "name",
+    dataIndex: "name"
   },
   {
     title: "设备分配容量",
@@ -72,8 +72,8 @@ const columns = [
   },
   {
     title: "应用描述",
-    key: "describe",
-    dataIndex: "describe"
+    key: "description",
+    dataIndex: "description"
   },
   {
     title: "创建时间",
@@ -114,7 +114,7 @@ export default {
         page: 0
       })
       .then(res => {
-        this.interData = res.data.appData;
+        this.interData = res.data.result;
       })
       .catch(err => {
         console.log(err);
@@ -131,14 +131,14 @@ export default {
       console.log(record);
       this.$router.push({
         name: "checkApp",
-        query: { number: record.appNumber, id: "1" }
+        query: { number: record.id, id: "1" }
       });
     },
     editRouter(record) {
       console.log(record);
       this.$router.push({
         name: "checkApp",
-        query: { number: record.appNumber, id: "2" }
+        query: { number: record.id, id: "2" }
       });
     },
     handleCancel() {

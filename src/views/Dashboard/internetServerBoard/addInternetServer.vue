@@ -15,7 +15,10 @@
       >
         <a-input
           size="small"
-          v-decorator="['name']"
+          v-decorator="[
+            'name',
+            { rules: [{ required: true, message: '请输入名称!' }] }
+          ]"
           style="float: left;text-align: left;width: 90%"
         />
       </a-form-item>
@@ -28,7 +31,10 @@
       >
         <a-input
           size="small"
-          v-decorator="['pc_name']"
+          v-decorator="[
+            'pc_name',
+            { rules: [{ required: true, message: '请输入主机名!' }] }
+          ]"
           style="float: left;text-align: left;width: 90%"
         />
         <a-tooltip placement="rightTop">
@@ -79,8 +85,11 @@
         <a-input
           size="small"
           v-decorator="[
-            `names[${k}]`,
+            getName(index),
             {
+              rules: [
+                { required: true, message: '请输入' + getHint(index) + '!' }
+              ],
               validateTrigger: ['change', 'blur']
             }
           ]"
@@ -88,7 +97,7 @@
         />
         <a-tooltip placement="rightTop">
           <template slot="title">
-            {{ getLabel(index) }}
+            {{ getHint(index) }}
           </template>
           <a-icon
             type="exclamation-circle"
@@ -128,9 +137,9 @@ export default {
         if (!err) {
           console.log("Received values of form: ", values);
           if (this.gatewayOn) {
-            console.log(this.gatewayOn);
+            console.log(values);
           } else {
-            console.log(this.gatewayOn);
+            console.log(values);
           }
         }
       });
@@ -167,6 +176,24 @@ export default {
         return "发射频率（Hz）：";
       } else {
         return "发送数据率：";
+      }
+    },
+    getHint(index) {
+      if (index == 0) {
+        return "间隔";
+      } else if (index == 1) {
+        return "发射频率";
+      } else {
+        return "发送数据率";
+      }
+    },
+    getName(index) {
+      if (index == 0) {
+        return "interval";
+      } else if (index == 1) {
+        return "frequency";
+      } else {
+        return "probability";
       }
     },
     stateChange(state) {

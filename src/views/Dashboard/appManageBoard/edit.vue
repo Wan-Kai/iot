@@ -15,7 +15,13 @@
       >
         <a-input
           size="small"
-          v-decorator="['appNumber']"
+          v-decorator="[
+            'id',
+            {
+              rules: [{ required: true, message: '请输入应用编号!' }],
+              initialValue: this.infoData.id
+            }
+          ]"
           style="float: left;text-align: left;width: 90%"
         />
         <a-tooltip placement="rightTop">
@@ -38,7 +44,13 @@
       >
         <a-input
           size="small"
-          v-decorator="['appName']"
+          v-decorator="[
+            'name',
+            {
+              rules: [{ required: true, message: '请输入应用名称!' }],
+              initialValue: this.infoData.name
+            }
+          ]"
           style="float: left;text-align: left;width: 90%"
         />
       </a-form-item>
@@ -51,7 +63,13 @@
       >
         <a-input
           size="small"
-          v-decorator="['capacity']"
+          v-decorator="[
+            'capacity',
+            {
+              rules: [{ required: true, message: '请输入设备分配容量!' }],
+              initialValue: this.infoData.capacity
+            }
+          ]"
           style="float: left;text-align: left;width: 90%"
         />
         <a-tooltip placement="rightTop">
@@ -73,8 +91,12 @@
         :wrapper-col="{ span: 7 }"
       >
         <a-textarea
-          placeholder="请填写应用描述，最多100个汉字"
-          v-decorator="['describe']"
+          v-decorator="[
+            'description',
+            {
+              initialValue: this.infoData.description
+            }
+          ]"
           :rows="4"
           style="float: left;text-align: left;width: 90%"
         />
@@ -84,7 +106,11 @@
           <div class="iot_view_edit_add_form_left">
             <a-button type="primary" html-type="submit">确定</a-button>
             <a-button style="margin-left: 20px" @click="back">取消</a-button>
-            <a-button style="margin-left: 20px" icon="delete" type="danger"
+            <a-button
+              style="margin-left: 20px"
+              icon="delete"
+              type="danger"
+              @click="deleteApp"
               >删除设备</a-button
             >
           </div>
@@ -97,15 +123,58 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      infoData: {
+        id: "",
+        name: "",
+        capacity: "",
+        description: ""
+      }
+    };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
     this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
+
+    this.$api.appManage
+      .getAppDetail({
+        id: this.$route.query.number
+      })
+      .then(res => {
+        this.infoData = res.data.result;
+        console.log(this.infoData);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
-    handleSubmit() {},
-    back() {}
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          this.$api.appManage
+            .updateAppData({
+              id: values.id
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          this.$message.success("成功修改应用:" + values.id);
+          setTimeout(() => {
+            this.$router.push({
+              name: "appManageInit"
+            });
+          }, 500);
+        }
+      });
+    },
+    back() {
+      this.$router.push({
+        name: "appManageInit"
+      });
+    },
+    deleteApp() {}
   }
 };
 </script>

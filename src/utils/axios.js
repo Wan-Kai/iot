@@ -20,6 +20,7 @@ const service = axios.create({
 });
 
 // request拦截器
+// Authorization已在各请求体封装，无需再统一声明
 service.interceptors.request.use(
   config => {
     return config;

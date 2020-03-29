@@ -82,7 +82,7 @@
         style="min-width: auto"
         class="iot_view_nodeManage_table"
         :pagination="pagination"
-        rowKey="id"
+        :rowKey="record => record.uid"
       >
         <span slot="state" slot-scope="tags">
           <a-tag :color="tags === 'on' ? 'green' : 'red'" :key="tags">

@@ -56,10 +56,16 @@ mock.mock(`/admin/node/firstData`, "post", () => {
   return node.FirstPageNodeData;
 });
 //app
-mock.mock(`/admin/app/data`, "post", () => {
+mock.mock(`/api/applications`, "get", () => {
   return app.AppData;
 });
 mock.mock(`/admin/app/details`, "post", () => {
+  return app.AppDetailsData;
+});
+mock.mock(`/admin/app/details`, "put", () => {
+  return app.AppDetailsData;
+});
+mock.mock(`/api/applications`, "post", () => {
   return app.AppDetailsData;
 });
 mock.mock(`/admin/app/detail`, "post", () => {

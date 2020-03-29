@@ -24,7 +24,7 @@
         style="min-width: auto"
         class="iot_view_nlogFlow_table"
         :pagination="pagination"
-        rowKey="id"
+        :rowKey="record => record.uid"
       >
       </a-table>
     </div>

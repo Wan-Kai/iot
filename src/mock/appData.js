@@ -18,10 +18,10 @@ const AppData = Mock.mock({
 const AppDetailData = Mock.mock({
   status: "OK",
   totalCount: "1",
-  appDetail: [
+  "result|1": [
     {
-      appNumber: "0047SDA4DSA",
-      appName: "测试",
+      id: "0047SDA4DSA",
+      name: "测试",
       capacity: "80",
       usedCapacity: "40",
       description: "设备测试",

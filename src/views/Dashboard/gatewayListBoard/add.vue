@@ -328,7 +328,26 @@ export default {
   },
 
   methods: {
-    handleSubmit() {},
+    handleSubmit(e) {
+      e.preventDefault();
+      this.gatewayAddForm.validateFields((err, values) => {
+        if (!err) {
+          this.$api.appManage
+            .appAdd({
+              values
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          this.$message.success("成功创建网关:" + values.gatewayId);
+          setTimeout(() => {
+            this.$router.push({
+              name: "gatewayInit"
+            });
+          }, 500);
+        }
+      });
+    },
     handleBack() {
       this.$router.push("/admin/dashboard/gatewayManage");
     }

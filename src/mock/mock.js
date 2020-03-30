@@ -28,9 +28,12 @@ mock.mock(`/admin/server/message/delete`, "post", () => {
   return serverData.Deleted_Message;
 });
 
-//gatewat
+//gateway
 mock.mock(`/admin/gateway/data`, "post", () => {
   return gateway.GatewayData;
+});
+mock.mock(`/api/gateways`, "post", () => {
+  return gateway.GatewayDetailData;
 });
 mock.mock(`/admin/gateway/ilogFlow/data`, "post", () => {
   return gateway.IlogFlowData;
@@ -43,6 +46,9 @@ mock.mock(`/admin/gateway/gatewayMap/data`, "post", () => {
 mock.mock(`/admin/node/data`, "post", () => {
   return node.NodeData;
 });
+mock.mock(`/api/nodes`, "post", () => {
+  return node.nodeDetailData;
+});
 mock.mock(`/admin/gateway/nlogFlow/data`, "post", () => {
   return node.NlogFlowData;
 });
@@ -50,8 +56,17 @@ mock.mock(`/admin/node/firstData`, "post", () => {
   return node.FirstPageNodeData;
 });
 //app
-mock.mock(`/admin/app/data`, "post", () => {
+mock.mock(`/api/applications`, "get", () => {
   return app.AppData;
+});
+mock.mock(`/admin/app/details`, "post", () => {
+  return app.AppDetailsData;
+});
+mock.mock(`/admin/app/details`, "put", () => {
+  return app.AppDetailsData;
+});
+mock.mock(`/api/applications`, "post", () => {
+  return app.AppDetailsData;
 });
 mock.mock(`/admin/app/detail`, "post", () => {
   return app.AppDetailData;

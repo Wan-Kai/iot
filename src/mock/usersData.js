@@ -2,8 +2,8 @@ import Mock from "mockjs";
 
 const UsersData = Mock.mock({
   status: "OK",
-  type: "ID",
-  "usersData|20": [
+  totalCount: "1",
+  "result|20": [
     {
       phoneNumber: "110",
       name: "张三",

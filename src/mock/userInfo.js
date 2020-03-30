@@ -2,7 +2,7 @@ import Mock from "mockjs";
 
 const userInfo = Mock.mock({
   status: "OK",
-  type: "ID",
+  totalCount: "1",
   admin: [
     {
       username: "test",

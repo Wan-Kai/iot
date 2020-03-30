@@ -126,8 +126,8 @@ const rowSelection = {
 const columns = [
   {
     title: "网关编号",
-    dataIndex: "number",
-    key: "number"
+    dataIndex: "id",
+    key: "id"
   },
   {
     title: "网关名称",
@@ -136,13 +136,13 @@ const columns = [
   },
   {
     title: "网关ID",
-    dataIndex: "id",
-    key: "id"
+    dataIndex: "organizationID",
+    key: "organizationID"
   },
   {
     title: "网络服务器",
-    key: "server",
-    dataIndex: "server"
+    key: "networkServerID",
+    dataIndex: "networkServerID"
   },
   {
     title: "频段/子网类型",
@@ -212,7 +212,7 @@ export default {
         page: 0
       })
       .then(res => {
-        this.interData = res.data.gatewayTableData;
+        this.interData = res.data.result;
       })
       .catch(err => {
         console.log(err);
@@ -222,13 +222,13 @@ export default {
     checkRouter(data) {
       this.$router.push({
         name: "checkGatewayManage",
-        query: { number: data["number"], id: "1" }
+        query: { number: data["id"], id: "1" }
       });
     },
     editRouter(data) {
       this.$router.push({
         name: "checkGatewayManage",
-        query: { number: data["number"], id: "3" }
+        query: { number: data["id"], id: "3" }
       });
     },
     add() {

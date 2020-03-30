@@ -7,6 +7,7 @@
       type="flex"
       justify="space-between"
       align="top"
+      :gutter="16"
     >
       <a-col :span="10">
         <a-row class="iot_view_gatewayList_add_form_content">
@@ -194,11 +195,18 @@
           </a-row>
         </a-row>
       </a-col>
-      <a-col :span="12">
-        <img
-          src="../../../assets/map.png"
-          style="height: 384px;display: inherit"
-        />
+      <a-col :span="14">
+        <div class="iot_amap-gatewayAdd-container">
+          <el-amap
+            vid="gateway_add_map"
+            :center="center"
+            :map-manager="amapManager"
+            :zoom="zoom"
+            :events="events"
+            class="iot_amap_gateawyAdd_demo"
+          >
+          </el-amap>
+        </div>
       </a-col>
     </a-row>
   </a-layout>
@@ -279,6 +287,7 @@ const area_options = [
     ]
   }
 ];
+let amapManager = new VueAMap.AMapManager();
 export default {
   components: { ACol, ARow },
   data() {
@@ -286,7 +295,25 @@ export default {
       internetServer_options,
       communicationMode_options,
       band_options,
-      area_options
+      area_options,
+
+      zoom: 14,
+      center: [114.362272, 30.532565],
+      amapManager,
+      events: {
+        init(map) {
+          //map.setMapStyle("amap://styles/whitesmoke");
+          AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
+            const marker = new SimpleMarker({
+              iconLabel: "A",
+              iconStyle: "blue",
+              map: map,
+              position: map.getCenter()
+            });
+            map.add(marker);
+          });
+        }
+      }
     };
   },
 
@@ -301,7 +328,26 @@ export default {
   },
 
   methods: {
-    handleSubmit() {},
+    handleSubmit(e) {
+      e.preventDefault();
+      this.gatewayAddForm.validateFields((err, values) => {
+        if (!err) {
+          this.$api.appManage
+            .appAdd({
+              values
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          this.$message.success("成功创建网关:" + values.gatewayId);
+          setTimeout(() => {
+            this.$router.push({
+              name: "gatewayInit"
+            });
+          }, 500);
+        }
+      });
+    },
     handleBack() {
       this.$router.push("/admin/dashboard/gatewayManage");
     }
@@ -319,5 +365,12 @@ export default {
 .iot_view_gatewayList_add_formitem {
   margin-bottom: 8px;
   padding-bottom: 0px;
+}
+.iot_amap-gatewayAdd-container {
+  height: 400px;
+  width: 100%;
+}
+.iot_amap_gateawyAdd_demo {
+  height: 400px;
 }
 </style>

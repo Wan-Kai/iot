@@ -16,7 +16,10 @@
         >
           <a-input
             size="small"
-            v-decorator="['appNumber']"
+            v-decorator="[
+              'id',
+              { rules: [{ required: true, message: '请输入应用编号!' }] }
+            ]"
             style="float: left;text-align: left;width: 90%"
           />
           <a-tooltip placement="rightTop">
@@ -39,7 +42,10 @@
         >
           <a-input
             size="small"
-            v-decorator="['appName']"
+            v-decorator="[
+              'name',
+              { rules: [{ required: true, message: '请输入应用名称!' }] }
+            ]"
             style="float: left;text-align: left;width: 90%"
           />
         </a-form-item>
@@ -52,7 +58,10 @@
         >
           <a-input
             size="small"
-            v-decorator="['capacity']"
+            v-decorator="[
+              'capacity',
+              { rules: [{ required: true, message: '请输入设备分配容量!' }] }
+            ]"
             style="float: left;text-align: left;width: 90%"
           />
           <a-tooltip placement="rightTop">
@@ -75,7 +84,7 @@
         >
           <a-textarea
             placeholder="请填写应用描述，最多100个汉字"
-            v-decorator="['describe']"
+            v-decorator="['description']"
             :rows="4"
             style="float: left;text-align: left;width: 90%"
           />
@@ -103,7 +112,26 @@ export default {
     this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
   },
   methods: {
-    handleSubmit() {},
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          this.$api.appManage
+            .appAdd({
+              values
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          this.$message.success("成功创建应用:" + values.id);
+          setTimeout(() => {
+            this.$router.push({
+              name: "appManageInit"
+            });
+          }, 500);
+        }
+      });
+    },
     back() {}
   }
 };

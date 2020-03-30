@@ -20,7 +20,9 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">网络状态</div>
-              <div style="font-size: 12px">在线</div>
+              <div style="font-size: 12px">
+                {{ this.infoData.internalState }}
+              </div>
             </a-col>
           </a-row>
         </a-col>
@@ -34,7 +36,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">信号强度</div>
-              <div style="font-size: 12px">30</div>
+              <div style="font-size: 12px">{{ this.infoData.sign }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -48,7 +50,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">所在网关</div>
-              <div style="font-size: 12px">B454DS51651DS</div>
+              <div style="font-size: 12px">{{ this.infoData.gateway }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -62,7 +64,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">最后心跳时间</div>
-              <div style="font-size: 12px">2017-1-17</div>
+              <div style="font-size: 12px">{{ this.infoData.heartTime }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -105,13 +107,30 @@ export default {
     return {
       number: 0,
 
-      infoData: {},
-      defaultTab: "1"
+      defaultTab: "1",
+
+      infoData: {
+        internalState: "",
+        sign: "",
+        gateway: "",
+        heartTime: ""
+      }
     };
   },
   beforeMount() {
     this.number = this.$route.query.number;
     this.defaultTab = this.$route.query.id;
+
+    this.$api.node
+      .nodeDetailData({
+        id: this.number
+      })
+      .then(res => {
+        this.infoData = res.data.result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {}
 };

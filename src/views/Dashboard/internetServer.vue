@@ -21,7 +21,7 @@
         style="min-width: auto"
         class="iot_view_internetServer_table"
         :pagination="pagination"
-        rowKey="id"
+        :rowKey="record => record.uid"
       >
         //style="min-width: min-content" :scroll="{ x: min-content, y:
         min-content }"
@@ -96,7 +96,7 @@ export default {
         page: 0
       })
       .then(res => {
-        this.interData = res.data.serverData;
+        this.interData = res.data.result;
       })
       .catch(err => {
         console.log(err);

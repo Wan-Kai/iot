@@ -2,14 +2,13 @@ import Mock from "mockjs";
 
 const GatewayData = Mock.mock({
   status: "OK",
-  type: "ID",
-  GatewayDataSize: 4,
-  "gatewayTableData|20": [
+  totalCount: "1",
+  "result|20": [
     {
-      number: "@id",
+      organizationID: "@id",
       name: "Lora",
       id: "@id",
-      server: "服务器1",
+      networkServerID: "服务器1",
       band: "CN-470/CH-00-07",
       "state|1": ["on", "off"],
       up: "",
@@ -19,10 +18,66 @@ const GatewayData = Mock.mock({
   ]
 });
 
+const GatewayDetailData = Mock.mock({
+  status: "OK",
+  totalCount: "1",
+  "result|1": [
+    {
+      internalState: "在线",
+      sign: "30",
+      up: "12",
+      down: "10",
+      heartTime: "2017-1-17",
+
+      number: "temp",
+      name: "temp",
+      id: "temp",
+      internalServer: "temp",
+      massageMode: "temp",
+      band: "temp",
+      state: "temp",
+      single: "temp",
+      addTime: "temp",
+      location: "temp",
+      height: "temp",
+      area: "temp",
+      description: "temp"
+    }
+  ]
+});
+
+const GatewayDetailOtherData = Mock.mock({
+  status: "OK",
+  totalCount: "1",
+  "result|1": [
+    {
+      internalState: "在线",
+      sign: "30",
+      up: "12",
+      down: "10",
+      heartTime: "2017-1-17",
+
+      number: "temp",
+      name: "temp",
+      id: "temp",
+      internalServer: "temp",
+      massageMode: "temp",
+      band: "temp",
+      state: "temp",
+      single: "temp",
+      addTime: "temp",
+      location: "temp",
+      height: "temp",
+      area: "temp",
+      description: "temp"
+    }
+  ]
+});
+
 const IlogFlowData = Mock.mock({
   status: "OK",
-  type: "nodeId",
-  "ilogData|20": [
+  totalCount: "1",
+  "result|20": [
     {
       gatewayId: "B45sadsa45",
       heartTime: "@date('yyyy-MM-dd HH:mm:ss')",
@@ -41,12 +96,18 @@ const IlogFlowData = Mock.mock({
 
 const GatewayMapData = Mock.mock({
   status: "OK",
-  type: "nodeId",
-  "gatewayMapData|20": [
+  totalCount: "1",
+  "result|20": [
     {
       number: "B481FD4566f65465FD"
     }
   ]
 });
 
-export { GatewayData, IlogFlowData, GatewayMapData };
+export {
+  GatewayData,
+  IlogFlowData,
+  GatewayMapData,
+  GatewayDetailData,
+  GatewayDetailOtherData
+};

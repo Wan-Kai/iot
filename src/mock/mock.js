@@ -14,6 +14,9 @@ import * as index from "./index";
 mock.mock(RegExp(`/api/index/mapMarkers` + ".*"), "get", () => {
   return index.mapMarkers;
 });
+mock.mock(RegExp(`/api/index/message` + ".*"), "get", () => {
+  return index.message;
+});
 //internetServer
 mock.mock(RegExp(`/api/network-servers` + ".*"), "get", () => {
   return serverData.ServerData;

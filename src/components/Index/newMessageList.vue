@@ -8,12 +8,14 @@
       </a-col>
       <a-col :span="12">
         <div style="float: right">
-          <a-button size="small" type="primary">未读（{{ massage }}）</a-button>
+          <a-button size="small" type="primary"
+            >未读（ {{ message }} ）</a-button
+          >
         </div>
       </a-col>
     </a-row>
     <a-divider style="margin: 8px 0" />
-    <a-list itemLayout="horizontal" :dataSource="data">
+    <a-list itemLayout="horizontal" :dataSource="interData.list">
       <a-list-item slot="renderItem" slot-scope="item" style="text-align: left">
         <a-list-item-meta>
           <p
@@ -26,9 +28,17 @@
           <p slot="description" class="iot_components_index_massage_p">
             {{ item.time }}
           </p>
-          <a-avatar
+          <img
+            v-if="item.read"
             slot="avatar"
-            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            src="../../assets/hint.png"
+            style="width: 30px;height: 30px"
+          />
+          <img
+            v-if="!item.read"
+            slot="avatar"
+            src="../../assets/nohint.png"
+            style="width: 30px;height: 30px"
           />
         </a-list-item-meta>
       </a-list-item>
@@ -42,47 +52,33 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-
-const data = [
-  {
-    title: "编号",
-    time: "1min"
-  },
-  {
-    title: "编号",
-    time: "2min"
-  },
-  {
-    title: "编号",
-    time: "3min"
-  },
-  {
-    title: "编号",
-    time: "4min"
-  },
-  {
-    title: "编号",
-    time: "5min"
-  },
-  {
-    title: "编号",
-    time: "6min"
-  }
-];
 export default {
   name: "activeNodeList",
   components: { ACol, ARow },
   data() {
     return {
-      massage: 2,
       interData: [],
-      data
+      message: 0
     };
+  },
+  beforeMount() {
+    this.$api.index.message({}).then(res => {
+      this.interData = res.data.result;
+
+      this.interData.list.forEach(item => {
+        if (!item.read) {
+          this.message++;
+        }
+      });
+    });
   },
   methods: {
     checkMessage() {
       this.$router.push("/admin/dashboard/message");
     }
+    // showMessage(){
+    //   this.$message.success("显示信息");
+    // }
   }
 };
 </script>
@@ -96,5 +92,8 @@ export default {
 }
 .ant-list-item {
   padding: 2px 0;
+}
+.ant-list-item-meta-avatar {
+  margin: auto 10px;
 }
 </style>

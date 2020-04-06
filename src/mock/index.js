@@ -21,4 +21,44 @@ const mapMarkers = Mock.mock({
   ]
 });
 
-export { mapMarkers };
+const message = Mock.mock({
+  status: "OK",
+  "result|1": [
+    {
+      list: [
+        {
+          title: "编号",
+          time: "1min",
+          read: true
+        },
+        {
+          title: "编号",
+          time: "2min",
+          read: true
+        },
+        {
+          title: "编号",
+          time: "3min",
+          read: false
+        },
+        {
+          title: "编号",
+          time: "4min",
+          read: true
+        },
+        {
+          title: "编号",
+          time: "5min",
+          read: true
+        },
+        {
+          title: "编号",
+          time: "6min",
+          read: false
+        }
+      ]
+    }
+  ]
+});
+
+export { mapMarkers, message };

@@ -7,9 +7,12 @@ import * as app from "./appData";
 import * as users from "./usersData";
 import * as index from "./index";
 
+/*
 mock.mock(`/api/internal/login`, "post", () => {
   return login.userInfo;
 });
+*/
+
 //index
 mock.mock(`/api/index/mapMarkers`, "get", () => {
   return index.mapMarkers;

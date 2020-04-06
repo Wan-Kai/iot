@@ -91,7 +91,9 @@ export function login(url, data = {}) {
   let sendObject = {
     url: url,
     method: "post",
-    headers: {},
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+    },
     data: data
   };
   //sendObject.data=JSON.stringify(data);

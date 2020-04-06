@@ -1,15 +1,20 @@
 // 引入 axios 封装方法
-import { post, get, put, deletes } from "./axios";
+import { post, get, put, deletes, login } from "./axios";
 
 export default {
   login: {
     login: data => {
-      return post("/admin/login", data);
+      return login("/api/internal/login", data);
+    }
+  },
+  index: {
+    mapMarkers: data => {
+      return get("/api/index/mapMarkers", data);
     }
   },
   interServer: {
     getServerData: data => {
-      return post("/admin/server/data", data);
+      return get("/api/network-servers", data);
     },
     getMessage: data => {
       return post("/admin/server/message", data);

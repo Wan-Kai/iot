@@ -5,13 +5,17 @@ import * as gateway from "./gatewayData";
 import * as node from "./nodeData";
 import * as app from "./appData";
 import * as users from "./usersData";
+import * as index from "./index";
 
-mock.mock(`/admin/login`, "post", () => {
+mock.mock(`/api/internal/login`, "post", () => {
   return login.userInfo;
 });
-
+//index
+mock.mock(`/api/index/mapMarkers`, "get", () => {
+  return index.mapMarkers;
+});
 //internetServer
-mock.mock(`/admin/server/data`, "post", () => {
+mock.mock(`/api/network-servers`, "get", () => {
   return serverData.ServerData;
 });
 mock.mock(`/admin/server/message`, "post", () => {

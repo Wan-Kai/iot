@@ -4,7 +4,7 @@
       <div
         style="background: #2c3e50;width: 100%;min-height: 10%;display: inline-block;padding: 30px 10px"
       >
-        <a-col :span="4" style="padding: 0 28px">
+        <a-col :span="4" style="padding: 0 14px">
           <a-row>
             <a-col :span="12" style="text-align: left">
               <span
@@ -24,18 +24,18 @@
           <a-row>
             <a-col :span="12" style="text-align: left">
               <div class="iot_index_point" style="background-color: #1eaf84" />
-              <span style="color: white;margin-left: 10px">在线</span>
+              <span style="color: white;margin-left: 10px">在线：18</span>
             </a-col>
             <a-col :span="12" style="text-align: right">
               <div class="iot_index_point" style="background-color: grey" />
-              <span style="color: white;margin-left: 10px">掉线</span>
+              <span style="color: white;margin-left: 10px">掉线：2</span>
             </a-col>
           </a-row>
         </a-col>
         <a-col :span="1">
           <div class="iot_divider" />
         </a-col>
-        <a-col :span="4" style="padding: 0 28px">
+        <a-col :span="4" style="padding: 0 14px">
           <a-row>
             <a-col :span="12" style="text-align: left">
               <span
@@ -55,18 +55,18 @@
           <a-row>
             <a-col :span="12" style="text-align: left">
               <div class="iot_index_point" style="background-color: #1eaf84" />
-              <span style="color: white;margin-left: 10px">在线</span>
+              <span style="color: white;margin-left: 10px">在线：2300</span>
             </a-col>
             <a-col :span="12" style="text-align: right">
               <div class="iot_index_point" style="background-color: grey" />
-              <span style="color: white;margin-left: 10px">掉线</span>
+              <span style="color: white;margin-left: 10px">掉线：20</span>
             </a-col>
           </a-row>
         </a-col>
         <a-col :span="1">
           <div class="iot_divider" />
         </a-col>
-        <a-col :span="4" style="padding: 0 28px">
+        <a-col :span="4" style="padding: 0 14px">
           <a-row>
             <a-col :span="12" style="text-align: left">
               <span
@@ -89,7 +89,7 @@
 
     <a-row
       justify="space-between"
-      style="margin-top: 10px;height: 300px"
+      style="margin-top: 10px;height: 400px"
       :gutter="16"
     >
       <a-col :span="16">
@@ -101,7 +101,7 @@
     </a-row>
     <a-row
       justify="space-between"
-      style="margin-top: 10px;height: 300px"
+      style="margin-top: 10px;height: 400px"
       :gutter="16"
     >
       <a-col :span="16">

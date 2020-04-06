@@ -17,7 +17,7 @@
     <div class="iot_view_internetServer_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="interData"
+        :dataSource="infoData"
         style="min-width: auto"
         class="iot_view_internetServer_table"
         :pagination="pagination"
@@ -75,7 +75,16 @@ export default {
   data() {
     return {
       columns,
-      interData: [],
+      infoData: [],
+      getData: [
+        {
+          id: "",
+          name: "",
+          server: "",
+          createdAt: "",
+          updatedAt: ""
+        }
+      ],
 
       pagination: {
         size: "small",
@@ -93,10 +102,52 @@ export default {
   beforeMount() {
     this.$api.interServer
       .getServerData({
-        page: 0
+        limit: 1
       })
       .then(res => {
-        this.interData = res.data.result;
+        this.getData = res.data.result;
+
+        console.log(this.getData);
+
+        let temp = {
+          ID: "",
+          port: "",
+          gateway: "",
+          time: ""
+        };
+
+        for (let i = 0; i < this.getData.length; i++) {
+          console.log(this.getData[i]);
+
+          if (this.getData[i].server.split(":")) {
+            let server = this.getData[i].server.split(":");
+            temp.ID = server[0];
+            temp.port = server[1];
+          } else {
+            temp.ID = this.getData[i].server;
+            temp.port = "";
+          }
+          temp.gateway = "off";
+          temp.time = this.getData[i].createdAt;
+
+          this.infoData.push(temp);
+        }
+        // this.getData.forEach(function(item){
+        //
+        //   if(item.server.split(":")){
+        //     let server = item.server.split(":");
+        //     temp.ID = server[0];
+        //     temp.port = server[1];
+        //   }else{
+        //     temp.ID = item.server;
+        //     temp.port = "";
+        //   }
+        //   temp.time = item.createdAt;
+        //
+        //   infoData.push(temp);
+        // });
+        //
+        console.log(this.infoData);
       })
       .catch(err => {
         console.log(err);

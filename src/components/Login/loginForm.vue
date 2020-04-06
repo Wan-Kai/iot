@@ -18,7 +18,6 @@
           v-decorator="[
             'username',
             {
-              initialValue: username,
               rules: [{ required: true, message: '请输入用户名' }]
             }
           ]"
@@ -33,7 +32,6 @@
           v-decorator="[
             'password',
             {
-              initialValue: password,
               rules: [{ required: true, message: '请输入用户密码' }]
             }
           ]"
@@ -81,31 +79,34 @@ export default {
   data() {
     this.form = this.$form.createForm(this);
     return {
-      username: "123",
-      password: ""
+      infoData: {
+        username: "",
+        password: ""
+      }
     };
   },
   methods: {
     handleSubmit() {
       this.form.validateFields((err, value) => {
+        this.infoData.username = value.username;
+        this.infoData.password = value.password;
         if (!err) {
-          console.log(value);
-          API.login.login(value).then(res => {
+          API.login.login(this.infoData).then(res => {
             this.$message.success("登录成功");
             this.$store.commit("login/setUser", {
-              username: res.data.admin[0]["username"],
-              isLogin: res.data.admin[0]["isLogin"],
-              userId: res.data.admin[0]["userId"],
-              sessionKey: res.data.admin[0]["sessionKey"]
+              // username: res.data.admin[0]["username"],
+              // isLogin: res.data.admin[0]["isLogin"],
+              // userId: res.data.admin[0]["userId"],
+              sessionKey: res.data.jwt
             });
-            console.log(res.data.admin);
-            console.log("gettttttt");
-            let item = this.$store.getters.getLoginState;
-            console.log(item);
-            this.$store.commit("login/setLogin", {
-              isLogin: "1",
-              key: "admin"
-            });
+            // console.log(res.data.admin);
+            // console.log("gettttttt");
+            // let item = this.$store.getters.getLoginState;
+            // console.log(item);
+            // this.$store.commit("login/setLogin", {
+            //   isLogin: "1",
+            //   key: "admin"
+            // });
           });
           setTimeout(() => {
             this.$router.push("/admin/dashboard");

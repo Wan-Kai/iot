@@ -4,12 +4,13 @@ const ServerData = Mock.mock({
   status: "OK",
   type: "ID",
   totalCount: "8",
-  "result|8": [
+  "result|20": [
     {
-      ID: "@ip",
-      "port|0-10000": 1,
-      "gateway|1": ["on", "off"],
-      time: "@date('yyyy-MM-dd HH:mm:ss')"
+      id: "24",
+      name: "test1--",
+      server: "127.0.0.1:8000",
+      createdAt: "2020-04-01T11:26:58.287409Z",
+      updatedAt: "2020-04-01T11:28:07.176773Z"
     }
   ]
 });

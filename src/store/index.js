@@ -8,7 +8,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    isMock: true
+    isMock: false
   },
   mutations: {},
   actions: {},

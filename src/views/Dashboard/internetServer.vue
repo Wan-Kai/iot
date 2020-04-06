@@ -107,8 +107,6 @@ export default {
       .then(res => {
         this.getData = res.data.result;
 
-        console.log(this.getData);
-
         let temp = {
           ID: "",
           port: "",
@@ -117,8 +115,6 @@ export default {
         };
 
         for (let i = 0; i < this.getData.length; i++) {
-          console.log(this.getData[i]);
-
           if (this.getData[i].server.split(":")) {
             let server = this.getData[i].server.split(":");
             temp.ID = server[0];
@@ -132,22 +128,6 @@ export default {
 
           this.infoData.push(temp);
         }
-        // this.getData.forEach(function(item){
-        //
-        //   if(item.server.split(":")){
-        //     let server = item.server.split(":");
-        //     temp.ID = server[0];
-        //     temp.port = server[1];
-        //   }else{
-        //     temp.ID = item.server;
-        //     temp.port = "";
-        //   }
-        //   temp.time = item.createdAt;
-        //
-        //   infoData.push(temp);
-        // });
-        //
-        console.log(this.infoData);
       })
       .catch(err => {
         console.log(err);

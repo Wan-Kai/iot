@@ -46,10 +46,10 @@ import {
 } from "ant-design-vue";
 
 //需要开启mock数据时，在store/util.state.mock开启
-if (store.getters.getIsMock) {
-  require("./mock/mock");
-}
-
+// if (store.getters.getIsMock) {
+//   require("./mock/mock");
+// }
+require("./mock/mock");
 Vue.use(Button);
 Vue.use(Layout);
 Vue.use(Menu);

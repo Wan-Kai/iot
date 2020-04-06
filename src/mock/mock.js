@@ -7,79 +7,78 @@ import * as app from "./appData";
 import * as users from "./usersData";
 import * as index from "./index";
 
-mock.mock(`/api/internal/login`, "post", () => {
-  return login.userInfo;
-});
-
+// mock.mock(`/api/internal/login`, "post", () => {
+//   return login.userInfo;
+// });
 //index
-mock.mock(`/api/index/mapMarkers`, "get", () => {
+mock.mock(RegExp(`/api/index/mapMarkers` + ".*"), "get", () => {
   return index.mapMarkers;
 });
 //internetServer
-mock.mock(`/api/network-servers`, "get", () => {
+mock.mock(RegExp(`/api/network-servers` + ".*"), "get", () => {
   return serverData.ServerData;
 });
-mock.mock(`/admin/server/message`, "post", () => {
+mock.mock(`/api/admin/server/message`, "post", () => {
   return serverData.Message;
 });
-mock.mock(`/admin/server/check`, "post", () => {
+mock.mock(`/api/admin/server/check`, "post", () => {
   return serverData.Check;
 });
 //message
-mock.mock(`/admin/server/message/detail`, "post", () => {
+mock.mock(`/api/admin/server/message/detail`, "post", () => {
   return serverData.Message_Detail;
 });
-mock.mock(`/admin/server/message/delete`, "post", () => {
+mock.mock(`/api/admin/server/message/delete`, "post", () => {
   return serverData.Deleted_Message;
 });
 
 //gateway
-mock.mock(`/admin/gateway/data`, "post", () => {
+mock.mock(`/api/admin/gateway/data`, "post", () => {
   return gateway.GatewayData;
 });
-mock.mock(`/api/gateways`, "post", () => {
+mock.mock(`/api/api/gateways`, "post", () => {
   return gateway.GatewayDetailData;
 });
-mock.mock(`/admin/gateway/ilogFlow/data`, "post", () => {
+mock.mock(`/api/admin/gateway/ilogFlow/data`, "post", () => {
   return gateway.IlogFlowData;
 });
-mock.mock(`/admin/gateway/gatewayMap/data`, "post", () => {
+mock.mock(`/api/admin/gateway/gatewayMap/data`, "post", () => {
   return gateway.GatewayMapData;
 });
 
 //node
-mock.mock(`/admin/node/data`, "post", () => {
+mock.mock(`/api/admin/node/data`, "post", () => {
   return node.NodeData;
 });
-mock.mock(`/api/api/nodes`, "post", () => {
+mock.mock(`/api/nodes`, "post", () => {
   return node.nodeDetailData;
 });
-mock.mock(`/admin/gateway/nlogFlow/data`, "post", () => {
+mock.mock(`/api/admin/gateway/nlogFlow/data`, "post", () => {
   return node.NlogFlowData;
 });
-mock.mock(`/admin/node/firstData`, "post", () => {
+mock.mock(`/api/admin/node/firstData`, "post", () => {
   return node.FirstPageNodeData;
 });
 //app
-mock.mock(`/api/applications`, "get", () => {
+mock.mock(RegExp(`/api/applications` + ".*"), "get", () => {
   return app.AppData;
 });
-mock.mock(`/admin/app/details`, "post", () => {
+mock.mock(`/api/admin/app/details`, "post", () => {
   return app.AppDetailsData;
 });
-mock.mock(`/admin/app/details`, "put", () => {
+mock.mock(`/api/admin/app/details`, "put", () => {
   return app.AppDetailsData;
 });
 mock.mock(`/api/applications`, "post", () => {
   return app.AppDetailsData;
 });
-mock.mock(`/admin/app/detail`, "post", () => {
+mock.mock(`/api/admin/app/detail`, "post", () => {
   return app.AppDetailData;
 });
-mock.mock(`/admin/app/nodeData`, "post", () => {
+mock.mock(`/api/admin/app/nodeData`, "post", () => {
   return app.AppNodeData;
 });
 //users
-mock.mock(`/admin/users/data`, "post", () => {
+mock.mock(`/api/admin/users/data`, "post", () => {
   return users.UsersData;
 });

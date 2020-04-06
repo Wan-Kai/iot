@@ -42,8 +42,9 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     let res = {};
-    res.status = response.status;
-    res.data = response.data;
+    // res.status = response.status;
+    // res.data = response.data;
+    res = response;
     return res;
   },
   error => {
@@ -61,28 +62,16 @@ service.interceptors.response.use(
 //get方法
 export function get(url, data = {}) {
   data.IERealTime = new Date().getTime(); //get方法加一个时间参数,解决ie下可能缓存问题.
-  if (store.getters.getIsMock) {
-    let sendObject = {
-      url: url,
-      method: "get",
-      headers: {
-        Authorization: store.getters.getSessionkey
-      }
-    };
-    // sendObject.data=JSON.stringify(data);
-    return service(sendObject).catch(() => {});
-  } else {
-    let sendObject = {
-      url: url,
-      method: "get",
-      params: data,
-      headers: {
-        Authorization: store.getters.getSessionkey
-      }
-    };
-    // sendObject.data=JSON.stringify(data);
-    return service(sendObject).catch(() => {});
-  }
+  let sendObject = {
+    url: url,
+    method: "get",
+    params: data,
+    headers: {
+      Authorization: store.getters.getSessionkey
+    }
+  };
+  // sendObject.data=JSON.stringify(data);
+  return service(sendObject).catch(() => {});
 }
 
 //login
@@ -129,26 +118,14 @@ export function put(url, data = {}) {
 
 //删除方法(resfulAPI常用)
 export function deletes(url, data = {}) {
-  if (store.getters.getIsMock) {
-    let sendObject = {
-      url: url,
-      method: "delete",
-      headers: {
-        Authorization: store.getters.getSessionkey
-      }
-    };
-    // sendObject.data=JSON.stringify(data);
-    return service(sendObject).catch(() => {});
-  } else {
-    let sendObject = {
-      url: url,
-      method: "delete",
-      params: data,
-      headers: {
-        Authorization: store.getters.getSessionkey
-      }
-    };
-    // sendObject.data=JSON.stringify(data);
-    return service(sendObject).catch(() => {});
-  }
+  let sendObject = {
+    url: url,
+    method: "delete",
+    params: data,
+    headers: {
+      Authorization: store.getters.getSessionkey
+    }
+  };
+  // sendObject.data=JSON.stringify(data);
+  return service(sendObject).catch(() => {});
 }

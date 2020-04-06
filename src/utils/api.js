@@ -4,17 +4,17 @@ import { post, get, put, deletes, login } from "./axios";
 export default {
   login: {
     login: data => {
-      return login("/api/internal/login", data);
+      return login("/internal/login", data);
     }
   },
   index: {
     mapMarkers: data => {
-      return get("/api/index/mapMarkers", data);
+      return get("/index/mapMarkers", data);
     }
   },
   interServer: {
     getServerData: data => {
-      return get("/api/network-servers", data);
+      return get("/network-servers", data);
     },
     getMessage: data => {
       return post("/admin/server/message", data);

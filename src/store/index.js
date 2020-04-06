@@ -29,6 +29,7 @@ export default new Vuex.Store({
       return "未定义";
     },
     getIsMock: () => util.state.mock,
+    getIsLogin: () => login.state.all.isLogin,
     getSessionkey: () => login.state.all.sessionKey,
     getPhoneNumber: () => retrieve.state.step1.phoneNumber,
     getLoginState: () => login.state.all,

@@ -39,7 +39,6 @@ export default {
           zoom: this.mapData.zoom,
           center: this.mapData.center
         });
-        //
         let startIcon = new AMap.Icon({
           // 图标尺寸
           size: new AMap.Size(25, 25),

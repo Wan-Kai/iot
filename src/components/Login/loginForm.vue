@@ -74,7 +74,6 @@
 
 <script>
 import API from "../../utils/api";
-
 export default {
   data() {
     this.form = this.$form.createForm(this);
@@ -82,8 +81,7 @@ export default {
       infoData: {
         username: "",
         password: ""
-      },
-      isLogin: false
+      }
     };
   },
   methods: {
@@ -93,30 +91,26 @@ export default {
         this.infoData.password = value.password;
         if (!err) {
           API.login.login(this.infoData).then(res => {
-            this.isLogin = true;
-            if (res.data.jwt) {
+            if (res) {
               this.$message.success("登录成功");
               this.$store.commit("login/setUser", {
-                // username: res.data.admin[0]["username"],
-                // isLogin: res.data.admin[0]["isLogin"],
-                // userId: res.data.admin[0]["userId"],
                 sessionKey: res.data.jwt
               });
 
               setTimeout(() => {
                 this.$router.push("/admin/dashboard");
               }, 300);
+              return true;
+            } else {
+              this.$message.error("请检查用户名和密码!");
             }
             // let item = this.$store.getters.getLoginState;
             // console.log(item);
             // this.$store.commit("login/setLogin", {
             //   isLogin: "1",
-            //   key: "admin"
+            //   key:s "admin"
             // });
           });
-          if (!this.isLogin) {
-            this.$message.error("登录失败!");
-          }
         } else {
           console.log("Login Form in wrong");
           this.$message.error("登录失败!");

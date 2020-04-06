@@ -48,7 +48,7 @@ const nodeDetailData = Mock.mock({
 const FirstPageNodeData = Mock.mock({
   status: "OK",
   totalCount: "1",
-  "result|5": [
+  "result|10": [
     {
       nodeNumber: "8808",
       upTime: "@date('yyyy-MM-dd HH:mm:ss')"

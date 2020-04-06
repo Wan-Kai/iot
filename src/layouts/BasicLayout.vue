@@ -144,7 +144,6 @@ export default {
     getName() {
       this.list = [];
       this.$route.matched.forEach(record => this.list.push(record));
-      console.log(this.list);
       this.name = this.$route.name;
     }
   },

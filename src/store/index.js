@@ -2,22 +2,34 @@ import Vue from "vue";
 import Vuex from "vuex";
 import login from "./login";
 import retrieve from "./retrieve";
+import util from "./util";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    isMock: true
+  },
   mutations: {},
   actions: {},
   modules: {
     login,
-    retrieve
+    retrieve,
+    util
   },
   getters: {
-    getAttr: state => key => {
-      if (!state[key]) state[key] = JSON.parse(localStorage.getItem(key));
-      return state.login.all[key];
+    // getAttr: state => key => {
+    //   if (!state[key]) state[key] = JSON.parse(localStorage.getItem(key));
+    //   return state.login.all[key];
+    // },
+    getAttr(key) {
+      if (login.state.all[key]) {
+        return login.state.all[key];
+      }
+      return "未定义";
     },
+    getIsMock: () => util.state.mock,
+    getSessionkey: () => login.state.all.sessionKey,
     getPhoneNumber: () => retrieve.state.step1.phoneNumber,
     getLoginState: () => login.state.all,
     getRetrieveNote: () => retrieve.state.step1.note,

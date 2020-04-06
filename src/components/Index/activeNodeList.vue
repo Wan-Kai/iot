@@ -1,5 +1,5 @@
 <template>
-  <div style="background: #fff;height: 300px;padding: 10px 10px">
+  <div style="background: #fff;height: 400px;padding: 10px 10px">
     <a-row>
       <a-col :span="12">
         <div style="float: left">
@@ -49,7 +49,7 @@ export default {
         page: 0
       })
       .then(res => {
-        this.interData = res.data.firstPageNodeData;
+        this.interData = res.data.result.slice(0, 8);
       })
       .catch(err => {
         console.log(err);

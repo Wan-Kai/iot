@@ -1,5 +1,5 @@
 <template>
-  <div style="background: #fff;height: 300px;padding: 10px 10px">
+  <div style="background: #fff;height: 400px;padding: 10px 10px">
     <a-row>
       <a-col :span="12">
         <div style="float: left">
@@ -24,7 +24,7 @@
             {{ item.title }}
           </p>
           <p slot="description" class="iot_components_index_massage_p">
-            {{ item.title }}
+            {{ item.time }}
           </p>
           <a-avatar
             slot="avatar"
@@ -45,16 +45,28 @@ import ACol from "ant-design-vue/es/grid/Col";
 
 const data = [
   {
-    title: "编号"
+    title: "编号",
+    time: "1min"
   },
   {
-    title: "编号"
+    title: "编号",
+    time: "2min"
   },
   {
-    title: "编号"
+    title: "编号",
+    time: "3min"
   },
   {
-    title: "编号"
+    title: "编号",
+    time: "4min"
+  },
+  {
+    title: "编号",
+    time: "5min"
+  },
+  {
+    title: "编号",
+    time: "6min"
   }
 ];
 export default {

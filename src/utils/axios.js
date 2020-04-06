@@ -3,12 +3,13 @@ import store from "../store/index";
 
 // 环境的切换
 if (process.env.NODE_ENV === "development") {
-  //TODO
-  axios.defaults.baseURL = "";
+  if (!store.getters.getIsMock) {
+    axios.defaults.baseURL = "/api";
+  }
 } else if (process.env.NODE_ENV === "debug") {
-  axios.defaults.baseURL = "";
+  axios.defaults.baseURL = "/pro";
 } else if (process.env.NODE_ENV === "production") {
-  axios.defaults.baseURL = "";
+  axios.defaults.baseURL = "/pro";
 }
 
 // 项目地址加端口
@@ -23,6 +24,14 @@ const service = axios.create({
 // Authorization已在各请求体封装，无需再统一声明
 service.interceptors.request.use(
   config => {
+    config.headers["Access-Control-Allow-Origin"] = "*";
+    config.headers["Access-Control-Allow-Headers"] =
+      "Accept, Origin, XRequestedWith, Content-Type, LastModified";
+    config.headers["Access-Control-Allow-Methods"] =
+      "PUT,POST,GET,DELETE,OPTIONS";
+    // config.changeOrigin = true;
+    // config.supportsCredentials = true;
+
     return config;
   },
   error => {
@@ -52,14 +61,41 @@ service.interceptors.response.use(
 //get方法
 export function get(url, data = {}) {
   data.IERealTime = new Date().getTime(); //get方法加一个时间参数,解决ie下可能缓存问题.
-  return service({
+  if (store.getters.getIsMock) {
+    let sendObject = {
+      url: url,
+      method: "get",
+      headers: {
+        Authorization: store.getters.getSessionkey
+      }
+    };
+    // sendObject.data=JSON.stringify(data);
+    return service(sendObject);
+  } else {
+    let sendObject = {
+      url: url,
+      method: "get",
+      params: data,
+      headers: {
+        Authorization: store.getters.getSessionkey
+      }
+    };
+    // sendObject.data=JSON.stringify(data);
+    return service(sendObject);
+  }
+}
+
+//login
+export function login(url, data = {}) {
+  //默认配置
+  let sendObject = {
     url: url,
-    method: "get",
-    headers: {
-      Authorization: store.getters.getAttr("sessionKey")
-    },
+    method: "post",
+    headers: {},
     data: data
-  });
+  };
+  //sendObject.data=JSON.stringify(data);
+  return service(sendObject).catch(() => {});
 }
 
 //封装post请求
@@ -70,12 +106,12 @@ export function post(url, data = {}) {
     method: "post",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: store.getters.getAttr("sessionKey")
+      Authorization: store.getters.getSessionkey
     },
     data: data
   };
   // sendObject.data=JSON.stringify(data);
-  return service(sendObject);
+  return service(sendObject).catch(() => {});
 }
 
 //封装put方法
@@ -85,19 +121,34 @@ export function put(url, data = {}) {
     method: "put",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: store.getters.getAttr("sessionKey")
+      Authorization: store.getters.getSessionkey
     },
     data: JSON.stringify(data)
   });
 }
 
 //删除方法(resfulAPI常用)
-export function deletes(url) {
-  return service({
-    url: url,
-    method: "delete",
-    headers: {
-      Authorization: store.getters.getAttr("sessionKey")
-    }
-  });
+export function deletes(url, data = {}) {
+  if (store.getters.getIsMock) {
+    let sendObject = {
+      url: url,
+      method: "delete",
+      headers: {
+        Authorization: store.getters.getSessionkey
+      }
+    };
+    // sendObject.data=JSON.stringify(data);
+    return service(sendObject);
+  } else {
+    let sendObject = {
+      url: url,
+      method: "delete",
+      params: data,
+      headers: {
+        Authorization: store.getters.getSessionkey
+      }
+    };
+    // sendObject.data=JSON.stringify(data);
+    return service(sendObject);
+  }
 }

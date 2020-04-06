@@ -1,5 +1,5 @@
 <template>
-  <div style="width: available;height: 300px">
+  <div style="width: available;height: 400px">
     <div
       id="gatewayChart"
       :style="{ height: '100%', background: '#fff', padding: '10px 10px' }"

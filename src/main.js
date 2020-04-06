@@ -45,9 +45,10 @@ import {
   List
 } from "ant-design-vue";
 
-require("./mock/mock");
-
-Vue.use(VueAMap);
+//需要开启mock数据时，在store/util.state.mock开启
+if (store.getters.getIsMock) {
+  require("./mock/mock");
+}
 
 Vue.use(Button);
 Vue.use(Layout);
@@ -102,6 +103,14 @@ VueAMap.initAMapApiLoader({
   v: "1.4.4",
   uiVersion: "1.0.11" // 版本号
 });
+
+const amapKeys = Object.keys(localStorage).filter(key => key.match(/^_AMap_/));
+
+amapKeys.forEach(key => {
+  // console.log(key)
+  localStorage.removeItem(key);
+});
+Vue.use(VueAMap);
 
 new Vue({
   router,

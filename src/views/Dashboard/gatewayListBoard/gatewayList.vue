@@ -209,7 +209,10 @@ export default {
   beforeMount() {
     this.$api.gateway
       .gatewayData({
-        page: 0
+        limit: 1,
+        offset: 1,
+        organizationID: 1,
+        search: 1
       })
       .then(res => {
         this.interData = res.data.result;

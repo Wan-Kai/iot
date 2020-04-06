@@ -1,9 +1,5 @@
-/**
- *  存放找回密码数据
- * **/
-
 const state = {
-  mock: true
+  mock: false
 };
 
 const getters = {};

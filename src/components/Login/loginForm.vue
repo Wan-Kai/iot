@@ -92,13 +92,21 @@ export default {
         this.infoData.password = value.password;
         if (!err) {
           API.login.login(this.infoData).then(res => {
-            this.$message.success("登录成功");
-            this.$store.commit("login/setUser", {
-              // username: res.data.admin[0]["username"],
-              // isLogin: res.data.admin[0]["isLogin"],
-              // userId: res.data.admin[0]["userId"],
-              sessionKey: res.data.jwt
-            });
+            if (res.data.jwt) {
+              this.$message.success("登录成功");
+              this.$store.commit("login/setUser", {
+                // username: res.data.admin[0]["username"],
+                // isLogin: res.data.admin[0]["isLogin"],
+                // userId: res.data.admin[0]["userId"],
+                sessionKey: res.data.jwt
+              });
+              setTimeout(() => {
+                this.$router.push("/admin/dashboard");
+              }, 300);
+            } else {
+              this.$message.error("登录失败!");
+            }
+
             // console.log(res.data.admin);
             // console.log("gettttttt");
             // let item = this.$store.getters.getLoginState;
@@ -108,9 +116,6 @@ export default {
             //   key: "admin"
             // });
           });
-          setTimeout(() => {
-            this.$router.push("/admin/dashboard");
-          }, 300);
         } else {
           console.log("Login Form in wrong");
           this.$message.error("登录失败!");

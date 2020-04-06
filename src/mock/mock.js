@@ -50,7 +50,7 @@ mock.mock(`/admin/gateway/gatewayMap/data`, "post", () => {
 mock.mock(`/admin/node/data`, "post", () => {
   return node.NodeData;
 });
-mock.mock(`/api/nodes`, "post", () => {
+mock.mock(`/api/api/nodes`, "post", () => {
   return node.nodeDetailData;
 });
 mock.mock(`/admin/gateway/nlogFlow/data`, "post", () => {

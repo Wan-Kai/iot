@@ -95,7 +95,7 @@ export function login(url, data = {}) {
     data: data
   };
   //sendObject.data=JSON.stringify(data);
-  return service(sendObject).catch(() => {});
+  return service(sendObject);
 }
 
 //封装post请求

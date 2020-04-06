@@ -70,7 +70,7 @@ export function get(url, data = {}) {
       }
     };
     // sendObject.data=JSON.stringify(data);
-    return service(sendObject);
+    return service(sendObject).catch(() => {});
   } else {
     let sendObject = {
       url: url,
@@ -81,7 +81,7 @@ export function get(url, data = {}) {
       }
     };
     // sendObject.data=JSON.stringify(data);
-    return service(sendObject);
+    return service(sendObject).catch(() => {});
   }
 }
 
@@ -91,13 +91,11 @@ export function login(url, data = {}) {
   let sendObject = {
     url: url,
     method: "post",
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-    },
+    headers: {},
     data: data
   };
   //sendObject.data=JSON.stringify(data);
-  return service(sendObject);
+  return service(sendObject).catch(() => {});
 }
 
 //封装post请求
@@ -140,7 +138,7 @@ export function deletes(url, data = {}) {
       }
     };
     // sendObject.data=JSON.stringify(data);
-    return service(sendObject);
+    return service(sendObject).catch(() => {});
   } else {
     let sendObject = {
       url: url,
@@ -151,6 +149,6 @@ export function deletes(url, data = {}) {
       }
     };
     // sendObject.data=JSON.stringify(data);
-    return service(sendObject);
+    return service(sendObject).catch(() => {});
   }
 }

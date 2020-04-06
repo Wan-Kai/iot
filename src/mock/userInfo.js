@@ -5,10 +5,11 @@ const userInfo = Mock.mock({
   totalCount: "1",
   admin: [
     {
-      username: "test",
+      username: "admin",
       isLogin: "in",
       sessionKey: "admin",
-      userId: "admin"
+      userId: "admin",
+      jwt: ""
     }
   ]
 });

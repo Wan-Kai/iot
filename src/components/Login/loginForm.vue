@@ -82,7 +82,8 @@ export default {
       infoData: {
         username: "",
         password: ""
-      }
+      },
+      isLogin: false
     };
   },
   methods: {
@@ -92,6 +93,7 @@ export default {
         this.infoData.password = value.password;
         if (!err) {
           API.login.login(this.infoData).then(res => {
+            this.isLogin = true;
             if (res.data.jwt) {
               this.$message.success("登录成功");
               this.$store.commit("login/setUser", {
@@ -100,15 +102,11 @@ export default {
                 // userId: res.data.admin[0]["userId"],
                 sessionKey: res.data.jwt
               });
+
               setTimeout(() => {
                 this.$router.push("/admin/dashboard");
               }, 300);
-            } else {
-              this.$message.error("登录失败!");
             }
-
-            // console.log(res.data.admin);
-            // console.log("gettttttt");
             // let item = this.$store.getters.getLoginState;
             // console.log(item);
             // this.$store.commit("login/setLogin", {
@@ -116,6 +114,9 @@ export default {
             //   key: "admin"
             // });
           });
+          if (!this.isLogin) {
+            this.$message.error("登录失败!");
+          }
         } else {
           console.log("Login Form in wrong");
           this.$message.error("登录失败!");

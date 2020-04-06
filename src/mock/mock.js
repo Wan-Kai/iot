@@ -7,7 +7,7 @@ import * as app from "./appData";
 import * as users from "./usersData";
 import * as index from "./index";
 
-mock.mock(`/api/api/internal/login`, "post", () => {
+mock.mock(`/api/internal/login`, "post", () => {
   return login.userInfo;
 });
 

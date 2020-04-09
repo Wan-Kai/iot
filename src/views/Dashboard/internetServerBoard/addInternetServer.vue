@@ -109,7 +109,9 @@
       <a-row>
         <a-col :span="7" :offset="3">
           <div class="iot_view_internetServer_add_form_left">
-            <a-button type="primary" html-type="submit">确定</a-button>
+            <a-button type="primary" html-type="submit" :loading="commitLoading"
+              >确定</a-button
+            >
             <a-button style="margin-left: 30px" @click="back">取消</a-button>
           </div>
         </a-col>
@@ -123,7 +125,8 @@ let id = 0;
 export default {
   data() {
     return {
-      gatewayOn: false
+      gatewayOn: false,
+      commitLoading: false
     };
   },
   beforeCreate() {
@@ -133,6 +136,7 @@ export default {
   methods: {
     handleSubmit(e) {
       e.preventDefault();
+      this.commitLoading = true;
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
@@ -151,39 +155,43 @@ export default {
               networkServer: values
             })
             .then(res => {
-              console.log(res);
-              this.$message.success("成功创建新服务器");
+              if (res) {
+                this.commitLoading = false;
+                this.$message.success("成功创建新服务器");
 
-              setTimeout(() => {
-                this.$router.push("/admin/dashboard/internetServer");
-              }, 100);
+                // setTimeout(() => {
+                //   this.$router.push("/admin/dashboard/internetServer");
+                // }, 100);
 
-              this.$api.interServer
-                .getServerData({
-                  limit: 100
-                })
-                .then(res => {
-                  let getData = res.data.result;
+                this.$api.interServer
+                  .getServerData({
+                    limit: 100
+                  })
+                  .then(res => {
+                    let getData = res.data.result;
 
-                  let netServerData = [];
-                  let temp = {
-                    server: "",
-                    id: "",
-                    name: ""
-                  };
+                    let netServerData = [];
+                    let temp = {
+                      server: "",
+                      id: "",
+                      name: ""
+                    };
 
-                  for (let i = 0; i < getData.length; i++) {
-                    temp.server = getData[i].server;
-                    temp.id = getData[i].id;
-                    temp.name = getData[i].name;
-                    netServerData.push(temp);
-                  }
-                  this.$store.commit("util/setNetServer", netServerData);
-                });
+                    for (let i = 0; i < getData.length; i++) {
+                      temp.server = getData[i].server;
+                      temp.id = getData[i].id;
+                      temp.name = getData[i].name;
+                      netServerData.push(temp);
+                    }
+                    this.$store.commit("util/setNetServer", netServerData);
+                  });
+              } else {
+                this.commitLoading = false;
+                this.$message.error("创建服务器失败");
+              }
             })
             .catch(err => {
               console.log(err);
-              this.$message.error(err.data.error);
             });
         }
       });

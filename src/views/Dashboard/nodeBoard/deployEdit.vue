@@ -357,15 +357,7 @@
           </a-form>
         </div>
         <div class="iot_amap-nodeEdit-container">
-          <el-amap
-            vid="note_edit_map"
-            :center="center"
-            :map-manager="amapManager"
-            :zoom="zoom"
-            :events="events"
-            class="iot_amap_nodeEdit_demo"
-          >
-          </el-amap>
+          <el-amap vid="note_edit_map"> </el-amap>
         </div>
       </a-col>
     </a-row>
@@ -375,6 +367,7 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
+import wifi_map from "../../../assets/wifi.png";
 let id = 0;
 const state_options = [
   {
@@ -458,7 +451,6 @@ const area_option = [
     ]
   }
 ];
-let amapManager = new VueAMap.AMapManager();
 export default {
   components: { ACol, ARow },
   data() {
@@ -472,23 +464,7 @@ export default {
       areaShow: false,
       value: 1,
 
-      zoom: 14,
-      center: [114.362272, 30.532565],
-      amapManager,
-      events: {
-        init(map) {
-          //map.setMapStyle("amap://styles/whitesmoke");
-          AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
-            const marker = new SimpleMarker({
-              iconLabel: "A",
-              iconStyle: "blue",
-              map: map,
-              position: map.getCenter()
-            });
-            map.add(marker);
-          });
-        }
-      }
+      mapData: []
     };
   },
 
@@ -507,6 +483,38 @@ export default {
       initialValue: [],
       preserve: true
     });
+  },
+
+  beforeMount() {
+    this.$api.index
+      .mapMarkers({})
+      .then(res => {
+        this.mapData = res.data.result;
+        let mapObj = new AMap.Map("note_edit_map", {
+          // eslint-disable-line no-unused-vars
+          resizeEnable: true, //自适应大小
+          zoom: this.mapData.zoom,
+          center: this.mapData.center
+        });
+        let startIcon = new AMap.Icon({
+          // 图标尺寸
+          size: new AMap.Size(25, 25),
+          // 图标的取图地址
+          image: wifi_map, // 您自己的图标
+          // 图标所用图片大小
+          imageSize: new AMap.Size(25, 25)
+        });
+        const marker = new AMap.Marker({
+          // eslint-disable-line no-unused-vars
+          map: mapObj,
+          icon: startIcon,
+          position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          title: "网关"
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
 
   methods: {

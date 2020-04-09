@@ -73,7 +73,6 @@
 </template>
 
 <script>
-import API from "../../utils/api";
 export default {
   data() {
     this.form = this.$form.createForm(this);
@@ -84,33 +83,66 @@ export default {
       }
     };
   },
+
+  beforeMount() {},
+
   methods: {
     handleSubmit() {
       this.form.validateFields((err, value) => {
         this.infoData.username = value.username;
         this.infoData.password = value.password;
         if (!err) {
-          API.login.login(this.infoData).then(res => {
-            if (res) {
-              this.$message.success("登录成功");
-              this.$store.commit("login/setUser", {
-                sessionKey: res.data.jwt
-              });
+          this.$api.login
+            .login(this.infoData)
+            .then(res => {
+              if (res) {
+                this.$message.success("登录成功");
+                this.$store.commit("login/setUser", {
+                  sessionKey: res.data.jwt
+                });
 
-              setTimeout(() => {
-                this.$router.push("/admin/dashboard");
-              }, 300);
-              return true;
-            } else {
-              this.$message.error("请检查用户名和密码!");
-            }
-            // let item = this.$store.getters.getLoginState;
-            // console.log(item);
-            // this.$store.commit("login/setLogin", {
-            //   isLogin: "1",
-            //   key:s "admin"
-            // });
-          });
+                this.$api.interServer
+                  .getServerData({
+                    limit: 100
+                  })
+                  .then(res => {
+                    let getData = res.data.result;
+
+                    let netServerData = [];
+                    let temp = {
+                      server: "",
+                      id: "",
+                      name: ""
+                    };
+
+                    for (let i = 0; i < getData.length; i++) {
+                      temp.server = getData[i].server;
+                      temp.id = getData[i].id;
+                      temp.name = getData[i].name;
+                      netServerData.push(temp);
+                    }
+                    this.$store.commit("util/setNetServer", netServerData);
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
+
+                setTimeout(() => {
+                  this.$router.push("/admin/dashboard");
+                }, 300);
+              } else {
+                this.$message.error("请检查用户名和密码!");
+              }
+              // let item = this.$store.getters.getLoginState;
+              // console.log(item);
+              // this.$store.commit("login/setLogin", {
+              //   isLogin: "1",
+              //   key:s "admin"
+              // });
+            })
+            .catch(err => {
+              console.log(err);
+            });
         } else {
           console.log("Login Form in wrong");
           this.$message.error("登录失败!");

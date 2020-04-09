@@ -41,7 +41,10 @@ const GatewayDetailData = Mock.mock({
       location: "temp",
       height: "temp",
       area: "temp",
-      description: "temp"
+      description: "temp",
+
+      zoom: 14,
+      center: [114.362272, 30.532565]
     }
   ]
 });

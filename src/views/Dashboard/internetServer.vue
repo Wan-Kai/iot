@@ -22,6 +22,7 @@
         class="iot_view_internetServer_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
+        :loading="loadingState"
       >
         //style="min-width: min-content" :scroll="{ x: min-content, y:
         min-content }"
@@ -44,9 +45,14 @@
 <script>
 const columns = [
   {
+    title: "ID",
+    dataIndex: "id",
+    key: "id"
+  },
+  {
     title: "主机名",
-    dataIndex: "ID",
-    key: "ID"
+    dataIndex: "IP",
+    key: "IP"
   },
   {
     title: "端口",
@@ -76,9 +82,11 @@ export default {
     return {
       columns,
       infoData: [],
+      loadingState: true,
       getData: [
         {
           id: "",
+          IP: "",
           name: "",
           server: "",
           createdAt: "",
@@ -102,32 +110,34 @@ export default {
   beforeMount() {
     this.$api.interServer
       .getServerData({
-        limit: 1
+        limit: 10
       })
       .then(res => {
         this.getData = res.data.result;
 
         let temp = {
-          ID: "",
+          id: "",
+          IP: "",
           port: "",
           gateway: "",
           time: ""
         };
-
         for (let i = 0; i < this.getData.length; i++) {
           if (this.getData[i].server.split(":")) {
             let server = this.getData[i].server.split(":");
-            temp.ID = server[0];
+            temp.IP = server[0];
             temp.port = server[1];
           } else {
-            temp.ID = this.getData[i].server;
+            temp.IP = this.getData[i].server;
             temp.port = "";
           }
           temp.gateway = "off";
           temp.time = this.getData[i].createdAt;
+          temp.id = this.getData[i].id;
 
           this.infoData.push(temp);
         }
+        this.loadingState = false;
       })
       .catch(err => {
         console.log(err);
@@ -140,18 +150,16 @@ export default {
       }, 100);
     },
     checkRouter(data) {
-      let id = data["ID"];
-      this.$router.push(
-        "/admin/dashboard/internetServer/check/".concat(id.toString())
-      );
-      console.log(id);
+      this.$router.push({
+        name: "checkInternetServer",
+        query: { nid: data["id"], server: data["IP"] }
+      });
     },
     editRouter(data) {
-      let id = data["ID"];
-      this.$router.push(
-        "/admin/dashboard/internetServer/edit/".concat(id.toString())
-      );
-      console.log(data);
+      this.$router.push({
+        name: "editInternetServer",
+        query: { nid: data["id"], server: data["IP"] }
+      });
     }
   }
 };

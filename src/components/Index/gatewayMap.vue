@@ -47,7 +47,6 @@ export default {
           // 图标所用图片大小
           imageSize: new AMap.Size(25, 25)
         });
-        mapObj.clearMap(); // 清除地图覆盖物
         this.mapData.markers.forEach(item => {
           const marker = new AMap.Marker({
             // eslint-disable-line no-unused-vars

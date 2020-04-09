@@ -23,7 +23,7 @@ export default {
       return post("/admin/server/message", data);
     },
     getCheckData: data => {
-      return post("/admin/server/check", data);
+      return get("/network-servers", data);
     },
     //消息
     getMessageDetail: data => {
@@ -40,13 +40,13 @@ export default {
       return get("/admin/server/data", data);
     },
     updateServer: data => {
-      return put("/admin/server/data", data);
+      return put("/network-servers/" + data.extra, data);
     },
     creatServer: data => {
-      return post("/admin/server/data", data);
+      return post("/network-servers", data);
     },
     deleteServer: data => {
-      return deletes("/admin/server/data", data);
+      return deletes("/network-servers/" + data.extra, data);
     }
   },
   gateway: {
@@ -85,7 +85,7 @@ export default {
       return post("/admin/node/data", data);
     },
     nodeDetailData: data => {
-      return post("/api/nodes", data);
+      return post("/nodes", data);
     },
     firstPageNodeData: data => {
       return post("/admin/node/firstData", data);

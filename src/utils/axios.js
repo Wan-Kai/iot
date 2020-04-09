@@ -121,10 +121,10 @@ export function deletes(url, data = {}) {
   let sendObject = {
     url: url,
     method: "delete",
-    params: data,
     headers: {
       Authorization: store.getters.getSessionkey
-    }
+    },
+    data: JSON.stringify(data)
   };
   // sendObject.data=JSON.stringify(data);
   return service(sendObject).catch(() => {});

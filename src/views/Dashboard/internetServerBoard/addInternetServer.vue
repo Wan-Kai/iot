@@ -23,7 +23,7 @@
         />
       </a-form-item>
       <a-form-item
-        label="主机名："
+        label="服务器："
         :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
@@ -32,14 +32,14 @@
         <a-input
           size="small"
           v-decorator="[
-            'pc_name',
-            { rules: [{ required: true, message: '请输入主机名!' }] }
+            'server',
+            { rules: [{ required: true, message: '请输入服务器域名和端口!' }] }
           ]"
           style="float: left;text-align: left;width: 90%"
         />
         <a-tooltip placement="rightTop">
           <template slot="title">
-            prompt text
+            127.0.0.1:8000
           </template>
           <a-icon
             type="exclamation-circle"
@@ -136,11 +136,55 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
-          if (this.gatewayOn) {
-            console.log(values);
-          } else {
-            console.log(values);
-          }
+          // if (this.gatewayOn) {
+          //   console.log(values);
+          // } else {
+          //   console.log(values);
+          // }
+          values.gatewayDiscoveryDR = 1;
+          values.gatewayDiscoveryEnabled = true;
+          values.gatewayDiscoveryInterval = 1;
+          values.gatewayDiscoveryTXFrequency = 1;
+
+          this.$api.interServer
+            .creatServer({
+              networkServer: values
+            })
+            .then(res => {
+              console.log(res);
+              this.$message.success("成功创建新服务器");
+
+              setTimeout(() => {
+                this.$router.push("/admin/dashboard/internetServer");
+              }, 100);
+
+              this.$api.interServer
+                .getServerData({
+                  limit: 100
+                })
+                .then(res => {
+                  let getData = res.data.result;
+
+                  let netServerData = [];
+                  let temp = {
+                    server: "",
+                    id: "",
+                    name: ""
+                  };
+
+                  for (let i = 0; i < getData.length; i++) {
+                    temp.server = getData[i].server;
+                    temp.id = getData[i].id;
+                    temp.name = getData[i].name;
+                    netServerData.push(temp);
+                  }
+                  this.$store.commit("util/setNetServer", netServerData);
+                });
+            })
+            .catch(err => {
+              console.log(err);
+              this.$message.error(err.data.error);
+            });
         }
       });
     },

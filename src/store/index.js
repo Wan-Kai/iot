@@ -31,6 +31,11 @@ export default new Vuex.Store({
     getIsMock: () => util.state.mock,
     getIsLogin: () => login.state.all.isLogin,
     getSessionkey: () => login.state.all.sessionKey,
+
+    //netServer
+    getNetServer: () => util.state.netServer,
+
+    //register
     getPhoneNumber: () => retrieve.state.step1.phoneNumber,
     getLoginState: () => login.state.all,
     getRetrieveNote: () => retrieve.state.step1.note,

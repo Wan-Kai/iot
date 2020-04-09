@@ -66,6 +66,7 @@
                 size="small"
                 :options="internetServer_options"
                 placeholder=""
+                @change="netServerChange"
               />
               <a-tooltip placement="rightTop">
                 <template slot="title">
@@ -183,26 +184,29 @@
               </a-col>
             </a-form-item>
           </a-form>
+          <a-modal
+            title="Title"
+            :visible="visible"
+            @ok="handleOk"
+            :confirmLoading="confirmLoading"
+            @cancel="handleCancel"
+          >
+            <p>{{ ModalText }}</p>
+          </a-modal>
           <a-row>
             <a-col :span="18" :offset="6">
               <a-button type="primary">保存</a-button>
               <a-button style="margin: 0 16px">取消</a-button>
-              <a-button type="danger" icon="delete">删除设备</a-button>
+              <a-button type="danger" icon="delete" @click="showModal"
+                >删除设备</a-button
+              >
             </a-col>
           </a-row>
         </a-row>
       </a-col>
       <a-col :span="14">
         <div class="iot_amap-gatewayEdit-container">
-          <el-amap
-            vid="gateway_edit_map"
-            :center="center"
-            :map-manager="amapManager"
-            :zoom="zoom"
-            :events="events"
-            class="iot_amap_gateawyEdit_demo"
-          >
-          </el-amap>
+          <el-amap vid="gateway_edit_map"> </el-amap>
         </div>
       </a-col>
     </a-row>
@@ -212,24 +216,8 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-const internetServer_options = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
-  }
-];
+import wifi_map from "../../../assets/wifi.png";
+
 const communicationMode_options = [
   {
     value: "zhejiang",
@@ -284,33 +272,18 @@ const area_options = [
     ]
   }
 ];
-let amapManager = new VueAMap.AMapManager();
 export default {
   components: { ACol, ARow },
   data() {
     return {
-      internetServer_options,
+      internetServer_options: [],
       communicationMode_options,
       band_options,
       area_options,
-
-      zoom: 14,
-      center: [114.362272, 30.532565],
-      amapManager,
-      events: {
-        init(map) {
-          //map.setMapStyle("amap://styles/whitesmoke");
-          AMapUI.loadUI(["overlay/SimpleMarker"], function(SimpleMarker) {
-            const marker = new SimpleMarker({
-              iconLabel: "A",
-              iconStyle: "blue",
-              map: map,
-              position: map.getCenter()
-            });
-            map.add(marker);
-          });
-        }
-      }
+      mapData: [],
+      ModalText: "Content of the modal",
+      visible: false,
+      confirmLoading: false
     };
   },
 
@@ -324,8 +297,83 @@ export default {
     });
   },
 
+  beforeMount() {
+    this.$api.index
+      .mapMarkers({})
+      .then(res => {
+        this.mapData = res.data.result;
+        let mapObj = new AMap.Map("gateway_edit_map", {
+          // eslint-disable-line no-unused-vars
+          resizeEnable: true, //自适应大小
+          zoom: this.mapData.zoom,
+          center: this.mapData.center
+        });
+        let startIcon = new AMap.Icon({
+          // 图标尺寸
+          size: new AMap.Size(25, 25),
+          // 图标的取图地址
+          image: wifi_map, // 您自己的图标
+          // 图标所用图片大小
+          imageSize: new AMap.Size(25, 25)
+        });
+        const marker = new AMap.Marker({
+          // eslint-disable-line no-unused-vars
+          map: mapObj,
+          icon: startIcon,
+          position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          title: "网关"
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    let netServer = this.$store.getters.getNetServer;
+    let temp = {
+      value: "",
+      label: "",
+      id: ""
+    };
+    for (let i = 0; i < netServer.length; i++) {
+      temp.label = netServer[i].name + "@" + netServer[i].server;
+      temp.value = netServer[i].server;
+      temp.id = netServer[i].id;
+      this.internetServer_options.push(temp);
+    }
+  },
+
   methods: {
-    handleSubmit() {}
+    handleSubmit() {},
+    netServerChange(e) {
+      let ifFindMatch = false;
+      for (let i = 0; i < this.internetServer_options.length; i++) {
+        if (this.internetServer_options[i].value === e.toString()) {
+          this.gatewayDeployForm.setFieldsValue({
+            gatewayID: this.internetServer_options[i].id
+          });
+          ifFindMatch = true;
+        }
+      }
+      if (!ifFindMatch) {
+        this.gatewayDeployForm.setFieldsValue({
+          gatewayID: ""
+        });
+      }
+    },
+    showModal() {
+      this.visible = true;
+    },
+    handleOk(e) {
+      this.ModalText = "The modal will be closed after two seconds";
+      this.confirmLoading = true;
+      setTimeout(() => {
+        this.visible = false;
+        this.confirmLoading = false;
+      }, 2000);
+    },
+    handleCancel(e) {
+      console.log("Clicked cancel button");
+      this.visible = false;
+    }
   }
 };
 </script>

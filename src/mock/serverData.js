@@ -4,7 +4,7 @@ const ServerData = Mock.mock({
   status: "OK",
   type: "ID",
   totalCount: "8",
-  "result|20": [
+  "result|10": [
     {
       id: "24",
       name: "test1--",

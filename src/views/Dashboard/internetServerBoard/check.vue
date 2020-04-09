@@ -8,7 +8,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >主机名： {{ this.ID }}</span
+            >主机名： {{ this.server }}</span
           >
         </a-col>
       </a-row>
@@ -114,13 +114,9 @@ import ACol from "ant-design-vue/es/grid/Col";
 export default {
   data() {
     return {
-      ID: this.$route.params.id,
-      infoData: {
-        port: "",
-        gateway: "",
-        date: "",
-        otherData: ""
-      }
+      server: "",
+      id: "",
+      infoData: {}
     };
   },
   beforeCreate() {
@@ -133,12 +129,16 @@ export default {
     });
   },
   beforeMount() {
+    this.server = this.$route.query.server;
+    this.id = this.$route.query.nid;
     this.$api.interServer
       .getCheckData({
-        ID: this.ID
+        ID: this.id,
+        limit: 1
       })
       .then(res => {
-        this.infoData = res.data.result;
+        this.infoData = res.data.result[0];
+        console.log(this.infoData);
       })
       .catch(err => {
         console.log(err);

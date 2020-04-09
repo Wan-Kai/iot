@@ -11,7 +11,7 @@
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 12 }"
       >
-        <span style="float: left">{{ $route.params.id }}</span>
+        <span style="float: left">{{ this.server }}</span>
       </a-form-item>
       <a-form-item
         label="端口："
@@ -20,7 +20,29 @@
         :wrapper-col="{ span: 12 }"
       >
         <a-input
-          v-decorator="['port']"
+          v-decorator="[
+            'port',
+            {
+              initialValue: this.getData.port
+            }
+          ]"
+          size="small"
+          style="width: 60%;float: left;text-align: left"
+        />
+      </a-form-item>
+      <a-form-item
+        label="名称："
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 12 }"
+      >
+        <a-input
+          v-decorator="[
+            'name',
+            {
+              initialValue: this.getData.name
+            }
+          ]"
           size="small"
           style="width: 60%;float: left;text-align: left"
         />
@@ -89,6 +111,27 @@
         <a-col :span="12" :offset="3">
           <div class="iot_view_internetServer_edit_form_left">
             <a-button type="primary" @click="handleSubmit">确定</a-button>
+            <a-button
+              type="danger"
+              icon="delete"
+              style="margin-left: 16px"
+              @click="showModal"
+              >删除设备</a-button
+            >
+            <a-modal title="删除提示" :visible="visible">
+              <template slot="footer">
+                <a-button key="back" @click="handleCancel">取消</a-button>
+                <a-button
+                  type="danger"
+                  icon="delete"
+                  style="margin-left: 16px"
+                  @click="handleOk"
+                  :loading="confirmLoading"
+                  >确认删除</a-button
+                >
+              </template>
+              <p>{{ ModalText }}</p>
+            </a-modal>
           </div>
         </a-col>
       </a-row>
@@ -101,7 +144,13 @@ let id = 0;
 export default {
   data() {
     return {
-      gatewayOn: false
+      gatewayOn: false,
+      getData: {},
+      id: "",
+      server: "",
+      ModalText: "确认删除",
+      visible: false,
+      confirmLoading: false
     };
   },
   beforeCreate() {
@@ -113,8 +162,127 @@ export default {
       preserve: true
     });
   },
+  beforeMount() {
+    this.server = this.$route.query.server;
+    this.id = this.$route.query.nid;
+    this.$api.interServer
+      .getCheckData({
+        limit: 1,
+        id: this.id
+      })
+      .then(res => {
+        this.getData = res.data.result[0];
+
+        this.getData.port = this.getData.server.split(":")[1];
+        console.log(this.getData);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   methods: {
-    handleSubmit() {},
+    handleSubmit(e) {
+      e.preventDefault();
+      this.internetServer_edit_form.validateFields((err, values) => {
+        if (!err) {
+          values.server = this.server + ":" + values.port;
+          console.log("Received values of form: ", values);
+
+          this.$api.interServer
+            .updateServer({
+              extra: this.id,
+              networkServer: values
+            })
+            .then(res => {
+              if (res) {
+                this.$message.success("成功修改网络服务器信息");
+
+                this.$api.interServer
+                  .getServerData({
+                    limit: 100
+                  })
+                  .then(res => {
+                    let getData = res.data.result;
+
+                    let netServerData = [];
+                    let temp = {
+                      server: "",
+                      id: "",
+                      name: ""
+                    };
+
+                    for (let i = 0; i < getData.length; i++) {
+                      temp.server = getData[i].server;
+                      temp.id = getData[i].id;
+                      temp.name = getData[i].name;
+                      netServerData.push(temp);
+                    }
+                    this.$store.commit("util/setNetServer", netServerData);
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
+              }
+            })
+            .catch(err => {
+              console.log(err);
+              this.$message.error(err.data.error);
+            });
+        } else {
+          this.$message.error("请保证表单完整");
+        }
+      });
+    },
+    showModal() {
+      this.visible = true;
+      this.ModalText = "确认删除" + ":" + "@" + this.server;
+    },
+    handleOk(e) {
+      this.confirmLoading = true;
+
+      this.$api.interServer
+        .deleteServer({
+          extra: this.id
+        })
+        .then(res => {
+          if (res) {
+            this.confirmLoading = false;
+            this.visible = false;
+            this.$message.success("成功删除网络服务器");
+
+            this.$api.interServer
+              .getServerData({
+                limit: 100
+              })
+              .then(res => {
+                let getData = res.data.result;
+
+                let netServerData = [];
+                let temp = {
+                  server: "",
+                  id: "",
+                  name: ""
+                };
+
+                for (let i = 0; i < getData.length; i++) {
+                  temp.server = getData[i].server;
+                  temp.id = getData[i].id;
+                  temp.name = getData[i].name;
+                  netServerData.push(temp);
+                }
+                this.$store.commit("util/setNetServer", netServerData);
+              });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.confirmLoading = false;
+          this.$message.error("删除网络服务器失败");
+        });
+    },
+    handleCancel(e) {
+      this.visible = false;
+    },
     remove(k) {
       const { internetServer_edit_form } = this;
       // can use data-binding to get

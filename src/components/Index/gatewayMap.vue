@@ -25,7 +25,9 @@ import wifi_map from "../../assets/wifi.png";
 export default {
   data() {
     return {
-      mapData: []
+      mapData: [],
+      lng: "",
+      lat: ""
     };
   },
   beforeMount() {
@@ -39,6 +41,7 @@ export default {
           zoom: this.mapData.zoom,
           center: this.mapData.center
         });
+
         let startIcon = new AMap.Icon({
           // 图标尺寸
           size: new AMap.Size(25, 25),
@@ -63,7 +66,8 @@ export default {
       .catch(err => {
         console.log(err);
       });
-  }
+  },
+  methods: {}
 };
 </script>
 

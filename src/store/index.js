@@ -35,6 +35,9 @@ export default new Vuex.Store({
     //netServer
     getNetServer: () => util.state.netServer,
 
+    //areaData
+    getArea: () => util.state.area_options,
+
     //register
     getPhoneNumber: () => retrieve.state.step1.phoneNumber,
     getLoginState: () => login.state.all,

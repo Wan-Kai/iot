@@ -95,7 +95,7 @@ export default {
           this.$api.login
             .login(this.infoData)
             .then(res => {
-              if (res) {
+              if (res.status === 200) {
                 this.$message.success("登录成功");
                 this.$store.commit("login/setUser", {
                   sessionKey: res.data.jwt

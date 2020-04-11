@@ -155,7 +155,7 @@ export default {
               networkServer: values
             })
             .then(res => {
-              if (res) {
+              if (res.status === 200) {
                 this.commitLoading = false;
                 this.$message.success("成功创建新服务器");
 

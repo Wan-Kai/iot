@@ -48,14 +48,15 @@ service.interceptors.response.use(
     return res;
   },
   error => {
-    if (error.response && error.response.status === 404) {
-      this.$router.push({ path: "/404" });
-    } else if (error.response && error.response.status === 403) {
-      this.$store.commit("login/reset");
-      alert("登录失效，请重新登录！");
-      this.$router.push({ path: "/user/login" });
-    }
-    return Promise.reject(error.response);
+    // if (error.response && error.response.status === 404) {
+    //   this.$router.push({ path: "/404" });
+    // } else if (error.response && error.response.status === 403) {
+    //   this.$store.commit("login/reset");
+    //   alert("登录失效，请重新登录！");
+    //   this.$router.push({ path: "/user/login" });
+    // }
+    // return Promise.reject(error.response);
+    return Promise.resolve(error.response);
   }
 );
 

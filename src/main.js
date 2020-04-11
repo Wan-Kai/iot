@@ -55,7 +55,9 @@ import {
 // if (store.getters.getIsMock) {
 //   require("./mock/mock");
 // }
+//暂时这样调试
 require("./mock/mock");
+
 Vue.use(Button);
 Vue.use(Layout);
 Vue.use(Menu);
@@ -104,7 +106,8 @@ VueAMap.initAMapApiLoader({
     "AMap.ToolBar",
     "AMap.MapType",
     "AMap.PolyEditor",
-    "AMap.CircleEditor"
+    "AMap.CircleEditor",
+    "AMap.Geocoder"
   ],
   v: "1.4.4",
   uiVersion: "1.0.11" // 版本号

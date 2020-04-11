@@ -250,50 +250,23 @@ const communicationMode_options = [
 ];
 const band_options = [
   {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
-  }
-];
-const area_options = [
-  {
-    value: "hubei",
-    label: "湖北省",
-    children: [
-      {
-        value: "wuhan",
-        label: "武汉市",
-        children: [
-          {
-            value: "hongshan",
-            label: "洪山区"
-          }
-        ]
-      }
-    ]
+    value: "null",
+    label: "暂无选项,不用选择"
   }
 ];
 export default {
   components: { ACol, ARow },
   data() {
     return {
+      self: this,
       internetServer_options: [],
       communicationMode_options,
       band_options,
-      area_options,
+      area_options: [],
       mapData: [],
-      netServer: {}
+      netServer: {},
+      Lng: "",
+      Lat: ""
     };
   },
 
@@ -318,6 +291,8 @@ export default {
           zoom: this.mapData.zoom,
           center: this.mapData.center
         });
+        this.Lng = this.mapData.center[0];
+        this.Lat = this.mapData.center[1];
         let startIcon = new AMap.Icon({
           // 图标尺寸
           size: new AMap.Size(25, 25),
@@ -326,18 +301,31 @@ export default {
           // 图标所用图片大小
           imageSize: new AMap.Size(25, 25)
         });
-        const marker = new AMap.Marker({
-          // eslint-disable-line no-unused-vars
-          map: mapObj,
-          icon: startIcon,
-          position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: "网关"
+
+        let address = "";
+        let _self = this;
+        mapObj.on("click", function(e) {
+          _self.Lng = e.lnglat.getLng();
+          _self.Lat = e.lnglat.getLat();
+          mapObj.clearMap();
+          const marker = new AMap.Marker({
+            // eslint-disable-line no-unused-vars
+            map: mapObj,
+            icon: startIcon,
+            position: [_self.Lng, _self.Lat], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            title: "网关"
+          });
+          address = _self.Lng.toString() + "," + _self.Lat.toString();
+          _self.gatewayAddForm.setFieldsValue({
+            address: address
+          });
         });
       })
       .catch(err => {
         console.log(err);
       });
     this.netServer = this.$store.getters.getNetServer;
+    this.area_options = this.$store.getters.getArea;
     let temp = {
       value: "",
       label: "",
@@ -350,7 +338,6 @@ export default {
       this.internetServer_options.push(temp);
     }
   },
-
   methods: {
     handleSubmit(e) {
       e.preventDefault();
@@ -369,8 +356,8 @@ export default {
           values.channels = "";
           values.gatewayProfileID = "";
           values.location = {
-            latitude: 0.25,
-            longitude: 0.26,
+            latitude: this.Lat,
+            longitude: this.Lng,
             altitude: 0.24,
             source: "UNKNOWN",
             accuracy: 0
@@ -383,13 +370,15 @@ export default {
             .then(res => {
               console.log("拿到返回");
               console.log(res);
-              if (res) {
+              if (res.status === 200) {
                 this.$message.success("成功创建网关:" + values.gatewayId);
                 setTimeout(() => {
                   this.$router.push({
                     name: "gatewayInit"
                   });
                 }, 500);
+              } else if (res.status === 400) {
+                this.$message.error("错误的网关ID");
               } else {
                 console.log("res失败");
                 this.$message.error("创建网关失败");

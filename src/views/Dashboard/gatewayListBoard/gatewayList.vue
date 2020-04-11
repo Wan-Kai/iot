@@ -126,8 +126,8 @@ const rowSelection = {
 const columns = [
   {
     title: "网关编号",
-    dataIndex: "id",
-    key: "id"
+    dataIndex: "organizationID",
+    key: "organizationID"
   },
   {
     title: "网关名称",
@@ -136,8 +136,8 @@ const columns = [
   },
   {
     title: "网关ID",
-    dataIndex: "organizationID",
-    key: "organizationID"
+    dataIndex: "id",
+    key: "id"
   },
   {
     title: "网络服务器",
@@ -213,18 +213,42 @@ export default {
       })
       .then(res => {
         this.infoData = res.data.result;
-        console.log(this.infoData);
 
         let netServer = this.$store.getters.getNetServer;
-
+        let area = this.$store.getters.getArea;
         for (let i = 0; i < this.infoData.length; i++) {
           this.infoData[i].state = "off";
-          this.infoData[i].area =
-            this.infoData[i].province +
-            "/" +
-            this.infoData[i].city +
-            "/" +
-            this.infoData[i].district;
+          // this.infoData[i].area =
+          //   this.infoData[i].province +
+          //   "/" +
+          //   this.infoData[i].city +
+          //   "/" +
+          //   this.infoData[i].district;
+          for (let m = 0; m < area.length; m++) {
+            if (area[m].value === this.infoData[i].province) {
+              for (let n = 0; n < area[m].children.length; n++) {
+                if (area[m].children[n].value === this.infoData[i].city) {
+                  for (
+                    let k = 0;
+                    k < area[m].children[n].children.length;
+                    k++
+                  ) {
+                    if (
+                      area[m].children[n].children[k].value ===
+                      this.infoData[i].district
+                    ) {
+                      this.infoData[i].area =
+                        area[m].label +
+                        "/" +
+                        area[m].children[n].label +
+                        "/" +
+                        area[m].children[n].children[k].label;
+                    }
+                  }
+                }
+              }
+            }
+          }
           for (let j = 0; j < netServer.length; j++) {
             if (this.infoData[i].networkServerID === netServer[j].id) {
               this.infoData[i].networkServerName = netServer[j].name;

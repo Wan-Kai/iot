@@ -250,38 +250,8 @@ const communicationMode_options = [
 ];
 const band_options = [
   {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
-  }
-];
-const area_options = [
-  {
-    value: "hubei",
-    label: "湖北省",
-    children: [
-      {
-        value: "wuhan",
-        label: "武汉市",
-        children: [
-          {
-            value: "hongshan",
-            label: "洪山区"
-          }
-        ]
-      }
-    ]
+    value: "null",
+    label: "暂无选项,不用选择"
   }
 ];
 export default {
@@ -289,11 +259,13 @@ export default {
   data() {
     return {
       defaultData: [],
+      Lng: "",
+      Lat: "",
       id: "",
       internetServer_options: [],
       communicationMode_options,
       band_options,
-      area_options,
+      area_options: [],
       location: {
         latitude: 0.25,
         longitude: 0.26,
@@ -349,35 +321,48 @@ export default {
 
   beforeMount() {
     this.id = this.$route.query.id;
-    // this.$api.index
-    //   .mapMarkers({})
-    //   .then(res => {
-    //     this.mapData = res.data.result;
-    //     let mapObj = new AMap.Map("gateway_edit_map", {
-    //       // eslint-disable-line no-unused-vars
-    //       resizeEnable: true, //自适应大小
-    //       zoom: this.mapData.zoom,
-    //       center: this.mapData.center
-    //     });
-    //     let startIcon = new AMap.Icon({
-    //       // 图标尺寸
-    //       size: new AMap.Size(25, 25),
-    //       // 图标的取图地址
-    //       image: wifi_map, // 您自己的图标
-    //       // 图标所用图片大小
-    //       imageSize: new AMap.Size(25, 25)
-    //     });
-    //     const marker = new AMap.Marker({
-    //       // eslint-disable-line no-unused-vars
-    //       map: mapObj,
-    //       icon: startIcon,
-    //       position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-    //       title: "网关"
-    //     });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    this.$api.index
+      .mapMarkers({})
+      .then(res => {
+        this.mapData = res.data.result;
+        let mapObj = new AMap.Map("gateway_edit_map", {
+          // eslint-disable-line no-unused-vars
+          resizeEnable: true, //自适应大小
+          zoom: this.mapData.zoom,
+          center: this.mapData.center
+        });
+        this.Lng = this.mapData.center[0];
+        this.Lat = this.mapData.center[1];
+        let startIcon = new AMap.Icon({
+          // 图标尺寸
+          size: new AMap.Size(25, 25),
+          // 图标的取图地址
+          image: wifi_map, // 您自己的图标
+          // 图标所用图片大小
+          imageSize: new AMap.Size(25, 25)
+        });
+        let address = "";
+        let _self = this;
+        mapObj.on("click", function(e) {
+          _self.Lng = e.lnglat.getLng();
+          _self.Lat = e.lnglat.getLat();
+          mapObj.clearMap();
+          const marker = new AMap.Marker({
+            // eslint-disable-line no-unused-vars
+            map: mapObj,
+            icon: startIcon,
+            position: [_self.Lng, _self.Lat], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            title: "网关"
+          });
+          address = _self.Lng.toString() + "," + _self.Lat.toString();
+          _self.gatewayDeployForm.setFieldsValue({
+            address: address
+          });
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
     this.$api.gateway
       .gatewayDetailData({
@@ -389,6 +374,7 @@ export default {
         console.log(this.infoData);
 
         let netServer = this.$store.getters.getNetServer;
+        this.area_options = this.$store.getters.getArea;
         let temp = {
           value: "",
           label: "",
@@ -428,8 +414,12 @@ export default {
               gateway: values
             })
             .then(res => {
-              console.log(res);
-              this.$message.success("修改网关信息成功");
+              if (res.status === 200) {
+                console.log(res);
+                this.$message.success("修改网关信息成功");
+              } else {
+                this.$message.error("修改网关信息失败");
+              }
             })
             .catch(err => {
               console.log(err);

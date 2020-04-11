@@ -170,7 +170,7 @@ export default {
               networkServer: values
             })
             .then(res => {
-              if (res) {
+              if (res.status === 200) {
                 this.$message.success("成功修改网络服务器信息");
 
                 this.$api.interServer
@@ -198,6 +198,8 @@ export default {
                   .catch(err => {
                     console.log(err);
                   });
+              } else {
+                this.$message.error("修改网络服务器配置失败");
               }
             })
             .catch(err => {

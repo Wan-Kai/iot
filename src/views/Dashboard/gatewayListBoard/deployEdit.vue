@@ -290,7 +290,6 @@ export default {
     return {
       defaultData: [],
       id: "",
-      defaultValue: "",
       internetServer_options: [],
       communicationMode_options,
       band_options,
@@ -346,7 +345,6 @@ export default {
       initialValue: [],
       preserve: true
     });
-    this.defaultData.push("127.0.0.1:8000");
   },
 
   beforeMount() {
@@ -396,22 +394,25 @@ export default {
           label: "",
           id: ""
         };
+        let defaultValue = "";
         for (let i = 0; i < netServer.length; i++) {
           temp.label = netServer[i].name + "@" + netServer[i].server;
           temp.value = netServer[i].server;
           temp.id = netServer[i].id;
           if (this.infoData.gateway.networkServerID === netServer[i].id) {
-            this.defaultValue = netServer[i].server;
+            defaultValue = netServer[i].server;
           }
           this.internetServer_options.push(temp);
         }
-        this.internetServer_options.push(this.defaultValue);
+        console.log(defaultValue);
+        this.defaultData.push(defaultValue);
       })
       .catch(err => {
         console.log(err);
       });
   },
 
+  mounted() {},
   methods: {
     handleSubmit(e) {
       e.preventDefault();

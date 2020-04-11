@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >网关编号： {{ this.number }}</span
+            >网关编号： {{ this.id }}</span
           >
         </a-col>
       </a-row>
@@ -122,7 +122,7 @@ export default {
   },
   data() {
     return {
-      number: "",
+      id: "",
       infoData: {
         internalState: "",
         sign: "",
@@ -135,21 +135,60 @@ export default {
     };
   },
   beforeMount() {
-    this.number = this.$route.query.number;
-    console.log(this.number);
-    this.defaultTab = this.$route.query.id;
+    this.id = this.$route.query.id;
+    this.defaultTab = this.$route.query.tab;
     this.$api.gateway
       .gatewayDetailData({
-        id: this.number
+        extra: this.id
       })
       .then(res => {
-        this.infoData = res.data.result;
+        this.infoData = res.data;
+        if (res.data.lastSeenAt) {
+          console.log("little test");
+          this.infoData.internalState = "测试";
+          this.infoData.heartTime = "有数据";
+        } else {
+          this.infoData.internalState = "离线";
+          this.infoData.heartTime = "暂无数据";
+        }
       })
       .catch(err => {
         console.log(err);
       });
   },
-  methods: {}
+  methods: {
+    // getTime(){
+    //   let date = new Date();
+    //   let seperator1 = "-";
+    //   let seperator2 = ":";
+    //   //以下代码依次是获取当前时间的年月日时分秒
+    //   let year = date.getFullYear();
+    //   let month = date.getMonth() + 1;
+    //   let strDate = date.getDate();
+    //   let minute = date.getMinutes();
+    //   let hour = date.getHours();
+    //   let second = date.getSeconds();
+    //   //固定时间格式
+    //   if (month >= 1 && month <= 9) {
+    //     month = "0" + month;
+    //   }
+    //   if (strDate >= 0 && strDate <= 9) {
+    //     strDate = "0" + strDate;
+    //   }
+    //   if (hour >= 0 && hour <= 9) {
+    //     hour = "0" + hour;
+    //   }
+    //   if (minute >= 0 && minute <= 9) {
+    //     minute = "0" + minute;
+    //   }
+    //   if (second >= 0 && second <= 9) {
+    //     second = "0" + second;
+    //   }
+    //   let currentdateNow =  year + seperator1 + month + seperator1 + strDate
+    //           + " " + hour + seperator2 + minute + seperator2 + second;
+    //   return currentdateNow;
+    // }
+  }
 };
 </script>
 

@@ -77,7 +77,7 @@
       <a-table
         :rowSelection="rowSelection"
         :columns="columns"
-        :dataSource="interData"
+        :dataSource="infoData"
         style="min-width: auto"
         class="iot_view_gatawayManage_table"
         :pagination="pagination"
@@ -141,11 +141,11 @@ const columns = [
   },
   {
     title: "网络服务器",
-    key: "networkServerID",
-    dataIndex: "networkServerID"
+    key: "networkServerName",
+    dataIndex: "networkServerName"
   },
   {
-    title: "频段/子网类型",
+    title: "通信方式/频段",
     key: "band",
     dataIndex: "band"
   },
@@ -180,7 +180,7 @@ export default {
   data() {
     return {
       columns,
-      interData: [],
+      infoData: [],
 
       rowSelection,
 
@@ -209,13 +209,28 @@ export default {
   beforeMount() {
     this.$api.gateway
       .gatewayData({
-        limit: 1,
-        offset: 1,
-        organizationID: 1,
-        search: 1
+        limit: 100
       })
       .then(res => {
-        this.interData = res.data.result;
+        this.infoData = res.data.result;
+        console.log(this.infoData);
+
+        let netServer = this.$store.getters.getNetServer;
+
+        for (let i = 0; i < this.infoData.length; i++) {
+          this.infoData[i].state = "off";
+          this.infoData[i].area =
+            this.infoData[i].province +
+            "/" +
+            this.infoData[i].city +
+            "/" +
+            this.infoData[i].district;
+          for (let j = 0; j < netServer.length; j++) {
+            if (this.infoData[i].networkServerID === netServer[j].id) {
+              this.infoData[i].networkServerName = netServer[j].name;
+            }
+          }
+        }
       })
       .catch(err => {
         console.log(err);
@@ -225,13 +240,13 @@ export default {
     checkRouter(data) {
       this.$router.push({
         name: "checkGatewayManage",
-        query: { number: data["id"], id: "1" }
+        query: { id: data["id"], tab: "1" }
       });
     },
     editRouter(data) {
       this.$router.push({
         name: "checkGatewayManage",
-        query: { number: data["id"], id: "3" }
+        query: { id: data["id"], tab: "3" }
       });
     },
     add() {

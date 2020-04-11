@@ -23,7 +23,7 @@ export default {
       return post("/admin/server/message", data);
     },
     getCheckData: data => {
-      return get("/network-servers", data);
+      return get("/network-servers" + data.extra, data);
     },
     //消息
     getMessageDetail: data => {
@@ -52,10 +52,10 @@ export default {
   gateway: {
     //获取表格数据
     gatewayData: data => {
-      return post("/admin/gateway/data", data);
+      return get("/gateways", data);
     },
     gatewayDetailData: data => {
-      return post("/api/gateways", data);
+      return get("/gateways/" + data.extra, data);
     },
     ilogFlowData: data => {
       return post("/admin/gateway/ilogFlow/data", data);
@@ -71,13 +71,13 @@ export default {
       return get("/admin/gateway/data", data);
     },
     updateGateway: data => {
-      return put("/admin/gateway/data", data);
+      return put("/gateways/" + data.extra, data);
     },
     creatGateway: data => {
-      return post("/admin/gateway/data", data);
+      return post("/gateways", data);
     },
     deleteGateway: data => {
-      return deletes("/admin/gateway/data", data);
+      return deletes("/gateways/" + data.extra, data);
     }
   },
   node: {

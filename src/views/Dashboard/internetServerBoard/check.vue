@@ -133,8 +133,7 @@ export default {
     this.id = this.$route.query.nid;
     this.$api.interServer
       .getCheckData({
-        ID: this.id,
-        limit: 1
+        extra: this.id
       })
       .then(res => {
         this.infoData = res.data.result[0];

@@ -15,7 +15,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.infoData.number }}
+                {{ this.id }}
               </p>
             </a-col>
           </a-row>
@@ -25,7 +25,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.infoData.name }}
+                {{ this.infoData.gateway.name }}
               </p>
             </a-col>
           </a-row>
@@ -35,7 +35,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.infoData.id }}
+                {{ this.infoData.gateway.gatewayProfileID }}
               </p>
             </a-col>
           </a-row>
@@ -45,7 +45,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.infoData.internalServer }}
+                {{ this.infoData.gateway.serverName }}
               </p>
             </a-col>
           </a-row>
@@ -121,7 +121,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.infoData.heartTime }}
+                {{ this.infoData.lastSeenAt }}
               </p>
             </a-col>
           </a-row>
@@ -131,7 +131,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.infoData.addTime }}
+                {{ this.infoData.createdAt }}
               </p>
             </a-col>
           </a-row>
@@ -141,7 +141,11 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.infoData.location }}
+                {{
+                  this.infoData.gateway.location.latitude +
+                    "/" +
+                    this.infoData.gateway.location.longitude
+                }}
               </p>
             </a-col>
           </a-row>
@@ -151,7 +155,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.infoData.height }}
+                {{ this.infoData.gateway.location.altitude }}
               </p>
             </a-col>
           </a-row>
@@ -161,7 +165,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.infoData.height }}
+                {{ this.infoData.area }}
               </p>
             </a-col>
           </a-row>
@@ -171,7 +175,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.infoData.description }}
+                {{ this.infoData.gateway.description }}
               </p>
             </a-col>
           </a-row>
@@ -186,10 +190,10 @@
 
     <div style="background: #fff">
       <div
-        id="myChartUp"
-        :style="{ width: '100%', height: '300px', marginTop: '30px' }"
-      />
-      <div id="myChartDown" :style="{ width: '100%', height: '300px' }" />
+        id="gateway_myChartUp"
+        style="width: 100%; height:300px;margin-top: 30px"
+      ></div>
+      <div id="gateway_myChartDown" style="width: 100%; height:300px"></div>
     </div>
   </a-layout>
 </template>
@@ -197,67 +201,107 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-import wifi_map from "../../../assets/wifi.png";
+// import wifi_map from "../../../assets/wifi.png";
 export default {
   components: { ACol, ARow },
 
   data() {
     return {
-      infoData: {},
+      infoData: {
+        gateway: {
+          name: "",
+          gatewayProfileID: "",
+          serverName: "",
+          description: "",
 
-      echartUp: {},
-      echartDown: {}
+          location: {
+            latitude: "",
+            longitude: "",
+            altitude: ""
+          }
+        },
+        massageMode: "",
+        band: "",
+        state: "",
+        single: "",
+        up: "",
+        down: "",
+        lastSeenAt: "",
+        createdAt: "",
+        area: ""
+      },
+      id: ""
     };
   },
 
   beforeMount() {
+    this.id = this.$route.query.id;
     this.$api.gateway
       .gatewayDetailData({
-        id: this.number
+        extra: this.id
       })
       .then(res => {
-        this.infoData = res.data.result;
-        console.log(res.data.result);
-        let mapObj = new AMap.Map("gateway_detail", {
-          // eslint-disable-line no-unused-vars
-          resizeEnable: true, //自适应大小
-          zoom: this.infoData.zoom,
-          center: this.infoData.center
-        });
-        let startIcon = new AMap.Icon({
-          // 图标尺寸
-          size: new AMap.Size(25, 25),
-          // 图标的取图地址
-          image: wifi_map, // 您自己的图标
-          // 图标所用图片大小
-          imageSize: new AMap.Size(25, 25)
-        });
-        const marker = new AMap.Marker({
-          // eslint-disable-line no-unused-vars
-          map: mapObj,
-          icon: startIcon,
-          position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: "网关"
-        });
+        this.infoData = res.data;
+        this.infoData.area =
+          this.infoData.gateway.province +
+          "/" +
+          this.infoData.gateway.city +
+          "/" +
+          this.infoData.gateway.district;
+
+        // let netServer = this.$store.getters.getNetServer;
+
+        // this.infoData.gateway.serverName = "空";
+        // for(let i=0;i<netServer.length;i++){
+        //   if(netServer[i].id === this.infoData.gateway.id){
+        //     this.infoData.gateway.serverName = netServer[i].name
+        //   }
+        // }
+
+        // let mapObj = new AMap.Map("gateway_detail", {
+        //   // eslint-disable-line no-unused-vars
+        //   resizeEnable: true, //自适应大小
+        //   zoom: this.infoData.zoom,
+        //   center: this.infoData.center
+        // });
+        // let startIcon = new AMap.Icon({
+        //   // 图标尺寸
+        //   size: new AMap.Size(25, 25),
+        //   // 图标的取图地址
+        //   image: wifi_map, // 您自己的图标
+        //   // 图标所用图片大小
+        //   imageSize: new AMap.Size(25, 25)
+        // });
+        // const marker = new AMap.Marker({
+        //   // eslint-disable-line no-unused-vars
+        //   map: mapObj,
+        //   icon: startIcon,
+        //   position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+        //   title: "网关"
+        // });
       })
       .catch(err => {
         console.log(err);
       });
   },
-  mounted() {
+  updated() {
     this.drawLineUp();
     this.drawLineDown();
   },
   methods: {
     drawLineUp() {
       // 基于准备好的dom，初始化echarts实例
-      let myChartUp = this.$echarts.init(document.getElementById("myChartUp"));
+      let myChartUp = this.$echarts.init(
+        document.getElementById("gateway_myChartUp")
+      );
+      myChartUp.clear();
       // 绘制图表
       myChartUp.setOption({
-        title: { text: "上行数据统计(30天)" },
+        title: { text: "下行数据统计(30天)" },
         tooltip: {},
         xAxis: {
           type: "category",
+          boundaryGap: false,
           data: [
             "20th",
             "21th",
@@ -340,14 +384,16 @@ export default {
     drawLineDown() {
       // 基于准备好的dom，初始化echarts实例
       let myChartDown = this.$echarts.init(
-        document.getElementById("myChartDown")
+        document.getElementById("gateway_myChartDown")
       );
+      myChartDown.clear();
       // 绘制图表
       myChartDown.setOption({
         title: { text: "下行数据统计(30天)" },
         tooltip: {},
         xAxis: {
           type: "category",
+          boundaryGap: false,
           data: [
             "20th",
             "21th",

@@ -11,7 +11,6 @@
         <a-row class="iot_view_gatewayList_deployEdit_form_content">
           <a-form
             :form="gatewayDeployForm"
-            @submit="handleSubmit"
             layout="vertical"
             class="iot_view_gatewayList_deployEdit_form"
           >
@@ -23,7 +22,12 @@
               :wrapper-col="{ span: 18 }"
             >
               <a-input
-                v-decorator="['gatewayName']"
+                v-decorator="[
+                  'name',
+                  {
+                    initialValue: this.infoData.gateway.name
+                  }
+                ]"
                 size="small"
                 style="width: 90%;float: left"
               />
@@ -37,7 +41,12 @@
               :wrapper-col="{ span: 18 }"
             >
               <a-input
-                v-decorator="['gatewayID']"
+                v-decorator="[
+                  'id',
+                  {
+                    initialValue: this.infoData.gateway.id
+                  }
+                ]"
                 size="small"
                 style="width: 90%;float: left"
               >
@@ -61,11 +70,12 @@
               :wrapper-col="{ span: 18 }"
             >
               <a-cascader
-                v-decorator="['internetServer']"
+                v-decorator="['networkServerName']"
                 style="width: 90%;float: left"
                 size="small"
                 :options="internetServer_options"
                 placeholder=""
+                :defaultValue="this.defaultData"
                 @change="netServerChange"
               />
               <a-tooltip placement="rightTop">
@@ -139,7 +149,12 @@
             >
               <a-textarea
                 placeholder="请填写网关描述，最多100个汉字"
-                v-decorator="['description']"
+                v-decorator="[
+                  'description',
+                  {
+                    initialValue: this.infoData.gateway.description
+                  }
+                ]"
                 :rows="4"
                 style="width: 90%;float: left;"
               />
@@ -184,18 +199,23 @@
               </a-col>
             </a-form-item>
           </a-form>
-          <a-modal
-            title="Title"
-            :visible="visible"
-            @ok="handleOk"
-            :confirmLoading="confirmLoading"
-            @cancel="handleCancel"
-          >
+          <a-modal title="删除提示" :visible="visible">
+            <template slot="footer">
+              <a-button key="back" @click="handleCancel">取消</a-button>
+              <a-button
+                type="danger"
+                icon="delete"
+                style="margin-left: 16px"
+                @click="handleOk"
+                :loading="confirmLoading"
+                >确认删除</a-button
+              >
+            </template>
             <p>{{ ModalText }}</p>
           </a-modal>
           <a-row>
             <a-col :span="18" :offset="6">
-              <a-button type="primary">保存</a-button>
+              <a-button type="primary" @click="handleSubmit">保存</a-button>
               <a-button style="margin: 0 16px">取消</a-button>
               <a-button type="danger" icon="delete" @click="showModal"
                 >删除设备</a-button
@@ -220,20 +240,12 @@ import wifi_map from "../../../assets/wifi.png";
 
 const communicationMode_options = [
   {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
+    value: "LORA",
+    label: "LORA"
+  },
+  {
+    value: "FSK",
+    label: "FSK"
   }
 ];
 const band_options = [
@@ -276,11 +288,43 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
+      defaultData: [],
+      id: "",
+      defaultValue: "",
       internetServer_options: [],
       communicationMode_options,
       band_options,
       area_options,
+      location: {
+        latitude: 0.25,
+        longitude: 0.26,
+        altitude: 0.24,
+        source: "UNKNOWN",
+        accuracy: 0
+      },
       mapData: [],
+      infoData: {
+        gateway: {
+          name: "",
+          gatewayProfileID: "",
+          serverName: "",
+          description: "",
+          location: {
+            latitude: "",
+            longitude: "",
+            altitude: ""
+          }
+        },
+        massageMode: "",
+        band: "",
+        state: "",
+        single: "",
+        up: "",
+        down: "",
+        lastSeenAt: "",
+        createdAt: "",
+        area: ""
+      },
       ModalText: "Content of the modal",
       visible: false,
       confirmLoading: false
@@ -288,6 +332,13 @@ export default {
   },
 
   beforeCreate() {
+    // let netServer = this.$store.getters.getNetServer;
+    // for (let i = 0; i < netServer.length; i++) {
+    //   if(this.$route.query.id === netServer[i].id){
+    //     this.netServer_defaultValue = netServer[i].server;
+    //   }
+    // };
+
     this.gatewayDeployForm = this.$form.createForm(this, {
       name: "gatewayDeployForm"
     });
@@ -295,54 +346,97 @@ export default {
       initialValue: [],
       preserve: true
     });
+    this.defaultData.push("127.0.0.1:8000");
   },
 
   beforeMount() {
-    this.$api.index
-      .mapMarkers({})
+    this.id = this.$route.query.id;
+    // this.$api.index
+    //   .mapMarkers({})
+    //   .then(res => {
+    //     this.mapData = res.data.result;
+    //     let mapObj = new AMap.Map("gateway_edit_map", {
+    //       // eslint-disable-line no-unused-vars
+    //       resizeEnable: true, //自适应大小
+    //       zoom: this.mapData.zoom,
+    //       center: this.mapData.center
+    //     });
+    //     let startIcon = new AMap.Icon({
+    //       // 图标尺寸
+    //       size: new AMap.Size(25, 25),
+    //       // 图标的取图地址
+    //       image: wifi_map, // 您自己的图标
+    //       // 图标所用图片大小
+    //       imageSize: new AMap.Size(25, 25)
+    //     });
+    //     const marker = new AMap.Marker({
+    //       // eslint-disable-line no-unused-vars
+    //       map: mapObj,
+    //       icon: startIcon,
+    //       position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+    //       title: "网关"
+    //     });
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+
+    this.$api.gateway
+      .gatewayDetailData({
+        extra: this.id
+      })
       .then(res => {
-        this.mapData = res.data.result;
-        let mapObj = new AMap.Map("gateway_edit_map", {
-          // eslint-disable-line no-unused-vars
-          resizeEnable: true, //自适应大小
-          zoom: this.mapData.zoom,
-          center: this.mapData.center
-        });
-        let startIcon = new AMap.Icon({
-          // 图标尺寸
-          size: new AMap.Size(25, 25),
-          // 图标的取图地址
-          image: wifi_map, // 您自己的图标
-          // 图标所用图片大小
-          imageSize: new AMap.Size(25, 25)
-        });
-        const marker = new AMap.Marker({
-          // eslint-disable-line no-unused-vars
-          map: mapObj,
-          icon: startIcon,
-          position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: "网关"
-        });
+        this.infoData = res.data;
+
+        console.log(this.infoData);
+
+        let netServer = this.$store.getters.getNetServer;
+        let temp = {
+          value: "",
+          label: "",
+          id: ""
+        };
+        for (let i = 0; i < netServer.length; i++) {
+          temp.label = netServer[i].name + "@" + netServer[i].server;
+          temp.value = netServer[i].server;
+          temp.id = netServer[i].id;
+          if (this.infoData.gateway.networkServerID === netServer[i].id) {
+            this.defaultValue = netServer[i].server;
+          }
+          this.internetServer_options.push(temp);
+        }
+        this.internetServer_options.push(this.defaultValue);
       })
       .catch(err => {
         console.log(err);
       });
-    let netServer = this.$store.getters.getNetServer;
-    let temp = {
-      value: "",
-      label: "",
-      id: ""
-    };
-    for (let i = 0; i < netServer.length; i++) {
-      temp.label = netServer[i].name + "@" + netServer[i].server;
-      temp.value = netServer[i].server;
-      temp.id = netServer[i].id;
-      this.internetServer_options.push(temp);
-    }
   },
 
   methods: {
-    handleSubmit() {},
+    handleSubmit(e) {
+      e.preventDefault();
+      this.gatewayDeployForm.validateFields((err, values) => {
+        if (!err) {
+          console.log("获得");
+          values.location = this.location;
+          console.log(values);
+
+          this.$api.gateway
+            .updateGateway({
+              extra: this.id,
+              gateway: values
+            })
+            .then(res => {
+              console.log(res);
+              this.$message.success("修改网关信息成功");
+            })
+            .catch(err => {
+              console.log(err);
+              this.$message.error(err.data.error);
+            });
+        }
+      });
+    },
     netServerChange(e) {
       let ifFindMatch = false;
       for (let i = 0; i < this.internetServer_options.length; i++) {
@@ -361,17 +455,29 @@ export default {
     },
     showModal() {
       this.visible = true;
+      this.ModalText = "确认删除" + ":" + this.id;
     },
     handleOk(e) {
-      this.ModalText = "The modal will be closed after two seconds";
       this.confirmLoading = true;
-      setTimeout(() => {
-        this.visible = false;
-        this.confirmLoading = false;
-      }, 2000);
+
+      this.$api.gateway
+        .deleteGateway({
+          extra: this.id
+        })
+        .then(res => {
+          if (res) {
+            this.confirmLoading = false;
+            this.visible = false;
+            this.$message.success("成功删除网络服务器");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.confirmLoading = false;
+          this.$message.error("删除网络服务器失败");
+        });
     },
     handleCancel(e) {
-      console.log("Clicked cancel button");
       this.visible = false;
     }
   }

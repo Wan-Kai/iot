@@ -78,13 +78,13 @@ mock.mock(`/api/admin/server/message/delete`, "post", () => {
   return serverData.Deleted_Message;
 });
 
-//gateway
-mock.mock(`/api/admin/gateway/data`, "post", () => {
-  return gateway.GatewayData;
-});
-mock.mock(`/api/api/gateways`, "post", () => {
-  return gateway.GatewayDetailData;
-});
+// //gateway
+// mock.mock(`/api/gateway`, "get", () => {
+//   return gateway.GatewayData;
+// });
+// mock.mock(`/api/gateways`, "get", () => {
+//   return gateway.GatewayDetailData;
+// });
 mock.mock(`/api/admin/gateway/ilogFlow/data`, "post", () => {
   return gateway.IlogFlowData;
 });

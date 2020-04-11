@@ -261,6 +261,7 @@ export default {
         tooltip: {},
         xAxis: {
           type: "category",
+          boundaryGap: false,
           data: [
             "20th",
             "21th",
@@ -351,6 +352,7 @@ export default {
         tooltip: {},
         xAxis: {
           type: "category",
+          boundaryGap: false,
           data: [
             "20th",
             "21th",

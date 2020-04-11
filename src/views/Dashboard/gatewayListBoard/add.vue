@@ -25,7 +25,7 @@
             >
               <a-input
                 v-decorator="[
-                  'gatewayName',
+                  'name',
                   {
                     rules: [{ required: true, message: '请填写网关名称' }]
                   }
@@ -44,9 +44,15 @@
             >
               <a-input
                 v-decorator="[
-                  'gatewayID',
+                  'id',
                   {
-                    rules: [{ required: true, message: '请填写网关ID' }]
+                    rules: [
+                      {
+                        required: true,
+                        message: '长度为8-16位，不允许有中文',
+                        pattern: /^[^\u4e00-\u9fa5]{8,16}$/
+                      }
+                    ]
                   }
                 ]"
                 size="small"
@@ -55,7 +61,7 @@
               </a-input>
               <a-tooltip placement="rightTop">
                 <template slot="title">
-                  prompt text
+                  长度为8-16位，不允许有中文
                 </template>
                 <a-icon
                   type="exclamation-circle"
@@ -82,7 +88,6 @@
                 size="small"
                 :options="internetServer_options"
                 placeholder=""
-                @change="netServerChange"
               />
               <a-tooltip placement="rightTop">
                 <template slot="title">
@@ -134,12 +139,7 @@
               :wrapper-col="{ span: 18 }"
             >
               <a-cascader
-                v-decorator="[
-                  'band',
-                  {
-                    rules: [{ required: true, message: '请选择频段' }]
-                  }
-                ]"
+                v-decorator="['band']"
                 style="width: 90%;float: left;text-align: left"
                 size="small"
                 :options="band_options"
@@ -240,20 +240,12 @@ import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
 const communicationMode_options = [
   {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
+    value: "LORA",
+    label: "LORA"
+  },
+  {
+    value: "FSK",
+    label: "FSK"
   }
 ];
 const band_options = [
@@ -300,7 +292,8 @@ export default {
       communicationMode_options,
       band_options,
       area_options,
-      mapData: []
+      mapData: [],
+      netServer: {}
     };
   },
 
@@ -344,16 +337,16 @@ export default {
       .catch(err => {
         console.log(err);
       });
-    let netServer = this.$store.getters.getNetServer;
+    this.netServer = this.$store.getters.getNetServer;
     let temp = {
       value: "",
       label: "",
       id: ""
     };
-    for (let i = 0; i < netServer.length; i++) {
-      temp.label = netServer[i].name + "@" + netServer[i].server;
-      temp.value = netServer[i].server;
-      temp.id = netServer[i].id;
+    for (let i = 0; i < this.netServer.length; i++) {
+      temp.label = this.netServer[i].name + "@" + this.netServer[i].server;
+      temp.value = this.netServer[i].server;
+      temp.id = this.netServer[i].id;
       this.internetServer_options.push(temp);
     }
   },
@@ -362,42 +355,56 @@ export default {
     handleSubmit(e) {
       e.preventDefault();
       this.gatewayAddForm.validateFields((err, values) => {
-        console.log(values);
         if (!err) {
-          this.$api.appManage
-            .appAdd({
-              values
+          for (let i = 0; i < this.netServer.length; i++) {
+            if (values.internetServer[0] === this.netServer[i].server) {
+              values.networkServerID = this.netServer[i].id;
+            }
+          }
+          values.organizationID = 1;
+          values.modulation = values.communicationMode[0];
+          values.province = values.area[0];
+          values.city = values.area[1];
+          values.district = values.area[2];
+          values.channels = "";
+          values.gatewayProfileID = "";
+          values.location = {
+            latitude: 0.25,
+            longitude: 0.26,
+            altitude: 0.24,
+            source: "UNKNOWN",
+            accuracy: 0
+          };
+          values.discoveryEnabled = true;
+          this.$api.gateway
+            .creatGateway({
+              gateway: values
+            })
+            .then(res => {
+              console.log("拿到返回");
+              console.log(res);
+              if (res) {
+                this.$message.success("成功创建网关:" + values.gatewayId);
+                setTimeout(() => {
+                  this.$router.push({
+                    name: "gatewayInit"
+                  });
+                }, 500);
+              } else {
+                console.log("res失败");
+                this.$message.error("创建网关失败");
+              }
             })
             .catch(err => {
+              console.log("接口失败");
               console.log(err);
+              this.$message.error(err.data.error);
             });
-          this.$message.success("成功创建网关:" + values.gatewayId);
-          // setTimeout(() => {
-          //   this.$router.push({
-          //     name: "gatewayInit"
-          //   });
-          // }, 500);
         }
       });
     },
     handleBack() {
       this.$router.push("/admin/dashboard/gatewayManage");
-    },
-    netServerChange(e) {
-      let ifFindMatch = false;
-      for (let i = 0; i < this.internetServer_options.length; i++) {
-        if (this.internetServer_options[i].value === e.toString()) {
-          this.gatewayAddForm.setFieldsValue({
-            gatewayID: this.internetServer_options[i].id
-          });
-          ifFindMatch = true;
-        }
-      }
-      if (!ifFindMatch) {
-        this.gatewayAddForm.setFieldsValue({
-          gatewayID: ""
-        });
-      }
     }
   }
 };

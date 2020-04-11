@@ -15,7 +15,7 @@
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
     "core-js": "^3.6.4",
-    "echarts": "^4.6.0",
+    "echarts": "^4.7.0",
     "lodash": "latest",
     "nprogress": "^0.2.0",
     "regenerator-runtime": "^0.13.3",

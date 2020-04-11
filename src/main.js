@@ -7,12 +7,18 @@ import router from "./router";
 import store from "./store";
 import API from "./utils/api";
 import Authorized from "./components/Authorized";
-import echarts from "echarts";
 import VueAMap from "vue-amap";
-// 手动引入 ECharts 各模块来减小打包体积
-import "echarts/lib/chart/bar";
-import "echarts/lib/component/tooltip";
 
+// 引入 ECharts 主模块
+let echarts = require("echarts/lib/echarts");
+// 引入柱状图
+require("echarts/lib/chart/bar");
+// 按需引入
+require("echarts/lib/component/tooltip");
+require("echarts/lib/component/title");
+require("echarts/lib/chart/line");
+
+Vue.component("chart", echarts);
 import {
   Button,
   Layout,

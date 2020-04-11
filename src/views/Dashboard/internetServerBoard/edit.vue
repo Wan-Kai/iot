@@ -47,30 +47,6 @@
           style="width: 60%;float: left;text-align: left"
         />
       </a-form-item>
-      <a-form-item
-        label="网关："
-        :required="true"
-        :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
-      >
-        <a-input
-          v-decorator="['gateway']"
-          size="small"
-          style="width: 60%;float: left;text-align: left"
-        />
-      </a-form-item>
-      <a-form-item
-        label="消息："
-        :required="true"
-        :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
-      >
-        <a-input
-          v-decorator="['message']"
-          size="small"
-          style="width: 60%;float: left;text-align: left"
-        />
-      </a-form-item>
 
       <a-form-item
         label="是否启用网关发现："

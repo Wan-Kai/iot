@@ -50,6 +50,11 @@ const columns = [
     key: "id"
   },
   {
+    title: "名称",
+    dataIndex: "name",
+    key: "name"
+  },
+  {
     title: "主机名",
     dataIndex: "IP",
     key: "IP"
@@ -120,7 +125,8 @@ export default {
           IP: "",
           port: "",
           gateway: "",
-          time: ""
+          time: "",
+          name: ""
         };
         for (let i = 0; i < this.getData.length; i++) {
           if (this.getData[i].server.split(":")) {
@@ -134,6 +140,7 @@ export default {
           temp.gateway = "off";
           temp.time = this.getData[i].createdAt;
           temp.id = this.getData[i].id;
+          temp.name = this.getData[i].name;
 
           this.infoData.push(temp);
         }

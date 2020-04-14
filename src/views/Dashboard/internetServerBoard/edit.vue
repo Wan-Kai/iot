@@ -86,7 +86,12 @@
       <a-row>
         <a-col :span="12" :offset="3">
           <div class="iot_view_internetServer_edit_form_left">
-            <a-button type="primary" @click="handleSubmit">确定</a-button>
+            <a-button
+              type="primary"
+              @click="handleSubmit"
+              :loading="submitLoading"
+              >确定</a-button
+            >
             <a-button
               type="danger"
               icon="delete"
@@ -126,6 +131,7 @@ export default {
       server: "",
       ModalText: "确认删除",
       visible: false,
+      submitLoading: false,
       confirmLoading: false
     };
   },
@@ -158,6 +164,7 @@ export default {
   },
   methods: {
     handleSubmit(e) {
+      this.submitLoading = true;
       e.preventDefault();
       this.internetServer_edit_form.validateFields((err, values) => {
         if (!err) {
@@ -199,12 +206,16 @@ export default {
                     console.log(err);
                   });
               } else {
-                this.$message.error("修改网络服务器配置失败");
+                this.$message.error(res.data.code);
+                this.$message.error(res.data.error);
               }
             })
             .catch(err => {
               console.log(err);
               this.$message.error(err.data.error);
+            })
+            .finally(() => {
+              this.submitLoading = false;
             });
         } else {
           this.$message.error("请保证表单完整");
@@ -223,7 +234,7 @@ export default {
           extra: this.id
         })
         .then(res => {
-          if (res) {
+          if (res.status === 200) {
             this.confirmLoading = false;
             this.visible = false;
             this.$message.success("成功删除网络服务器");
@@ -250,12 +261,17 @@ export default {
                 }
                 this.$store.commit("util/setNetServer", netServerData);
               });
+          } else {
+            this.$message.error(res.data.code);
+            this.$message.error(res.data.error);
           }
         })
         .catch(err => {
           console.log(err);
-          this.confirmLoading = false;
           this.$message.error("删除网络服务器失败");
+        })
+        .finally(() => {
+          this.confirmLoading = false;
         });
     },
     handleCancel(e) {

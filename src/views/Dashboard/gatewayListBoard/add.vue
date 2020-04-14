@@ -217,7 +217,12 @@
           </a-form>
           <a-row>
             <a-col :span="18" :offset="6" style="text-align: left">
-              <a-button type="primary" @click="handleSubmit">保存</a-button>
+              <a-button
+                type="primary"
+                @click="handleSubmit"
+                :loading="commitLoading"
+                >保存</a-button
+              >
               <a-button style="margin: 0 16px" @click="handleBack"
                 >取消</a-button
               >
@@ -238,30 +243,16 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
-const communicationMode_options = [
-  {
-    value: "LORA",
-    label: "LORA"
-  },
-  {
-    value: "FSK",
-    label: "FSK"
-  }
-];
-const band_options = [
-  {
-    value: "null",
-    label: "暂无选项,不用选择"
-  }
-];
+
 export default {
   components: { ACol, ARow },
   data() {
     return {
+      commitLoading: false,
       self: this,
       internetServer_options: [],
-      communicationMode_options,
-      band_options,
+      communicationMode_options: [],
+      band_options: [],
       area_options: [],
       mapData: [],
       netServer: {},
@@ -324,22 +315,15 @@ export default {
       .catch(err => {
         console.log(err);
       });
-    this.netServer = this.$store.getters.getNetServer;
+
+    this.internetServer_options = this.$store.getters.getNetServerOption;
     this.area_options = this.$store.getters.getArea;
-    let temp = {
-      value: "",
-      label: "",
-      id: ""
-    };
-    for (let i = 0; i < this.netServer.length; i++) {
-      temp.label = this.netServer[i].name + "@" + this.netServer[i].server;
-      temp.value = this.netServer[i].server;
-      temp.id = this.netServer[i].id;
-      this.internetServer_options.push(temp);
-    }
+    this.communicationMode_options = this.$store.getters.getCommunicationMode;
+    this.band_options = this.$store.getters.getBand_options;
   },
   methods: {
     handleSubmit(e) {
+      this.commitLoading = true;
       e.preventDefault();
       this.gatewayAddForm.validateFields((err, values) => {
         if (!err) {
@@ -378,16 +362,21 @@ export default {
                   });
                 }, 500);
               } else if (res.status === 400) {
+                console.log(res);
                 this.$message.error("错误的网关ID");
               } else {
                 console.log("res失败");
-                this.$message.error("创建网关失败");
+                this.$message.error(res.data.code);
+                this.$message.error(res.data.error);
               }
             })
             .catch(err => {
               console.log("接口失败");
               console.log(err);
               this.$message.error(err.data.error);
+            })
+            .finally(() => {
+              this.commitLoading = false;
             });
         }
       });

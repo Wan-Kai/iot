@@ -134,6 +134,16 @@ export default {
       this.getName();
     }
   },
+  beforeMount() {
+    this.$api.util
+      .getAreaData()
+      .then(res => {
+        this.$store.commit("util/setArea", res.data.area_options);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   methods: {
     onCollapse(collapsed, type) {
       console.log(collapsed, type);

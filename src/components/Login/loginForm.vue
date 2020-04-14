@@ -84,8 +84,6 @@ export default {
     };
   },
 
-  beforeMount() {},
-
   methods: {
     handleSubmit() {
       this.form.validateFields((err, value) => {

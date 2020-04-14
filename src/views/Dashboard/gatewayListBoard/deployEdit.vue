@@ -215,7 +215,12 @@
           </a-modal>
           <a-row>
             <a-col :span="18" :offset="6">
-              <a-button type="primary" @click="handleSubmit">保存</a-button>
+              <a-button
+                type="primary"
+                @click="handleSubmit"
+                :loading="submitLoading"
+                >保存</a-button
+              >
               <a-button style="margin: 0 16px">取消</a-button>
               <a-button type="danger" icon="delete" @click="showModal"
                 >删除设备</a-button
@@ -238,22 +243,6 @@ import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
 
-const communicationMode_options = [
-  {
-    value: "LORA",
-    label: "LORA"
-  },
-  {
-    value: "FSK",
-    label: "FSK"
-  }
-];
-const band_options = [
-  {
-    value: "null",
-    label: "暂无选项,不用选择"
-  }
-];
 export default {
   components: { ACol, ARow },
   data() {
@@ -263,8 +252,8 @@ export default {
       Lat: "",
       id: "",
       internetServer_options: [],
-      communicationMode_options,
-      band_options,
+      communicationMode_options: [],
+      band_options: [],
       area_options: [],
       location: {
         latitude: 0.25,
@@ -298,6 +287,7 @@ export default {
       },
       ModalText: "Content of the modal",
       visible: false,
+      submitLoading: false,
       confirmLoading: false
     };
   },
@@ -321,6 +311,10 @@ export default {
 
   beforeMount() {
     this.id = this.$route.query.id;
+
+    this.communicationMode_options = this.$store.getters.getCommunicationMode;
+    this.area_options = this.$store.getters.getArea;
+    this.band_options = this.$store.getters.getBand_options;
     this.$api.index
       .mapMarkers({})
       .then(res => {
@@ -374,12 +368,13 @@ export default {
         console.log(this.infoData);
 
         let netServer = this.$store.getters.getNetServer;
-        this.area_options = this.$store.getters.getArea;
+
         let temp = {
           value: "",
           label: "",
           id: ""
         };
+
         let defaultValue = "";
         for (let i = 0; i < netServer.length; i++) {
           temp.label = netServer[i].name + "@" + netServer[i].server;
@@ -390,7 +385,6 @@ export default {
           }
           this.internetServer_options.push(temp);
         }
-        console.log(defaultValue);
         this.defaultData.push(defaultValue);
       })
       .catch(err => {
@@ -401,6 +395,7 @@ export default {
   mounted() {},
   methods: {
     handleSubmit(e) {
+      this.submitLoading = true;
       e.preventDefault();
       this.gatewayDeployForm.validateFields((err, values) => {
         if (!err) {
@@ -418,12 +413,16 @@ export default {
                 console.log(res);
                 this.$message.success("修改网关信息成功");
               } else {
-                this.$message.error("修改网关信息失败");
+                this.$message.error(res.data.code);
+                this.$message.error(res.data.error);
               }
             })
             .catch(err => {
               console.log(err);
               this.$message.error(err.data.error);
+            })
+            .finally(() => {
+              this.submitLoading = false;
             });
         }
       });
@@ -456,10 +455,13 @@ export default {
           extra: this.id
         })
         .then(res => {
-          if (res) {
+          if (res.status === 200) {
             this.confirmLoading = false;
             this.visible = false;
             this.$message.success("成功删除网络服务器");
+          } else {
+            this.$message.error(res.data.code);
+            this.$message.error(res.data.error);
           }
         })
         .catch(err => {

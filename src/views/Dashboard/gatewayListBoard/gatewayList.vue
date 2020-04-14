@@ -125,11 +125,6 @@ const rowSelection = {
 };
 const columns = [
   {
-    title: "网关编号",
-    dataIndex: "organizationID",
-    key: "organizationID"
-  },
-  {
     title: "网关名称",
     dataIndex: "name",
     key: "name"
@@ -218,12 +213,6 @@ export default {
         let area = this.$store.getters.getArea;
         for (let i = 0; i < this.infoData.length; i++) {
           this.infoData[i].state = "off";
-          // this.infoData[i].area =
-          //   this.infoData[i].province +
-          //   "/" +
-          //   this.infoData[i].city +
-          //   "/" +
-          //   this.infoData[i].district;
           for (let m = 0; m < area.length; m++) {
             if (area[m].value === this.infoData[i].province) {
               for (let n = 0; n < area[m].children.length; n++) {

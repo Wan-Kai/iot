@@ -1,5 +1,4 @@
 import mock from "mockjs";
-import Mock from "mockjs";
 import * as serverData from "./serverData";
 import * as login from "./userInfo";
 import * as gateway from "./gatewayData";
@@ -62,7 +61,7 @@ mock.mock(RegExp(`/api/index/message` + ".*"), "get", () => {
 //       otherData: "其他"
 //     });
 //   }
-//   return Mock.mock(mockMsg);
+//   return mock.mock(mockMsg);
 // });
 mock.mock(`/api/admin/server/message`, "post", () => {
   return serverData.Message;

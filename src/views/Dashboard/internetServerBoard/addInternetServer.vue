@@ -186,12 +186,15 @@ export default {
                     this.$store.commit("util/setNetServer", netServerData);
                   });
               } else {
-                this.commitLoading = false;
-                this.$message.error("创建服务器失败");
+                this.$message.error(res.data.code);
+                this.$message.error(res.data.error);
               }
             })
             .catch(err => {
               console.log(err);
+            })
+            .finally(() => {
+              this.commitLoading = false;
             });
         }
       });

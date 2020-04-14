@@ -1,5 +1,5 @@
 // 引入 axios 封装方法
-import { post, get, put, deletes, login } from "./axios";
+import { post, get, put, deletes, login, getLocal } from "./axios";
 
 export default {
   login: {
@@ -136,6 +136,11 @@ export default {
   usersManage: {
     usersData: data => {
       return post("/admin/users/data", data);
+    }
+  },
+  util: {
+    getAreaData: data => {
+      return getLocal("../../util/areaData.json");
     }
   }
 };

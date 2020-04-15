@@ -5,13 +5,12 @@ const NodeData = Mock.mock({
   totalCount: "1",
   "result|20": [
     {
-      devEUI: "0047SDA4545DSA",
+      id: "0047SDA4545DSA",
       nodeName: "Lora",
-      dBm: "-60",
-      frequency: "CN470/CH_00_07",
-      class: "B",
-      "state|1": ["on", "off"],
-      AppEUI: "2C515CGSDFD54564",
+      description: "-60",
+      server: "wwww",
+      macVersion: "temp",
+      "supportsJoin|1": ["true", "false"],
       "type|1": ["研发测试", "销售"],
       time: "@date('yyyy-MM-dd HH:mm:ss')"
     }

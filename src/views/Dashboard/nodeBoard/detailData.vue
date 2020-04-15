@@ -235,13 +235,15 @@ export default {
           // 图标所用图片大小
           imageSize: new AMap.Size(25, 25)
         });
-        const marker = new AMap.Marker({
-          // eslint-disable-line no-unused-vars
-          map: mapObj,
-          icon: startIcon,
-          position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: "网关"
-        });
+        if (this.infoData.center) {
+          const marker = new AMap.Marker({
+            // eslint-disable-line no-unused-vars
+            map: mapObj,
+            icon: startIcon,
+            position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            title: "网关"
+          });
+        }
       })
       .catch(err => {
         console.log(err);

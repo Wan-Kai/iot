@@ -102,6 +102,7 @@
                 style="width: 90%;float: left"
                 size="small"
                 :options="communicationMode_options"
+                :defaultValue="this.defaultDataModulation"
                 placeholder=""
               />
               <a-tooltip placement="rightTop">
@@ -172,6 +173,7 @@
                 style="width: 90%;float: left"
                 size="small"
                 :options="area_options"
+                :defaultValue="this.defaultDataArea"
                 placeholder=""
               />
             </a-form-item>
@@ -199,7 +201,7 @@
               </a-col>
             </a-form-item>
           </a-form>
-          <a-modal title="删除提示" :visible="visible">
+          <a-modal title="删除提示" :visible="visible" @cancel="handleCancel">
             <template slot="footer">
               <a-button key="back" @click="handleCancel">取消</a-button>
               <a-button
@@ -248,6 +250,8 @@ export default {
   data() {
     return {
       defaultData: [],
+      defaultDataModulation: [],
+      defaultDataArea: [],
       Lng: "",
       Lat: "",
       id: "",
@@ -267,6 +271,7 @@ export default {
         gateway: {
           name: "",
           gatewayProfileID: "",
+          modulation: "",
           serverName: "",
           description: "",
           location: {
@@ -319,14 +324,51 @@ export default {
       .mapMarkers({})
       .then(res => {
         this.mapData = res.data.result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    this.$api.gateway
+      .gatewayDetailData({
+        extra: this.id
+      })
+      .then(res => {
+        this.infoData = res.data;
+        let address = "";
+        this.internetServer_options = this.$store.getters.getNetServerOption;
+
+        let defaultValue = this.$store.getters.getNetServerById(
+          this.infoData.gateway.networkServerID
+        );
+        if (defaultValue) {
+          this.defaultData.push(defaultValue);
+        }
+
+        this.defaultDataModulation.push(this.infoData.gateway.modulation);
+        this.defaultDataArea.push(this.infoData.gateway.province);
+        this.defaultDataArea.push(this.infoData.gateway.city);
+        this.defaultDataArea.push(this.infoData.gateway.district);
+        address =
+          this.infoData.gateway.location.longitude.toString() +
+          "," +
+          this.infoData.gateway.location.latitude.toString();
+        this.gatewayDeployForm.setFieldsValue({
+          address: address,
+          description: this.infoData.gateway.description
+        });
+
         let mapObj = new AMap.Map("gateway_edit_map", {
           // eslint-disable-line no-unused-vars
           resizeEnable: true, //自适应大小
-          zoom: this.mapData.zoom,
-          center: this.mapData.center
+          zoom: 14,
+          center: [
+            this.infoData.gateway.location.longitude,
+            this.infoData.gateway.location.latitude
+          ]
         });
-        this.Lng = this.mapData.center[0];
-        this.Lat = this.mapData.center[1];
+        this.Lng = this.infoData.gateway.location.longitude;
+        this.Lat = this.infoData.gateway.location.latitude;
         let startIcon = new AMap.Icon({
           // 图标尺寸
           size: new AMap.Size(25, 25),
@@ -335,8 +377,15 @@ export default {
           // 图标所用图片大小
           imageSize: new AMap.Size(25, 25)
         });
-        let address = "";
+
         let _self = this;
+        const marker = new AMap.Marker({
+          // eslint-disable-line no-unused-vars
+          map: mapObj,
+          icon: startIcon,
+          position: [_self.Lng, _self.Lat], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          title: "网关"
+        });
         mapObj.on("click", function(e) {
           _self.Lng = e.lnglat.getLng();
           _self.Lat = e.lnglat.getLat();
@@ -357,48 +406,15 @@ export default {
       .catch(err => {
         console.log(err);
       });
-
-    this.$api.gateway
-      .gatewayDetailData({
-        extra: this.id
-      })
-      .then(res => {
-        this.infoData = res.data;
-
-        console.log(this.infoData);
-
-        let netServer = this.$store.getters.getNetServer;
-
-        let temp = {
-          value: "",
-          label: "",
-          id: ""
-        };
-
-        let defaultValue = "";
-        for (let i = 0; i < netServer.length; i++) {
-          temp.label = netServer[i].name + "@" + netServer[i].server;
-          temp.value = netServer[i].server;
-          temp.id = netServer[i].id;
-          if (this.infoData.gateway.networkServerID === netServer[i].id) {
-            defaultValue = netServer[i].server;
-          }
-          this.internetServer_options.push(temp);
-        }
-        this.defaultData.push(defaultValue);
-      })
-      .catch(err => {
-        console.log(err);
-      });
   },
 
   mounted() {},
   methods: {
     handleSubmit(e) {
-      this.submitLoading = true;
       e.preventDefault();
       this.gatewayDeployForm.validateFields((err, values) => {
         if (!err) {
+          this.submitLoading = true;
           console.log("获得");
           values.location = this.location;
           console.log(values);
@@ -412,6 +428,11 @@ export default {
               if (res.status === 200) {
                 console.log(res);
                 this.$message.success("修改网关信息成功");
+                setTimeout(() => {
+                  this.$router.push({
+                    name: "gatewayInit"
+                  });
+                }, 100);
               } else {
                 this.$message.error(res.data.code);
                 this.$message.error(res.data.error);
@@ -449,16 +470,19 @@ export default {
     },
     handleOk(e) {
       this.confirmLoading = true;
-
       this.$api.gateway
         .deleteGateway({
           extra: this.id
         })
         .then(res => {
           if (res.status === 200) {
-            this.confirmLoading = false;
             this.visible = false;
             this.$message.success("成功删除网络服务器");
+            setTimeout(() => {
+              this.$router.push({
+                name: "gatewayInit"
+              });
+            }, 100);
           } else {
             this.$message.error(res.data.code);
             this.$message.error(res.data.error);
@@ -466,8 +490,10 @@ export default {
         })
         .catch(err => {
           console.log(err);
-          this.confirmLoading = false;
           this.$message.error("删除网络服务器失败");
+        })
+        .finally(() => {
+          this.confirmLoading = false;
         });
     },
     handleCancel(e) {

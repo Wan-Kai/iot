@@ -46,7 +46,7 @@
                   v-decorator="['agreementVision']"
                   style="width: 90%;float: left;text-align: left"
                   size="small"
-                  :options="agreementVision_option"
+                  :options="macVision_option"
                   placeholder=""
                 />
                 <a-tooltip placement="rightTop">
@@ -73,129 +73,6 @@
                   style="width: 90%;float: left;text-align: left"
                 >
                 </a-input>
-              </a-form-item>
-
-              <a-form-item
-                class="iot_view_node_add_formitem"
-                label="频段："
-                :required="true"
-                :label-col="{ span: 8 }"
-                :wrapper-col="{ span: 16 }"
-              >
-                <a-cascader
-                  v-decorator="['band']"
-                  style="width: 90%;float: left;text-align: left"
-                  size="small"
-                  :options="band_options"
-                  placeholder=""
-                />
-                <a-tooltip placement="rightTop">
-                  <template slot="title">
-                    prompt text
-                  </template>
-                  <a-icon
-                    type="exclamation-circle"
-                    style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                  />
-                </a-tooltip>
-              </a-form-item>
-              <a-form-item
-                class="iot_view_node_add_formitem"
-                label="Class："
-                :required="true"
-                :label-col="{ span: 8 }"
-                :wrapper-col="{ span: 16 }"
-              >
-                <a-cascader
-                  v-decorator="['class']"
-                  style="width: 90%;float: left;text-align: left"
-                  size="small"
-                  :options="class_options"
-                  placeholder=""
-                />
-                <a-tooltip placement="rightTop">
-                  <template slot="title">
-                    prompt text
-                  </template>
-                  <a-icon
-                    type="exclamation-circle"
-                    style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                  />
-                </a-tooltip>
-              </a-form-item>
-              <a-form-item
-                class="iot_view_node_add_formitem"
-                label="节点编号(DevEUI)："
-                :required="true"
-                :label-col="{ span: 8 }"
-                :wrapper-col="{ span: 16 }"
-              >
-                <a-input
-                  v-decorator="['DevEUI']"
-                  size="small"
-                  style="width: 90%;float: left;text-align: left"
-                >
-                </a-input>
-                <a-tooltip placement="rightTop">
-                  <template slot="title">
-                    prompt text
-                  </template>
-                  <a-icon
-                    type="exclamation-circle"
-                    style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                  />
-                </a-tooltip>
-              </a-form-item>
-              <a-form-item
-                class="iot_view_node_add_formitem"
-                label="应用编号(AppEUI)："
-                :required="true"
-                :label-col="{ span: 8 }"
-                :wrapper-col="{ span: 16 }"
-              >
-                <a-input
-                  v-decorator="['AppEUI']"
-                  size="small"
-                  style="width: 90%;float: left;text-align: left"
-                >
-                </a-input>
-                <a-tooltip placement="rightTop">
-                  <template slot="title">
-                    prompt text
-                  </template>
-                  <a-icon
-                    type="exclamation-circle"
-                    style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                  />
-                </a-tooltip>
-              </a-form-item>
-              <a-form-item
-                class="iot_view_node_add_formitem"
-                label="AppKey："
-                :required="true"
-                :label-col="{ span: 8 }"
-                :wrapper-col="{ span: 16 }"
-              >
-                <a-input
-                  v-decorator="['AppKey']"
-                  size="small"
-                  style="width: 90%;float: left;text-align: left"
-                >
-                </a-input>
-                <a-tooltip placement="rightTop">
-                  <template slot="title">
-                    prompt text
-                  </template>
-                  <a-icon
-                    type="exclamation-circle"
-                    style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                  />
-                </a-tooltip>
               </a-form-item>
 
               <a-form-item
@@ -242,21 +119,6 @@
                   style="width: 90%;float: left;text-align: left"
                 >
                 </a-input>
-              </a-form-item>
-              <a-form-item
-                class="iot_view_node_add_formitem"
-                label="使用状态："
-                :required="true"
-                :label-col="{ span: 8 }"
-                :wrapper-col="{ span: 16 }"
-              >
-                <a-cascader
-                  v-decorator="['state']"
-                  style="width: 90%;float: left;text-align: left"
-                  size="small"
-                  :options="state_options"
-                  placeholder=""
-                />
               </a-form-item>
               <a-form-item
                 class="iot_view_node_add_formitem"
@@ -329,7 +191,7 @@
               :wrapper-col="{ span: 14 }"
             >
               <a-input
-                v-decorator="['areaDetail']"
+                v-decorator="['address']"
                 size="small"
                 style="width: 90%;float: left;text-align: left"
               >
@@ -360,100 +222,16 @@ import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
 let id = 0;
-const state_options = [
-  {
-    value: "test",
-    label: "测试"
-  },
-  {
-    value: "environment",
-    label: "环境"
-  }
-];
-const band_options = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
-  }
-];
-const class_options = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
-  }
-];
-const agreementVision_option = [
-  {
-    value: "zhejiang",
-    label: "Zhejiang",
-    children: [
-      {
-        value: "hangzhou",
-        label: "Hangzhou",
-        children: [
-          {
-            value: "xihu",
-            label: "West Lake"
-          }
-        ]
-      }
-    ]
-  }
-];
-const area_option = [
-  {
-    value: "hubei",
-    label: "湖北省",
-    children: [
-      {
-        value: "wuhan",
-        label: "武汉市",
-        children: [
-          {
-            value: "hongshan",
-            label: "洪山区"
-          }
-        ]
-      }
-    ]
-  }
-];
 export default {
   components: { ACol, ARow },
   data() {
     return {
-      state_options,
-      class_options,
-      band_options,
-      agreementVision_option,
-      area_option,
+      macVision_option: [],
+      area_option: [],
 
       areaShow: false,
       value: 1,
+      mapObj: {},
       mapData: []
     };
   },
@@ -479,7 +257,7 @@ export default {
       .mapMarkers({})
       .then(res => {
         this.mapData = res.data.result;
-        let mapObj = new AMap.Map("note_add_map", {
+        this.mapObj = new AMap.Map("note_add_map", {
           // eslint-disable-line no-unused-vars
           resizeEnable: true, //自适应大小
           zoom: this.mapData.zoom,
@@ -493,12 +271,25 @@ export default {
           // 图标所用图片大小
           imageSize: new AMap.Size(25, 25)
         });
-        const marker = new AMap.Marker({
-          // eslint-disable-line no-unused-vars
-          map: mapObj,
-          icon: startIcon,
-          position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: "网关"
+        let _self = this;
+        let address = "";
+        this.mapObj.on("click", function(e) {
+          if (_self.areaShow) {
+            _self.Lng = e.lnglat.getLng();
+            _self.Lat = e.lnglat.getLat();
+            _self.mapObj.clearMap();
+            const marker = new AMap.Marker({
+              // eslint-disable-line no-unused-vars
+              map: _self.mapObj,
+              icon: startIcon,
+              position: [e.lnglat.getLng(), e.lnglat.getLat()], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              title: "网关"
+            });
+            address = _self.Lng.toString() + "," + _self.Lat.toString();
+            _self.nodeDeployFormSecond.setFieldsValue({
+              address: address
+            });
+          }
         });
       })
       .catch(err => {
@@ -554,6 +345,9 @@ export default {
     },
     stateChange() {
       this.areaShow = !this.areaShow;
+      if (!this.areaShow) {
+        this.mapObj.clearMap();
+      }
     }
   }
 };
@@ -571,8 +365,9 @@ export default {
   padding-bottom: 0px;
 }
 .iot_amap-noteAdd-container {
-  height: 410px;
+  height: 380px;
   width: 100%;
+  margin-bottom: 10px;
 }
 .iot_amap_noteAdd_demo {
 }

@@ -136,9 +136,9 @@ export default {
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      this.commitLoading = true;
       this.form.validateFields((err, values) => {
         if (!err) {
+          this.commitLoading = true;
           console.log("Received values of form: ", values);
           // if (this.gatewayOn) {
           //   console.log(values);
@@ -158,10 +158,6 @@ export default {
               if (res.status === 200) {
                 this.commitLoading = false;
                 this.$message.success("成功创建新服务器");
-
-                // setTimeout(() => {
-                //   this.$router.push("/admin/dashboard/internetServer");
-                // }, 100);
 
                 this.$api.interServer
                   .getServerData({
@@ -185,6 +181,10 @@ export default {
                     }
                     this.$store.commit("util/setNetServer", netServerData);
                   });
+
+                setTimeout(() => {
+                  this.$router.push("/admin/dashboard/internetServer");
+                }, 100);
               } else {
                 this.$message.error(res.data.code);
                 this.$message.error(res.data.error);

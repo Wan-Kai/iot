@@ -58,6 +58,16 @@ export default new Vuex.Store({
       }
       return internetServer_options;
     },
+    getNetServerById: () => id => {
+      let netServer = util.state.netServer;
+      console.log(netServer);
+      for (let i = 0; i < netServer.length; i++) {
+        if (netServer[i].id === id) {
+          return netServer[i].server;
+        }
+      }
+      return null;
+    },
     //CommunicationMode
     getCommunicationMode: () => util.state.communicationMode_options,
     //band_options

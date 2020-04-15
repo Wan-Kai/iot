@@ -113,9 +113,9 @@ import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 const columns = [
   {
-    title: "节点编号(DevEUI)",
-    dataIndex: "devEUI",
-    key: "devEUI"
+    title: "节点编号",
+    dataIndex: "id",
+    key: "id"
   },
   {
     title: "节点名称",
@@ -123,30 +123,24 @@ const columns = [
     key: "nodeName"
   },
   {
-    title: "信号强度(dBm)",
-    dataIndex: "dBm",
-    key: "dBm"
+    title: "描述",
+    dataIndex: "description",
+    key: "description "
   },
   {
-    title: "频段",
-    key: "frequency",
-    dataIndex: "frequency"
+    title: "网络服务器",
+    dataIndex: "server",
+    key: "server "
   },
   {
-    title: "Class",
-    key: "class",
-    dataIndex: "class"
+    title: "协议版本",
+    dataIndex: "macVersion",
+    key: "macVersion "
   },
   {
-    title: "状态",
-    key: "state",
-    dataIndex: "state",
-    scopedSlots: { customRender: "state" }
-  },
-  {
-    title: "应用编号(AppEUI)",
-    key: "AppEUI",
-    dataIndex: "AppEUI"
+    title: "入网方式",
+    dataIndex: "supportsJoinType",
+    key: "supportsJoinType "
   },
   {
     title: "使用状态",
@@ -200,6 +194,14 @@ export default {
       })
       .then(res => {
         this.interData = res.data.result;
+        console.log(this.interData);
+        for (let i = 0; i < this.interData.length; i++) {
+          if (this.interData[i].supportsJoin === "true") {
+            this.interData[i].supportsJoinType = "OTAA";
+          } else {
+            this.interData[i].supportsJoinType = "ABP";
+          }
+        }
       })
       .catch(err => {
         console.log(err);
@@ -214,13 +216,13 @@ export default {
     checkRouter(data) {
       this.$router.push({
         name: "checkNodeManage",
-        query: { number: data["DevEUI"], id: "1" }
+        query: { number: data["id"], id: "1" }
       });
     },
     editRouter(data) {
       this.$router.push({
         name: "checkNodeManage",
-        query: { number: data["DevEUI"], id: "2" }
+        query: { number: data["id"], id: "2" }
       });
     },
     showModalIn() {

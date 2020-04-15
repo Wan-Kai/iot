@@ -317,19 +317,22 @@ export default {
       });
 
     this.internetServer_options = this.$store.getters.getNetServerOption;
+    console.log(this.internetServer_options);
     this.area_options = this.$store.getters.getArea;
     this.communicationMode_options = this.$store.getters.getCommunicationMode;
     this.band_options = this.$store.getters.getBand_options;
   },
   methods: {
     handleSubmit(e) {
-      this.commitLoading = true;
       e.preventDefault();
       this.gatewayAddForm.validateFields((err, values) => {
         if (!err) {
-          for (let i = 0; i < this.netServer.length; i++) {
-            if (values.internetServer[0] === this.netServer[i].server) {
-              values.networkServerID = this.netServer[i].id;
+          this.commitLoading = true;
+          for (let i = 0; i < this.internetServer_options.length; i++) {
+            if (
+              values.internetServer[0] === this.internetServer_options[i].value
+            ) {
+              values.networkServerID = this.internetServer_options[i].id;
             }
           }
           values.organizationID = 1;
@@ -347,6 +350,7 @@ export default {
             accuracy: 0
           };
           values.discoveryEnabled = true;
+          console.log(values);
           this.$api.gateway
             .creatGateway({
               gateway: values
@@ -355,12 +359,17 @@ export default {
               console.log("拿到返回");
               console.log(res);
               if (res.status === 200) {
-                this.$message.success("成功创建网关:" + values.gatewayId);
+                this.$message.success("成功创建网关:" + values.id);
                 setTimeout(() => {
                   this.$router.push({
                     name: "gatewayInit"
                   });
                 }, 500);
+                setTimeout(() => {
+                  this.$router.push({
+                    name: "gatewayInit"
+                  });
+                }, 100);
               } else if (res.status === 400) {
                 console.log(res);
                 this.$message.error("错误的网关ID");

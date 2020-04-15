@@ -201,7 +201,7 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-// import wifi_map from "../../../assets/wifi.png";
+import wifi_map from "../../../assets/wifi.png";
 export default {
   components: { ACol, ARow },
 
@@ -242,6 +242,7 @@ export default {
       })
       .then(res => {
         this.infoData = res.data;
+        console.log(this.infoData);
         this.infoData.area =
           this.infoData.gateway.province +
           "/" +
@@ -258,27 +259,30 @@ export default {
         //   }
         // }
 
-        // let mapObj = new AMap.Map("gateway_detail", {
-        //   // eslint-disable-line no-unused-vars
-        //   resizeEnable: true, //自适应大小
-        //   zoom: this.infoData.zoom,
-        //   center: this.infoData.center
-        // });
-        // let startIcon = new AMap.Icon({
-        //   // 图标尺寸
-        //   size: new AMap.Size(25, 25),
-        //   // 图标的取图地址
-        //   image: wifi_map, // 您自己的图标
-        //   // 图标所用图片大小
-        //   imageSize: new AMap.Size(25, 25)
-        // });
-        // const marker = new AMap.Marker({
-        //   // eslint-disable-line no-unused-vars
-        //   map: mapObj,
-        //   icon: startIcon,
-        //   position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-        //   title: "网关"
-        // });
+        let mapObj = new AMap.Map("gateway_detail", {
+          // eslint-disable-line no-unused-vars
+          resizeEnable: true, //自适应大小
+          zoom: 14,
+          center: [
+            this.infoData.gateway.location.longitude,
+            this.infoData.gateway.location.latitude
+          ]
+        });
+        let startIcon = new AMap.Icon({
+          // 图标尺寸
+          size: new AMap.Size(25, 25),
+          // 图标的取图地址
+          image: wifi_map, // 您自己的图标
+          // 图标所用图片大小
+          imageSize: new AMap.Size(25, 25)
+        });
+        const marker = new AMap.Marker({
+          // eslint-disable-line no-unused-vars
+          map: mapObj,
+          icon: startIcon,
+          position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          title: "网关"
+        });
       })
       .catch(err => {
         console.log(err);

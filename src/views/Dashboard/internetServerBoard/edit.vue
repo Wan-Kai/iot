@@ -164,10 +164,10 @@ export default {
   },
   methods: {
     handleSubmit(e) {
-      this.submitLoading = true;
       e.preventDefault();
       this.internetServer_edit_form.validateFields((err, values) => {
         if (!err) {
+          this.submitLoading = true;
           values.server = this.server + ":" + values.port;
           console.log("Received values of form: ", values);
 
@@ -205,6 +205,9 @@ export default {
                   .catch(err => {
                     console.log(err);
                   });
+                setTimeout(() => {
+                  this.$router.push("/admin/dashboard/internetServer");
+                }, 100);
               } else {
                 this.$message.error(res.data.code);
                 this.$message.error(res.data.error);

@@ -328,6 +328,9 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.$message.success("删除节点信息成功");
+            this.$router.push({
+              name: "nodeManageInit"
+            });
           } else {
             this.$message.error(res.data.error);
           }

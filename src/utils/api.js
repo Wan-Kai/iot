@@ -130,7 +130,7 @@ export default {
       return put("/device-profiles/" + data.extra, data);
     },
     creatNode: data => {
-      return post("/admin/node/data", data);
+      return post("/device-profiles", data);
     },
     deleteNode: data => {
       return deletes("/device-profiles/" + data.extra, data);

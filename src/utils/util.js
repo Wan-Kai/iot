@@ -33,6 +33,14 @@ export function getNetworkServerOption() {
   return store.getters.getNetServer;
 }
 
+export function getNetServerOption() {
+  return store.getters.getNetServerOption;
+}
+
+export function getNetServerIdByServer(server) {
+  return store.getters.getNetServerIdByServer(server);
+}
+
 export function getArea() {
   return store.getters.getArea;
 }

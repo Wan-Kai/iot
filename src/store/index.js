@@ -59,10 +59,18 @@ export default new Vuex.Store({
     },
     getNetServerById: () => id => {
       let netServer = util.state.netServer;
-      console.log(netServer);
       for (let i = 0; i < netServer.length; i++) {
         if (netServer[i].id === id) {
           return netServer[i].server;
+        }
+      }
+      return null;
+    },
+    getNetServerIdByServer: () => server => {
+      let netServer = util.state.netServer;
+      for (let i = 0; i < netServer.length; i++) {
+        if (netServer[i].server === server) {
+          return netServer[i].id;
         }
       }
       return null;

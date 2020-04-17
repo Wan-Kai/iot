@@ -14,7 +14,6 @@
           <a-row>
             <a-form
               :form="nodeDeployForm"
-              @submit="handleSubmit"
               layout="vertical"
               class="iot_view_node_add_form"
             >
@@ -30,9 +29,40 @@
                   v-model="value"
                   style="text-align: left;float: left"
                 >
-                  <a-radio :value="1">OTAA</a-radio>
-                  <a-radio :value="2">ABP</a-radio>
+                  <a-radio value="1">OTAA</a-radio>
+                  <a-radio value="2">ABP</a-radio>
                 </a-radio-group>
+              </a-form-item>
+
+              <a-form-item
+                class="iot_view_node_add_formitem"
+                label="网络服务器："
+                :required="true"
+                :label-col="{ span: 8 }"
+                :wrapper-col="{ span: 16 }"
+              >
+                <a-cascader
+                  v-decorator="[
+                    'internetServer',
+                    {
+                      rules: [{ required: true, message: '请选择网络服务器' }]
+                    }
+                  ]"
+                  style="width: 90%;float: left;text-align: left"
+                  size="small"
+                  :options="internetServer_options"
+                  placeholder=""
+                />
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    prompt text
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
               </a-form-item>
 
               <a-form-item
@@ -67,7 +97,7 @@
                 :wrapper-col="{ span: 16 }"
               >
                 <a-input
-                  v-decorator="['nodeName']"
+                  v-decorator="['name']"
                   size="small"
                   style="width: 90%;float: left;text-align: left"
                 >
@@ -75,27 +105,74 @@
               </a-form-item>
 
               <a-form-item
-                v-for="(k, index) in nodeDeployForm.getFieldValue('keys')"
-                :key="k"
+                v-if="!this.supportsJoin"
                 :label-col="{ span: 8 }"
                 :wrapper-col="{ span: 16 }"
-                :label="getLabel(index)"
+                label="NwksKey："
                 :required="true"
-                class="iot_view_node_add_formitem"
+                class="iot_view_node_deployEdit_formitem"
               >
                 <a-input
-                  v-decorator="[
-                    `names[${k}]`,
-                    {
-                      validateTrigger: ['change', 'blur']
-                    }
-                  ]"
+                  v-decorator="['NwksKey']"
                   size="small"
                   style="width: 90%;float: left;text-align: left"
-                />
+                >
+                </a-input>
                 <a-tooltip placement="rightTop">
                   <template slot="title">
-                    {{ getLabel(index) }}
+                    temp
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
+              </a-form-item>
+
+              <a-form-item
+                v-if="!this.supportsJoin"
+                :label-col="{ span: 8 }"
+                :wrapper-col="{ span: 16 }"
+                label="FCntUp："
+                :required="true"
+                class="iot_view_node_deployEdit_formitem"
+              >
+                <a-input
+                  v-decorator="['FCntUp']"
+                  size="small"
+                  style="width: 90%;float: left;text-align: left"
+                >
+                </a-input>
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    temp
+                  </template>
+                  <a-icon
+                    type="exclamation-circle"
+                    style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+                  />
+                </a-tooltip>
+              </a-form-item>
+
+              <a-form-item
+                v-if="!this.supportsJoin"
+                :label-col="{ span: 8 }"
+                :wrapper-col="{ span: 16 }"
+                label="FCntDn："
+                :required="true"
+                class="iot_view_node_deployEdit_formitem"
+              >
+                <a-input
+                  v-decorator="['FCntDn']"
+                  size="small"
+                  style="width: 90%;float: left;text-align: left"
+                >
+                </a-input>
+                <a-tooltip placement="rightTop">
+                  <template slot="title">
+                    temp
                   </template>
                   <a-icon
                     type="exclamation-circle"
@@ -122,8 +199,10 @@
             </a-form>
             <a-col :span="16" :offset="8">
               <div style="display: flex">
-                <a-button type="primary">保存</a-button>
-                <a-button style="margin: 0 16px">取消</a-button>
+                <a-button type="primary" @click="handleSubmit">保存</a-button>
+                <a-button style="margin: 0 16px" @click="handleCancel"
+                  >取消</a-button
+                >
               </div>
             </a-col>
           </a-row>
@@ -139,14 +218,19 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-let id = 0;
+import {
+  getOrganizationID,
+  getNetServerOption,
+  getNetServerIdByServer
+} from "../../../utils/util.js";
 export default {
   components: { ACol, ARow },
   data() {
     return {
       macVision_option: [],
-
-      value: 1
+      value: "1",
+      supportsJoin: true,
+      internetServer_options: []
     };
   },
   beforeCreate() {
@@ -159,52 +243,58 @@ export default {
     });
   },
 
-  beforeMount() {},
+  beforeMount() {
+    this.internetServer_options = getNetServerOption();
+  },
 
   methods: {
-    handleSubmit() {},
-    radioOnChange(e) {
-      if (e.target.value === 1) {
-        let item;
-        for (item in this.nodeDeployForm.getFieldValue("keys")) {
-          this.remove(item);
-        }
-      } else if (e.target.value === 2) {
-        id = 0;
-        this.add();
-        this.add();
-        this.add();
-      }
-    },
-    remove(k) {
-      const { nodeDeployForm } = this;
-      // can use data-binding to get
-      const keys = nodeDeployForm.getFieldValue("keys");
+    handleSubmit(e) {
+      e.preventDefault();
+      this.nodeDeployForm.validateFields((err, values) => {
+        if (!err) {
+          let deviceProfile = {};
+          deviceProfile = values;
+          if (this.supportsJoin) {
+            deviceProfile.supportsJoin = true;
+          } else {
+            deviceProfile.supportsJoin = false;
+          }
+          deviceProfile.organizationID = getOrganizationID();
+          deviceProfile.networkServerID = getNetServerIdByServer(
+            values.internetServer[0]
+          );
 
-      // can use data-binding to set
-      nodeDeployForm.setFieldsValue({
-        keys: keys.filter(key => key.toString() !== k.toString())
+          this.$api.node
+            .creatNode({
+              deviceProfile: deviceProfile
+            })
+            .then(res => {
+              if (res.status === 200) {
+                this.$message.success("创建节点成功");
+                this.$router.push({
+                  name: "nodeManageInit"
+                });
+              } else {
+                this.$message.error(res.data.error);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       });
     },
-    add() {
-      const { nodeDeployForm } = this;
-      // can use data-binding to get
-      const keys = nodeDeployForm.getFieldValue("keys");
-      const nextKeys = keys.concat(id++);
-      // can use data-binding to set
-      // important! notify form to detect changes
-      nodeDeployForm.setFieldsValue({
-        keys: nextKeys
-      });
-    },
-    getLabel(index) {
-      if (index == 0) {
-        return "NwksKey：";
-      } else if (index == 1) {
-        return "FCntUp：";
-      } else {
-        return "FCntDn：";
+    radioOnChange(e) {
+      if (e.target.value === "1") {
+        this.supportsJoin = true;
+      } else if (e.target.value === "2") {
+        this.supportsJoin = false;
       }
+    },
+    handleCancel() {
+      this.$router.push({
+        name: "nodeManageInit"
+      });
     }
   }
 };

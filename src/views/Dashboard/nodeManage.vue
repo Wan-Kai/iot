@@ -197,11 +197,6 @@ export default {
           infoDataTemp[i].server = getNetServerNameById(
             infoDataTemp[i].networkServerID
           );
-          if (infoDataTemp[i].supportsJoin === "true") {
-            infoDataTemp[i].supportsJoinType = "OTAA";
-          } else {
-            infoDataTemp[i].supportsJoinType = "ABP";
-          }
         }
         this.interData = infoDataTemp;
       })

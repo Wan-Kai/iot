@@ -16,14 +16,34 @@ export default {
     }
   },
   interServer: {
+    /* mock
+    getServerData: data => {
+      return get("/admin/server/data", data);
+    },
+    getServerById: data => {
+      return get("/admin/server/data", data);
+    },
+    */
+
     getServerData: data => {
       return get("/network-servers", data);
     },
+
+    getServerDetail: data => {
+      return get("/network-servers" + data.extra, data);
+    },
+    createServer: data => {
+      return post("/network-servers", data);
+    },
+    updateServer: data => {
+      return put("/network-servers/" + data.extra, data);
+    },
+    deleteServer: data => {
+      return deletes("/network-servers/" + data.extra, data);
+    },
+
     getMessage: data => {
       return post("/admin/server/message", data);
-    },
-    getCheckData: data => {
-      return get("/network-servers" + data.extra, data);
     },
     //消息
     getMessageDetail: data => {
@@ -31,39 +51,59 @@ export default {
     },
     deleteMessage: data => {
       return post("/admin/server/message/delete", data);
+    }
+  },
+
+  serviceProfile: {
+    getServices: data => {
+      return get("/service-profiles", data);
+    },
+    createService: data => {
+      return post("/service-profiles", data);
     },
     updateServer: data => {
       return put("/network-servers/" + data.extra, data);
     },
-    creatServer: data => {
-      return post("/network-servers", data);
+    updateService: data => {
+      return put("/service-profiles/" + data.extra, data);
     },
-    deleteServer: data => {
-      return deletes("/network-servers/" + data.extra, data);
+    deleteService: data => {
+      return deletes("/service-profiles/" + data.extra, data);
     }
   },
+
   gateway: {
+    /* mock
+    getGateway: data => {
+      return get("/admin/gateway/data", data);
+    },
+    getGatewayById: data => {
+      return get("/admin/gateway/data", data);
+    },
+    */
     //获取表格数据
-    gatewayData: data => {
+    gatewayList: data => {
       return get("/gateways", data);
     },
-    gatewayDetailData: data => {
+    gatewayDetail: data => {
       return get("/gateways/" + data.extra, data);
     },
+    createGateway: data => {
+      return post("/gateways", data);
+    },
+    updateGateway: data => {
+      return put("/gateways/" + data.extra, data);
+    },
+
+    deleteGateway: data => {
+      return deletes("/gateways/" + data.extra, data);
+    },
+
     ilogFlowData: data => {
       return post("/admin/gateway/ilogFlow/data", data);
     },
     gatewayMap: data => {
       return post("/admin/gateway/gatewayMap/data", data);
-    },
-    updateGateway: data => {
-      return put("/gateways/" + data.extra, data);
-    },
-    creatGateway: data => {
-      return post("/gateways", data);
-    },
-    deleteGateway: data => {
-      return deletes("/gateways/" + data.extra, data);
     }
   },
   node: {

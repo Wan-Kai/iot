@@ -138,7 +138,7 @@ export default {
     this.id = this.$route.query.id;
     this.defaultTab = this.$route.query.tab;
     this.$api.gateway
-      .gatewayDetailData({
+      .gatewayDetail({
         extra: this.id
       })
       .then(res => {

@@ -330,7 +330,7 @@ export default {
       });
 
     this.$api.gateway
-      .gatewayDetailData({
+      .gatewayDetail({
         extra: this.id
       })
       .then(res => {

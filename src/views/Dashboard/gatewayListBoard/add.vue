@@ -352,7 +352,7 @@ export default {
           values.discoveryEnabled = true;
           console.log(values);
           this.$api.gateway
-            .creatGateway({
+            .createGateway({
               gateway: values
             })
             .then(res => {

@@ -132,7 +132,7 @@ export default {
     this.server = this.$route.query.server;
     this.id = this.$route.query.nid;
     this.$api.interServer
-      .getCheckData({
+      .getServerDetail({
         extra: this.id
       })
       .then(res => {

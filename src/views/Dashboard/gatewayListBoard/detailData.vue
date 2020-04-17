@@ -237,7 +237,7 @@ export default {
   beforeMount() {
     this.id = this.$route.query.id;
     this.$api.gateway
-      .gatewayDetailData({
+      .gatewayDetail({
         extra: this.id
       })
       .then(res => {

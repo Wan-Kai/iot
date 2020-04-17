@@ -203,7 +203,7 @@ export default {
   },
   beforeMount() {
     this.$api.gateway
-      .gatewayData({
+      .gatewayList({
         limit: 100
       })
       .then(res => {

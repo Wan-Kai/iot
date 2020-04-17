@@ -151,7 +151,7 @@ export default {
           values.gatewayDiscoveryTXFrequency = 1;
 
           this.$api.interServer
-            .creatServer({
+            .createServer({
               networkServer: values
             })
             .then(res => {

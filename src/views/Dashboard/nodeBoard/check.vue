@@ -120,22 +120,19 @@ export default {
   beforeMount() {
     this.number = this.$route.query.number;
     this.defaultTab = this.$route.query.tab;
-    console.log("获得了");
-    console.log(this.number);
-    console.log(this.defaultTab);
 
     this.$api.node
-      .nodeDetailData({
-        id: this.number
+      .getNodeById({
+        extra: this.number
       })
       .then(res => {
-        this.infoData = res.data.result;
+        let data = res.data;
+        console.log(data);
       })
       .catch(err => {
         console.log(err);
       });
-  },
-  methods: {}
+  }
 };
 </script>
 

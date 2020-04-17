@@ -124,16 +124,16 @@ export default {
       return get("/device-profiles", data);
     },
     getNodeById: data => {
-      return get("/admin/node/data", data);
+      return get("/device-profiles/" + data.extra, data);
     },
     updateNode: data => {
-      return put("/admin/node/data", data);
+      return put("/device-profiles/" + data.extra, data);
     },
     creatNode: data => {
-      return post("/admin/node/data", data);
+      return post("/device-profiles", data);
     },
     deleteNode: data => {
-      return deletes("/admin/node/data", data);
+      return deletes("/device-profiles/" + data.extra, data);
     }
   },
   appManage: {

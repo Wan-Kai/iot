@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { getNetworkServerOption } from "@/utils/util";
+import { getNetworkServerOption, getArea } from "../../../utils/util";
 
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
@@ -192,6 +192,7 @@ export default {
       address: "E/admin",
       warning: "警告信息",
 
+      pageSize: "",
       pagination: {
         size: "small",
         defaultPageSize: 10,
@@ -211,16 +212,19 @@ export default {
         limit: 100
       })
       .then(res => {
-        this.infoData = res.data.result;
+        let infoDataTemp = res.data.result;
+        // this.infoData = res.data.result;
 
+        console.log(infoDataTemp);
         let netServer = getNetworkServerOption();
-        let area = this.$store.getters.getArea;
-        for (let i = 0; i < this.infoData.length; i++) {
-          this.infoData[i].state = "off";
+        console.log(netServer);
+        let area = getArea();
+        for (let i = 0; i < infoDataTemp.length; i++) {
+          infoDataTemp[i].state = "off";
           for (let m = 0; m < area.length; m++) {
-            if (area[m].value === this.infoData[i].province) {
+            if (area[m].value === infoDataTemp[i].province) {
               for (let n = 0; n < area[m].children.length; n++) {
-                if (area[m].children[n].value === this.infoData[i].city) {
+                if (area[m].children[n].value === infoDataTemp[i].city) {
                   for (
                     let k = 0;
                     k < area[m].children[n].children.length;
@@ -228,9 +232,9 @@ export default {
                   ) {
                     if (
                       area[m].children[n].children[k].value ===
-                      this.infoData[i].district
+                      infoDataTemp[i].district
                     ) {
-                      this.infoData[i].area =
+                      infoDataTemp[i].area =
                         area[m].label +
                         "/" +
                         area[m].children[n].label +
@@ -243,15 +247,19 @@ export default {
             }
           }
           for (let j = 0; j < netServer.length; j++) {
-            if (this.infoData[i].networkServerID === netServer[j].id) {
-              this.infoData[i].networkServerName = netServer[j].name;
+            if (infoDataTemp[i].networkServerID === netServer[j].id) {
+              infoDataTemp[i].networkServerName = netServer[j].name;
             }
           }
-          this.loadingState = false;
         }
+        this.infoData = infoDataTemp;
       })
       .catch(err => {
+        console.log("出现错误");
         console.log(err);
+      })
+      .finally(() => {
+        this.loadingState = false;
       });
   },
   methods: {

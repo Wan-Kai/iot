@@ -112,6 +112,7 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
+import { getNetServerNameById } from "../../utils/util";
 const columns = [
   {
     title: "节点编号",
@@ -190,19 +191,20 @@ export default {
         limit: 100
       })
       .then(res => {
-        this.interData = res.data.result;
+        let infoDataTemp = res.data.result;
         console.log(res.data.result);
-        // for (let i = 0; i < this.interData.length; i++) {
-        //   if (this.interData[i].supportsJoin === "true") {
-        //     this.interData[i].supportsJoinType = "OTAA";
-        //   } else {
-        //     this.interData[i].supportsJoinType = "ABP";
-        //   }
-        // }
-        this.loadingState = false;
+        for (let i = 0; i < infoDataTemp.length; i++) {
+          infoDataTemp[i].server = getNetServerNameById(
+            infoDataTemp[i].networkServerID
+          );
+        }
+        this.interData = infoDataTemp;
       })
       .catch(err => {
         console.log(err);
+      })
+      .finally(() => {
+        this.loadingState = false;
       });
   },
   methods: {

@@ -252,7 +252,7 @@ const routes = [
           },
           {
             path: "/admin/dashboard/nodeManage/init",
-            name: "init",
+            name: "nodeManageInit",
             meta: { title: "" },
             component: () =>
               import(

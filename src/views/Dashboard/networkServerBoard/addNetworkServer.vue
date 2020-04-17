@@ -74,30 +74,24 @@
       </a-form-item>
 
       <a-form-item
-        v-for="(k, index) in form.getFieldValue('keys')"
-        :key="k"
+        v-if="this.gatewayOn"
+        label="间隔（每天）："
+        :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
-        :label="getLabel(index)"
-        :required="true"
         class="iot_view_internetServer_add_formItem"
       >
         <a-input
           size="small"
           v-decorator="[
-            getName(index),
-            {
-              rules: [
-                { required: true, message: '请输入' + getHint(index) + '!' }
-              ],
-              validateTrigger: ['change', 'blur']
-            }
+            'interval',
+            { rules: [{ required: true, message: '请输入间隔（每天）!' }] }
           ]"
           style="float: left;text-align: left;width: 90%"
         />
-        <a-tooltip placement="rightTop">
+        <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
           <template slot="title">
-            {{ getHint(index) }}
+            prompt text
           </template>
           <a-icon
             type="exclamation-circle"
@@ -106,6 +100,63 @@
           />
         </a-tooltip>
       </a-form-item>
+
+      <a-form-item
+        v-if="this.gatewayOn"
+        label="发射频率（Hz）："
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_internetServer_add_formItem"
+      >
+        <a-input
+          size="small"
+          v-decorator="[
+            'frequency',
+            { rules: [{ required: true, message: '请输入发射频率（Hz）!' }] }
+          ]"
+          style="float: left;text-align: left;width: 90%"
+        />
+        <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
+          <template slot="title">
+            prompt text
+          </template>
+          <a-icon
+            type="exclamation-circle"
+            style="height: 24px;line-height: 24px;width: 24px;
+          text-align: left;vertical-align: text-top"
+          />
+        </a-tooltip>
+      </a-form-item>
+
+      <a-form-item
+        v-if="this.gatewayOn"
+        label="发送数据率："
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_internetServer_add_formItem"
+      >
+        <a-input
+          size="small"
+          v-decorator="[
+            'rate',
+            { rules: [{ required: true, message: '请输入发送数据率!' }] }
+          ]"
+          style="float: left;text-align: left;width: 90%"
+        />
+        <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
+          <template slot="title">
+            prompt text
+          </template>
+          <a-icon
+            type="exclamation-circle"
+            style="height: 24px;line-height: 24px;width: 24px;
+          text-align: left;vertical-align: text-top"
+          />
+        </a-tooltip>
+      </a-form-item>
+
       <a-row>
         <a-col :span="7" :offset="3">
           <div class="iot_view_internetServer_add_form_left">
@@ -123,7 +174,6 @@
 <script>
 import { initNetworkServer } from "@/utils/util";
 
-let id = 0;
 export default {
   data() {
     return {
@@ -184,67 +234,23 @@ export default {
     back() {
       this.$router.push("/admin/dashboard/networkServer");
     },
-    remove(k) {
-      const { form } = this;
-      // can use data-binding to get
-      const keys = form.getFieldValue("keys");
 
-      // can use data-binding to set
-      form.setFieldsValue({
-        keys: keys.filter(key => key.toString() !== k.toString())
-      });
-    },
-    add() {
-      const { form } = this;
-      // can use data-binding to get
-      const keys = form.getFieldValue("keys");
-      const nextKeys = keys.concat(id++);
-      // can use data-binding to set
-      // important! notify form to detect changes
-      form.setFieldsValue({
-        keys: nextKeys
-      });
-    },
-    getLabel(index) {
-      if (index == 0) {
-        return "间隔（每天）：";
-      } else if (index == 1) {
-        return "发射频率（Hz）：";
-      } else {
-        return "发送数据率：";
-      }
-    },
-    getHint(index) {
-      if (index == 0) {
-        return "间隔";
-      } else if (index == 1) {
-        return "发射频率";
-      } else {
-        return "发送数据率";
-      }
-    },
-    getName(index) {
-      if (index == 0) {
-        return "interval";
-      } else if (index == 1) {
-        return "frequency";
-      } else {
-        return "probability";
-      }
-    },
+    // getLabel(index) {
+    //   if (index == 0) {
+    //     return "间隔（每天）：";
+    //   } else if (index == 1) {
+    //     return "发射频率（Hz）：";
+    //   } else {
+    //     return "发送数据率：";
+    //   }
+    // },
     stateChange(state) {
       this.gatewayOn = !this.gatewayOn;
-      console.log(this.gatewayOn);
       if (state) {
-        id = 0;
-        this.add();
-        this.add();
-        this.add();
+        // this.add();
+        console.log(state);
       } else {
-        let item;
-        for (item in this.form.getFieldValue("keys")) {
-          this.remove(item);
-        }
+        console.log(state);
       }
     }
   }

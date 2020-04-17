@@ -223,7 +223,7 @@
                 :loading="submitLoading"
                 >保存</a-button
               >
-              <a-button style="margin: 0 16px">取消</a-button>
+              <a-button style="margin: 0 16px" @click="back">取消</a-button>
               <a-button type="danger" icon="delete" @click="showModal"
                 >删除设备</a-button
               >
@@ -498,6 +498,11 @@ export default {
     },
     handleCancel(e) {
       this.visible = false;
+    },
+    back() {
+      this.$router.push({
+        name: "gatewayInit"
+      });
     }
   }
 };

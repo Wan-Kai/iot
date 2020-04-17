@@ -3,7 +3,6 @@ import Vuex from "vuex";
 import login from "./login";
 import retrieve from "./retrieve";
 import util from "./util";
-import data from "./data";
 
 Vue.use(Vuex);
 
@@ -16,8 +15,7 @@ export default new Vuex.Store({
   modules: {
     login,
     retrieve,
-    util,
-    data
+    util
   },
   getters: {
     // getAttr: state => key => {
@@ -40,7 +38,7 @@ export default new Vuex.Store({
     //netServer
     getNetServer: () => util.state.netServer,
     //organizationID
-    getOrganizationID: () => data.state.organizationID,
+    getOrganizationID: () => util.state.organizationID,
     //netServer
     getNetServerOption() {
       debugger;
@@ -61,10 +59,28 @@ export default new Vuex.Store({
     },
     getNetServerById: () => id => {
       let netServer = util.state.netServer;
-      console.log(netServer);
       for (let i = 0; i < netServer.length; i++) {
         if (netServer[i].id === id) {
           return netServer[i].server;
+        }
+      }
+      return null;
+    },
+    getNetServerIdByServer: () => server => {
+      let netServer = util.state.netServer;
+      for (let i = 0; i < netServer.length; i++) {
+        if (netServer[i].server === server) {
+          return netServer[i].id;
+        }
+      }
+      return null;
+    },
+    getNetServerNameById: () => id => {
+      let netServer = util.state.netServer;
+      console.log(netServer);
+      for (let i = 0; i < netServer.length; i++) {
+        if (netServer[i].id === id) {
+          return netServer[i].name;
         }
       }
       return null;

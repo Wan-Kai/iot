@@ -83,6 +83,7 @@
         class="iot_view_nodeManage_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
+        :loading="loadingState"
       >
         <span slot="state" slot-scope="tags">
           <a-tag :color="tags === 'on' ? 'green' : 'red'" :key="tags">
@@ -157,6 +158,7 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
+      loadingState: true,
       columns,
       interData: [],
 
@@ -197,6 +199,7 @@ export default {
         //     this.interData[i].supportsJoinType = "ABP";
         //   }
         // }
+        this.loadingState = false;
       })
       .catch(err => {
         console.log(err);

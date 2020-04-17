@@ -82,6 +82,7 @@
         class="iot_view_gatawayManage_table"
         :pagination="pagination"
         rowKey="id"
+        :loading="loadingState"
       >
         <span slot="state" slot-scope="tags">
           <a-tag :color="tags === 'on' ? 'green' : 'red'" :key="tags">
@@ -180,6 +181,7 @@ export default {
       infoData: [],
 
       rowSelection,
+      loadingState: true,
 
       loadingIn: false,
       visibleIn: false,
@@ -245,6 +247,7 @@ export default {
               this.infoData[i].networkServerName = netServer[j].name;
             }
           }
+          this.loadingState = false;
         }
       })
       .catch(err => {

@@ -8,157 +8,153 @@
       :gutter="16"
     >
       <a-col :span="10">
-        <a-row class="iot_view_node_deployEdit_form_content">
-          <a-form
-            :form="nodeDeployForm"
-            @submit="handleSubmit"
-            layout="vertical"
-            class="iot_view_node_deployEdit_form"
+        <a-form
+          :form="nodeDeployForm"
+          @submit="handleSubmit"
+          layout="vertical"
+          class="iot_view_node_deployEdit_form"
+        >
+          <a-form-item
+            class="iot_view_node_deployEdit_formitem"
+            label="入网方式："
+            :required="true"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
           >
-            <a-form-item
-              class="iot_view_node_deployEdit_formitem"
-              label="入网方式："
-              :required="true"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
+            <a-radio-group
+              @change="radioOnChange"
+              v-model="value"
+              style="float: left"
             >
-              <a-radio-group
-                @change="radioOnChange"
-                v-model="value"
-                style="float: left"
-              >
-                <a-radio :value="1">OTAA</a-radio>
-                <a-radio :value="2">ABP</a-radio>
-              </a-radio-group>
-            </a-form-item>
+              <a-radio :value="1">OTAA</a-radio>
+              <a-radio :value="2">ABP</a-radio>
+            </a-radio-group>
+          </a-form-item>
 
-            <a-form-item
-              class="iot_view_node_deployEdit_formitem"
-              label="协议版本："
-              :required="true"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
+          <a-form-item
+            class="iot_view_node_deployEdit_formitem"
+            label="协议版本："
+            :required="true"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+          >
+            <a-input
+              v-decorator="['macVersion']"
+              size="small"
+              style="width: 90%;float: left;text-align: left"
             >
-              <a-input
-                v-decorator="['macVersion']"
-                size="small"
-                style="width: 90%;float: left;text-align: left"
-              >
-              </a-input>
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
+            </a-input>
+            <a-tooltip placement="rightTop">
+              <template slot="title">
+                prompt text
+              </template>
+              <a-icon
+                type="exclamation-circle"
+                style="height: 24px;line-height: 24px;width: 24px;
           vertical-align: text-top"
-                />
-              </a-tooltip>
-            </a-form-item>
-            <a-form-item
-              class="iot_view_node_deployEdit_formitem"
-              label="节点名称："
-              :required="true"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
-            >
-              <a-input
-                v-decorator="['nodeName']"
-                size="small"
-                style="width: 90%;float: left;text-align: left"
-              >
-              </a-input>
-            </a-form-item>
-
-            <a-form-item
-              v-for="(k, index) in nodeDeployForm.getFieldValue('keys')"
-              :key="k"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
-              :label="getLabel(index)"
-              :required="true"
-              class="iot_view_node_deployEdit_formitem"
-            >
-              <a-input
-                v-decorator="[
-                  `names[${k}]`,
-                  {
-                    validateTrigger: ['change', 'blur']
-                  }
-                ]"
-                size="small"
-                style="width: 90%;float: left;text-align: left"
               />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  {{ getLabel(index) }}
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
-            </a-form-item>
-
-            <a-form-item
-              class="iot_view_node_deployEdit_formitem"
-              label="超时周期(分钟)："
-              :required="true"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
+            </a-tooltip>
+          </a-form-item>
+          <a-form-item
+            class="iot_view_node_deployEdit_formitem"
+            label="节点名称："
+            :required="true"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+          >
+            <a-input
+              v-decorator="['nodeName']"
+              size="small"
+              style="width: 90%;float: left;text-align: left"
             >
-              <a-input
-                v-decorator="['AppKey']"
-                size="small"
-                style="width: 90%;float: left;text-align: left"
-              >
-              </a-input>
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
+            </a-input>
+          </a-form-item>
+
+          <a-form-item
+            v-for="(k, index) in nodeDeployForm.getFieldValue('keys')"
+            :key="k"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+            :label="getLabel(index)"
+            :required="true"
+            class="iot_view_node_deployEdit_formitem"
+          >
+            <a-input
+              v-decorator="[
+                `names[${k}]`,
+                {
+                  validateTrigger: ['change', 'blur']
+                }
+              ]"
+              size="small"
+              style="width: 90%;float: left;text-align: left"
+            />
+            <a-tooltip placement="rightTop">
+              <template slot="title">
+                {{ getLabel(index) }}
+              </template>
+              <a-icon
+                type="exclamation-circle"
+                style="height: 24px;line-height: 24px;width: 24px;
           vertical-align: text-top"
-                />
-              </a-tooltip>
-            </a-form-item>
-          </a-form>
-          <a-row>
-            <a-col :span="16" :offset="8">
-              <div style="display: flex">
-                <a-button type="primary">保存</a-button>
-                <a-button style="margin: 0 16px">取消</a-button>
-                <a-button type="danger" icon="delete" @click="showModal"
-                  >删除设备</a-button
-                >
-              </div>
-            </a-col>
-          </a-row>
+              />
+            </a-tooltip>
+          </a-form-item>
+
+          <a-form-item
+            class="iot_view_node_deployEdit_formitem"
+            label="超时周期(分钟)："
+            :required="true"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+          >
+            <a-input
+              v-decorator="['AppKey']"
+              size="small"
+              style="width: 90%;float: left;text-align: left"
+            >
+            </a-input>
+            <a-tooltip placement="rightTop">
+              <template slot="title">
+                prompt text
+              </template>
+              <a-icon
+                type="exclamation-circle"
+                style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+              />
+            </a-tooltip>
+          </a-form-item>
+        </a-form>
+        <a-row>
+          <a-col :span="16" :offset="8">
+            <div style="display: flex">
+              <a-button type="primary">保存</a-button>
+              <a-button style="margin: 0 16px">取消</a-button>
+              <a-button type="danger" icon="delete" @click="showModal"
+                >删除设备</a-button
+              >
+            </div>
+          </a-col>
         </a-row>
       </a-col>
-      <a-col :span="14">
-        <div>
-          <a-modal title="删除提示" :visible="visible" @cancel="handleCancel">
-            <template slot="footer">
-              <a-button key="back" @click="handleCancel">取消</a-button>
-              <a-button
-                type="danger"
-                icon="delete"
-                style="margin-left: 16px"
-                @click="handleOk"
-                :loading="confirmLoading"
-                >确认删除</a-button
-              >
-            </template>
-            <p>{{ ModalText }}</p>
-          </a-modal>
-        </div>
-      </a-col>
     </a-row>
+    <div>
+      <a-modal title="删除提示" :visible="visible" @cancel="handleCancel">
+        <template slot="footer">
+          <a-button key="back" @click="handleCancel">取消</a-button>
+          <a-button
+            type="danger"
+            icon="delete"
+            style="margin-left: 16px"
+            @click="handleOk"
+            :loading="confirmLoading"
+            >确认删除</a-button
+          >
+        </template>
+        <p>{{ ModalText }}</p>
+      </a-modal>
+    </div>
   </a-layout>
 </template>
 

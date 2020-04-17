@@ -131,7 +131,7 @@ export default {
   beforeMount() {
     this.server = this.$route.query.server;
     this.id = this.$route.query.nid;
-    this.$api.interServer
+    this.$api.networkServer
       .getServerDetail({
         extra: this.id
       })

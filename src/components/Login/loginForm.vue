@@ -99,7 +99,7 @@ export default {
                   sessionKey: res.data.jwt
                 });
 
-                this.$api.interServer
+                this.$api.networkServer
                   .getServerData({
                     limit: 100
                   })

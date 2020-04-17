@@ -15,7 +15,7 @@ export default {
       return get("/index/message", data);
     }
   },
-  interServer: {
+  networkServer: {
     /* mock
     getServerData: data => {
       return get("/admin/server/data", data);

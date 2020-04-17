@@ -150,7 +150,7 @@ export default {
           values.gatewayDiscoveryInterval = 1;
           values.gatewayDiscoveryTXFrequency = 1;
 
-          this.$api.interServer
+          this.$api.networkServer
             .createServer({
               networkServer: values
             })
@@ -159,7 +159,7 @@ export default {
                 this.commitLoading = false;
                 this.$message.success("成功创建新服务器");
 
-                this.$api.interServer
+                this.$api.networkServer
                   .getServerData({
                     limit: 100
                   })

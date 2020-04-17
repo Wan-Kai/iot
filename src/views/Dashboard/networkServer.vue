@@ -113,7 +113,7 @@ export default {
     };
   },
   beforeMount() {
-    this.$api.interServer
+    this.$api.networkServer
       .getServerData({
         limit: 10
       })

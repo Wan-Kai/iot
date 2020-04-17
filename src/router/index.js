@@ -107,48 +107,48 @@ const routes = [
       },
       //网络服务器
       {
-        path: "/admin/dashboard/internetServer",
-        name: "internetServer",
+        path: "/admin/dashboard/networkServer",
+        name: "networkServer",
         meta: { title: "网络服务器" },
         component: { render: h => h("router-view") },
         children: [
           {
-            path: "/admin/dashboard/internetServer",
-            redirect: "/admin/dashboard/internetServer/init"
+            path: "/admin/dashboard/networkServer",
+            redirect: "/admin/dashboard/networkServer/init"
           },
           {
-            path: "/admin/dashboard/internetServer/init",
+            path: "/admin/dashboard/networkServer/init",
             meta: { title: "" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServer.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/networkServer.vue"
               )
           },
           {
-            path: "/admin/dashboard/internetServer/addInternetServer",
+            path: "/admin/dashboard/networkServer/addNetworkServer",
             name: "addInternetServer",
             meta: { title: "添加服务器" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServerBoard/addInternetServer.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/networkServerBoard/addNetworkServer.vue"
               )
           },
           {
-            path: "/admin/dashboard/internetServer/check/:id",
+            path: "/admin/dashboard/networkServer/check/:id",
             name: "checkInternetServer",
             meta: { title: "查看服务器" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServerBoard/check.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/networkServerBoard/check.vue"
               )
           },
           {
-            path: "/admin/dashboard/internetServer/edit/:id",
+            path: "/admin/dashboard/networkServer/edit/:id",
             name: "editInternetServer",
             meta: { title: "编辑服务器" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/internetServerBoard/edit.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/networkServerBoard/edit.vue"
               )
           }
         ]

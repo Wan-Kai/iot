@@ -148,7 +148,7 @@ export default {
       // for(let item in messageSelectedRows ){
       //   this.$message.success("已删除"+ messageSelectedRows[item]);
       // }
-      // this.$api.interServer
+      // this.$api.networkServer
       //         .deleteMessage(messageSelectedRows)
       //         .then(res => {
       //           this.interData = res.data.deletedMessage;

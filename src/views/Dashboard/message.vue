@@ -111,7 +111,7 @@ export default {
   },
   watch: {},
   beforeMount() {
-    this.$api.interServer
+    this.$api.networkServer
       .getMessage({
         page: 0
       })
@@ -128,7 +128,7 @@ export default {
       this.visible = true;
       this.title = record.title.toString(); //检索条件
 
-      this.$api.interServer
+      this.$api.networkServer
         .getMessageDetail({
           title: this.title
         })
@@ -147,7 +147,7 @@ export default {
       for (let item in messageSelectedRows) {
         this.$message.success("已删除" + messageSelectedRows[item]);
       }
-      this.$api.interServer
+      this.$api.networkServer
         .deleteMessage(messageSelectedRows)
         .then(res => {
           this.interData = res.data.deletedMessage;

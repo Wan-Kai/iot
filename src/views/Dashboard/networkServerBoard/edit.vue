@@ -147,7 +147,7 @@ export default {
   beforeMount() {
     this.server = this.$route.query.server;
     this.id = this.$route.query.nid;
-    this.$api.interServer
+    this.$api.networkServer
       .getServerDetail({
         limit: 1,
         id: this.id
@@ -171,7 +171,7 @@ export default {
           values.server = this.server + ":" + values.port;
           console.log("Received values of form: ", values);
 
-          this.$api.interServer
+          this.$api.networkServer
             .updateServer({
               extra: this.id,
               networkServer: values
@@ -180,7 +180,7 @@ export default {
               if (res.status === 200) {
                 this.$message.success("成功修改网络服务器信息");
 
-                this.$api.interServer
+                this.$api.networkServer
                   .getServerData({
                     limit: 100
                   })
@@ -232,7 +232,7 @@ export default {
     handleOk(e) {
       this.confirmLoading = true;
 
-      this.$api.interServer
+      this.$api.networkServer
         .deleteServer({
           extra: this.id
         })
@@ -242,7 +242,7 @@ export default {
             this.visible = false;
             this.$message.success("成功删除网络服务器");
 
-            this.$api.interServer
+            this.$api.networkServer
               .getServerData({
                 limit: 100
               })

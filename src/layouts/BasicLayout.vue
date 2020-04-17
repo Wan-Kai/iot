@@ -24,7 +24,7 @@
           <a-sub-menu key="sub1">
             <span slot="title"><a-icon type="hdd" />基础管理</span>
             <a-menu-item key="2">
-              <router-link to="/admin/dashboard/internetServer"
+              <router-link to="/admin/dashboard/networkServer"
                 >网络服务器</router-link
               >
             </a-menu-item>

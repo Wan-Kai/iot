@@ -43,7 +43,7 @@ export default new Vuex.Store({
     getOrganizationID: () => data.state.organizationID,
     //netServer
     getNetServerOption() {
-      let internetServer_options = [];
+      let networkServer_options = [];
       let netServer = util.state.netServer;
       let temp = {
         value: "",
@@ -54,9 +54,9 @@ export default new Vuex.Store({
         temp.label = netServer[i].name + "@" + netServer[i].server;
         temp.value = netServer[i].server;
         temp.id = netServer[i].id;
-        internetServer_options.push(temp);
+        networkServer_options.push(temp);
       }
-      return internetServer_options;
+      return networkServer_options;
     },
     getNetServerById: () => id => {
       let netServer = util.state.netServer;
@@ -67,6 +67,22 @@ export default new Vuex.Store({
         }
       }
       return null;
+    },
+
+    getServiceOptions(networkServerID) {
+      let service_options = [];
+      let servicesList = util.state.service_list;
+      for (let i = 0; i < servicesList.length; i++) {
+        if (servicesList[i].networkServerID === networkServerID) {
+          let temp = {
+            networkServerID: servicesList[i].networkServerID,
+            id: servicesList[i].id,
+            name: servicesList[i].name
+          };
+          service_options.push(temp);
+        }
+      }
+      return service_options;
     },
     //CommunicationMode
     getCommunicationMode: () => util.state.communicationMode_options,

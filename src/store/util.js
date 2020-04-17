@@ -1,6 +1,7 @@
 const state = {
   mock: false,
   netServer: [],
+  service_list: [],
   area_options: [],
   communicationMode_options: [
     {
@@ -61,6 +62,10 @@ const mutations = {
   setArea(state, data) {
     //设置参数
     state.area_options = data;
+  },
+
+  setService(state, data) {
+    state.service_list = data;
   }
 };
 

@@ -9,17 +9,73 @@
     >
       <a-col :span="10">
         <div class="iot_view_node_detail_textCard">
-          <a-row
-            :class="{ black: item.dark }"
-            v-for="item in infoData"
-            :key="item.id"
-          >
+          <a-row class="black">
             <a-col :span="8">
-              <p class="iot_view_node_detail_textCard_p">{{ item.title }}</p>
+              <p class="iot_view_node_detail_textCard_p">节点编号:</p>
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ item.value }}
+                {{ this.infoData.id }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">节点名称:</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.name }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="black">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">入网方式:</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.supportsJoinType }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">协议版本:</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.macVersion }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="black">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">超时周期（分钟）:</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.overTime }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">使用状态:</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.state }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="black">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">添加时间:</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.infoData.createdAt }}
               </p>
             </a-col>
           </a-row>
@@ -48,62 +104,44 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
+      number: "",
       isDark: false,
-      infoData: [
-        {
-          title: "节点编号:",
-          name: "",
-          value: "result",
-          id: "1",
-          dark: true
-        },
-        {
-          title: "节点名称:",
-          name: "",
-          value: "result2",
-          id: "2",
-          dark: false
-        },
-        {
-          title: "入网方式:",
-          name: "",
-          value: "result",
-          id: "3",
-          dark: true
-        },
-        {
-          title: "协议版本:",
-          name: "",
-          value: "result2",
-          id: "4",
-          dark: false
-        },
-        {
-          title: "超时周期（分钟）:",
-          name: "",
-          value: "result",
-          id: "5",
-          dark: true
-        },
-        {
-          title: "使用状态:",
-          name: "",
-          value: "result2",
-          id: "6",
-          dark: false
-        },
-        {
-          title: "添加时间:",
-          name: "",
-          value: "result",
-          id: "7",
-          dark: true
-        }
-      ]
+      infoData: {
+        id: "",
+        name: "",
+        supportsJoinType: "",
+        macVersion: "",
+        overTime: "",
+        state: "",
+        createdAt: "",
+        updatedAt: ""
+      }
     };
   },
 
-  beforeMount() {},
+  beforeMount() {
+    this.number = this.$route.query.number;
+    this.$api.node
+      .getNodeById({
+        extra: this.number
+      })
+      .then(res => {
+        let data = res.data;
+        console.log(data);
+
+        this.infoData = data.deviceProfile;
+        this.infoData.createdAt = data.createdAt;
+        this.infoData.updatedAt = data.updatedAt;
+        if (this.infoData.supportsJoin === "true") {
+          this.infoData.supportsJoinType = "OTAA";
+        } else {
+          this.infoData.supportsJoinType = "ABP";
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   mounted() {
     this.drawLineUp();
     this.drawLineDown();
@@ -309,6 +347,9 @@ export default {
 }
 .black {
   background: #f0f0f0;
+}
+.light {
+  background: #fff;
 }
 .iot_amap_noteDetail_container {
   height: 410px;

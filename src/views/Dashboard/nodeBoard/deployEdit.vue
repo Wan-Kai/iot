@@ -10,7 +10,6 @@
       <a-col :span="10">
         <a-form
           :form="nodeDeployForm"
-          @submit="handleSubmit"
           layout="vertical"
           class="iot_view_node_deployEdit_form"
         >
@@ -26,8 +25,8 @@
               v-model="value"
               style="float: left"
             >
-              <a-radio :value="1">OTAA</a-radio>
-              <a-radio :value="2">ABP</a-radio>
+              <a-radio value="1">OTAA</a-radio>
+              <a-radio value="2">ABP</a-radio>
             </a-radio-group>
           </a-form-item>
 
@@ -39,7 +38,12 @@
             :wrapper-col="{ span: 16 }"
           >
             <a-input
-              v-decorator="['macVersion']"
+              v-decorator="[
+                'macVersion',
+                {
+                  initialValue: this.infoData.deviceProfile.macVersion
+                }
+              ]"
               size="small"
               style="width: 90%;float: left;text-align: left"
             >
@@ -63,7 +67,12 @@
             :wrapper-col="{ span: 16 }"
           >
             <a-input
-              v-decorator="['nodeName']"
+              v-decorator="[
+                'name',
+                {
+                  initialValue: this.infoData.deviceProfile.name
+                }
+              ]"
               size="small"
               style="width: 90%;float: left;text-align: left"
             >
@@ -71,27 +80,74 @@
           </a-form-item>
 
           <a-form-item
-            v-for="(k, index) in nodeDeployForm.getFieldValue('keys')"
-            :key="k"
+            v-if="!this.supportsJoin"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
-            :label="getLabel(index)"
+            label="NwksKey："
             :required="true"
             class="iot_view_node_deployEdit_formitem"
           >
             <a-input
-              v-decorator="[
-                `names[${k}]`,
-                {
-                  validateTrigger: ['change', 'blur']
-                }
-              ]"
+              v-decorator="['NwksKey']"
               size="small"
               style="width: 90%;float: left;text-align: left"
-            />
+            >
+            </a-input>
             <a-tooltip placement="rightTop">
               <template slot="title">
-                {{ getLabel(index) }}
+                temp
+              </template>
+              <a-icon
+                type="exclamation-circle"
+                style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+              />
+            </a-tooltip>
+          </a-form-item>
+
+          <a-form-item
+            v-if="!this.supportsJoin"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+            label="FCntUp："
+            :required="true"
+            class="iot_view_node_deployEdit_formitem"
+          >
+            <a-input
+              v-decorator="['FCntUp']"
+              size="small"
+              style="width: 90%;float: left;text-align: left"
+            >
+            </a-input>
+            <a-tooltip placement="rightTop">
+              <template slot="title">
+                temp
+              </template>
+              <a-icon
+                type="exclamation-circle"
+                style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+              />
+            </a-tooltip>
+          </a-form-item>
+
+          <a-form-item
+            v-if="!this.supportsJoin"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+            label="FCntDn："
+            :required="true"
+            class="iot_view_node_deployEdit_formitem"
+          >
+            <a-input
+              v-decorator="['FCntDn']"
+              size="small"
+              style="width: 90%;float: left;text-align: left"
+            >
+            </a-input>
+            <a-tooltip placement="rightTop">
+              <template slot="title">
+                temp
               </template>
               <a-icon
                 type="exclamation-circle"
@@ -129,7 +185,7 @@
         <a-row>
           <a-col :span="16" :offset="8">
             <div style="display: flex">
-              <a-button type="primary">保存</a-button>
+              <a-button type="primary" @click="handleSubmit">保存</a-button>
               <a-button style="margin: 0 16px">取消</a-button>
               <a-button type="danger" icon="delete" @click="showModal"
                 >删除设备</a-button
@@ -161,22 +217,28 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-let id = 0;
+import { getOrganizationID } from "../../../utils/util.js";
 export default {
   components: { ACol, ARow },
   data() {
     return {
+      number: "",
+
+      infoData: [
+        {
+          deviceProfile: {
+            name: "",
+            macVersion: ""
+          }
+        }
+      ],
+      supportsJoin: true,
       ModalText: "",
       areaShow: false,
       submitLoading: false,
       confirmLoading: false,
       visible: false,
-      value: 1,
-      Lng: "",
-      Lat: "",
-
-      mapObj: {},
-      mapData: []
+      value: "1"
     };
   },
 
@@ -190,65 +252,94 @@ export default {
     });
   },
 
-  beforeMount() {},
+  beforeMount() {
+    this.number = this.$route.query.number;
+    this.$api.node
+      .getNodeById({
+        extra: this.number
+      })
+      .then(res => {
+        let data = res.data;
+        console.log(data);
+
+        console.log(data.deviceProfile.supportsJoin);
+        if (data.deviceProfile.supportsJoin.toString() === "true") {
+          this.value = "1";
+        } else {
+          this.value = "2";
+          this.supportsJoin = false;
+        }
+
+        this.infoData = data;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
 
   methods: {
-    handleSubmit() {},
-    handleSubmitSecond() {},
+    handleSubmit(e) {
+      e.preventDefault();
+      this.nodeDeployForm.validateFields((err, values) => {
+        if (!err) {
+          let deviceProfile = {};
+          deviceProfile = values;
+          if (this.supportsJoin) {
+            deviceProfile.supportsJoin = true;
+          } else {
+            deviceProfile.supportsJoin = false;
+          }
+          deviceProfile.organizationID = getOrganizationID();
+          this.$api.node
+            .updateNode({
+              extra: this.number,
+              deviceProfile: deviceProfile
+            })
+            .then(res => {
+              if (res.status === 200) {
+                this.$message.success("修改节点信息成功");
+              } else {
+                this.$message.error(res.data.error);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      });
+    },
     showModal() {
       this.visible = true;
-      this.ModalText = "确认删除" + ":" + this.id;
+      this.ModalText = "确认删除" + ":" + this.number;
     },
     radioOnChange(e) {
-      if (e.target.value === 1) {
-        let item;
-        for (item in this.nodeDeployForm.getFieldValue("keys")) {
-          this.remove(item);
-        }
-      } else if (e.target.value === 2) {
-        id = 0;
-        this.add();
-        this.add();
-        this.add();
+      if (e.target.value === "1") {
+        this.supportsJoin = true;
+      } else if (e.target.value === "2") {
+        this.supportsJoin = false;
       }
     },
-    remove(k) {
-      const { nodeDeployForm } = this;
-      // can use data-binding to get
-      const keys = nodeDeployForm.getFieldValue("keys");
-
-      // can use data-binding to set
-      nodeDeployForm.setFieldsValue({
-        keys: keys.filter(key => key.toString() !== k.toString())
-      });
+    handleOk(e) {
+      this.confirmLoading = true;
+      this.$api.node
+        .deleteNode({
+          extra: this.number
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.$message.success("删除节点信息成功");
+          } else {
+            this.$message.error(res.data.error);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.confirmLoading = false;
+          this.visible = false;
+        });
     },
-    add() {
-      const { nodeDeployForm } = this;
-      // can use data-binding to get
-      const keys = nodeDeployForm.getFieldValue("keys");
-      const nextKeys = keys.concat(id++);
-      // can use data-binding to set
-      // important! notify form to detect changes
-      nodeDeployForm.setFieldsValue({
-        keys: nextKeys
-      });
-    },
-    getLabel(index) {
-      if (index == 0) {
-        return "NwksKey：";
-      } else if (index == 1) {
-        return "FCntUp：";
-      } else {
-        return "FCntDn：";
-      }
-    },
-    stateChange() {
-      this.areaShow = !this.areaShow;
-      if (!this.areaShow) {
-        this.mapObj.clearMap();
-      }
-    },
-    handleOk(e) {},
     handleCancel(e) {
       this.visible = false;
     }

@@ -30,17 +30,31 @@ export function initNetworkServer() {
 }
 
 export function getNetworkServerOption() {
-  return store.getters.getNetServer();
+  return store.getters.getNetServer;
+}
+
+export function getArea() {
+  return store.getters.getArea;
+}
+
+export function getNetServerById(id) {
+  return store.getters.getNetServerById(id);
+}
+
+export function getNetServerNameById(id) {
+  return store.getters.getNetServerNameById(id);
+}
+
+export function getOrganizationID() {
+  return store.getters.getOrganizationID;
 }
 
 export function initServiceOption() {
-  debugger;
   api.serviceProfile
     .getServices({
       limit: 100
     })
     .then(res => {
-      debugger;
       let result = res.data.result;
 
       let options = [];
@@ -56,7 +70,6 @@ export function initServiceOption() {
         temp.name = result[i].name;
         options.push(temp);
       }
-      debugger;
       store.commit("util/setService", options);
     })
     .catch(err => {
@@ -65,6 +78,5 @@ export function initServiceOption() {
 }
 
 export function getServiceOption() {
-  debugger;
-  return store.getters.getServiceOptions();
+  return store.getters.getServiceOptions;
 }

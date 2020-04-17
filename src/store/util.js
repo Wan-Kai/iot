@@ -47,7 +47,8 @@ const state = {
       label: "8"
     }
   ],
-  timeInterval: "" //最后心跳时间与现在时间相比大于此时间值t，既认为是离线
+  timeInterval: "", //最后心跳时间与现在时间相比大于此时间值t，既认为是离线
+  organizationID: "1"
 };
 
 const getters = {};

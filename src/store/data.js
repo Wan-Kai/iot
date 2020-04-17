@@ -1,6 +1,6 @@
 const state = {
   state: {
-    organizationID: ""
+    organizationID: "1"
   }
 };
 

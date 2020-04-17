@@ -28,7 +28,7 @@ mock.mock(RegExp(`/api/index/mapMarkers` + ".*"), "get", () => {
 mock.mock(RegExp(`/api/index/message` + ".*"), "get", () => {
   return index.message;
 });
-//internetServer
+//networkServer
 // mock.mock(RegExp(`/api/network-servers` + ".*"), "get", (options) => {
 //   let limit = getParams(options.url,"limit");
 //   let mockMsg = {
@@ -105,6 +105,7 @@ mock.mock(`/api/admin/node/firstData`, "post", () => {
   return node.FirstPageNodeData;
 });
 //app
+/*
 mock.mock(RegExp(`/api/applications` + ".*"), "get", () => {
   return app.AppData;
 });
@@ -120,9 +121,11 @@ mock.mock(`/api/applications`, "post", () => {
 mock.mock(`/api/admin/app/detail`, "post", () => {
   return app.AppDetailData;
 });
+
 mock.mock(`/api/admin/app/nodeData`, "post", () => {
   return app.AppNodeData;
 });
+*/
 //users
 mock.mock(`/api/admin/users/data`, "post", () => {
   return users.UsersData;

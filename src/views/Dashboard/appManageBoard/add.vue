@@ -49,6 +49,38 @@
             style="float: left;text-align: left;width: 90%"
           />
         </a-form-item>
+
+        <a-form-item
+          class="iot_view_app_add_formItem"
+          label="服务名称："
+          :required="false"
+          :label-col="{ span: 3 }"
+          :wrapper-col="{ span: 7 }"
+        >
+          <a-cascader
+            v-decorator="[
+              'serviceProfile',
+              {
+                rules: [{ required: false, message: '请选择服务名' }]
+              }
+            ]"
+            style="width: 90%;float: left;text-align: left"
+            size="small"
+            :options="serviceProfile_options"
+            placeholder=""
+          />
+          <a-tooltip placement="rightTop">
+            <template slot="title">
+              prompt text
+            </template>
+            <a-icon
+              type="exclamation-circle"
+              style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+            />
+          </a-tooltip>
+        </a-form-item>
+
         <a-form-item
           label="设备分配容量："
           :required="true"
@@ -103,22 +135,45 @@
 </template>
 
 <script>
+import { getServiceOption } from "@/utils/util";
+
 export default {
   data() {
-    return {};
+    return {
+      commitLoading: false,
+      self: this,
+      serviceProfile_options: []
+    };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
     this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
   },
+
+  beforeMount() {
+    debugger;
+    this.serviceProfile_options = getServiceOption();
+  },
+
   methods: {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
+          this.commitLoading = true;
+          for (let i = 0; i < this.serviceProfile_options.length; i++) {
+            if (
+              values.serviceProfile[0] === this.serviceProfile_options[i].id
+            ) {
+              values.serviceProfileID = this.serviceProfile_options[i].id;
+            }
+          }
+          values.serviceProfileID = "7d2325fc-98a4-4a10-a0d4-9147fb6008c2";
+          values.organizationID = 1;
+
           this.$api.appManage
-            .appAdd({
-              values
+            .createApp({
+              application: values
             })
             .catch(err => {
               console.log(err);

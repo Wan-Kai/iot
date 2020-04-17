@@ -83,7 +83,7 @@ export default {
   },
   beforeMount() {
     this.$api.appManage
-      .appNodeData({
+      .getAppNodeList({
         page: 0
       })
       .then(res => {

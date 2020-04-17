@@ -137,26 +137,26 @@ export default {
     }
   },
   appManage: {
-    appData: data => {
-      return get("/api/applications", data);
-    },
-    updateAppData: data => {
-      return put("/api/applications", data);
-    },
-    appDetailData: data => {
-      return post("/admin/app/details", data);
-    },
-    appAdd: data => {
-      return post("/api/applications", data);
+    getAppList: data => {
+      return get("/applications", data);
     },
     getAppDetail: data => {
-      return post("/admin/app/detail", data);
+      return post("/applications/" + data.extra, data);
     },
-    appNodeData: data => {
-      return post("/admin/app/nodeData", data);
+    createApp: data => {
+      return post("/applications", data);
     },
+
+    updateApp: data => {
+      return put("/applications/" + data.extra, data);
+    },
+
     deleteApp: data => {
-      return deletes("/admin/app/delete", data);
+      return deletes("/applications/" + data.extra, data);
+    },
+
+    getAppNodeList: data => {
+      return post("/admin/app/nodeData", data);
     }
   },
   usersManage: {

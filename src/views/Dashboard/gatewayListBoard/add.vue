@@ -243,6 +243,7 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
+import { get } from "@/utils/util";
 
 export default {
   components: { ACol, ARow },

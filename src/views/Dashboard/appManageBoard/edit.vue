@@ -304,7 +304,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.$api.appManage
-            .updateAppData({
+            .updateApp({
               id: values.id
             })
             .catch(err => {

@@ -34,6 +34,7 @@ export function getNetworkServerOption() {
 }
 
 export function initServiceOption() {
+  debugger;
   api.serviceProfile
     .getServices({
       limit: 100
@@ -55,13 +56,15 @@ export function initServiceOption() {
         temp.name = result[i].name;
         options.push(temp);
       }
-      store.commit("util/setNetServer", options);
+      debugger;
+      store.commit("util/setService", options);
     })
     .catch(err => {
       console.log(err);
     });
 }
 
-export function getServiceOption(networkServerID) {
-  return store.getters.getServiceOptions(networkServerID);
+export function getServiceOption() {
+  debugger;
+  return store.getters.getServiceOptions();
 }

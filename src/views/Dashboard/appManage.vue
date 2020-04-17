@@ -12,7 +12,7 @@
           <a-button
             type="primary"
             icon="plus"
-            @click="appAdd"
+            @click="createApp"
             style="float: right"
           >
             应用申请
@@ -59,6 +59,11 @@ const columns = [
     title: "应用名称",
     key: "name",
     dataIndex: "name"
+  },
+  {
+    title: "服务",
+    key: "serviceProfileName",
+    dataIndex: "serviceProfileName"
   },
   {
     title: "设备分配容量",
@@ -110,8 +115,8 @@ export default {
   },
   beforeMount() {
     this.$api.appManage
-      .appData({
-        page: 0
+      .getAppList({
+        limit: 100
       })
       .then(res => {
         this.interData = res.data.result;
@@ -121,7 +126,7 @@ export default {
       });
   },
   methods: {
-    appAdd() {
+    createApp() {
       this.$router.push({
         name: "addApp"
       });

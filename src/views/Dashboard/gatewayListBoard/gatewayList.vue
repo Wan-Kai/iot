@@ -108,6 +108,8 @@
 </template>
 
 <script>
+import { getNetworkServerOption } from "@/utils/util";
+
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
     console.log(
@@ -209,7 +211,7 @@ export default {
       .then(res => {
         this.infoData = res.data.result;
 
-        let netServer = this.$store.getters.getNetServer;
+        let netServer = getNetworkServerOption();
         let area = this.$store.getters.getArea;
         for (let i = 0; i < this.infoData.length; i++) {
           this.infoData[i].state = "off";

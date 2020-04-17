@@ -121,6 +121,8 @@
 </template>
 
 <script>
+import { initNetworkServer } from "@/utils/util";
+
 let id = 0;
 export default {
   data() {
@@ -159,31 +161,10 @@ export default {
                 this.commitLoading = false;
                 this.$message.success("成功创建新服务器");
 
-                this.$api.networkServer
-                  .getServerData({
-                    limit: 100
-                  })
-                  .then(res => {
-                    let getData = res.data.result;
-
-                    let netServerData = [];
-                    let temp = {
-                      server: "",
-                      id: "",
-                      name: ""
-                    };
-
-                    for (let i = 0; i < getData.length; i++) {
-                      temp.server = getData[i].server;
-                      temp.id = getData[i].id;
-                      temp.name = getData[i].name;
-                      netServerData.push(temp);
-                    }
-                    this.$store.commit("util/setNetServer", netServerData);
-                  });
+                initNetworkServer();
 
                 setTimeout(() => {
-                  this.$router.push("/admin/dashboard/internetServer");
+                  this.$router.push("/admin/dashboard/networkServer");
                 }, 100);
               } else {
                 this.$message.error(res.data.code);
@@ -201,7 +182,7 @@ export default {
     },
 
     back() {
-      this.$router.push("/admin/dashboard/internetServer");
+      this.$router.push("/admin/dashboard/networkServer");
     },
     remove(k) {
       const { form } = this;

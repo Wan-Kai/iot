@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import { initNetworkServer } from "@/utils/util";
+
 export default {
   data() {
     this.form = this.$form.createForm(this);
@@ -99,31 +101,7 @@ export default {
                   sessionKey: res.data.jwt
                 });
 
-                this.$api.networkServer
-                  .getServerData({
-                    limit: 100
-                  })
-                  .then(res => {
-                    let getData = res.data.result;
-
-                    let netServerData = [];
-                    let temp = {
-                      server: "",
-                      id: "",
-                      name: ""
-                    };
-
-                    for (let i = 0; i < getData.length; i++) {
-                      temp.server = getData[i].server;
-                      temp.id = getData[i].id;
-                      temp.name = getData[i].name;
-                      netServerData.push(temp);
-                    }
-                    this.$store.commit("util/setNetServer", netServerData);
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  });
+                initNetworkServer();
 
                 setTimeout(() => {
                   this.$router.push("/admin/dashboard");

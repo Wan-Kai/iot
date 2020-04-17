@@ -153,7 +153,7 @@ export default {
   methods: {
     handleSubmit() {
       setTimeout(() => {
-        this.$router.push("/admin/dashboard/internetServer/addInternetServer");
+        this.$router.push("/admin/dashboard/networkServer/addNetworkServer");
       }, 100);
     },
     checkRouter(data) {

@@ -329,13 +329,38 @@ const routes = [
               )
           },
           {
-            path: "/admin/dashboard/appManageBoard/edit",
-            name: "checkApp",
+            path: "/admin/dashboard/appManageBoard/check",
+            name: "checkAppBoard",
             meta: { title: "应用查看" },
-            component: () =>
-              import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManageBoard/check.vue"
-              )
+            // component: () =>
+            //   import(
+            //     /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManageBoard/check.vue"
+            //   )
+            component: { render: h => h("router-view") },
+            children: [
+              {
+                path: "/admin/dashboard/appManageBoard/check",
+                redirect: "/admin/dashboard/appManageBoard/check/init"
+              },
+              {
+                path: "/admin/dashboard/appManageBoard/check/init",
+                name: "checkApp",
+                meta: { title: "" },
+                component: () =>
+                  import(
+                    /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManageBoard/check.vue"
+                  )
+              },
+              {
+                path: "/admin/dashboard/appManageBoard/check/checkNode",
+                name: "checkNodeInApp",
+                meta: { title: "节点查看" },
+                component: () =>
+                  import(
+                    /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManageBoard/checkNode.vue"
+                  )
+              }
+            ]
           }
         ]
       },

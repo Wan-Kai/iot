@@ -32,13 +32,6 @@ export default {
     deleteMessage: data => {
       return post("/admin/server/message/delete", data);
     },
-
-    getServer: data => {
-      return get("/admin/server/data", data);
-    },
-    getServerById: data => {
-      return get("/admin/server/data", data);
-    },
     updateServer: data => {
       return put("/network-servers/" + data.extra, data);
     },
@@ -62,13 +55,6 @@ export default {
     },
     gatewayMap: data => {
       return post("/admin/gateway/gatewayMap/data", data);
-    },
-
-    getGateway: data => {
-      return get("/admin/gateway/data", data);
-    },
-    getGatewayById: data => {
-      return get("/admin/gateway/data", data);
     },
     updateGateway: data => {
       return put("/gateways/" + data.extra, data);
@@ -95,7 +81,7 @@ export default {
     },
 
     getNode: data => {
-      return get("/admin/node/data", data);
+      return get("/device-profiles", data);
     },
     getNodeById: data => {
       return get("/admin/node/data", data);

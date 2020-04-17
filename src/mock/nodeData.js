@@ -6,13 +6,13 @@ const NodeData = Mock.mock({
   "result|20": [
     {
       id: "0047SDA4545DSA",
-      nodeName: "Lora",
+      name: "Lora",
       description: "-60",
       server: "wwww",
       macVersion: "temp",
       "supportsJoin|1": ["true", "false"],
       "type|1": ["研发测试", "销售"],
-      time: "@date('yyyy-MM-dd HH:mm:ss')"
+      createdAt: "@date('yyyy-MM-dd HH:mm:ss')"
     }
   ]
 });

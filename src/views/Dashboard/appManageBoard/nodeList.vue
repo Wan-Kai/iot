@@ -15,6 +15,8 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <a @click="checkRouter(record)">查看</a>
+        <a-divider type="vertical" />
+        <a @click="editRouter(record)">编辑</a>
       </span>
     </a-table>
     <div class="iot_view_nodeManage_table_button_content">
@@ -22,12 +24,6 @@
       <a-button icon="delete" style="margin: 0 20px">删除</a-button>
       <a-button icon="download">导出</a-button>
     </div>
-    <a-modal v-model="checkVisible" title="应用节点详情" onOk="handleOk">
-      <template slot="footer" style="float: right">
-        <a-button key="cancel" @click="cancel">确定</a-button>
-      </template>
-      <p>详情内容：</p>
-    </a-modal>
   </div>
 </template>
 
@@ -70,7 +66,6 @@ export default {
     return {
       columns,
       interData: [],
-      checkVisible: false,
       nodeVisible: false,
 
       pagination: {
@@ -101,10 +96,17 @@ export default {
   methods: {
     checkRouter(record) {
       console.log(record);
-      this.checkVisible = !this.checkVisible;
+      this.$router.push({
+        name: "checkNodeInApp",
+        query: { number: record.DevEUI, tab: "1" }
+      });
     },
-    cancel() {
-      this.checkVisible = !this.checkVisible;
+    editRouter(record) {
+      console.log(record);
+      this.$router.push({
+        name: "checkNodeInApp",
+        query: { number: record.DevEUI, tab: "2" }
+      });
     }
   }
 };

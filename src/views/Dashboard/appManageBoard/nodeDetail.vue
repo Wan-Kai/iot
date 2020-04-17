@@ -25,7 +25,11 @@
           </a-row>
         </div>
       </a-col>
-      <a-col :span="14"> </a-col>
+      <a-col :span="14">
+        <div class="iot_amap_app_nodeEdit_container">
+          <el-amap vid="app_note_edit_map"> </el-amap>
+        </div>
+      </a-col>
     </a-row>
 
     <div style="background: #fff">
@@ -42,10 +46,9 @@
 </template>
 
 <script>
-import ARow from "ant-design-vue/es/grid/Row";
-import ACol from "ant-design-vue/es/grid/Col";
+import wifi_map from "../../../assets/wifi.png";
 export default {
-  components: { ACol, ARow },
+  name: "nodeDetails",
   data() {
     return {
       isDark: false,
@@ -58,52 +61,155 @@ export default {
           dark: true
         },
         {
-          title: "节点名称:",
+          title: "应用编号:",
           name: "",
           value: "result2",
           id: "2",
           dark: false
         },
         {
+          title: "节点名称:",
+          name: "",
+          value: "result2",
+          id: "3",
+          dark: true
+        },
+        {
           title: "入网方式:",
           name: "",
           value: "result",
-          id: "3",
-          dark: true
+          id: "4",
+          dark: false
         },
         {
           title: "协议版本:",
           name: "",
           value: "result2",
-          id: "4",
-          dark: false
-        },
-        {
-          title: "超时周期（分钟）:",
-          name: "",
-          value: "result",
           id: "5",
           dark: true
         },
         {
-          title: "使用状态:",
+          title: "频段:",
           name: "",
           value: "result2",
           id: "6",
           dark: false
         },
         {
+          title: "Class:",
+          name: "",
+          value: "result2",
+          id: "7",
+          dark: true
+        },
+        {
+          title: "网络状态:",
+          name: "",
+          value: "result2",
+          id: "8",
+          dark: false
+        },
+        {
+          title: "信号:",
+          name: "",
+          value: "result2",
+          id: "9",
+          dark: true
+        },
+        {
+          title: "所在网关:",
+          name: "",
+          value: "result2",
+          id: "10",
+          dark: false
+        },
+        {
+          title: "AppKey:",
+          name: "",
+          value: "result2",
+          id: "11",
+          dark: true
+        },
+        {
+          title: "超时周期（分钟）:",
+          name: "",
+          value: "result",
+          id: "12",
+          dark: false
+        },
+        {
+          title: "最后心跳时间:",
+          name: "",
+          value: "result",
+          id: "13",
+          dark: true
+        },
+        {
+          title: "使用状态:",
+          name: "",
+          value: "result2",
+          id: "14",
+          dark: false
+        },
+        {
           title: "添加时间:",
           name: "",
           value: "result",
-          id: "7",
+          id: "15",
+          dark: true
+        },
+        {
+          title: "地理位置:",
+          name: "",
+          value: "result",
+          id: "16",
+          dark: false
+        },
+        {
+          title: "节点描述:",
+          name: "",
+          value: "result",
+          id: "17",
           dark: true
         }
-      ]
+      ],
+      mapObj: {},
+      mapData: []
     };
   },
+  beforeMount() {
+    this.$api.index
+      .mapMarkers({})
+      .then(res => {
+        this.mapData = res.data.result;
 
-  beforeMount() {},
+        this.mapObj = new AMap.Map("app_note_edit_map", {
+          // eslint-disable-line no-unused-vars
+          resizeEnable: true, //自适应大小
+          zoom: 14,
+          center: this.mapData.center
+        });
+        let _slef = this;
+        let startIcon = new AMap.Icon({
+          // 图标尺寸
+          size: new AMap.Size(25, 25),
+          // 图标的取图地址
+          image: wifi_map, // 您自己的图标
+          // 图标所用图片大小
+          imageSize: new AMap.Size(25, 25)
+        });
+        const marker = new AMap.Marker({
+          // eslint-disable-line no-unused-vars
+          map: _slef.mapObj,
+          icon: startIcon,
+          position: _slef.mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          title: "网关"
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   mounted() {
     this.drawLineUp();
     this.drawLineDown();
@@ -310,8 +416,9 @@ export default {
 .black {
   background: #f0f0f0;
 }
-.iot_amap_noteDetail_container {
+.iot_amap_app_nodeEdit_container {
   height: 410px;
   width: 100%;
+  margin-bottom: 10px;
 }
 </style>

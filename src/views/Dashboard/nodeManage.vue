@@ -119,13 +119,8 @@ const columns = [
   },
   {
     title: "节点名称",
-    dataIndex: "nodeName",
-    key: "nodeName"
-  },
-  {
-    title: "描述",
-    dataIndex: "description",
-    key: "description "
+    dataIndex: "name",
+    key: "name"
   },
   {
     title: "网络服务器",
@@ -149,8 +144,8 @@ const columns = [
   },
   {
     title: "创建时间",
-    key: "time",
-    dataIndex: "time"
+    key: "createdAt",
+    dataIndex: "createdAt"
   },
   {
     title: "操作",
@@ -189,19 +184,19 @@ export default {
   },
   beforeMount() {
     this.$api.node
-      .nodeData({
-        page: 0
+      .getNode({
+        limit: 100
       })
       .then(res => {
         this.interData = res.data.result;
-        console.log(this.interData);
-        for (let i = 0; i < this.interData.length; i++) {
-          if (this.interData[i].supportsJoin === "true") {
-            this.interData[i].supportsJoinType = "OTAA";
-          } else {
-            this.interData[i].supportsJoinType = "ABP";
-          }
-        }
+        console.log(res.data.result);
+        // for (let i = 0; i < this.interData.length; i++) {
+        //   if (this.interData[i].supportsJoin === "true") {
+        //     this.interData[i].supportsJoinType = "OTAA";
+        //   } else {
+        //     this.interData[i].supportsJoinType = "ABP";
+        //   }
+        // }
       })
       .catch(err => {
         console.log(err);
@@ -216,13 +211,13 @@ export default {
     checkRouter(data) {
       this.$router.push({
         name: "checkNodeManage",
-        query: { number: data["id"], id: "1" }
+        query: { number: data["id"], tab: "1" }
       });
     },
     editRouter(data) {
       this.$router.push({
         name: "checkNodeManage",
-        query: { number: data["id"], id: "2" }
+        query: { number: data["id"], tab: "2" }
       });
     },
     showModalIn() {

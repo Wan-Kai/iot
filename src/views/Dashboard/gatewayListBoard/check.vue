@@ -21,7 +21,7 @@
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">网络状态</div>
               <div style="font-size: 12px">
-                {{ this.infoData.internalState }}
+                {{ this.internalState }}
               </div>
             </a-col>
           </a-row>
@@ -36,7 +36,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">信号</div>
-              <div style="font-size: 12px">{{ this.infoData.sign }}</div>
+              <div style="font-size: 12px">{{ this.sign }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -50,7 +50,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">上行</div>
-              <div style="font-size: 12px">{{ this.infoData.up }}</div>
+              <div style="font-size: 12px">{{ this.up }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -64,7 +64,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">下行</div>
-              <div style="font-size: 12px">{{ this.infoData.down }}</div>
+              <div style="font-size: 12px">{{ this.down }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -78,7 +78,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">最后心跳时间</div>
-              <div style="font-size: 12px">{{ this.infoData.heartTime }}</div>
+              <div style="font-size: 12px">{{ this.heartTime }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -123,13 +123,11 @@ export default {
   data() {
     return {
       id: "",
-      infoData: {
-        internalState: "",
-        sign: "",
-        up: "",
-        down: "",
-        heartTime: ""
-      },
+      internalState: "",
+      sign: "",
+      up: "",
+      down: "",
+      heartTime: "",
 
       defaultTab: "1"
     };
@@ -145,11 +143,11 @@ export default {
         this.infoData = res.data;
         if (res.data.lastSeenAt) {
           console.log("little test");
-          this.infoData.internalState = "测试";
-          this.infoData.heartTime = "有数据";
+          this.internalState = "测试";
+          this.heartTime = "有数据";
         } else {
-          this.infoData.internalState = "离线";
-          this.infoData.heartTime = "暂无数据";
+          this.internalState = "离线";
+          this.heartTime = "暂无数据";
         }
       })
       .catch(err => {

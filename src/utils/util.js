@@ -57,6 +57,33 @@ export function getOrganizationID() {
   return store.getters.getOrganizationID;
 }
 
+export function getAreaLabel(province, city, district) {
+  let area = store.getters.getArea;
+  for (let i = 0; i < area.length; i++) {
+    if (area[i].value === province) {
+      for (let j = 0; j < area[i].children.length; j++) {
+        if (area[i].children[j].value === city) {
+          for (let k = 0; k < area[i].children[j].children.length; k++) {
+            if (area[i].children[j].children[k].value === district) {
+              return (
+                area[i].label +
+                "/" +
+                area[i].children[j].label +
+                "/" +
+                area[i].children[j].children[k].label
+              );
+            } else {
+              return area[i].label + "/" + area[i].children[j].label;
+            }
+          }
+        } else {
+          return area[i].label;
+        }
+      }
+    }
+  }
+}
+
 export function initServiceOption() {
   api.serviceProfile
     .getServices({

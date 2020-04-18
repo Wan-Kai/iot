@@ -159,13 +159,13 @@ export default {
     checkRouter(data) {
       this.$router.push({
         name: "checkInternetServer",
-        query: { nid: data["id"], server: data["IP"] }
+        query: { nid: data["id"], server: data["IP"], port: data["port"] }
       });
     },
     editRouter(data) {
       this.$router.push({
         name: "editInternetServer",
-        query: { nid: data["id"], server: data["IP"] }
+        query: { nid: data["id"], server: data["IP"], port: data["port"] }
       });
     }
   }

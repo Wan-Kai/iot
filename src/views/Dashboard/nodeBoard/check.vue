@@ -21,7 +21,7 @@
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">网络状态</div>
               <div style="font-size: 12px">
-                {{ this.infoData.internalState }}
+                {{ this.internalState }}
               </div>
             </a-col>
           </a-row>
@@ -36,7 +36,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">信号强度</div>
-              <div style="font-size: 12px">{{ this.infoData.sign }}</div>
+              <div style="font-size: 12px">{{ this.sign }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -50,7 +50,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">所在网关</div>
-              <div style="font-size: 12px">{{ this.infoData.gateway }}</div>
+              <div style="font-size: 12px">{{ this.gateway }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -64,7 +64,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">最后心跳时间</div>
-              <div style="font-size: 12px">{{ this.infoData.heartTime }}</div>
+              <div style="font-size: 12px">{{ this.heartTime }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -109,12 +109,10 @@ export default {
 
       defaultTab: "1",
 
-      infoData: {
-        internalState: "",
-        sign: "",
-        gateway: "",
-        heartTime: ""
-      }
+      internalState: "",
+      sign: "",
+      gateway: "",
+      heartTime: ""
     };
   },
   beforeMount() {

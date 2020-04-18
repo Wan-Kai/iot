@@ -41,7 +41,7 @@
               v-decorator="[
                 'macVersion',
                 {
-                  initialValue: this.infoData.deviceProfile.macVersion
+                  initialValue: this.macVersion
                 }
               ]"
               size="small"
@@ -70,7 +70,7 @@
               v-decorator="[
                 'name',
                 {
-                  initialValue: this.infoData.deviceProfile.name
+                  initialValue: this.name
                 }
               ]"
               size="small"
@@ -224,14 +224,8 @@ export default {
     return {
       number: "",
 
-      infoData: [
-        {
-          deviceProfile: {
-            name: "",
-            macVersion: ""
-          }
-        }
-      ],
+      name: "",
+      macVersion: "",
       supportsJoin: true,
       ModalText: "",
       areaShow: false,
@@ -260,17 +254,18 @@ export default {
       })
       .then(res => {
         let data = res.data;
-        console.log(data);
 
-        console.log(data.deviceProfile.supportsJoin);
-        if (data.deviceProfile.supportsJoin.toString() === "true") {
+        let infoDataTemp = data.deviceProfile;
+        this.macVersion = infoDataTemp.macVersion;
+        this.name = infoDataTemp.name;
+
+        console.log(infoDataTemp.supportsJoin);
+        if (infoDataTemp.supportsJoin.toString() === "true") {
           this.value = "1";
         } else {
           this.value = "2";
           this.supportsJoin = false;
         }
-
-        this.infoData = data;
       })
       .catch(err => {
         console.log(err);

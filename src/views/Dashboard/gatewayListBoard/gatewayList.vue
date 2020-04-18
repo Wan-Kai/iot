@@ -17,9 +17,13 @@
         >
           批量导入
         </a-button>
-        <a-modal v-model="visibleIn" title="节点批量导入" onOk="handleOk">
+        <a-modal
+          v-model="importDialogVisibleState"
+          title="节点批量导入"
+          @onOk="handleImportOk"
+        >
           <template slot="footer">
-            <a-button key="back" @click="handleCancelIn">取消</a-button>
+            <a-button key="back" @click="handleImportCancel">取消</a-button>
           </template>
           <p>
             说明：仅支持扩展名为xlsx、csv格式的文件导入，<a>下载导入模板</a>
@@ -36,8 +40,8 @@
             <a-button
               key="submit"
               type="primary"
-              :loading="loadingIn"
-              @click="handleOkIn"
+              :loading="importLoadingState"
+              @click="handleImportOk"
               style="margin-right: 8px"
             >
               确定
@@ -57,16 +61,20 @@
         >
           批量导出
         </a-button>
-        <a-modal v-model="visibleOut" title="节点批量导出" onOk="handleOk">
+        <a-modal
+          v-model="exportDialogVisibleState"
+          title="节点批量导出"
+          @onOk="handleExportOk"
+        >
           <template slot="footer">
-            <a-button key="back" @click="handleCancelOut">取消</a-button>
+            <a-button key="back" @click="handleExportCancel">取消</a-button>
           </template>
           <p>内容尚待确定</p>
           <a-button
             key="submit"
             type="primary"
-            :loading="loadingIn"
-            @click="handleOkOut"
+            :loading="importLoadingState"
+            @click="handleExportOk"
           >
             确定
           </a-button>
@@ -77,12 +85,12 @@
       <a-table
         :rowSelection="rowSelection"
         :columns="columns"
-        :dataSource="infoData"
+        :dataSource="tableData"
         style="min-width: auto"
         class="iot_view_gatawayManage_table"
         :pagination="pagination"
         rowKey="id"
-        :loading="loadingState"
+        :loading="tableLoadingState"
       >
         <span slot="state" slot-scope="tags">
           <a-tag :color="tags === 'on' ? 'green' : 'red'" :key="tags">
@@ -91,9 +99,9 @@
         </span>
 
         <span slot="action" slot-scope="text, record">
-          <a @click="checkRouter(record)">查看</a>
+          <a @click="check(record)">查看</a>
           <a-divider type="vertical" />
-          <a @click="editRouter(record)">编辑</a>
+          <a @click="edit(record)">编辑</a>
         </span>
       </a-table>
       <div class="iot_view_gatewayList_button_layout">
@@ -178,16 +186,16 @@ export default {
   data() {
     return {
       columns,
-      infoData: [],
+      tableData: [],
 
       rowSelection,
-      loadingState: true,
+      tableLoadingState: true,
 
-      loadingIn: false,
-      visibleIn: false,
+      importLoadingState: false,
+      importDialogVisibleState: false,
 
-      loadingOut: false,
-      visibleOut: false,
+      exportLoadingState: false,
+      exportDialogVisibleState: false,
 
       address: "E/admin",
       warning: "警告信息",
@@ -207,47 +215,48 @@ export default {
     };
   },
   beforeMount() {
+    debugger;
     this.$api.gateway
       .gatewayList({
         limit: 100
       })
       .then(res => {
-        let infoDataTemp = res.data.result;
-        // this.infoData = res.data.result;
+        let returnedData = res.data.result;
+        // this.tableData = res.data.result;
 
-        console.log(infoDataTemp);
-        for (let i = 0; i < infoDataTemp.length; i++) {
-          infoDataTemp[i].state = "off";
-          infoDataTemp[i].area = getAreaLabel(
-            infoDataTemp[i].province,
-            infoDataTemp[i].city,
-            infoDataTemp[i].district
+        //console.log(returnedData);
+        for (let i = 0; i < returnedData.length; i++) {
+          returnedData[i].state = "off";
+          returnedData[i].area = getAreaLabel(
+            returnedData[i].province,
+            returnedData[i].city,
+            returnedData[i].district
           );
-          infoDataTemp[i].networkServerName = getNetServerNameById(
-            infoDataTemp[i].networkServerID
+          returnedData[i].networkServerName = getNetServerNameById(
+            returnedData[i].networkServerID
           );
         }
-        this.infoData = infoDataTemp;
+        this.tableData = returnedData;
       })
       .catch(err => {
         console.log("出现错误");
         console.log(err);
       })
       .finally(() => {
-        this.loadingState = false;
+        this.tableLoadingState = false;
       });
   },
   methods: {
-    checkRouter(data) {
+    check(currentRecord) {
       this.$router.push({
         name: "checkGatewayManage",
-        query: { id: data["id"], tab: "1" }
+        query: { id: currentRecord["id"], tab: "1" }
       });
     },
-    editRouter(data) {
+    edit(currentRecord) {
       this.$router.push({
         name: "checkGatewayManage",
-        query: { id: data["id"], tab: "3" }
+        query: { id: currentRecord["id"], tab: "3" }
       });
     },
     add() {
@@ -255,31 +264,32 @@ export default {
     },
 
     showModalIn() {
-      this.visibleIn = true;
+      this.importDialogVisibleState = true;
     },
-    handleOkIn() {
-      this.loadingIn = true;
+
+    handleImportOk() {
+      this.importLoadingState = true;
       setTimeout(() => {
-        this.visibleIn = false;
-        this.loadingIn = false;
+        this.importDialogVisibleState = false;
+        this.importLoadingState = false;
       }, 3000);
     },
-    handleCancelIn() {
-      this.visibleIn = false;
+    handleImportCancel() {
+      this.importDialogVisibleState = false;
     },
 
     showModalOut() {
-      this.visibleOut = true;
+      this.exportDialogVisibleState = true;
     },
-    handleOkOut() {
-      this.loadingOut = true;
+    handleExportOk() {
+      this.exportLoadingState = true;
       setTimeout(() => {
-        this.visibleOut = false;
-        this.loadingOut = false;
+        this.exportDialogVisibleState = false;
+        this.exportLoadingState = false;
       }, 3000);
     },
-    handleCancelOut() {
-      this.visibleOut = false;
+    handleExportCancel() {
+      this.exportDialogVisibleState = false;
     }
   }
 };

@@ -17,12 +17,12 @@
     <div class="iot_view_internetServer_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="infoData"
+        :dataSource="tableData"
         style="min-width: auto"
         class="iot_view_internetServer_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
-        :loading="loadingState"
+        :loading="tableLoadingState"
       >
         //style="min-width: min-content" :scroll="{ x: min-content, y:
         min-content }"
@@ -33,9 +33,9 @@
         </span>
         <span slot="time"> 创建时间</span>
         <span slot="action" slot-scope="text, record">
-          <a @click="checkRouter(record)">查看</a>
+          <a @click="checkNetworkServer(record)">查看</a>
           <a-divider type="vertical" />
-          <a @click="editRouter(record)">编辑</a>
+          <a @click="editNetworkServer(record)">编辑</a>
         </span>
       </a-table>
     </div>
@@ -86,9 +86,9 @@ export default {
   data() {
     return {
       columns,
-      infoData: [],
-      loadingState: true,
-      getData: [
+      tableData: [],
+      tableLoadingState: true,
+      returnedData: [
         {
           id: "",
           IP: "",
@@ -118,7 +118,7 @@ export default {
         limit: 10
       })
       .then(res => {
-        this.getData = res.data.result;
+        this.returnedData = res.data.result;
 
         let temp = {
           id: "",
@@ -128,23 +128,23 @@ export default {
           time: "",
           name: ""
         };
-        for (let i = 0; i < this.getData.length; i++) {
-          if (this.getData[i].server.split(":")) {
-            let server = this.getData[i].server.split(":");
+        for (let i = 0; i < this.returnedData.length; i++) {
+          if (this.returnedData[i].server.split(":")) {
+            let server = this.returnedData[i].server.split(":");
             temp.IP = server[0];
             temp.port = server[1];
           } else {
-            temp.IP = this.getData[i].server;
+            temp.IP = this.returnedData[i].server;
             temp.port = "";
           }
           temp.gateway = "off";
-          temp.time = this.getData[i].createdAt;
-          temp.id = this.getData[i].id;
-          temp.name = this.getData[i].name;
+          temp.time = this.returnedData[i].createdAt;
+          temp.id = this.returnedData[i].id;
+          temp.name = this.returnedData[i].name;
 
-          this.infoData.push(temp);
+          this.tableData.push(temp);
         }
-        this.loadingState = false;
+        this.tableLoadingState = false;
       })
       .catch(err => {
         console.log(err);
@@ -156,16 +156,24 @@ export default {
         this.$router.push("/admin/dashboard/networkServer/addNetworkServer");
       }, 100);
     },
-    checkRouter(data) {
+    checkNetworkServer(currentRecord) {
       this.$router.push({
-        name: "checkInternetServer",
-        query: { nid: data["id"], server: data["IP"], port: data["port"] }
+        name: "checkNetworkServer",
+        query: {
+          nid: currentRecord["id"],
+          server: currentRecord["IP"],
+          port: currentRecord["port"]
+        }
       });
     },
-    editRouter(data) {
+    editNetworkServer(currentRecord) {
       this.$router.push({
-        name: "editInternetServer",
-        query: { nid: data["id"], server: data["IP"], port: data["port"] }
+        name: "editNetworkServer",
+        query: {
+          nid: currentRecord["id"],
+          server: currentRecord["IP"],
+          port: currentRecord["port"]
+        }
       });
     }
   }

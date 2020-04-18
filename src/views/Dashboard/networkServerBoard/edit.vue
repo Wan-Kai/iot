@@ -200,7 +200,7 @@ export default {
   data() {
     return {
       gatewayOn: false,
-      getData: {},
+      returnedData: {},
       id: "",
       server: "",
       port: "",

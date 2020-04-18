@@ -79,7 +79,7 @@ export default {
   data() {
     this.form = this.$form.createForm(this);
     return {
-      infoData: {
+      tableData: {
         username: "",
         password: ""
       }
@@ -89,11 +89,11 @@ export default {
   methods: {
     handleSubmit() {
       this.form.validateFields((err, value) => {
-        this.infoData.username = value.username;
-        this.infoData.password = value.password;
+        this.tableData.username = value.username;
+        this.tableData.password = value.password;
         if (!err) {
           this.$api.login
-            .login(this.infoData)
+            .login(this.tableData)
             .then(res => {
               if (res.status === 200) {
                 this.$message.success("登录成功");

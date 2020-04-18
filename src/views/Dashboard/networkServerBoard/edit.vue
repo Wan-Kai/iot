@@ -9,7 +9,8 @@
         label="主机名："
         :required="true"
         :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_internetServer_edit_formItem"
       >
         <span style="float: left">{{ this.server }}</span>
       </a-form-item>
@@ -17,34 +18,36 @@
         label="端口："
         :required="true"
         :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_internetServer_edit_formItem"
       >
         <a-input
           v-decorator="[
             'port',
             {
-              initialValue: this.getData.port
+              initialValue: this.port
             }
           ]"
           size="small"
-          style="width: 60%;float: left;text-align: left"
+          style="width: 90%;float: left;text-align: left"
         />
       </a-form-item>
       <a-form-item
         label="名称："
         :required="true"
         :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_internetServer_edit_formItem"
       >
         <a-input
           v-decorator="[
             'name',
             {
-              initialValue: this.getData.name
+              initialValue: this.name
             }
           ]"
           size="small"
-          style="width: 60%;float: left;text-align: left"
+          style="width: 90%;float: left;text-align: left"
         />
       </a-form-item>
 
@@ -52,7 +55,7 @@
         label="是否启用网关发现："
         :required="true"
         :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
+        :wrapper-col="{ span: 7 }"
       >
         <a-switch
           checkedChildren="开"
@@ -63,24 +66,96 @@
       </a-form-item>
 
       <a-form-item
-        v-for="(k, index) in internetServer_edit_form.getFieldValue('keys')"
-        :key="k"
-        :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 12 }"
-        :label="getLabel(index)"
+        v-if="this.gatewayOn"
+        label="间隔（每天）："
         :required="true"
-        class="iot_view_internetServer_add_formItem"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_internetServer_edit_formItem"
       >
         <a-input
+          size="small"
           v-decorator="[
-            `names[${k}]`,
+            'interval',
             {
-              validateTrigger: ['change', 'blur']
+              initialValue: this.interval,
+              rules: [{ required: true, message: '请输入间隔（每天）!' }]
             }
           ]"
-          size="small"
-          style="width: 60%;float: left;text-align: left"
+          style="float: left;text-align: left;width: 90%"
         />
+        <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
+          <template slot="title">
+            prompt text
+          </template>
+          <a-icon
+            type="exclamation-circle"
+            style="height: 24px;line-height: 24px;width: 24px;
+          text-align: left;vertical-align: text-top"
+          />
+        </a-tooltip>
+      </a-form-item>
+
+      <a-form-item
+        v-if="this.gatewayOn"
+        label="发射频率（Hz）："
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_internetServer_edit_formItem"
+      >
+        <a-input
+          size="small"
+          v-decorator="[
+            'frequency',
+            {
+              initialValue: this.frequency,
+              rules: [{ required: true, message: '请输入发射频率（Hz）!' }]
+            }
+          ]"
+          style="float: left;text-align: left;width: 90%"
+        />
+        <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
+          <template slot="title">
+            prompt text
+          </template>
+          <a-icon
+            type="exclamation-circle"
+            style="height: 24px;line-height: 24px;width: 24px;
+          text-align: left;vertical-align: text-top"
+          />
+        </a-tooltip>
+      </a-form-item>
+
+      <a-form-item
+        v-if="this.gatewayOn"
+        label="发送数据率："
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_internetServer_edit_formItem"
+      >
+        <a-input
+          size="small"
+          v-decorator="[
+            'rate',
+            {
+              initialValue: this.dataRate,
+              rules: [{ required: true, message: '请输入发送数据率!' }]
+            }
+          ]"
+          style="float: left;text-align: left;width: 90%"
+        />
+        <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
+          <template slot="title">
+            prompt text
+          </template>
+          <a-icon
+            type="exclamation-circle"
+            style="height: 24px;line-height: 24px;width: 24px;
+          text-align: left;vertical-align: text-top"
+          />
+        </a-tooltip>
       </a-form-item>
 
       <a-row>
@@ -121,7 +196,6 @@
 </template>
 
 <script>
-let id = 0;
 export default {
   data() {
     return {
@@ -129,6 +203,11 @@ export default {
       getData: {},
       id: "",
       server: "",
+      port: "",
+      name: "",
+      interval: "",
+      frequency: "",
+      dataRate: "",
       ModalText: "确认删除",
       visible: false,
       submitLoading: false,
@@ -147,16 +226,19 @@ export default {
   beforeMount() {
     this.server = this.$route.query.server;
     this.id = this.$route.query.nid;
+    this.port = this.$route.query.port;
     this.$api.networkServer
       .getServerDetail({
         limit: 1,
-        id: this.id
+        extra: this.id
       })
       .then(res => {
-        this.getData = res.data.result[0];
-
-        this.getData.port = this.getData.server.split(":")[1];
-        console.log(this.getData);
+        console.log(res);
+        this.gatewayOn = res.data.networkServer.gatewayDiscoveryEnabled;
+        this.name = res.data.networkServer.name;
+        this.interval = res.data.networkServer.gatewayDiscoveryInterval;
+        this.frequency = res.data.networkServer.gatewayDiscoveryTXFrequency;
+        this.dataRate = res.data.networkServer.gatewayDiscoveryDR;
       })
       .catch(err => {
         console.log(err);
@@ -206,7 +288,9 @@ export default {
                     console.log(err);
                   });
                 setTimeout(() => {
-                  this.$router.push("/admin/dashboard/internetServer");
+                  this.$router.push({
+                    name: "networkServerInit"
+                  });
                 }, 100);
               } else {
                 this.$message.error(res.data.code);
@@ -280,50 +364,8 @@ export default {
     handleCancel(e) {
       this.visible = false;
     },
-    remove(k) {
-      const { internetServer_edit_form } = this;
-      // can use data-binding to get
-      const keys = internetServer_edit_form.getFieldValue("keys");
-
-      // can use data-binding to set
-      internetServer_edit_form.setFieldsValue({
-        keys: keys.filter(key => key.toString() !== k.toString())
-      });
-    },
-    add() {
-      const { internetServer_edit_form } = this;
-      // can use data-binding to get
-      const keys = internetServer_edit_form.getFieldValue("keys");
-      const nextKeys = keys.concat(id++);
-      // can use data-binding to set
-      // important! notify form to detect changes
-      internetServer_edit_form.setFieldsValue({
-        keys: nextKeys
-      });
-    },
-    getLabel(index) {
-      if (index == 0) {
-        return "间隔（每天）：";
-      } else if (index == 1) {
-        return "发射频率（Hz）：";
-      } else {
-        return "发送数据率：";
-      }
-    },
     stateChange(state) {
       this.gatewayOn = !this.gatewayOn;
-      console.log(this.gatewayOn);
-      if (state) {
-        id = 0;
-        this.add();
-        this.add();
-        this.add();
-      } else {
-        let item;
-        for (item in this.internetServer_edit_form.getFieldValue("keys")) {
-          this.remove(item);
-        }
-      }
     }
   }
 };
@@ -332,6 +374,9 @@ export default {
 <style>
 .iot_view_internetServer_edit_form {
   padding: 20px 5px;
+}
+.iot_view_internetServer_edit_formItem {
+  margin-bottom: 8px;
 }
 .iot_view_internetServer_edit_form_left {
   float: left;

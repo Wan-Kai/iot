@@ -30,7 +30,7 @@ export default {
     },
 
     getServerDetail: data => {
-      return get("/network-servers" + data.extra, data);
+      return get("/network-servers/" + data.extra, data);
     },
     createServer: data => {
       return post("/network-servers", data);

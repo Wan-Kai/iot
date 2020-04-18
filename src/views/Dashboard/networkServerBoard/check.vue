@@ -24,7 +24,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">端口</div>
-              <div style="font-size: 12px">{{ this.infoData.port }}</div>
+              <div style="font-size: 12px">{{ this.port }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -37,8 +37,8 @@
               ></span>
             </a-col>
             <a-col :span="16" style="text-align: left">
-              <div style="font-size: 8px;color: #b0b0b0">网关</div>
-              <div style="font-size: 12px">{{ this.infoData.gateway }}</div>
+              <div style="font-size: 8px;color: #b0b0b0">名称</div>
+              <div style="font-size: 12px">{{ this.name }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -52,7 +52,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">创建时间</div>
-              <div style="font-size: 12px">{{ this.infoData.time }}</div>
+              <div style="font-size: 12px">{{ this.time }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -68,40 +68,31 @@
         class="iot_view_internetServer_check_form"
       >
         <a-form-item
-          label="名称："
+          label="间隔(每天)："
           :required="true"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 12 }"
           class="iot_view_internetServer_check_formItem"
         >
-          <span style="float: left"> {{ this.infoData.otherData }}</span>
+          <span style="float: left"> {{ this.interval }}</span>
         </a-form-item>
         <a-form-item
-          label="名称："
+          label="发射频率(Hz)："
           :required="true"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 12 }"
           class="iot_view_internetServer_check_formItem"
         >
-          <span style="float: left"> {{ this.infoData.otherData }}</span>
+          <span style="float: left"> {{ this.frequency }}</span>
         </a-form-item>
         <a-form-item
-          label="名称："
+          label="发送数据率："
           :required="true"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 12 }"
           class="iot_view_internetServer_check_formItem"
         >
-          <span style="float: left"> {{ this.infoData.otherData }}</span>
-        </a-form-item>
-        <a-form-item
-          label="名称："
-          :required="true"
-          :label-col="{ span: 3 }"
-          :wrapper-col="{ span: 12 }"
-          class="iot_view_internetServer_check_formItem"
-        >
-          <span style="float: left"> {{ this.infoData.otherData }}</span>
+          <span style="float: left"> {{ this.dataRate }}</span>
         </a-form-item>
       </a-form>
     </a-card>
@@ -111,12 +102,19 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
+import { getNetServerIdByServer } from "@/utils/util";
 export default {
   data() {
     return {
       server: "",
       id: "",
-      infoData: {}
+      port: "",
+      gateway: "",
+      time: "",
+      name: "",
+      interval: "",
+      dataRate: "",
+      frequency: ""
     };
   },
   beforeCreate() {
@@ -131,13 +129,19 @@ export default {
   beforeMount() {
     this.server = this.$route.query.server;
     this.id = this.$route.query.nid;
+    this.port = this.$route.query.port;
     this.$api.networkServer
       .getServerDetail({
+        limit: 1,
         extra: this.id
       })
       .then(res => {
-        this.infoData = res.data.result[0];
-        console.log(this.infoData);
+        console.log(res);
+        this.time = res.data.createdAt;
+        this.name = res.data.networkServer.name;
+        this.interval = res.data.networkServer.gatewayDiscoveryInterval;
+        this.dataRate = res.data.networkServer.gatewayDiscoveryDR;
+        this.frequency = res.data.networkServer.gatewayDiscoveryTXFrequency;
       })
       .catch(err => {
         console.log(err);

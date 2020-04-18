@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import { getNetworkServerOption, getArea } from "../../../utils/util";
+import { getAreaLabel, getNetServerNameById } from "../../../utils/util";
 
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
@@ -216,41 +216,16 @@ export default {
         // this.infoData = res.data.result;
 
         console.log(infoDataTemp);
-        let netServer = getNetworkServerOption();
-        console.log(netServer);
-        let area = getArea();
         for (let i = 0; i < infoDataTemp.length; i++) {
           infoDataTemp[i].state = "off";
-          for (let m = 0; m < area.length; m++) {
-            if (area[m].value === infoDataTemp[i].province) {
-              for (let n = 0; n < area[m].children.length; n++) {
-                if (area[m].children[n].value === infoDataTemp[i].city) {
-                  for (
-                    let k = 0;
-                    k < area[m].children[n].children.length;
-                    k++
-                  ) {
-                    if (
-                      area[m].children[n].children[k].value ===
-                      infoDataTemp[i].district
-                    ) {
-                      infoDataTemp[i].area =
-                        area[m].label +
-                        "/" +
-                        area[m].children[n].label +
-                        "/" +
-                        area[m].children[n].children[k].label;
-                    }
-                  }
-                }
-              }
-            }
-          }
-          for (let j = 0; j < netServer.length; j++) {
-            if (infoDataTemp[i].networkServerID === netServer[j].id) {
-              infoDataTemp[i].networkServerName = netServer[j].name;
-            }
-          }
+          infoDataTemp[i].area = getAreaLabel(
+            infoDataTemp[i].province,
+            infoDataTemp[i].city,
+            infoDataTemp[i].district
+          );
+          infoDataTemp[i].networkServerName = getNetServerNameById(
+            infoDataTemp[i].networkServerID
+          );
         }
         this.infoData = infoDataTemp;
       })

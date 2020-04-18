@@ -25,7 +25,7 @@
                 v-decorator="[
                   'name',
                   {
-                    initialValue: this.infoData.gateway.name
+                    initialValue: this.name
                   }
                 ]"
                 size="small"
@@ -44,7 +44,7 @@
                 v-decorator="[
                   'id',
                   {
-                    initialValue: this.infoData.gateway.id
+                    initialValue: this.id
                   }
                 ]"
                 size="small"
@@ -153,7 +153,7 @@
                 v-decorator="[
                   'description',
                   {
-                    initialValue: this.infoData.gateway.description
+                    initialValue: this.description
                   }
                 ]"
                 :rows="4"
@@ -255,6 +255,8 @@ export default {
       Lng: "",
       Lat: "",
       id: "",
+      name: "",
+      description: "",
       internetServer_options: [],
       communicationMode_options: [],
       band_options: [],
@@ -267,29 +269,6 @@ export default {
         accuracy: 0
       },
       mapData: [],
-      infoData: {
-        gateway: {
-          name: "",
-          gatewayProfileID: "",
-          modulation: "",
-          serverName: "",
-          description: "",
-          location: {
-            latitude: "",
-            longitude: "",
-            altitude: ""
-          }
-        },
-        massageMode: "",
-        band: "",
-        state: "",
-        single: "",
-        up: "",
-        down: "",
-        lastSeenAt: "",
-        createdAt: "",
-        area: ""
-      },
       ModalText: "Content of the modal",
       visible: false,
       submitLoading: false,
@@ -298,13 +277,6 @@ export default {
   },
 
   beforeCreate() {
-    // let netServer = this.$store.getters.getNetServer;
-    // for (let i = 0; i < netServer.length; i++) {
-    //   if(this.$route.query.id === netServer[i].id){
-    //     this.netServer_defaultValue = netServer[i].server;
-    //   }
-    // };
-
     this.gatewayDeployForm = this.$form.createForm(this, {
       name: "gatewayDeployForm"
     });
@@ -334,28 +306,29 @@ export default {
         extra: this.id
       })
       .then(res => {
-        this.infoData = res.data;
+        let infoDataTemp = res.data;
         let address = "";
         this.internetServer_options = this.$store.getters.getNetServerOption;
 
         let defaultValue = this.$store.getters.getNetServerById(
-          this.infoData.gateway.networkServerID
+          infoDataTemp.gateway.networkServerID
         );
         if (defaultValue) {
           this.defaultData.push(defaultValue);
         }
 
-        this.defaultDataModulation.push(this.infoData.gateway.modulation);
-        this.defaultDataArea.push(this.infoData.gateway.province);
-        this.defaultDataArea.push(this.infoData.gateway.city);
-        this.defaultDataArea.push(this.infoData.gateway.district);
+        this.defaultDataModulation.push(infoDataTemp.gateway.modulation);
+        this.defaultDataArea.push(infoDataTemp.gateway.province);
+        this.defaultDataArea.push(infoDataTemp.gateway.city);
+        this.defaultDataArea.push(infoDataTemp.gateway.district);
+        this.name = infoDataTemp.gateway.name;
+        this.description = infoDataTemp.gateway.description;
         address =
-          this.infoData.gateway.location.longitude.toString() +
+          infoDataTemp.gateway.location.longitude.toString() +
           "," +
-          this.infoData.gateway.location.latitude.toString();
+          infoDataTemp.gateway.location.latitude.toString();
         this.gatewayDeployForm.setFieldsValue({
-          address: address,
-          description: this.infoData.gateway.description
+          address: address
         });
 
         let mapObj = new AMap.Map("gateway_edit_map", {
@@ -363,12 +336,12 @@ export default {
           resizeEnable: true, //自适应大小
           zoom: 14,
           center: [
-            this.infoData.gateway.location.longitude,
-            this.infoData.gateway.location.latitude
+            infoDataTemp.gateway.location.longitude,
+            infoDataTemp.gateway.location.latitude
           ]
         });
-        this.Lng = this.infoData.gateway.location.longitude;
-        this.Lat = this.infoData.gateway.location.latitude;
+        this.Lng = infoDataTemp.gateway.location.longitude;
+        this.Lat = infoDataTemp.gateway.location.latitude;
         let startIcon = new AMap.Icon({
           // 图标尺寸
           size: new AMap.Size(25, 25),

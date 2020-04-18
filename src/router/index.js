@@ -119,6 +119,7 @@ const routes = [
           {
             path: "/admin/dashboard/networkServer/init",
             meta: { title: "" },
+            name: "networkServerInit",
             component: () =>
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/networkServer.vue"

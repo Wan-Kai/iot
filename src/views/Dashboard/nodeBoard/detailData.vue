@@ -15,7 +15,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.infoData.id }}
+                {{ this.number }}
               </p>
             </a-col>
           </a-row>
@@ -25,7 +25,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.infoData.name }}
+                {{ this.name }}
               </p>
             </a-col>
           </a-row>
@@ -35,7 +35,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.infoData.supportsJoinType }}
+                {{ this.supportsJoinType }}
               </p>
             </a-col>
           </a-row>
@@ -45,7 +45,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.infoData.macVersion }}
+                {{ this.macVersion }}
               </p>
             </a-col>
           </a-row>
@@ -55,7 +55,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.infoData.overTime }}
+                {{ this.overTime }}
               </p>
             </a-col>
           </a-row>
@@ -65,7 +65,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.infoData.state }}
+                {{ this.state }}
               </p>
             </a-col>
           </a-row>
@@ -75,7 +75,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.infoData.createdAt }}
+                {{ this.createdAt }}
               </p>
             </a-col>
           </a-row>
@@ -106,16 +106,14 @@ export default {
     return {
       number: "",
       isDark: false,
-      infoData: {
-        id: "",
-        name: "",
-        supportsJoinType: "",
-        macVersion: "",
-        overTime: "",
-        state: "",
-        createdAt: "",
-        updatedAt: ""
-      }
+      id: "",
+      name: "",
+      supportsJoinType: "",
+      macVersion: "",
+      overTime: "",
+      state: "",
+      createdAt: "",
+      updatedAt: ""
     };
   },
 
@@ -129,13 +127,16 @@ export default {
         let data = res.data;
         console.log(data);
 
-        this.infoData = data.deviceProfile;
-        this.infoData.createdAt = data.createdAt;
-        this.infoData.updatedAt = data.updatedAt;
-        if (this.infoData.supportsJoin === "true") {
-          this.infoData.supportsJoinType = "OTAA";
+        let infoDataTemp = data.deviceProfile;
+        this.createdAt = data.createdAt;
+        this.updatedAt = data.updatedAt;
+        this.name = infoDataTemp.name;
+        this.macVersion = infoDataTemp.macVersion;
+
+        if (infoDataTemp.supportsJoin === "true") {
+          this.supportsJoinType = "OTAA";
         } else {
-          this.infoData.supportsJoinType = "ABP";
+          this.supportsJoinType = "ABP";
         }
       })
       .catch(err => {
@@ -343,7 +344,7 @@ export default {
   height: 24px;
   margin-bottom: 0;
   margin-left: 10px;
-  font-size: 8px;
+  font-size: 10px;
 }
 .black {
   background: #f0f0f0;

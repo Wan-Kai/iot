@@ -157,18 +157,19 @@ export default {
 
   methods: {
     handleSubmit(e) {
+      var self = this;
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.commitLoading = true;
-          for (let i = 0; i < this.serviceProfile_options.length; i++) {
+          self.commitLoading = true;
+          debugger;
+          for (let i = 0; i < self.serviceProfile_options.length; i++) {
             if (
-              values.serviceProfile[0] === this.serviceProfile_options[i].id
+              values.serviceProfile[0] === self.serviceProfile_options[i].value
             ) {
-              values.serviceProfileID = this.serviceProfile_options[i].id;
+              values.serviceProfileID = self.serviceProfile_options[i].id;
             }
           }
-          values.serviceProfileID = "7d2325fc-98a4-4a10-a0d4-9147fb6008c2";
           values.organizationID = 1;
 
           this.$api.appManage

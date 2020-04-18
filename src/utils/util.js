@@ -72,12 +72,8 @@ export function getAreaLabel(province, city, district) {
                 "/" +
                 area[i].children[j].children[k].label
               );
-            } else {
-              return area[i].label + "/" + area[i].children[j].label;
             }
           }
-        } else {
-          return area[i].label;
         }
       }
     }

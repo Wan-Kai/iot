@@ -60,6 +60,7 @@
         <a-switch
           checkedChildren="开"
           unCheckedChildren="关"
+          v-model="this.gatewayOn"
           @change="stateChange"
           style="margin-left: 10px;float: left"
         />
@@ -76,9 +77,9 @@
         <a-input
           size="small"
           v-decorator="[
-            'interval',
+            'gatewayDiscoveryInterval',
             {
-              initialValue: this.interval,
+              initialValue: this.gatewayDiscoveryInterval,
               rules: [{ required: true, message: '请输入间隔（每天）!' }]
             }
           ]"
@@ -107,9 +108,9 @@
         <a-input
           size="small"
           v-decorator="[
-            'frequency',
+            'gatewayDiscoveryTXFrequency',
             {
-              initialValue: this.frequency,
+              initialValue: this.gatewayDiscoveryTXFrequency,
               rules: [{ required: true, message: '请输入发射频率（Hz）!' }]
             }
           ]"
@@ -138,9 +139,9 @@
         <a-input
           size="small"
           v-decorator="[
-            'rate',
+            'gatewayDiscoveryDR',
             {
-              initialValue: this.dataRate,
+              initialValue: this.gatewayDiscoveryDR,
               rules: [{ required: true, message: '请输入发送数据率!' }]
             }
           ]"
@@ -200,14 +201,14 @@ export default {
   data() {
     return {
       gatewayOn: false,
-      getData: {},
+      returnedData: {},
       id: "",
       server: "",
       port: "",
       name: "",
-      interval: "",
-      frequency: "",
-      dataRate: "",
+      gatewayDiscoveryInterval: "",
+      gatewayDiscoveryTXFrequency: "",
+      gatewayDiscoveryDR: "",
       ModalText: "确认删除",
       visible: false,
       submitLoading: false,
@@ -236,9 +237,11 @@ export default {
         console.log(res);
         this.gatewayOn = res.data.networkServer.gatewayDiscoveryEnabled;
         this.name = res.data.networkServer.name;
-        this.interval = res.data.networkServer.gatewayDiscoveryInterval;
-        this.frequency = res.data.networkServer.gatewayDiscoveryTXFrequency;
-        this.dataRate = res.data.networkServer.gatewayDiscoveryDR;
+        this.gatewayDiscoveryInterval =
+          res.data.networkServer.gatewayDiscoveryInterval;
+        this.gatewayDiscoveryTXFrequency =
+          res.data.networkServer.gatewayDiscoveryTXFrequency;
+        this.gatewayDiscoveryDR = res.data.networkServer.gatewayDiscoveryDR;
       })
       .catch(err => {
         console.log(err);
@@ -252,7 +255,7 @@ export default {
           this.submitLoading = true;
           values.server = this.server + ":" + values.port;
           console.log("Received values of form: ", values);
-
+          values.gatewayDiscoveryEnabled = this.gatewayOn;
           this.$api.networkServer
             .updateServer({
               extra: this.id,

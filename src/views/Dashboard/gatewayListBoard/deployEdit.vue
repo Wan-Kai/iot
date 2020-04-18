@@ -70,7 +70,10 @@
               :wrapper-col="{ span: 18 }"
             >
               <a-cascader
-                v-decorator="['networkServerName']"
+                v-decorator="[
+                  'networkServerName',
+                  { initialValue: this.defaultData }
+                ]"
                 style="width: 90%;float: left"
                 size="small"
                 :options="internetServer_options"
@@ -98,11 +101,13 @@
               :wrapper-col="{ span: 18 }"
             >
               <a-cascader
-                v-decorator="['communicationMode']"
+                v-decorator="[
+                  'communicationMode',
+                  { initialValue: this.defaultDataModulation }
+                ]"
                 style="width: 90%;float: left"
                 size="small"
                 :options="communicationMode_options"
-                :defaultValue="this.defaultDataModulation"
                 placeholder=""
               />
               <a-tooltip placement="rightTop">
@@ -169,11 +174,10 @@
             >
               <p style="text-align: left;margin-bottom: 2px;">所在区域</p>
               <a-cascader
-                v-decorator="['area']"
+                v-decorator="['area', { initialValue: this.defaultDataArea }]"
                 style="width: 90%;float: left"
                 size="small"
                 :options="area_options"
-                :defaultValue="this.defaultDataArea"
                 placeholder=""
               />
             </a-form-item>
@@ -244,6 +248,7 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
+import { getNetServerIdByServer } from "@/utils/util";
 
 export default {
   components: { ACol, ARow },
@@ -252,11 +257,10 @@ export default {
       defaultData: [],
       defaultDataModulation: [],
       defaultDataArea: [],
-      Lng: "",
-      Lat: "",
       id: "",
       name: "",
       description: "",
+      networkServerID: "",
       internetServer_options: [],
       communicationMode_options: [],
       band_options: [],
@@ -323,6 +327,8 @@ export default {
         this.defaultDataArea.push(infoDataTemp.gateway.district);
         this.name = infoDataTemp.gateway.name;
         this.description = infoDataTemp.gateway.description;
+        this.location = infoDataTemp.gateway.location;
+        this.networkServerID = infoDataTemp.gateway.networkServerID;
         address =
           infoDataTemp.gateway.location.longitude.toString() +
           "," +
@@ -340,8 +346,6 @@ export default {
             infoDataTemp.gateway.location.latitude
           ]
         });
-        this.Lng = infoDataTemp.gateway.location.longitude;
-        this.Lat = infoDataTemp.gateway.location.latitude;
         let startIcon = new AMap.Icon({
           // 图标尺寸
           size: new AMap.Size(25, 25),
@@ -356,21 +360,24 @@ export default {
           // eslint-disable-line no-unused-vars
           map: mapObj,
           icon: startIcon,
-          position: [_self.Lng, _self.Lat], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          position: [_self.location.longitude, _self.location.latitude], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
           title: "网关"
         });
         mapObj.on("click", function(e) {
-          _self.Lng = e.lnglat.getLng();
-          _self.Lat = e.lnglat.getLat();
+          _self.location.longitude = e.lnglat.getLng();
+          _self.location.latitude = e.lnglat.getLat();
           mapObj.clearMap();
           const marker = new AMap.Marker({
             // eslint-disable-line no-unused-vars
             map: mapObj,
             icon: startIcon,
-            position: [_self.Lng, _self.Lat], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            position: [_self.location.longitude, _self.location.latitude], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
             title: "网关"
           });
-          address = _self.Lng.toString() + "," + _self.Lat.toString();
+          address =
+            _self.location.longitude.toString() +
+            "," +
+            _self.location.latitude.toString();
           _self.gatewayDeployForm.setFieldsValue({
             address: address
           });
@@ -388,14 +395,24 @@ export default {
       this.gatewayDeployForm.validateFields((err, values) => {
         if (!err) {
           this.submitLoading = true;
-          console.log("获得");
-          values.location = this.location;
-          console.log(values);
+          let sentData = {};
+          sentData.location = this.location;
+          sentData.id = values.id;
+          sentData.name = values.name;
+          sentData.description = values.description;
+          sentData.province = values.area[0];
+          sentData.city = values.area[1];
+          sentData.district = values.area[2];
+          console.log(sentData);
+          sentData.networkServerID = getNetServerIdByServer(
+            values.networkServerName[0]
+          );
+          sentData.modulation = values.communicationMode[0];
 
           this.$api.gateway
             .updateGateway({
               extra: this.id,
-              gateway: values
+              gateway: sentData
             })
             .then(res => {
               if (res.status === 200) {

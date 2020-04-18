@@ -366,11 +366,6 @@ export default {
                     name: "gatewayInit"
                   });
                 }, 500);
-                setTimeout(() => {
-                  this.$router.push({
-                    name: "gatewayInit"
-                  });
-                }, 100);
               } else if (res.status === 400) {
                 console.log(res);
                 this.$message.error("错误的网关ID");

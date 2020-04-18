@@ -136,7 +136,7 @@ const routes = [
           },
           {
             path: "/admin/dashboard/networkServer/check/:id",
-            name: "checkInternetServer",
+            name: "checkNetworkServer",
             meta: { title: "查看服务器" },
             component: () =>
               import(
@@ -145,7 +145,7 @@ const routes = [
           },
           {
             path: "/admin/dashboard/networkServer/edit/:id",
-            name: "editInternetServer",
+            name: "editNetworkServer",
             meta: { title: "编辑服务器" },
             component: () =>
               import(

@@ -253,10 +253,10 @@ export default {
 
         // let netServer = this.$store.getters.getNetServer;
 
-        // this.infoData.gateway.serverName = "空";
+        // this.tableData.gateway.serverName = "空";
         // for(let i=0;i<netServer.length;i++){
-        //   if(netServer[i].id === this.infoData.gateway.id){
-        //     this.infoData.gateway.serverName = netServer[i].name
+        //   if(netServer[i].id === this.tableData.gateway.id){
+        //     this.tableData.gateway.serverName = netServer[i].name
         //   }
         // }
 

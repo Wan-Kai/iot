@@ -22,9 +22,13 @@
           <a-button style="margin: 0 22px" icon="download" @click="showModalIn">
             批量导入
           </a-button>
-          <a-modal v-model="visibleIn" title="节点批量导入" onOk="handleOk">
+          <a-modal
+            v-model="importDialogVisibleState"
+            title="节点批量导入"
+            @onOk="handleImportOk"
+          >
             <template slot="footer">
-              <a-button key="back" @click="handleCancelIn">取消</a-button>
+              <a-button key="back" @click="handleImportCancel">取消</a-button>
             </template>
             <p>
               说明：仅支持扩展名为xlsx、csv格式的文件导入，<a>下载导入模板</a>
@@ -41,8 +45,8 @@
               <a-button
                 key="submit"
                 type="primary"
-                :loading="loadingIn"
-                @click="handleOkIn"
+                :loading="importDialogVisibleState"
+                @click="handleImportOk"
                 style="margin-right: 8px"
               >
                 确定
@@ -58,16 +62,20 @@
           <a-button icon="download" @click="showModalOut">
             批量导出
           </a-button>
-          <a-modal v-model="visibleOut" title="节点批量导出" onOk="handleOk">
+          <a-modal
+            v-model="exportDialogVisibleState"
+            title="节点批量导出"
+            @onOk="handleExportOk"
+          >
             <template slot="footer">
-              <a-button key="back" @click="handleCancelOut">取消</a-button>
+              <a-button key="back" @click="handleExportCancel">取消</a-button>
             </template>
             <p>内容尚待确定</p>
             <a-button
               key="submit"
               type="primary"
-              :loading="loadingIn"
-              @click="handleOkOut"
+              :loading="importLoadingState"
+              @click="handleExportOk"
             >
               确定
             </a-button>
@@ -78,12 +86,12 @@
     <div class="iot_view_nodeManage_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="interData"
+        :dataSource="tableData"
         style="min-width: auto"
         class="iot_view_nodeManage_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
-        :loading="loadingState"
+        :loading="tableLoadingState"
       >
         <span slot="state" slot-scope="tags">
           <a-tag :color="tags === 'on' ? 'green' : 'red'" :key="tags">
@@ -92,9 +100,9 @@
         </span>
 
         <span slot="action" slot-scope="text, record">
-          <a @click="checkRouter(record)">查看</a>
+          <a @click="check(record)">查看</a>
           <a-divider type="vertical" />
-          <a @click="editRouter(record)">编辑</a>
+          <a @click="edit(record)">编辑</a>
         </span>
       </a-table>
       <div class="iot_view_nodeManage_button_layout">
@@ -159,15 +167,14 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
-      loadingState: true,
       columns,
-      interData: [],
+      tableData: [],
+      tableLoadingState: true,
+      importLoadingState: false,
+      importDialogVisibleState: false,
 
-      loadingIn: false,
-      visibleIn: false,
-
-      loadingOut: false,
-      visibleOut: false,
+      exportLoadingState: false,
+      exportDialogVisibleState: false,
 
       address: "E/admin",
       warning: "警告信息",
@@ -198,13 +205,13 @@ export default {
             infoDataTemp[i].networkServerID
           );
         }
-        this.interData = infoDataTemp;
+        this.tableData = infoDataTemp;
       })
       .catch(err => {
         console.log(err);
       })
       .finally(() => {
-        this.loadingState = false;
+        this.tableLoadingState = false;
       });
   },
   methods: {
@@ -213,44 +220,44 @@ export default {
         name: "addNodeManage"
       });
     },
-    checkRouter(data) {
+    check(data) {
       this.$router.push({
         name: "checkNodeManage",
         query: { number: data["id"], tab: "1" }
       });
     },
-    editRouter(data) {
+    edit(data) {
       this.$router.push({
         name: "checkNodeManage",
         query: { number: data["id"], tab: "2" }
       });
     },
     showModalIn() {
-      this.visibleIn = true;
+      this.importDialogVisibleState = true;
     },
-    handleOkIn() {
-      this.loadingIn = true;
+    handleImportOk() {
+      this.importLoadingState = true;
       setTimeout(() => {
-        this.visibleIn = false;
-        this.loadingIn = false;
+        this.importDialogVisibleState = false;
+        this.importLoadingState = false;
       }, 3000);
     },
-    handleCancelIn() {
-      this.visibleIn = false;
+    handleImportCancel() {
+      this.importDialogVisibleState = false;
     },
 
     showModalOut() {
-      this.visibleOut = true;
+      this.exportDialogVisibleState = true;
     },
-    handleOkOut() {
-      this.loadingOut = true;
+    handleExportOk() {
+      this.exportLoadingState = true;
       setTimeout(() => {
-        this.visibleOut = false;
-        this.loadingOut = false;
+        this.exportDialogVisibleState = false;
+        this.exportLoadingState = false;
       }, 3000);
     },
-    handleCancelOut() {
-      this.visibleOut = false;
+    handleExportCancel() {
+      this.exportDialogVisibleState = false;
     }
   }
 };

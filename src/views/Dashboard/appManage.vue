@@ -28,6 +28,7 @@
         class="iot_view_appManage_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
+        :Key="record => record.uid"
       >
         <span slot="action" slot-scope="text, record">
           <a @click="checkRouter(record)">查看</a>

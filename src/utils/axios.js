@@ -1,5 +1,6 @@
 import axios from "axios"; // 引入axios
 import store from "../store/index";
+import router from "../router/index";
 
 // 环境的切换
 if (process.env.NODE_ENV === "development") {
@@ -20,6 +21,7 @@ const service = axios.create({
   timeout: 10000
 });
 
+let _self = this;
 // request拦截器
 // Authorization已在各请求体封装，无需再统一声明
 service.interceptors.request.use(
@@ -44,17 +46,28 @@ service.interceptors.response.use(
     let res = {};
     // res.status = response.status;
     // res.data = response.data;
+    console.log("正常");
     res = response;
     return res;
   },
   error => {
-    // if (error.response && error.response.status === 404) {
-    //   this.$router.push({ path: "/404" });
-    // } else if (error.response && error.response.status === 403) {
-    //   this.$store.commit("login/reset");
-    //   alert("登录失效，请重新登录！");
-    //   this.$router.push({ path: "/user/login" });
-    // }
+    console.log("收到的错误");
+    console.log(error.response);
+    if (error.response && error.response.status === 404) {
+      router.push({ path: "/404" });
+    } else if (error.response && error.response.status === 403) {
+      store.commit("login/reset");
+      alert("登录失效，请重新登录！");
+      router.push({ path: "/user/login" });
+    } else if (error.response && error.response.status === 401) {
+      store.commit("login/reset");
+      alert("登录失效，请重新登录！");
+      router.push({ path: "/user/login" });
+    } else if (error.response && error.response.status === 500) {
+      store.commit("login/reset");
+      alert("登录失效，请重新登录！");
+      router.push({ path: "/user/login" });
+    }
     // return Promise.reject(error.response);
     return Promise.resolve(error.response);
   }

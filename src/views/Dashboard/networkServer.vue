@@ -88,16 +88,6 @@ export default {
       columns,
       infoData: [],
       loadingState: true,
-      getData: [
-        {
-          id: "",
-          IP: "",
-          name: "",
-          server: "",
-          createdAt: "",
-          updatedAt: ""
-        }
-      ],
 
       pagination: {
         size: "small",
@@ -118,7 +108,7 @@ export default {
         limit: 10
       })
       .then(res => {
-        this.getData = res.data.result;
+        let getData = res.data.result;
 
         let temp = {
           id: "",
@@ -128,19 +118,19 @@ export default {
           time: "",
           name: ""
         };
-        for (let i = 0; i < this.getData.length; i++) {
-          if (this.getData[i].server.split(":")) {
-            let server = this.getData[i].server.split(":");
+        for (let i = 0; i < getData.length; i++) {
+          if (getData[i].server.split(":")) {
+            let server = getData[i].server.split(":");
             temp.IP = server[0];
             temp.port = server[1];
           } else {
-            temp.IP = this.getData[i].server;
+            temp.IP = getData[i].server;
             temp.port = "";
           }
           temp.gateway = "off";
-          temp.time = this.getData[i].createdAt;
-          temp.id = this.getData[i].id;
-          temp.name = this.getData[i].name;
+          temp.time = getData[i].createdAt;
+          temp.id = getData[i].id;
+          temp.name = getData[i].name;
 
           this.infoData.push(temp);
         }

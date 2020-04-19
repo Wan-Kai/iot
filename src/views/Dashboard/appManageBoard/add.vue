@@ -8,32 +8,6 @@
         class="iot_view_app_add_form"
       >
         <a-form-item
-          label="应用编号："
-          :required="true"
-          :label-col="{ span: 3 }"
-          :wrapper-col="{ span: 7 }"
-          class="iot_view_app_add_formItem"
-        >
-          <a-input
-            size="small"
-            v-decorator="[
-              'id',
-              { rules: [{ required: true, message: '请输入应用编号!' }] }
-            ]"
-            style="float: left;text-align: left;width: 90%"
-          />
-          <a-tooltip placement="rightTop">
-            <template slot="title">
-              prompt text
-            </template>
-            <a-icon
-              type="exclamation-circle"
-              style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-            />
-          </a-tooltip>
-        </a-form-item>
-        <a-form-item
           label="应用名称："
           :required="true"
           :label-col="{ span: 3 }"
@@ -53,7 +27,7 @@
         <a-form-item
           class="iot_view_app_add_formItem"
           label="服务名称："
-          :required="false"
+          :required="true"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
         >
@@ -61,7 +35,7 @@
             v-decorator="[
               'serviceProfile',
               {
-                rules: [{ required: false, message: '请选择服务名' }]
+                rules: [{ required: true, message: '请选择服务名' }]
               }
             ]"
             style="width: 90%;float: left;text-align: left"
@@ -124,7 +98,12 @@
         <a-row>
           <a-col :span="7" :offset="3">
             <div class="iot_view_app_add_form_left">
-              <a-button type="primary" html-type="submit">确定</a-button>
+              <a-button
+                type="primary"
+                html-type="submit"
+                :loading="commitLoading"
+                >确定</a-button
+              >
               <a-button style="margin-left: 30px" @click="back">取消</a-button>
             </div>
           </a-col>
@@ -141,7 +120,6 @@ export default {
   data() {
     return {
       commitLoading: false,
-      self: this,
       serviceProfile_options: []
     };
   },
@@ -151,44 +129,63 @@ export default {
   },
 
   beforeMount() {
-    debugger;
     this.serviceProfile_options = getServiceOption();
   },
 
   methods: {
     handleSubmit(e) {
-      var self = this;
+      let self = this;
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
           self.commitLoading = true;
-          debugger;
+          let sentData = {};
           for (let i = 0; i < self.serviceProfile_options.length; i++) {
             if (
               values.serviceProfile[0] === self.serviceProfile_options[i].value
             ) {
-              values.serviceProfileID = self.serviceProfile_options[i].id;
+              sentData.serviceProfileID = self.serviceProfile_options[i].id;
             }
           }
-          values.organizationID = 1;
 
+          sentData.name = values.name;
+          sentData.description = values.description;
+          sentData.organizationID = 1;
+          sentData.capacity = values.capacity;
+          console.log(sentData);
           this.$api.appManage
             .createApp({
-              application: values
+              application: sentData
+            })
+            .then(res => {
+              console.log(res);
+              if (res.status === 200) {
+                this.$message.success("成功创建应用:" + res.data.id);
+                setTimeout(() => {
+                  this.$router.push({
+                    name: "appManageInit"
+                  });
+                }, 100);
+              } else {
+                console.log(res);
+                this.$message.error(res.data.error);
+              }
             })
             .catch(err => {
               console.log(err);
+            })
+            .finally(() => {
+              console.log("终止");
+              self.commitLoading = false;
             });
-          this.$message.success("成功创建应用:" + values.id);
-          setTimeout(() => {
-            this.$router.push({
-              name: "appManageInit"
-            });
-          }, 500);
         }
       });
     },
-    back() {}
+    back() {
+      this.$router.push({
+        name: "appManageInit"
+      });
+    }
   }
 };
 </script>

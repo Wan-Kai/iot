@@ -115,21 +115,21 @@ export default {
   },
   beforeMount() {
     this.number = this.$route.query.number;
-    this.defaultTab = this.$route.query.id;
+    this.defaultTab = this.$route.query.tab;
 
-    this.$api.appManage
-      .appDetailData({
-        id: this.number
-      })
-      .then(res => {
-        this.infoData = res.data.result;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    // this.$api.appManage
+    //   .appDetailData({
+    //     id: this.number
+    //   })
+    //   .then(res => {
+    //     this.infoData = res.data.result;
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   },
   mounted() {
-    this.getMock();
+    // this.getMock();
   },
   methods: {
     cancel() {

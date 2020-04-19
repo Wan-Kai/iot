@@ -137,14 +137,14 @@ export default {
       console.log(record);
       this.$router.push({
         name: "checkApp",
-        query: { number: record.id, id: "1" }
+        query: { number: record.id, tab: "1" }
       });
     },
     editRouter(record) {
       console.log(record);
       this.$router.push({
         name: "checkApp",
-        query: { number: record.id, id: "2" }
+        query: { number: record.id, tab: "2" }
       });
     },
     handleCancel() {

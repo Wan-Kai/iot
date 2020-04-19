@@ -333,10 +333,6 @@ const routes = [
             path: "/admin/dashboard/appManageBoard/check",
             name: "checkAppBoard",
             meta: { title: "应用查看" },
-            // component: () =>
-            //   import(
-            //     /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManageBoard/check.vue"
-            //   )
             component: { render: h => h("router-view") },
             children: [
               {

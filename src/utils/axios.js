@@ -46,7 +46,6 @@ service.interceptors.response.use(
     let res = {};
     // res.status = response.status;
     // res.data = response.data;
-    console.log("正常");
     res = response;
     return res;
   },

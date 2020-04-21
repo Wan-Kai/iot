@@ -270,56 +270,7 @@
             </a-row>
           </a-form>
         </a-col>
-        <a-col :span="14" v-if="areaShow">
-          <a-form
-            :form="SecondForm"
-            layout="vertical"
-            class="iot_view_serverManage_add_form"
-          >
-            <a-form-item
-              class="iot_view_serverManage_add_formItem"
-              label="位置信息："
-              :required="true"
-              :label-col="{ span: 6 }"
-              :wrapper-col="{ span: 18 }"
-            >
-              <p style="text-align: left;margin-bottom: 2px;">所在区域</p>
-              <a-cascader
-                v-decorator="['area', { initialValue: this.defaultDataArea }]"
-                style="width: 90%;float: left"
-                size="small"
-                :options="area_options"
-                placeholder=""
-              />
-            </a-form-item>
-            <a-form-item
-              class="iot_view_serverManage_add_formItem"
-              :required="true"
-            >
-              <a-col :offset="6">
-                <p style="margin-bottom: 2px;text-align: left">详细位置</p>
-                <a-input
-                  v-decorator="['address']"
-                  size="small"
-                  style="width: 90%;float: left;margin-bottom: 12px"
-                />
-                <a-tooltip placement="rightTop">
-                  <template slot="title">
-                    prompt text
-                  </template>
-                  <a-icon
-                    type="exclamation-circle"
-                    style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                  />
-                </a-tooltip>
-              </a-col>
-            </a-form-item>
-          </a-form>
-          <div class="iot_amap_serverManage_container">
-            <el-amap vid="gateway_edit_map"> </el-amap>
-          </div>
-        </a-col>
+        <a-col :span="14"> </a-col>
       </a-row>
     </div>
   </a-layout>
@@ -331,7 +282,6 @@ export default {
   data() {
     return {
       commitLoading: false,
-      areaShow: false,
       company_options: [],
       netserver_options: [],
       defaultDataArea: []
@@ -339,10 +289,8 @@ export default {
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
-    this.SecondForm = this.$form.createForm(this, {
-      name: "dynamic_form_item"
-    });
   },
+  beforeMount() {},
   methods: {
     handleSubmit(e) {
       e.preventDefault();

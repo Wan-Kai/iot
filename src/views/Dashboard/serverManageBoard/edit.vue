@@ -242,9 +242,26 @@
                 :loading="commitLoading"
                 >确定</a-button
               >
-              <a-button style="margin-left: 30px" @click="back">取消</a-button>
+              <a-button style="margin: 0 30px" @click="back">取消</a-button>
+              <a-button type="danger" icon="delete" @click="showModal"
+                >删除设备</a-button
+              >
             </div>
           </a-col>
+          <a-modal title="删除提示" :visible="visible" @cancel="handleCancel">
+            <template slot="footer">
+              <a-button key="back" @click="handleCancel">取消</a-button>
+              <a-button
+                type="danger"
+                icon="delete"
+                style="margin-left: 16px"
+                @click="handleOk"
+                :loading="confirmLoading"
+                >确认删除</a-button
+              >
+            </template>
+            <p>{{ ModalText }}</p>
+          </a-modal>
         </a-row>
       </a-form>
     </div>
@@ -258,7 +275,11 @@ export default {
     return {
       commitLoading: false,
       company_options: [],
-      netserver_options: []
+      netserver_options: [],
+
+      visible: false,
+      confirmLoading: false,
+      ModalText: ""
     };
   },
   beforeCreate() {
@@ -280,6 +301,16 @@ export default {
       this.$router.push({
         name: "serverManageInit"
       });
+    },
+    showModal() {
+      this.visible = true;
+      this.ModalText = "确认删除" + ":" + this.id;
+    },
+    handleCancel() {
+      this.visible = false;
+    },
+    handleOk() {
+      this.confirmLoading = true;
     }
   }
 };

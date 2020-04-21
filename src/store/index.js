@@ -87,7 +87,6 @@ export default new Vuex.Store({
     },
 
     getServiceOptions() {
-      debugger;
       let service_options = [];
       let servicesList = util.state.service_list;
       let networkServerList = util.state.netServer;
@@ -96,8 +95,8 @@ export default new Vuex.Store({
           if (servicesList[i].networkServerID === networkServerList[j].id) {
             let temp = {
               label: servicesList[i].name + "@" + networkServerList[j].name,
-              id: servicesList[i].id,
-              value: servicesList[i].name
+              name: servicesList[i].name,
+              value: servicesList[i].id
             };
             service_options.push(temp);
             break;

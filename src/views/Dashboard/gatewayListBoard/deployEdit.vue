@@ -18,8 +18,8 @@
               class="iot_view_gatewayList_deployEdit_formitem"
               label="网关名称："
               :required="true"
-              :label-col="{ span: 6 }"
-              :wrapper-col="{ span: 18 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
               <a-input
                 v-decorator="[
@@ -37,8 +37,8 @@
               class="iot_view_gatewayList_deployEdit_formitem"
               label="网关ID："
               :required="true"
-              :label-col="{ span: 6 }"
-              :wrapper-col="{ span: 18 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
               <a-input
                 v-decorator="[
@@ -66,8 +66,8 @@
               class="iot_view_gatewayList_deployEdit_formitem"
               label="网络服务器："
               :required="true"
-              :label-col="{ span: 6 }"
-              :wrapper-col="{ span: 18 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
               <a-cascader
                 v-decorator="[
@@ -97,8 +97,8 @@
               class="iot_view_gatewayList_deployEdit_formitem"
               label="通信模式："
               :required="true"
-              :label-col="{ span: 6 }"
-              :wrapper-col="{ span: 18 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
               <a-cascader
                 v-decorator="[
@@ -125,8 +125,8 @@
               class="iot_view_gatewayList_deployEdit_formitem"
               label="频段："
               :required="true"
-              :label-col="{ span: 6 }"
-              :wrapper-col="{ span: 18 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
               <a-cascader
                 v-decorator="['band']"
@@ -150,8 +150,8 @@
               class="iot_view_gatewayList_deployEdit_formitem"
               label="网关描述："
               :required="false"
-              :label-col="{ span: 6 }"
-              :wrapper-col="{ span: 18 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
               <a-textarea
                 placeholder="请填写网关描述，最多100个汉字"
@@ -169,8 +169,8 @@
               class="iot_view_gatewayList_deployEdit_formitem"
               label="位置信息："
               :required="true"
-              :label-col="{ span: 6 }"
-              :wrapper-col="{ span: 18 }"
+              :label-col="{ span: 8 }"
+              :wrapper-col="{ span: 16 }"
             >
               <p style="text-align: left;margin-bottom: 2px;">所在区域</p>
               <a-cascader
@@ -185,7 +185,7 @@
               class="iot_view_gatewayList_deployEdit_formitem"
               :required="true"
             >
-              <a-col :offset="6">
+              <a-col :offset="8">
                 <p style="margin-bottom: 2px;text-align: left">详细位置</p>
                 <a-input
                   v-decorator="['address']"
@@ -220,7 +220,7 @@
             <p>{{ ModalText }}</p>
           </a-modal>
           <a-row>
-            <a-col :span="18" :offset="6">
+            <a-col :span="16" :offset="8">
               <a-button
                 type="primary"
                 @click="handleSubmit"
@@ -236,7 +236,7 @@
         </a-row>
       </a-col>
       <a-col :span="14">
-        <div class="iot_amap-gatewayEdit-container">
+        <div class="iot_amap-gatewayEdit_container">
           <el-amap vid="gateway_edit_map"> </el-amap>
         </div>
       </a-col>
@@ -509,7 +509,7 @@ export default {
   margin-bottom: 8px;
   padding-bottom: 0px;
 }
-.iot_amap-gatewayEdit-container {
+.iot_amap-gatewayEdit_container {
   height: 400px;
   width: 100%;
 }

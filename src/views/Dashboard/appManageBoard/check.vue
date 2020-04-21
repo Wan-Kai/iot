@@ -11,21 +11,21 @@
       <div class="iot_line" />
       <a-row style="margin-top: 10px;display: flex">
         <span style="margin-left: 30px;margin-bottom: 8px"
-          >应用名称：{{ this.infoData.appName }}</span
+          >应用名称：{{ this.appName }}</span
         >
         <span style="margin-left: 30px;margin-bottom: 8px"
-          >设备分配容量：{{ this.infoData.capacity }}</span
+          >设备分配容量：{{ this.capacity }}</span
         >
         <span style="margin-left: 30px;margin-bottom: 8px"
-          >设备使用容量：{{ this.infoData.usedCapacity }}</span
+          >设备使用容量：{{ this.usedCapacity }}</span
         >
         <span style="margin-left: 30px;margin-bottom: 8px"
-          >创建时间：{{ this.infoData.time }}</span
+          >创建时间：{{ this.time }}</span
         >
       </a-row>
       <a-row style="display: flex">
         <span style="margin-left: 30px;margin-bottom: 2px"
-          >应用描述：{{ this.infoData.description }}</span
+          >应用描述：{{ this.description }}</span
         >
       </a-row>
     </a-card>
@@ -99,13 +99,11 @@ export default {
     return {
       number: "1",
 
-      infoData: {
-        appName: "lora100",
-        capacity: "100",
-        usedCapacity: "80",
-        time: "2020-01-20 09:44:16",
-        description: "描述内容描述内容描述内容描述内容描述内容描述内容描述内容"
-      },
+      appName: "lora100",
+      capacity: "暂无",
+      usedCapacity: "暂无",
+      time: "暂无",
+      description: "描述内容描述内容描述内容描述内容描述内容描述内容描述内容",
       nodeVisible: false,
 
       defaultTab: "1",
@@ -117,16 +115,20 @@ export default {
     this.number = this.$route.query.number;
     this.defaultTab = this.$route.query.tab;
 
-    // this.$api.appManage
-    //   .appDetailData({
-    //     id: this.number
-    //   })
-    //   .then(res => {
-    //     this.infoData = res.data.result;
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    this.$api.appManage
+      .getAppDetail({
+        extra: this.number
+      })
+      .then(res => {
+        console.log(res);
+        let infoDataTemp = res.data.application;
+
+        this.appName = infoDataTemp.name;
+        this.description = infoDataTemp.description;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   mounted() {
     // this.getMock();

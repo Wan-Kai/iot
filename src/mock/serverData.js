@@ -15,6 +15,19 @@ const ServerData = Mock.mock({
   ]
 });
 
+const ServerManageData = Mock.mock({
+  status: "OK",
+  type: "ID",
+  totalCount: "8",
+  "result|8": [
+    {
+      name: "编号85156SD545daW节点掉线",
+      company: "卓目科技",
+      createdAt: "2020-04-01T11:26:58.287409Z"
+    }
+  ]
+});
+
 const Message = Mock.mock({
   status: "OK",
   type: "",
@@ -64,4 +77,11 @@ const Message_Detail = Mock.mock({
   ]
 });
 
-export { ServerData, Message, Check, Message_Detail, Deleted_Message };
+export {
+  ServerData,
+  Message,
+  Check,
+  Message_Detail,
+  Deleted_Message,
+  ServerManageData
+};

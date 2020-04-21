@@ -155,6 +155,56 @@ const routes = [
         ]
       },
 
+      //服务管理
+      {
+        path: "/admin/dashboard/serverManage",
+        name: "serverManage",
+        meta: { title: "服务管理" },
+        component: { render: h => h("router-view") },
+        children: [
+          {
+            path: "/admin/dashboard/serverManage",
+            redirect: "/admin/dashboard/serverManage/init"
+          },
+          {
+            path: "/admin/dashboard/serverManage/init",
+            name: "serverManageInit",
+            meta: { title: "" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serverManage.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/serverManage/add",
+            name: "serverManageAdd",
+            meta: { title: "添加服务" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serverManageBoard/add.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/serverManage/check",
+            name: "serverManageCheck",
+            meta: { title: "查看服务" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serverManageBoard/check.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/serverManage/edit",
+            name: "serverManageEdit",
+            meta: { title: "编辑服务" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serverManageBoard/edit.vue"
+              )
+          }
+        ]
+      },
+
       //消息
       {
         path: "/admin/dashboard/message",

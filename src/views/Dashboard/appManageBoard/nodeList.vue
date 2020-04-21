@@ -2,7 +2,7 @@
   <div>
     <a-table
       :columns="columns"
-      :dataSource="interData"
+      :dataSource="infoData"
       style="min-width: auto"
       class="iot_view_nodeManage_table"
       :pagination="pagination"
@@ -31,13 +31,13 @@
 const columns = [
   {
     title: "节点编号",
-    dataIndex: "DevEUI",
-    key: "DevEUI"
+    dataIndex: "devEUI",
+    key: "devEUI"
   },
   {
     title: "节点名称",
-    dataIndex: "nodeName",
-    key: "nodeName"
+    dataIndex: "name",
+    key: "name"
   },
   {
     title: "网络状态",
@@ -65,7 +65,8 @@ export default {
   data() {
     return {
       columns,
-      interData: [],
+      id: "",
+      infoData: [],
       nodeVisible: false,
 
       pagination: {
@@ -82,16 +83,22 @@ export default {
     };
   },
   beforeMount() {
-    // this.$api.appManage
-    //   .getAppNodeList({
-    //     page: 0
-    //   })
-    //   .then(res => {
-    //     this.interData = res.data.result;
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    this.id = this.$route.query.number;
+    this.$api.node
+      .getNodeInApp({
+        applicationID: this.id,
+        limit: 100
+      })
+      .then(res => {
+        let infoDataTemp = res.data.result;
+        infoDataTemp.forEach(item => {
+          item.state = "off";
+        });
+        this.infoData = res.data.result;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
     checkRouter(record) {

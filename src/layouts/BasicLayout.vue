@@ -28,6 +28,11 @@
                 >网络服务器</router-link
               >
             </a-menu-item>
+            <a-menu-item key="12">
+              <router-link to="/admin/dashboard/serverManage"
+                >服务管理</router-link
+              >
+            </a-menu-item>
             <a-menu-item key="3">
               <router-link to="/admin/dashboard/message">消息</router-link>
             </a-menu-item>

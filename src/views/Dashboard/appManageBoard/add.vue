@@ -137,17 +137,12 @@ export default {
       let self = this;
       e.preventDefault();
       this.form.validateFields((err, values) => {
+        console.log(values);
         if (!err) {
           self.commitLoading = true;
           let sentData = {};
-          for (let i = 0; i < self.serviceProfile_options.length; i++) {
-            if (
-              values.serviceProfile[0] === self.serviceProfile_options[i].value
-            ) {
-              sentData.serviceProfileID = self.serviceProfile_options[i].id;
-            }
-          }
 
+          sentData.serviceProfileID = values.serviceProfile[0];
           sentData.name = values.name;
           sentData.description = values.description;
           sentData.organizationID = 1;

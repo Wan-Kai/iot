@@ -27,7 +27,7 @@
                 'id',
                 {
                   rules: [{ required: true, message: '请输入应用编号!' }],
-                  initialValue: this.infoData.id
+                  initialValue: this.id
                 }
               ]"
               style="float: left;text-align: left;width: 90%"
@@ -56,12 +56,45 @@
                 'name',
                 {
                   rules: [{ required: true, message: '请输入应用名称!' }],
-                  initialValue: this.infoData.name
+                  initialValue: this.name
                 }
               ]"
               style="float: left;text-align: left;width: 90%"
             />
           </a-form-item>
+
+          <a-form-item
+            class="iot_view_app_add_formItem"
+            label="服务名称："
+            :required="true"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+          >
+            <a-cascader
+              v-decorator="[
+                'serviceProfile',
+                {
+                  initialValue: this.defaultServiceProfile,
+                  rules: [{ required: true, message: '请选择服务名' }]
+                }
+              ]"
+              style="width: 90%;float: left;text-align: left"
+              size="small"
+              :options="serviceProfile_options"
+              placeholder=""
+            />
+            <a-tooltip placement="rightTop">
+              <template slot="title">
+                prompt text
+              </template>
+              <a-icon
+                type="exclamation-circle"
+                style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+              />
+            </a-tooltip>
+          </a-form-item>
+
           <a-form-item
             label="设备分配容量："
             :required="true"
@@ -74,8 +107,8 @@
               v-decorator="[
                 'capacity',
                 {
-                  rules: [{ required: true, message: '请输入设备分配容量!' }],
-                  initialValue: this.infoData.capacity
+                  rules: [{ required: false, message: '请输入设备分配容量!' }],
+                  initialValue: this.capacity
                 }
               ]"
               style="float: left;text-align: left;width: 90%"
@@ -91,61 +124,7 @@
               />
             </a-tooltip>
           </a-form-item>
-          <a-form-item
-            class="iot_view_app_edit_formItem"
-            label="地理位置："
-            :required="true"
-            :label-col="{ span: 8 }"
-            :wrapper-col="{ span: 16 }"
-          >
-            <a-switch
-              checkedChildren="开"
-              unCheckedChildren="关"
-              @change="stateChange"
-              style="float: left"
-            />
-          </a-form-item>
-          <a-form-item
-            v-if="areaShow"
-            class="iot_view_app_edit_formItem"
-            label="所在区域："
-            :required="true"
-            :label-col="{ span: 8 }"
-            :wrapper-col="{ span: 16 }"
-          >
-            <a-cascader
-              v-decorator="['area']"
-              style="width: 90%;float: left;text-align: left"
-              size="small"
-              :options="area_options"
-              placeholder=""
-            />
-          </a-form-item>
-          <a-form-item
-            v-if="areaShow"
-            class="iot_view_app_edit_formItem"
-            label="详细位置："
-            :required="true"
-            :label-col="{ span: 8 }"
-            :wrapper-col="{ span: 16 }"
-          >
-            <a-input
-              v-decorator="['address']"
-              size="small"
-              style="width: 90%;float: left;text-align: left"
-            >
-            </a-input>
-            <a-tooltip placement="rightTop">
-              <template slot="title">
-                prompt text
-              </template>
-              <a-icon
-                type="exclamation-circle"
-                style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-              />
-            </a-tooltip>
-          </a-form-item>
+
           <a-form-item
             class="iot_view_app_edit_formItem"
             label="应用描述："
@@ -157,7 +136,7 @@
               v-decorator="[
                 'description',
                 {
-                  initialValue: this.infoData.description
+                  initialValue: this.description
                 }
               ]"
               :rows="4"
@@ -167,7 +146,12 @@
           <a-row>
             <a-col :span="16" :offset="8">
               <div class="iot_view_edit_add_form_left">
-                <a-button type="primary" html-type="submit">确定</a-button>
+                <a-button
+                  type="primary"
+                  html-type="submit"
+                  :loading="submitLoading"
+                  >确定</a-button
+                >
                 <a-button style="margin-left: 20px" @click="back"
                   >取消</a-button
                 >
@@ -178,13 +162,18 @@
                   @click="showModal"
                   >删除设备</a-button
                 >
-                <a-modal
-                  title="Title"
-                  :visible="visible"
-                  @ok="handleOk"
-                  :confirmLoading="confirmLoading"
-                  @cancel="handleCancel"
-                >
+                <a-modal title="删除提示" :visible="visible">
+                  <template slot="footer">
+                    <a-button key="back" @click="handleCancel">取消</a-button>
+                    <a-button
+                      type="danger"
+                      icon="delete"
+                      style="margin-left: 16px"
+                      @click="handleOk"
+                      :loading="confirmLoading"
+                      >确认删除</a-button
+                    >
+                  </template>
                   <p>{{ ModalText }}</p>
                 </a-modal>
               </div>
@@ -192,107 +181,46 @@
           </a-row>
         </a-form>
       </a-col>
-      <a-col :span="14">
-        <div class="iot_amap-nodeEdit-container">
-          <el-amap vid="note_edit_map"> </el-amap>
-        </div>
-      </a-col>
+      <a-col :span="14"> </a-col>
     </a-row>
   </div>
 </template>
 
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
-import wifi_map from "../../../assets/wifi.png";
+import { getServiceOption } from "@/utils/util";
 export default {
   components: { ARow },
   data() {
     return {
-      area_options: [],
-      infoData: {
-        id: "",
-        name: "",
-        capacity: "",
-        description: ""
-      },
-      ModalText: "Content of the modal",
+      serviceProfile_options: [],
+      defaultServiceProfile: [],
+      id: "",
+      name: "",
+      capacity: "",
+      description: "",
+      ModalText: "确认删除：",
       visible: false,
       confirmLoading: false,
-
-      areaShow: false,
-      submitLoading: false,
-      Lng: "",
-      Lat: "",
-
-      mapObj: {},
-      mapData: []
+      submitLoading: false
     };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
     this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
-
-    this.$api.appManage
-      .getAppDetail({
-        id: this.$route.query.number
-      })
-      .then(res => {
-        this.infoData = res.data.result;
-        console.log(this.infoData);
-      })
-      .catch(err => {
-        console.log(err);
-      });
   },
   beforeMount() {
-    this.area_options = this.$store.getters.getArea;
-    this.$api.index
-      .mapMarkers({})
+    this.serviceProfile_options = getServiceOption();
+    this.$api.appManage
+      .getAppDetail({
+        extra: this.$route.query.number
+      })
       .then(res => {
-        this.mapData = res.data.result;
-        this.mapObj = new AMap.Map("note_edit_map", {
-          // eslint-disable-line no-unused-vars
-          resizeEnable: true, //自适应大小
-          zoom: this.mapData.zoom,
-          center: this.mapData.center
-        });
-        let startIcon = new AMap.Icon({
-          // 图标尺寸
-          size: new AMap.Size(25, 25),
-          // 图标的取图地址
-          image: wifi_map, // 您自己的图标
-          // 图标所用图片大小
-          imageSize: new AMap.Size(25, 25)
-        });
-        if (this.mapData.center) {
-          const marker = new AMap.Marker({
-            // eslint-disable-line no-unused-vars
-            map: this.mapObj,
-            icon: startIcon,
-            position: this.mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-            title: "网关"
-          });
-        }
-        let _self = this;
-        let address = "";
-        this.mapObj.on("click", function(e) {
-          if (_self.areaShow) {
-            _self.Lng = e.lnglat.getLng();
-            _self.Lat = e.lnglat.getLat();
-            _self.mapObj.clearMap();
-            const marker = new AMap.Marker({
-              // eslint-disable-line no-unused-vars
-              map: _self.mapObj,
-              icon: startIcon,
-              position: [e.lnglat.getLng(), e.lnglat.getLat()], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-              title: "网关"
-            });
-            address = _self.Lng.toString() + "," + _self.Lat.toString();
-            _self.nodeDeployFormSecond.setFieldsValue({
-              address: address
-            });
-          }
-        });
+        let infoDataTemp = res.data.application;
+        this.id = infoDataTemp.id;
+        this.name = infoDataTemp.name;
+        this.description = infoDataTemp.description;
+        this.defaultServiceProfile.push(infoDataTemp.serviceProfileID);
       })
       .catch(err => {
         console.log(err);
@@ -303,23 +231,41 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
+          this.submitLoading = true;
+          console.log(values);
+          let sentData = {};
+          sentData.id = values.id;
+          sentData.name = values.name;
+          sentData.description = values.description;
+          sentData.serviceProfileID = values.serviceProfile[0];
+
           this.$api.appManage
             .updateApp({
-              id: values.id
+              extra: values.id,
+              application: sentData
+            })
+            .then(res => {
+              console.log(res);
+              if (res.status === 200) {
+                this.$message.success("成功修改应用:" + values.id);
+                setTimeout(() => {
+                  this.$router.push({
+                    name: "appManageInit"
+                  });
+                }, 100);
+              } else {
+                this.$message.error(res.data.error);
+              }
             })
             .catch(err => {
               console.log(err);
+            })
+            .finally(() => {
+              this.submitLoading = false;
             });
-          this.$message.success("成功修改应用:" + values.id);
-          setTimeout(() => {
-            this.$router.push({
-              name: "appManageInit"
-            });
-          }, 500);
         }
       });
     },
-    handleSubmitSecond() {},
     back() {
       this.$router.push({
         name: "appManageInit"
@@ -327,14 +273,31 @@ export default {
     },
     showModal() {
       this.visible = true;
+      this.ModalText = "确认删除：" + this.id;
     },
     handleOk(e) {
-      this.ModalText = "The modal will be closed after two seconds";
       this.confirmLoading = true;
-      setTimeout(() => {
-        this.visible = false;
-        this.confirmLoading = false;
-      }, 2000);
+      this.$api.appManage
+        .deleteApp({
+          extra: this.id
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            this.$message.success("成功删除：" + this.id);
+            setTimeout(() => {
+              this.$router.push({
+                name: "appManageInit"
+              });
+            }, 200);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.confirmLoading = false;
+        });
     },
     handleCancel(e) {
       console.log("Clicked cancel button");

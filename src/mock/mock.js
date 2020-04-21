@@ -63,6 +63,22 @@ mock.mock(RegExp(`/api/index/message` + ".*"), "get", () => {
 //   }
 //   return mock.mock(mockMsg);
 // });
+mock.mock(RegExp(`/api/network-servers-temp` + ".*"), "get", () => {
+  return serverData.ServerManageData;
+});
+mock.mock(RegExp(`/api/network-servers-temp` + ".*"), "post", () => {
+  return serverData.Message;
+});
+mock.mock(RegExp(`/api/network-servers-temp` + ".*"), "put", () => {
+  return serverData.Message;
+});
+mock.mock(RegExp(`/api/network-servers-temp` + ".*"), "delete", () => {
+  return serverData.Message;
+});
+mock.mock(RegExp(`/api/network-servers-temp` + ".*"), "post", () => {
+  return serverData.Message;
+});
+
 mock.mock(`/api/admin/server/message`, "post", () => {
   return serverData.Message;
 });

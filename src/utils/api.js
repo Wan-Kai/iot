@@ -42,6 +42,23 @@ export default {
       return deletes("/network-servers/" + data.extra, data);
     },
 
+    getServerManageData: data => {
+      return get("/network-servers-temp", data);
+    },
+
+    getServerManageDetail: data => {
+      return get("/network-servers-temp/" + data.extra, data);
+    },
+    createServerManage: data => {
+      return post("/network-servers-temp", data);
+    },
+    updateServerManage: data => {
+      return put("/network-servers-temp/" + data.extra, data);
+    },
+    deleteServerManage: data => {
+      return deletes("/network-servers-temp/" + data.extra, data);
+    },
+
     getMessage: data => {
       return post("/admin/server/message", data);
     },
@@ -134,6 +151,22 @@ export default {
     },
     deleteNode: data => {
       return deletes("/device-profiles/" + data.extra, data);
+    },
+
+    getNodeInApp: data => {
+      return get("/devices", data);
+    },
+    getNodeByIdInApp: data => {
+      return get("/devices/" + data.extra, data);
+    },
+    updateNodeInApp: data => {
+      return put("/devices/" + data.extra, data);
+    },
+    creatNodeInApp: data => {
+      return post("/devices", data);
+    },
+    deleteNodeInApp: data => {
+      return deletes("/devices/" + data.extra, data);
     }
   },
   appManage: {
@@ -141,7 +174,7 @@ export default {
       return get("/applications", data);
     },
     getAppDetail: data => {
-      return post("/applications/" + data.extra, data);
+      return get("/applications/" + data.extra, data);
     },
     createApp: data => {
       return post("/applications", data);

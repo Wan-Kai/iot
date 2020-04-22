@@ -159,6 +159,80 @@
 
           <a-form-item
             class="iot_view_node_deployEdit_formitem"
+            label="最高EIRP："
+            :required="true"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+          >
+            <a-input
+              v-decorator="['maxEIRP']"
+              size="small"
+              style="width: 90%;float: left;text-align: left"
+            >
+            </a-input>
+            <a-tooltip placement="rightTop">
+              <template slot="title">
+                prompt text
+              </template>
+              <a-icon
+                type="exclamation-circle"
+                style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+              />
+            </a-tooltip>
+          </a-form-item>
+          <a-form-item
+            class="iot_view_node_deployEdit_formitem"
+            label="地理位置缓冲区ITL（秒）："
+            :required="true"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+          >
+            <a-input
+              v-decorator="['ITL']"
+              size="small"
+              style="width: 90%;float: left;text-align: left"
+            >
+            </a-input>
+            <a-tooltip placement="rightTop">
+              <template slot="title">
+                prompt text
+              </template>
+              <a-icon
+                type="exclamation-circle"
+                style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+              />
+            </a-tooltip>
+          </a-form-item>
+
+          <a-form-item
+            class="iot_view_node_deployEdit_formitem"
+            label="地理位置最小缓冲区大小："
+            :required="true"
+            :label-col="{ span: 8 }"
+            :wrapper-col="{ span: 16 }"
+          >
+            <a-input
+              v-decorator="['minRelief']"
+              size="small"
+              style="width: 90%;float: left;text-align: left"
+            >
+            </a-input>
+            <a-tooltip placement="rightTop">
+              <template slot="title">
+                prompt text
+              </template>
+              <a-icon
+                type="exclamation-circle"
+                style="height: 24px;line-height: 24px;width: 24px;
+          vertical-align: text-top"
+              />
+            </a-tooltip>
+          </a-form-item>
+
+          <a-form-item
+            class="iot_view_node_deployEdit_formitem"
             label="超时周期(分钟)："
             :required="true"
             :label-col="{ span: 8 }"

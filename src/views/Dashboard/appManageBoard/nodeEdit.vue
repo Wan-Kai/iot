@@ -16,47 +16,6 @@
           >
             <a-form-item
               class="iot_view_App_node_deployEdit_formitem"
-              label="入网方式："
-              :required="true"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
-            >
-              <a-radio-group
-                @change="radioOnChange"
-                v-model="value"
-                style="float: left"
-              >
-                <a-radio :value="1">OTAA</a-radio>
-                <a-radio :value="2">ABP</a-radio>
-              </a-radio-group>
-            </a-form-item>
-
-            <a-form-item
-              class="iot_view_App_node_deployEdit_formitem"
-              label="协议版本："
-              :required="true"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
-            >
-              <a-input
-                v-decorator="['macVersion']"
-                size="small"
-                style="width: 90%;float: left;text-align: left"
-              >
-              </a-input>
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
-            </a-form-item>
-            <a-form-item
-              class="iot_view_App_node_deployEdit_formitem"
               label="节点名称："
               :required="true"
               :label-col="{ span: 8 }"
@@ -72,71 +31,24 @@
 
             <a-form-item
               class="iot_view_App_node_deployEdit_formitem"
-              label="频段："
-              :required="true"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
-            >
-              <a-cascader
-                v-decorator="['band']"
-                style="width: 90%;float: left"
-                size="small"
-                :options="band_options"
-                :defaultValue="this.defaultDataBand"
-                placeholder=""
-              />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
-            </a-form-item>
-
-            <a-form-item
-              class="iot_view_App_node_deployEdit_formitem"
-              label="Class："
-              :required="true"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
-            >
-              <a-cascader
-                v-decorator="['class']"
-                style="width: 90%;float: left"
-                size="small"
-                :options="class_options"
-                :defaultValue="this.defaultDataClass"
-                placeholder=""
-              />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
-            </a-form-item>
-
-            <a-form-item
-              class="iot_view_App_node_deployEdit_formitem"
               label="节点编号(DevEUI)："
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
             >
-              <a-input
-                v-decorator="['DevEUI']"
-                size="small"
+              <a-cascader
+                v-decorator="[
+                  'AppEUI',
+                  {
+                    initialValue: this.defaultDevEUI,
+                    rules: [{ required: true, message: '请选择应用编号' }]
+                  }
+                ]"
                 style="width: 90%;float: left;text-align: left"
-              >
-              </a-input>
+                size="small"
+                :options="DevEUI_options"
+                placeholder=""
+              />
               <a-tooltip placement="rightTop">
                 <template slot="title">
                   prompt text
@@ -156,22 +68,7 @@
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
             >
-              <a-input
-                v-decorator="['AppEUI']"
-                size="small"
-                style="width: 90%;float: left;text-align: left"
-              >
-              </a-input>
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
+              {{ AppEUI }}
             </a-form-item>
 
             <a-form-item
@@ -232,42 +129,22 @@
 
             <a-form-item
               class="iot_view_App_node_deployEdit_formitem"
-              label="超时周期(分钟)："
+              label="设备配置文件："
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
             >
-              <a-input
-                v-decorator="['AppKey']"
-                size="small"
-                style="width: 90%;float: left;text-align: left"
-              >
-              </a-input>
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
-            </a-form-item>
-
-            <a-form-item
-              class="iot_view_App_node_deployEdit_formitem"
-              label="使用状态："
-              :required="false"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
-            >
               <a-cascader
-                v-decorator="['useState']"
-                style="width: 90%;float: left"
+                v-decorator="[
+                  'devProfile',
+                  {
+                    initialValue: this.defaultDevProfile,
+                    rules: [{ required: true, message: '请选择设备配置文件' }]
+                  }
+                ]"
+                style="width: 90%;float: left;text-align: left"
                 size="small"
-                :options="useState_options"
-                :defaultValue="this.defaultDataUseState"
+                :options="devProfile_options"
                 placeholder=""
               />
               <a-tooltip placement="rightTop">
@@ -408,13 +285,14 @@ export default {
   name: "nodeEdit",
   data() {
     return {
-      band_options: [],
-      defaultDataBand: "",
       class_options: [],
       defaultDataClass: "",
-      useState_options: [],
-      defaultDataUseState: "",
+      DevEUI_options: [],
+      defaultDevEUI: [],
       area_options: [],
+      devProfile_options: [],
+      defaultDevProfile: [],
+      AppEUI: "暂定",
 
       ModalText: "",
       areaShow: false,
@@ -502,52 +380,9 @@ export default {
 
   methods: {
     handleSubmit() {},
-    radioOnChange(e) {
-      if (e.target.value === 1) {
-        let item;
-        for (item in this.nodeDeployForm.getFieldValue("keys")) {
-          this.remove(item);
-        }
-      } else if (e.target.value === 2) {
-        id = 0;
-        this.add();
-        this.add();
-        this.add();
-      }
-    },
     showModal() {
       this.visible = true;
       this.ModalText = "确认删除" + ":" + this.id;
-    },
-    remove(k) {
-      const { nodeDeployForm } = this;
-      // can use data-binding to get
-      const keys = nodeDeployForm.getFieldValue("keys");
-
-      // can use data-binding to set
-      nodeDeployForm.setFieldsValue({
-        keys: keys.filter(key => key.toString() !== k.toString())
-      });
-    },
-    add() {
-      const { nodeDeployForm } = this;
-      // can use data-binding to get
-      const keys = nodeDeployForm.getFieldValue("keys");
-      const nextKeys = keys.concat(id++);
-      // can use data-binding to set
-      // important! notify form to detect changes
-      nodeDeployForm.setFieldsValue({
-        keys: nextKeys
-      });
-    },
-    getLabel(index) {
-      if (index == 0) {
-        return "NwksKey：";
-      } else if (index == 1) {
-        return "FCntUp：";
-      } else {
-        return "FCntDn：";
-      }
     },
     stateChange() {
       this.areaShow = !this.areaShow;

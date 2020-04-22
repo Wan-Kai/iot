@@ -53,6 +53,12 @@
             @click="add"
             >添加节点</a-button
           >
+          <a-button
+            slot="tabBarExtraContent"
+            icon="plus"
+            style="margin-left: 10px"
+            >批量添加</a-button
+          >
         </a-tabs>
       </div>
       <a-modal

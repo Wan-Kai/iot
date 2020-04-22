@@ -75,7 +75,11 @@
 </template>
 
 <script>
-import { initNetworkServer, initServiceOption } from "@/utils/util";
+import {
+  initNetworkServer,
+  initServiceOption,
+  initOrganization
+} from "@/utils/util";
 
 export default {
   data() {
@@ -106,6 +110,8 @@ export default {
                 initNetworkServer();
 
                 initServiceOption();
+
+                initOrganization();
 
                 setTimeout(() => {
                   this.$router.push("/admin/dashboard");

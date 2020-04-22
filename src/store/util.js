@@ -47,6 +47,7 @@ const state = {
       label: "8"
     }
   ],
+  organizationData: [],
   timeInterval: "", //最后心跳时间与现在时间相比大于此时间值t，既认为是离线
   organizationID: "1"
 };
@@ -63,6 +64,10 @@ const mutations = {
   setArea(state, data) {
     //设置参数
     state.area_options = data;
+  },
+  setOrganization(state, data) {
+    //设置参数
+    state.organizationData = data;
   },
 
   setService(state, data) {

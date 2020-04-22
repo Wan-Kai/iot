@@ -78,7 +78,6 @@
                 size="small"
                 :options="internetServer_options"
                 placeholder=""
-                :defaultValue="this.defaultData"
                 @change="netServerChange"
               />
               <a-tooltip placement="rightTop">

@@ -26,7 +26,7 @@
                 v-decorator="[
                   'company',
                   {
-                    rules: [{ required: true, message: '请选择服务名' }]
+                    rules: [{ required: true, message: '请选择企业' }]
                   }
                 ]"
                 style="width: 90%;float: left;text-align: left"
@@ -277,32 +277,80 @@
 </template>
 
 <script>
+import {
+  getOrganization,
+  getNetServerOption,
+  getNetServerIdByServer
+} from "@/utils/util";
 export default {
   name: "add",
   data() {
     return {
+      id: "",
+      addGWMetaData: false,
       commitLoading: false,
+      hrAllowed: false,
       company_options: [],
-      netserver_options: [],
-      defaultDataArea: []
+      netserver_options: []
     };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
   },
-  beforeMount() {},
+  beforeMount() {
+    this.company_options = getOrganization();
+    this.netserver_options = getNetServerOption();
+  },
   methods: {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
+          this.commitLoading = true;
           console.log(values);
+
+          let sentData = {};
+          sentData.name = values.name;
+          sentData.networkServerID = getNetServerIdByServer(values.server[0]);
+          sentData.organizationID = values.company[0];
+          sentData.addGWMetaData = this.addGWMetaData;
+          sentData.hrAllowed = this.hrAllowed;
+          sentData.devStatusReqFreq = values.frequency;
+          sentData.drMax = values.maxDataRate;
+          sentData.drMin = values.minDataRate;
+          console.log(sentData);
+          this.$api.serviceProfile
+            .createService({
+              serviceProfile: sentData
+            })
+            .then(res => {
+              if (res.status === 200) {
+                this.$message.success("成功创建服务:" + values.name);
+                setTimeout(() => {
+                  this.$router.push({
+                    name: "serverManageInit"
+                  });
+                }, 100);
+              } else {
+                console.log("res失败");
+                this.$message.error(res.data.code);
+                this.$message.error(res.data.error);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            })
+            .finally(() => {
+              this.commitLoading = false;
+            });
         }
       });
     },
-    stateChange() {},
+    stateChange() {
+      this.addGWMetaData = !this.addGWMetaData;
+    },
     areaChange() {
-      this.areaShow = !this.areaShow;
+      this.hrAllowed = !this.hrAllowed;
     },
     back() {
       this.$router.push({

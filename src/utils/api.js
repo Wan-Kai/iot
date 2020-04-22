@@ -79,13 +79,31 @@ export default {
       return post("/service-profiles", data);
     },
     updateServer: data => {
-      return put("/network-servers/" + data.extra, data);
-    },
-    updateService: data => {
       return put("/service-profiles/" + data.extra, data);
+    },
+    getService: data => {
+      return get("/service-profiles/" + data.extra, data);
     },
     deleteService: data => {
       return deletes("/service-profiles/" + data.extra, data);
+    }
+  },
+
+  organization: {
+    getOrganizations: data => {
+      return get("/organizations", data);
+    },
+    createOrganization: data => {
+      return post("/organizations", data);
+    },
+    updateOrganization: data => {
+      return put("/organizations/" + data.extra, data);
+    },
+    getOrganization: data => {
+      return get("/organizations/" + data.extra, data);
+    },
+    deleteOrganization: data => {
+      return deletes("/organizations/" + data.extra, data);
     }
   },
 

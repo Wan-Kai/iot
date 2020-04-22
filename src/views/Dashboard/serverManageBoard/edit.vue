@@ -18,6 +18,7 @@
             v-decorator="[
               'company',
               {
+                initialValue: this.defaultCompany,
                 rules: [{ required: true, message: '请选择服务名' }]
               }
             ]"
@@ -49,7 +50,10 @@
             size="small"
             v-decorator="[
               'name',
-              { rules: [{ required: true, message: '请输入服务名称!' }] }
+              {
+                initialValue: this.name,
+                rules: [{ required: true, message: '请输入服务名称!' }]
+              }
             ]"
             style="float: left;text-align: left;width: 90%"
           />
@@ -76,6 +80,7 @@
             v-decorator="[
               'server',
               {
+                initialValue: this.defaultNetserver,
                 rules: [{ required: true, message: '请选择网络服务器' }]
               }
             ]"
@@ -106,6 +111,7 @@
           <a-switch
             checkedChildren="开"
             unCheckedChildren="关"
+            :checked="addGWMetaData"
             @change="stateChange"
             style="margin-left: 10px;float: left"
           />
@@ -131,6 +137,7 @@
           <a-switch
             checkedChildren="开"
             unCheckedChildren="关"
+            :checked="hrAllowed"
             @change="areaChange"
             style="margin-left: 10px;float: left"
           />
@@ -158,6 +165,7 @@
             v-decorator="[
               'frequency',
               {
+                initialValue: this.devStatusReqFreq,
                 rules: [{ required: true, message: '请输入设备状态请求频率!' }]
               }
             ]"
@@ -187,6 +195,7 @@
             v-decorator="[
               'minDataRate',
               {
+                initialValue: this.drMax,
                 rules: [{ required: true, message: '请输入最低允许数据速率!' }]
               }
             ]"
@@ -216,6 +225,7 @@
             v-decorator="[
               'maxDataRate',
               {
+                initialValue: this.drMin,
                 rules: [{ required: true, message: '请输入最高允许数据速率!' }]
               }
             ]"
@@ -269,13 +279,29 @@
 </template>
 
 <script>
+import {
+  getOrganization,
+  getNetServerOption,
+  getNetServerById,
+  getNetServerIdByServer
+} from "@/utils/util";
 export default {
   name: "edit",
   data() {
     return {
+      id: "",
       commitLoading: false,
       company_options: [],
       netserver_options: [],
+      defaultCompany: [],
+      defaultNetserver: [],
+
+      addGWMetaData: false,
+      hrAllowed: false,
+      name: "",
+      devStatusReqFreq: 0,
+      drMax: 0,
+      drMin: 0,
 
       visible: false,
       confirmLoading: false,
@@ -286,17 +312,80 @@ export default {
     this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
     this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
   },
+  beforeMount() {
+    this.id = this.$route.query.number;
+    this.company_options = getOrganization();
+    this.netserver_options = getNetServerOption();
+    this.$api.serviceProfile
+      .getService({
+        extra: this.id
+      })
+      .then(res => {
+        console.log(res);
+        let infoDataTemp = res.data;
+        // this.createdAt = infoDataTemp.createdAt;
+        this.defaultNetserver.push(
+          getNetServerById(infoDataTemp.serviceProfile.networkServerID)
+        );
+        this.defaultCompany.push(infoDataTemp.serviceProfile.organizationID);
+        //
+        this.addGWMetaData = infoDataTemp.serviceProfile.addGWMetaData;
+        this.hrAllowed = infoDataTemp.serviceProfile.hrAllowed;
+        this.name = infoDataTemp.serviceProfile.name;
+        this.devStatusReqFreq = infoDataTemp.serviceProfile.devStatusReqFreq;
+        this.drMax = infoDataTemp.serviceProfile.drMax;
+        this.drMin = infoDataTemp.serviceProfile.drMin;
+      });
+  },
   methods: {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
+          this.commitLoading = true;
           console.log(values);
+          let sentData = {};
+          sentData.name = values.name;
+          sentData.networkServerID = getNetServerIdByServer(values.server[0]);
+          sentData.organizationID = values.company[0];
+          sentData.addGWMetaData = this.addGWMetaData;
+          sentData.hrAllowed = this.hrAllowed;
+          sentData.devStatusReqFreq = values.frequency;
+          sentData.drMax = values.maxDataRate;
+          sentData.drMin = values.minDataRate;
+          console.log(sentData);
+
+          this.$api.serviceProfile
+            .updateServer({
+              extra: this.id,
+              serviceProfile: sentData
+            })
+            .then(res => {
+              if (res.status === 200) {
+                this.$message.success("成功修改服务管理信息");
+                this.$router.push({
+                  name: "serverManageInit"
+                });
+              } else {
+                this.$message.error("修改服务管理信息失败");
+                this.$message.error(res.data.error);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            })
+            .finally(() => {
+              this.commitLoading = false;
+            });
         }
       });
     },
-    stateChange() {},
-    areaChange() {},
+    stateChange() {
+      this.addGWMetaData = !this.addGWMetaData;
+    },
+    areaChange() {
+      this.hrAllowed = !this.hrAllowed;
+    },
     back() {
       this.$router.push({
         name: "serverManageInit"
@@ -311,6 +400,27 @@ export default {
     },
     handleOk() {
       this.confirmLoading = true;
+      this.$api.serviceProfile
+        .deleteService({
+          extra: this.id
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.$message.success("成功删除服务管理信息");
+            this.$router.push({
+              name: "serverManageInit"
+            });
+          } else {
+            this.$message.error("删除服务管理信息失败");
+            this.$message.error(res.data.error);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.confirmLoading = false;
+        });
     }
   }
 };

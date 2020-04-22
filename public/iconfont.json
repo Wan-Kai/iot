@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7241568",
+      "name": "company",
+      "font_class": "company",
+      "unicode": "e667",
+      "unicode_decimal": 58983
+    },
+    {
+      "icon_id": "11891835",
+      "name": "internet",
+      "font_class": "internet",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "10040301",
+      "name": "wifi",
+      "font_class": "wifi1",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
       "icon_id": "8351975",
       "name": "app",
       "font_class": "app",

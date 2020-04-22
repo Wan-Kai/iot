@@ -62,8 +62,8 @@ const columns = [
   },
   {
     title: "企业",
-    key: "company",
-    dataIndex: "company"
+    key: "organizationName",
+    dataIndex: "organizationName"
   },
   {
     title: "创业时间",
@@ -76,6 +76,8 @@ const columns = [
     scopedSlots: { customRender: "action" }
   }
 ];
+
+import { getOrganizationNameById } from "@/utils/util";
 export default {
   name: "serverManage",
   data() {
@@ -99,13 +101,18 @@ export default {
     };
   },
   beforeMount() {
-    this.$api.networkServer
-      .getServerManageData({
+    this.$api.serviceProfile
+      .getServices({
         limit: 100
       })
       .then(res => {
         console.log(res);
-        this.interData = res.data.result;
+        let infoDataTemp = res.data.result;
+        infoDataTemp.forEach(item => {
+          item.organizationName = getOrganizationNameById(item.organizationID);
+          console.log(item.organizationName);
+        });
+        this.interData = infoDataTemp;
       })
       .catch(err => {
         console.log(err);

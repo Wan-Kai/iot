@@ -29,6 +29,42 @@ export function initNetworkServer() {
     });
 }
 
+export function initOrganization() {
+  api.organization
+    .getOrganizations({
+      limit: 100
+    })
+    .then(res => {
+      let getData = res.data.result;
+
+      let organizationData = [];
+      let temp = {
+        id: "",
+        name: "",
+        displayName: "",
+        canHaveGateways: "",
+        createdAt: "",
+        updatedAt: ""
+      };
+
+      for (let i = 0; i < getData.length; i++) {
+        temp.id = getData[i].id;
+        temp.name = getData[i].name;
+        temp.value = getData[i].id;
+        temp.label = getData[i].name;
+        temp.displayName = getData[i].displayName;
+        temp.canHaveGateways = getData[i].canHaveGateways;
+        temp.createdAt = getData[i].createdAt;
+        temp.updatedAt = getData[i].updatedAt;
+        organizationData.push(temp);
+      }
+      store.commit("util/setOrganization", organizationData);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
 export function getNetworkServerOption() {
   return store.getters.getNetServer;
 }
@@ -54,7 +90,21 @@ export function getNetServerNameById(id) {
 }
 
 export function getOrganizationID() {
-  return store.getters.getOrganizationID;
+  return store.getters.getOrganization;
+}
+
+export function getOrganization() {
+  return store.getters.getOrganization;
+}
+
+export function getOrganizationNameById(id) {
+  let organizations = store.getters.getOrganization;
+  for (let i = 0; i < organizations.length; i++) {
+    if (organizations[i].id === id) {
+      return organizations[i].name;
+    }
+  }
+  console.log("错误");
 }
 
 export function getAreaLabel(province, city, district) {

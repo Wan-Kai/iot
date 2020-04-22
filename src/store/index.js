@@ -111,6 +111,8 @@ export default new Vuex.Store({
     getBand_options: () => util.state.band_options,
     //areaData
     getArea: () => util.state.area_options,
+    //organizationData
+    getOrganization: () => util.state.organizationData,
 
     //注册相关
     //register

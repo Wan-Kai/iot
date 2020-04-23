@@ -64,7 +64,7 @@
           </a-form-item>
 
           <a-form-item
-            class="iot_view_app_add_formItem"
+            class="iot_view_app_edit_formItem"
             label="服务名称："
             :required="true"
             :label-col="{ span: 8 }"

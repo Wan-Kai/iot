@@ -97,37 +97,6 @@
             </a-form-item>
 
             <a-form-item
-              v-for="(k, index) in nodeDeployForm.getFieldValue('keys')"
-              :key="k"
-              :label-col="{ span: 8 }"
-              :wrapper-col="{ span: 16 }"
-              :label="getLabel(index)"
-              :required="true"
-              class="iot_view_App_node_deployEdit_formitem"
-            >
-              <a-input
-                v-decorator="[
-                  `names[${k}]`,
-                  {
-                    validateTrigger: ['change', 'blur']
-                  }
-                ]"
-                size="small"
-                style="width: 90%;float: left;text-align: left"
-              />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  {{ getLabel(index) }}
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
-            </a-form-item>
-
-            <a-form-item
               class="iot_view_App_node_deployEdit_formitem"
               label="设备配置文件："
               :required="true"
@@ -280,7 +249,6 @@
 
 <script>
 import wifi_map from "../../../assets/wifi.png";
-let id = 0;
 export default {
   name: "nodeEdit",
   data() {

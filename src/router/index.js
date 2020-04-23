@@ -406,6 +406,15 @@ const routes = [
                   import(
                     /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManageBoard/checkNode.vue"
                   )
+              },
+              {
+                path: "/admin/dashboard/appManageBoard/check/addNode",
+                name: "addNodeInApp",
+                meta: { title: "节点添加" },
+                component: () =>
+                  import(
+                    /* webpackChunkName: "dashboard" */ "../views/Dashboard/appManageBoard/addNode.vue"
+                  )
               }
             ]
           }

@@ -50,13 +50,14 @@
             slot="tabBarExtraContent"
             icon="plus"
             type="primary"
-            @click="add"
+            @click="addNode"
             >添加节点</a-button
           >
           <a-button
             slot="tabBarExtraContent"
             icon="plus"
             style="margin-left: 10px"
+            @click="addNodes"
             >批量添加</a-button
           >
         </a-tabs>
@@ -119,7 +120,9 @@ export default {
   },
   beforeMount() {
     this.number = this.$route.query.number;
-    this.defaultTab = this.$route.query.tab;
+    if (this.$route.query.tab) {
+      this.defaultTab = this.$route.query.tab;
+    }
 
     this.$api.appManage
       .getAppDetail({
@@ -143,8 +146,13 @@ export default {
     cancel() {
       this.nodeVisible = !this.nodeVisible;
     },
-    add() {
+    addNodes() {
       this.nodeVisible = !this.nodeVisible;
+    },
+    addNode() {
+      this.$router.push({
+        name: "addNodeInApp"
+      });
     },
     getMock() {
       const targetKeys = [];

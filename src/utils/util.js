@@ -1,35 +1,7 @@
 import store from "../store/index";
 import api from "./api";
 
-export function initNetworkServer() {
-  api.networkServer
-    .getServerData({
-      limit: 100
-    })
-    .then(res => {
-      let getData = res.data.result;
-
-      let netServerData = [];
-      let temp = {
-        server: "",
-        id: "",
-        name: ""
-      };
-
-      for (let i = 0; i < getData.length; i++) {
-        temp.server = getData[i].server;
-        temp.id = getData[i].id;
-        temp.name = getData[i].name;
-        netServerData.push(temp);
-      }
-      store.commit("util/setNetServer", netServerData);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}
-
-export function initOrganization() {
+export function initOrganizations() {
   api.organization
     .getOrganizations({
       limit: 100
@@ -58,53 +30,77 @@ export function initOrganization() {
         temp.updatedAt = getData[i].updatedAt;
         organizationData.push(temp);
       }
-      store.commit("util/setOrganization", organizationData);
+      store.commit("options/setOrganizations", organizationData);
     })
     .catch(err => {
       console.log(err);
     });
 }
 
-export function getNetworkServerOption() {
-  return store.getters.getNetServer;
-}
-
-export function getNetServerOption() {
-  return store.getters.getNetServerOption;
-}
-
-export function getNetServerIdByServer(server) {
-  return store.getters.getNetServerIdByServer(server);
-}
-
-export function getArea() {
-  return store.getters.getArea;
-}
-
-export function getNetServerById(id) {
-  return store.getters.getNetServerById(id);
-}
-
-export function getNetServerNameById(id) {
-  return store.getters.getNetServerNameById(id);
-}
-
 export function getOrganizationID() {
   return store.getters.getOrganization;
 }
 
-export function getOrganization() {
-  return store.getters.getOrganization;
+export function getOrganizationOptions() {
+  return store.getters.getOrganizationOptions();
 }
 
 export function getOrganizationNameById(id) {
-  let organizations = store.getters.getOrganization;
+  let organizations = store.getters.getOrganizations;
   for (let i = 0; i < organizations.length; i++) {
     if (organizations[i].id === id) {
       return organizations[i].name;
     }
   }
   console.log("错误");
+}
+
+export function initNetworkServers() {
+  api.networkServer
+    .getServerData({
+      limit: 100
+    })
+    .then(res => {
+      let getData = res.data.result;
+
+      let netServerData = [];
+      let temp = {
+        server: "",
+        id: "",
+        name: ""
+      };
+
+      for (let i = 0; i < getData.length; i++) {
+        temp.server = getData[i].server;
+        temp.id = getData[i].id;
+        temp.name = getData[i].name;
+        netServerData.push(temp);
+      }
+      store.commit("options/setNetworkServer", netServerData);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
+export function getNetworkServerOptions() {
+  return store.getters.getNetworkServerOptions();
+}
+
+export function getNetworkServerIdByServer(server) {
+  return store.getters.getNetworkServerIdByServer(server);
+}
+
+export function getNetworkServerById(id) {
+  return store.getters.getNetworkServerById(id);
+}
+
+export function getNetworkServerNameById(id) {
+  return store.getters.getNetworkServerNameById(id);
+}
+
+export function getArea() {
+  return store.getters.getArea;
 }
 
 export function getAreaLabel(province, city, district) {
@@ -130,7 +126,7 @@ export function getAreaLabel(province, city, district) {
   }
 }
 
-export function initServiceOption() {
+export function initServiceOptions() {
   api.serviceProfile
     .getServices({
       limit: 100
@@ -151,13 +147,13 @@ export function initServiceOption() {
         temp.name = result[i].name;
         options.push(temp);
       }
-      store.commit("util/setService", options);
+      store.commit("options/setServices", options);
     })
     .catch(err => {
       console.log(err);
     });
 }
 
-export function getServiceOption() {
+export function getServiceOptions() {
   return store.getters.getServiceOptions;
 }

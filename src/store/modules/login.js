@@ -17,7 +17,17 @@ const state = {
 };
 
 // getters
-const getters = {};
+const getters = {
+  getAttr(key) {
+    if (state.all[key]) {
+      return state.all[key];
+    }
+    return "未定义";
+  },
+  getIsLogin: () => state.all.isLogin,
+  getSessionkey: () => state.all.sessionKey,
+  getLoginState: () => state.all
+};
 
 // actions
 const actions = {};

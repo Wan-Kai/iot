@@ -23,6 +23,11 @@
           </a-menu-item>
           <a-sub-menu key="sub1">
             <span slot="title"><a-icon type="hdd" />基础管理</span>
+            <a-menu-item key="13">
+              <router-link to="/admin/dashboard/organization"
+                >组织机构</router-link
+              >
+            </a-menu-item>
             <a-menu-item key="2">
               <router-link to="/admin/dashboard/networkServer"
                 >网络服务器</router-link
@@ -62,22 +67,22 @@
           <a-sub-menu key="sub4">
             <span slot="title"><a-icon type="profile" />应用</span>
             <a-menu-item key="8">
-              <router-link to="/admin/dashboard/appManage">
-                应用管理
-              </router-link>
+              <router-link to="/admin/dashboard/appManage"
+                >应用管理</router-link
+              >
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="sub5">
             <span slot="title"><a-icon type="idcard" />账号</span>
             <a-menu-item key="9">
-              <router-link to="/admin/dashboard/usersManage">
-                账号管理
-              </router-link>
+              <router-link to="/admin/dashboard/usersManage"
+                >账号管理</router-link
+              >
             </a-menu-item>
             <a-menu-item key="10">
-              <router-link to="/admin/dashboard/personData">
-                个人资料
-              </router-link>
+              <router-link to="/admin/dashboard/personData"
+                >个人资料</router-link
+              >
             </a-menu-item>
           </a-sub-menu>
 
@@ -122,6 +127,11 @@
 <script>
 import Header from "./Header";
 import Footer from "./Footer";
+import {
+  initNetworkServers,
+  initServiceOptions,
+  initOrganizations
+} from "@/utils/util";
 
 export default {
   data() {
@@ -143,11 +153,17 @@ export default {
     this.$api.util
       .getAreaData()
       .then(res => {
-        this.$store.commit("util/setArea", res.data.area_options);
+        this.$store.commit("options/setArea", res.data.area_options);
       })
       .catch(err => {
         console.log(err);
       });
+
+    initOrganizations();
+
+    initNetworkServers();
+
+    initServiceOptions();
   },
   methods: {
     onCollapse(collapsed, type) {

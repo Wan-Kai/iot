@@ -1,4 +1,4 @@
-import { getKey, getLoginState } from "../store/login";
+import { getKey, getLoginState } from "../store/modules/login";
 
 export function getCurrentAuthority() {
   const user = [];

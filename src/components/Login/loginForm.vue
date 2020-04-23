@@ -75,17 +75,11 @@
 </template>
 
 <script>
-import {
-  initNetworkServer,
-  initServiceOption,
-  initOrganization
-} from "@/utils/util";
-
 export default {
   data() {
     this.form = this.$form.createForm(this);
     return {
-      tableData: {
+      formData: {
         username: "",
         password: ""
       }
@@ -95,23 +89,17 @@ export default {
   methods: {
     handleSubmit() {
       this.form.validateFields((err, value) => {
-        this.tableData.username = value.username;
-        this.tableData.password = value.password;
+        this.formData.username = value.username;
+        this.formData.password = value.password;
         if (!err) {
           this.$api.login
-            .login(this.tableData)
+            .login(this.formData)
             .then(res => {
               if (res.status === 200) {
                 this.$message.success("登录成功");
                 this.$store.commit("login/setUser", {
                   sessionKey: res.data.jwt
                 });
-
-                initNetworkServer();
-
-                initServiceOption();
-
-                initOrganization();
 
                 setTimeout(() => {
                   this.$router.push("/admin/dashboard");

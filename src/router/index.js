@@ -105,6 +105,52 @@ const routes = [
             /* webpackChunkName: "dashboard" */ "../views/Dashboard/index.vue"
           )
       },
+
+      //组织机构
+      {
+        path: "/admin/dashboard/organization",
+        name: "organization",
+        meta: { title: "组织机构" },
+        component: { render: h => h("router-view") },
+        children: [
+          {
+            path: "/admin/dashboard/organization",
+            redirect: "/admin/dashboard/organization/init"
+          },
+          {
+            path: "/admin/dashboard/organization/init",
+            meta: { title: "" },
+            name: "organizationInit",
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/organization.vue"
+              )
+          },
+
+          {
+            path: "/admin/dashboard/organization/addOrganization",
+            name: "addOrganization",
+            meta: { title: "添加企业" },
+            component: () =>
+              import("../views/Dashboard/organizationBoard/addOrganization.vue")
+          },
+          {
+            path: "/admin/dashboard/organization/check/:id",
+            name: "checkOrganization",
+            meta: { title: "查看企业" },
+            component: () =>
+              import("../views/Dashboard/organizationBoard/check.vue")
+          },
+          {
+            path: "/admin/dashboard/organization/edit/:id",
+            name: "editOrganization",
+            meta: { title: "编辑企业" },
+            component: () =>
+              import("../views/Dashboard/organizationBoard/edit.vue")
+          }
+        ]
+      },
+
       //网络服务器
       {
         path: "/admin/dashboard/networkServer",

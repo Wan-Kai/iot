@@ -14,7 +14,27 @@ const state = {
   }
 };
 
-const getters = {};
+const getters = {
+  //注册相关
+  //register
+  getPhoneNumber: () => state.step1.phoneNumber,
+
+  getRetrieveNote: () => state.step1.note,
+  getNewPassword: () => state.step2.newPassword,
+  getStep2State() {
+    if (state.step2.oldPassword["oldPassword"]) {
+      if (
+        state.step2.newPassword["newPassword"] ===
+        state.step2.confirmPassword["confirmPassword"]
+      ) {
+        if (state.step2.newPassword["newPassword"]) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+};
 
 const actions = {};
 

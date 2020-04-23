@@ -246,8 +246,8 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-import wifi_map from "../../../assets/wifi.png";
-import { getNetServerIdByServer } from "@/utils/util";
+import wifi_map from "@/assets/wifi.png";
+import { getNetworkServerById, getNetworkServerIdByServer } from "@/utils/util";
 
 export default {
   components: { ACol, ARow },
@@ -292,7 +292,7 @@ export default {
   beforeMount() {
     this.id = this.$route.query.id;
 
-    this.communicationMode_options = this.$store.getters.getCommunicationMode;
+    this.communicationMode_options = this.$store.getters.getCommunicationMode_options;
     this.area_options = this.$store.getters.getArea;
     this.band_options = this.$store.getters.getBand_options;
     this.$api.index
@@ -311,9 +311,8 @@ export default {
       .then(res => {
         let infoDataTemp = res.data;
         let address = "";
-        this.internetServer_options = this.$store.getters.getNetServerOption;
-
-        let defaultValue = this.$store.getters.getNetServerById(
+        this.internetServer_options = this.$store.getters.getNetworkServerOptions;
+        let defaultValue = getNetworkServerById(
           infoDataTemp.gateway.networkServerID
         );
         if (defaultValue) {
@@ -403,7 +402,7 @@ export default {
           sentData.city = values.area[1];
           sentData.district = values.area[2];
           console.log(sentData);
-          sentData.networkServerID = getNetServerIdByServer(
+          sentData.networkServerID = getNetworkServerIdByServer(
             values.networkServerName[0]
           );
           sentData.modulation = values.communicationMode[0];

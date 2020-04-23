@@ -1,5 +1,6 @@
 import store from "../store/index";
 import api from "./api";
+import options from "../store/modules/options";
 
 export function initOrganizations() {
   api.organization
@@ -7,19 +8,19 @@ export function initOrganizations() {
       limit: 100
     })
     .then(res => {
+      debugger;
       let getData = res.data.result;
 
       let organizationData = [];
-      let temp = {
-        id: "",
-        name: "",
-        displayName: "",
-        canHaveGateways: "",
-        createdAt: "",
-        updatedAt: ""
-      };
-
       for (let i = 0; i < getData.length; i++) {
+        let temp = {
+          id: "",
+          name: "",
+          displayName: "",
+          canHaveGateways: "",
+          createdAt: "",
+          updatedAt: ""
+        };
         temp.id = getData[i].id;
         temp.name = getData[i].name;
         temp.value = getData[i].id;
@@ -33,6 +34,7 @@ export function initOrganizations() {
       store.commit("options/setOrganizations", organizationData);
     })
     .catch(err => {
+      debugger;
       console.log(err);
     });
 }
@@ -42,11 +44,12 @@ export function getOrganizationID() {
 }
 
 export function getOrganizationOptions() {
-  return store.getters.getOrganizationOptions();
+  return store.getters.getOrganizationOptions;
 }
 
 export function getOrganizationNameById(id) {
   let organizations = store.getters.getOrganizations;
+  //debugger
   for (let i = 0; i < organizations.length; i++) {
     if (organizations[i].id === id) {
       return organizations[i].name;
@@ -62,21 +65,19 @@ export function initNetworkServers() {
     })
     .then(res => {
       let getData = res.data.result;
-
       let netServerData = [];
-      let temp = {
-        server: "",
-        id: "",
-        name: ""
-      };
-
       for (let i = 0; i < getData.length; i++) {
+        let temp = {
+          server: "",
+          id: "",
+          name: ""
+        };
         temp.server = getData[i].server;
         temp.id = getData[i].id;
         temp.name = getData[i].name;
         netServerData.push(temp);
       }
-      store.commit("options/setNetworkServer", netServerData);
+      store.commit("options/setNetworkServers", netServerData);
     })
     .catch(err => {
       console.log(err);
@@ -84,19 +85,39 @@ export function initNetworkServers() {
 }
 
 export function getNetworkServerOptions() {
-  return store.getters.getNetworkServerOptions();
+  return store.getters.getNetworkServerOptions;
 }
 
 export function getNetworkServerIdByServer(server) {
-  return store.getters.getNetworkServerIdByServer(server);
+  let netServer = store.getters.getNetworkServers;
+  for (let i = 0; i < netServer.length; i++) {
+    if (netServer[i].server === server) {
+      return netServer[i].id;
+    }
+  }
+  return null;
 }
 
 export function getNetworkServerById(id) {
-  return store.getters.getNetworkServerById(id);
+  //return store.getters.getNetworkServerById(id);
+  let netServer = store.getters.getNetworkServers;
+  for (let i = 0; i < netServer.length; i++) {
+    if (netServer[i].id === id) {
+      return netServer[i].server;
+    }
+  }
+  return null;
 }
 
 export function getNetworkServerNameById(id) {
-  return store.getters.getNetworkServerNameById(id);
+  let netServer = store.getters.getNetworkServers;
+  //console.log(netServer);
+  for (let i = 0; i < netServer.length; i++) {
+    if (netServer[i].id === id) {
+      return netServer[i].name;
+    }
+  }
+  return null;
 }
 
 export function getArea() {
@@ -135,13 +156,12 @@ export function initServiceOptions() {
       let result = res.data.result;
 
       let options = [];
-      let temp = {
-        networkServerID: "",
-        id: "",
-        name: ""
-      };
-
       for (let i = 0; i < result.length; i++) {
+        let temp = {
+          networkServerID: "",
+          id: "",
+          name: ""
+        };
         temp.networkServerID = result[i].networkServerID;
         temp.id = result[i].id;
         temp.name = result[i].name;

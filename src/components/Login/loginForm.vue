@@ -75,6 +75,11 @@
 </template>
 
 <script>
+import {
+  initNetworkServers,
+  initServiceOptions,
+  initOrganizations
+} from "@/utils/util";
 export default {
   data() {
     this.form = this.$form.createForm(this);
@@ -97,11 +102,16 @@ export default {
             .then(res => {
               if (res.status === 200) {
                 this.$message.success("登录成功");
+                debugger;
                 this.$store.commit("login/setUser", {
                   sessionKey: res.data.jwt
                 });
 
                 setTimeout(() => {
+                  initOrganizations();
+                  initNetworkServers();
+                  initServiceOptions();
+
                   this.$router.push("/admin/dashboard");
                 }, 300);
               } else {

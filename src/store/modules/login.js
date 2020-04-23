@@ -18,15 +18,10 @@ const state = {
 
 // getters
 const getters = {
-  getAttr(key) {
-    if (state.all[key]) {
-      return state.all[key];
-    }
-    return "未定义";
-  },
-  getIsLogin: () => state.all.isLogin,
-  getSessionkey: () => state.all.sessionKey,
-  getLoginState: () => state.all
+  /*
+   getIsLogin: () => state.all.isLogin,
+    getLoginState: () => state.all,
+   */
 };
 
 // actions
@@ -44,6 +39,7 @@ export function getLoginState() {
 const mutations = {
   setUser(state, all) {
     //设置参数
+    //debugger
     state.all = all;
   },
   setLogin(state, login) {

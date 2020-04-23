@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import { getAreaLabel, getNetServerNameById } from "../../../utils/util";
+import { getAreaLabel, getNetworkServerNameById } from "@/utils/util";
 
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
@@ -231,7 +231,7 @@ export default {
             returnedData[i].city,
             returnedData[i].district
           );
-          returnedData[i].networkServerName = getNetServerNameById(
+          returnedData[i].networkServerName = getNetworkServerNameById(
             returnedData[i].networkServerID
           );
         }

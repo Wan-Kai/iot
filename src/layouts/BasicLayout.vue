@@ -158,12 +158,6 @@ export default {
       .catch(err => {
         console.log(err);
       });
-
-    initOrganizations();
-
-    initNetworkServers();
-
-    initServiceOptions();
   },
   methods: {
     onCollapse(collapsed, type) {

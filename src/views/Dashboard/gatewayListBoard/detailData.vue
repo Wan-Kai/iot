@@ -188,7 +188,7 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
-import { getNetServerNameById, getAreaLabel } from "../../../utils/util";
+import { getNetworkServerNameById, getAreaLabel } from "../../../utils/util";
 export default {
   components: { ACol, ARow },
 
@@ -238,7 +238,7 @@ export default {
 
         this.name = infoData.gateway.name;
         this.gatewayProfileID = infoData.gateway.gatewayProfileID;
-        this.serverName = getNetServerNameById(
+        this.serverName = getNetworkServerNameById(
           infoData.gateway.networkServerID
         );
         this.description = infoData.gateway.description;

@@ -278,9 +278,9 @@
 
 <script>
 import {
-  getOrganization,
-  getNetServerOption,
-  getNetServerIdByServer
+  getOrganizationOptions,
+  getNetworkServerOptions,
+  getNetworkServerIdByServer
 } from "@/utils/util";
 export default {
   name: "add",
@@ -298,8 +298,8 @@ export default {
     this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
   },
   beforeMount() {
-    this.company_options = getOrganization();
-    this.netserver_options = getNetServerOption();
+    this.company_options = getOrganizationOptions();
+    this.netserver_options = getNetworkServerOptions();
   },
   methods: {
     handleSubmit(e) {
@@ -311,7 +311,9 @@ export default {
 
           let sentData = {};
           sentData.name = values.name;
-          sentData.networkServerID = getNetServerIdByServer(values.server[0]);
+          sentData.networkServerID = getNetworkServerIdByServer(
+            values.server[0]
+          );
           sentData.organizationID = values.company[0];
           sentData.addGWMetaData = this.addGWMetaData;
           sentData.hrAllowed = this.hrAllowed;

@@ -80,10 +80,11 @@ export function get(url, data = {}) {
     method: "get",
     params: data,
     headers: {
-      Authorization: store.getters[login.getSessionkey]
+      Authorization: store.getters.getSessionkey
     }
   };
   // sendObject.data=JSON.stringify(data);
+  //debugger
   return service(sendObject).catch(() => {});
 }
 
@@ -118,7 +119,7 @@ export function post(url, data = {}) {
     method: "post",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: store.getters[login.getSessionkey]
+      Authorization: store.getters.getSessionkey
     },
     data: data
   };
@@ -133,7 +134,7 @@ export function put(url, data = {}) {
     method: "put",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: store.getters[login.getSessionkey]
+      Authorization: store.getters.getSessionkey
     },
     data: JSON.stringify(data)
   });
@@ -145,7 +146,7 @@ export function deletes(url, data = {}) {
     url: url,
     method: "delete",
     headers: {
-      Authorization: store.getters[login.getSessionkey]
+      Authorization: store.getters.getSessionkey
     },
     data: JSON.stringify(data)
   };

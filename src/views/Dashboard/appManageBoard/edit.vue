@@ -188,7 +188,7 @@
 
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
-import { getServiceOption } from "@/utils/util";
+import { getServiceOptions } from "@/utils/util";
 export default {
   components: { ARow },
   data() {
@@ -210,7 +210,7 @@ export default {
     this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
   },
   beforeMount() {
-    this.serviceProfile_options = getServiceOption();
+    this.serviceProfile_options = getServiceOptions();
     this.$api.appManage
       .getAppDetail({
         extra: this.$route.query.number

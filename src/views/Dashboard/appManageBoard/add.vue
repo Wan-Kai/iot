@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import { getServiceOption } from "@/utils/util";
+import { getServiceOptions } from "@/utils/util";
 
 export default {
   data() {
@@ -129,7 +129,7 @@ export default {
   },
 
   beforeMount() {
-    this.serviceProfile_options = getServiceOption();
+    this.serviceProfile_options = getServiceOptions();
   },
 
   methods: {

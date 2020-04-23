@@ -16,7 +16,7 @@ const state = {
 
 const getters = {
   //注册相关
-  //register
+  /*
   getPhoneNumber: () => state.step1.phoneNumber,
 
   getRetrieveNote: () => state.step1.note,
@@ -34,6 +34,7 @@ const getters = {
     }
     return false;
   }
+  */
 };
 
 const actions = {};

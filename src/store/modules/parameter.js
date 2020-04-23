@@ -7,10 +7,10 @@ const state = {
 };
 
 const getters = {
+  /*
   getIsMock: () => state.isMock,
-
-  //organizationID
   getOrganizationID: () => state.organizationID
+  */
 };
 
 const actions = {};

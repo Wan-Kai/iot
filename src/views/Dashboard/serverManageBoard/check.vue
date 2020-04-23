@@ -114,7 +114,10 @@
 </template>
 
 <script>
-import { getNetServerNameById, getOrganizationNameById } from "@/utils/util";
+import {
+  getNetworkServerNameById,
+  getOrganizationNameById
+} from "@/utils/util";
 export default {
   name: "check",
   data() {
@@ -149,7 +152,7 @@ export default {
         console.log(res);
         let infoDataTemp = res.data;
         this.createdAt = infoDataTemp.createdAt;
-        this.server = getNetServerNameById(
+        this.server = getNetworkServerNameById(
           infoDataTemp.serviceProfile.networkServerID
         );
         this.company = getOrganizationNameById(

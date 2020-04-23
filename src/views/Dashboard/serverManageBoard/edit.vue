@@ -80,13 +80,13 @@
             v-decorator="[
               'server',
               {
-                initialValue: this.defaultNetserver,
+                initialValue: this.defaultNetworkServer,
                 rules: [{ required: true, message: '请选择网络服务器' }]
               }
             ]"
             style="width: 90%;float: left;text-align: left"
             size="small"
-            :options="netserver_options"
+            :options="networkServer_options"
             placeholder=""
           />
           <a-tooltip placement="rightTop">
@@ -280,10 +280,10 @@
 
 <script>
 import {
-  getOrganization,
-  getNetServerOption,
-  getNetServerById,
-  getNetServerIdByServer
+  getOrganizationOptions,
+  getNetworkServerOptions,
+  getNetworkServerById,
+  getNetworkServerIdByServer
 } from "@/utils/util";
 export default {
   name: "edit",
@@ -292,9 +292,9 @@ export default {
       id: "",
       commitLoading: false,
       company_options: [],
-      netserver_options: [],
+      networkServer_options: [],
       defaultCompany: [],
-      defaultNetserver: [],
+      defaultNetworkServer: [],
 
       addGWMetaData: false,
       hrAllowed: false,
@@ -314,8 +314,8 @@ export default {
   },
   beforeMount() {
     this.id = this.$route.query.number;
-    this.company_options = getOrganization();
-    this.netserver_options = getNetServerOption();
+    this.company_options = getOrganizationOptions();
+    this.networkServer_options = getNetworkServerOptions();
     this.$api.serviceProfile
       .getService({
         extra: this.id
@@ -324,8 +324,8 @@ export default {
         console.log(res);
         let infoDataTemp = res.data;
         // this.createdAt = infoDataTemp.createdAt;
-        this.defaultNetserver.push(
-          getNetServerById(infoDataTemp.serviceProfile.networkServerID)
+        this.defaultNetworkServer.push(
+          getNetworkServerById(infoDataTemp.serviceProfile.networkServerID)
         );
         this.defaultCompany.push(infoDataTemp.serviceProfile.organizationID);
         //
@@ -346,7 +346,9 @@ export default {
           console.log(values);
           let sentData = {};
           sentData.name = values.name;
-          sentData.networkServerID = getNetServerIdByServer(values.server[0]);
+          sentData.networkServerID = getNetworkServerIdByServer(
+            values.server[0]
+          );
           sentData.organizationID = values.company[0];
           sentData.addGWMetaData = this.addGWMetaData;
           sentData.hrAllowed = this.hrAllowed;

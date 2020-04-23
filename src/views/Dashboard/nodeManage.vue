@@ -120,7 +120,7 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-import { getNetServerNameById } from "../../utils/util";
+import { getNetworkServerNameById } from "@/utils/util";
 const columns = [
   {
     title: "节点编号",
@@ -201,7 +201,7 @@ export default {
         let infoDataTemp = res.data.result;
         console.log(res.data.result);
         for (let i = 0; i < infoDataTemp.length; i++) {
-          infoDataTemp[i].server = getNetServerNameById(
+          infoDataTemp[i].server = getNetworkServerNameById(
             infoDataTemp[i].networkServerID
           );
         }

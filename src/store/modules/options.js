@@ -51,7 +51,7 @@ const state = {
 };
 
 const getters = {
-  //organizationData
+  /*
   getOrganizations() {
     return state.organization_list;
   },
@@ -161,6 +161,7 @@ const getters = {
   getArea() {
     return state.area_options;
   }
+  **/
 };
 
 const actions = {};

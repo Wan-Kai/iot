@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { initOrganization } from "@/utils/util";
+import { initOrganizations } from "@/utils/util";
 
 export default {
   data() {
@@ -154,7 +154,7 @@ export default {
                 this.commitLoading = false;
                 this.$message.success("成功创建企业");
 
-                initOrganization();
+                initOrganizations();
 
                 setTimeout(() => {
                   this.$router.push("/admin/dashboard/organization");

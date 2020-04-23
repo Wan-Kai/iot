@@ -124,15 +124,16 @@ export default {
       })
       .then(res => {
         this.returnedData = res.data.result;
-        let temp = {
-          id: "",
-          name: "",
-          displayName: "",
-          canHaveGateways: "",
-          createdAt: "",
-          updatedAt: ""
-        };
+
         for (let i = 0; i < this.returnedData.length; i++) {
+          let temp = {
+            id: "",
+            name: "",
+            displayName: "",
+            canHaveGateways: "",
+            createdAt: "",
+            updatedAt: ""
+          };
           temp.id = this.returnedData[i].id;
           temp.name = this.returnedData[i].name;
           temp.displayName = this.returnedData[i].displayName;
@@ -156,13 +157,17 @@ export default {
     checkOrganization(currentRecord) {
       this.$router.push({
         name: "checkOrganization",
-        query: {}
+        query: {
+          id: currentRecord["id"]
+        }
       });
     },
     editOrganization(currentRecord) {
       this.$router.push({
         name: "editOrganization",
-        query: {}
+        query: {
+          id: currentRecord["id"]
+        }
       });
     }
   }

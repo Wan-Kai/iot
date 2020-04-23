@@ -254,7 +254,7 @@
 </template>
 
 <script>
-import wifi_map from "../../../assets/wifi.png";
+import wifi_map from "@/assets/wifi.png";
 export default {
   name: "addNode",
   data() {

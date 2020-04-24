@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >节点编号： {{ this.number }}</span
+            >节点编号： {{ this.id }}</span
           >
         </a-col>
       </a-row>
@@ -105,10 +105,11 @@ export default {
   },
   data() {
     return {
-      number: 0,
+      id: 0,
 
       defaultTab: "1",
 
+      //data
       internalState: "",
       sign: "",
       gateway: "",
@@ -116,12 +117,12 @@ export default {
     };
   },
   beforeMount() {
-    this.number = this.$route.query.number;
+    this.id = this.$route.query.id;
     this.defaultTab = this.$route.query.tab;
 
     this.$api.node
       .getNodeById({
-        extra: this.number
+        extra: this.id
       })
       .then(res => {
         let data = res.data;

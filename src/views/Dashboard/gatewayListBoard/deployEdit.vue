@@ -72,7 +72,7 @@
               <a-cascader
                 v-decorator="[
                   'networkServerName',
-                  { initialValue: this.defaultData }
+                  { initialValue: this.defaultNetworkServerName }
                 ]"
                 style="width: 90%;float: left"
                 size="small"
@@ -102,7 +102,7 @@
               <a-cascader
                 v-decorator="[
                   'communicationMode',
-                  { initialValue: this.defaultDataModulation }
+                  { initialValue: this.defaultModulation }
                 ]"
                 style="width: 90%;float: left"
                 size="small"
@@ -173,7 +173,7 @@
             >
               <p style="text-align: left;margin-bottom: 2px;">所在区域</p>
               <a-cascader
-                v-decorator="['area', { initialValue: this.defaultDataArea }]"
+                v-decorator="['area', { initialValue: this.defaultArea }]"
                 style="width: 90%;float: left"
                 size="small"
                 :options="area_options"
@@ -204,7 +204,11 @@
               </a-col>
             </a-form-item>
           </a-form>
-          <a-modal title="删除提示" :visible="visible" @cancel="handleCancel">
+          <a-modal
+            title="删除提示"
+            :visible="deleteModalVisible"
+            @cancel="handleCancel"
+          >
             <template slot="footer">
               <a-button key="back" @click="handleCancel">取消</a-button>
               <a-button
@@ -253,17 +257,22 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
-      defaultData: [],
-      defaultDataModulation: [],
-      defaultDataArea: [],
-      id: "",
-      name: "",
-      description: "",
-      networkServerID: "",
+      //options
       internetServer_options: [],
       communicationMode_options: [],
       band_options: [],
       area_options: [],
+
+      //defaultValues
+      defaultNetworkServerName: [],
+      defaultModulation: [],
+      defaultArea: [],
+
+      //data
+      id: "",
+      name: "",
+      description: "",
+      networkServerID: "",
       location: {
         latitude: 0.25,
         longitude: 0.26,
@@ -271,9 +280,15 @@ export default {
         source: "UNKNOWN",
         accuracy: 0
       },
+
+      //mapData
       mapData: [],
+
+      //modal
       ModalText: "Content of the modal",
-      visible: false,
+      deleteModalVisible: false,
+
+      //loading
       submitLoading: false,
       confirmLoading: false
     };
@@ -282,10 +297,6 @@ export default {
   beforeCreate() {
     this.gatewayDeployForm = this.$form.createForm(this, {
       name: "gatewayDeployForm"
-    });
-    this.gatewayDeployForm.getFieldDecorator("keys", {
-      initialValue: [],
-      preserve: true
     });
   },
 
@@ -316,13 +327,13 @@ export default {
           infoDataTemp.gateway.networkServerID
         );
         if (defaultValue) {
-          this.defaultData.push(defaultValue);
+          this.defaultNetworkServerName.push(defaultValue);
         }
 
-        this.defaultDataModulation.push(infoDataTemp.gateway.modulation);
-        this.defaultDataArea.push(infoDataTemp.gateway.province);
-        this.defaultDataArea.push(infoDataTemp.gateway.city);
-        this.defaultDataArea.push(infoDataTemp.gateway.district);
+        this.defaultModulation.push(infoDataTemp.gateway.modulation);
+        this.defaultArea.push(infoDataTemp.gateway.province);
+        this.defaultArea.push(infoDataTemp.gateway.city);
+        this.defaultArea.push(infoDataTemp.gateway.district);
         this.name = infoDataTemp.gateway.name;
         this.description = infoDataTemp.gateway.description;
         this.location = infoDataTemp.gateway.location;

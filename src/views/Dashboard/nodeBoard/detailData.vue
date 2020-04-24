@@ -15,7 +15,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.number }}
+                {{ this.id }}
               </p>
             </a-col>
           </a-row>
@@ -104,7 +104,6 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
-      number: "",
       isDark: false,
       id: "",
       name: "",
@@ -118,10 +117,10 @@ export default {
   },
 
   beforeMount() {
-    this.number = this.$route.query.number;
+    this.id = this.$route.query.id;
     this.$api.node
       .getNodeById({
-        extra: this.number
+        extra: this.id
       })
       .then(res => {
         let data = res.data;

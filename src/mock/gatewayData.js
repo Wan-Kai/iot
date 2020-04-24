@@ -102,7 +102,7 @@ const GatewayMapData = Mock.mock({
   totalCount: "1",
   "result|20": [
     {
-      number: "B481FD4566f65465FD"
+      id: "B481FD4566f65465FD"
     }
   ]
 });

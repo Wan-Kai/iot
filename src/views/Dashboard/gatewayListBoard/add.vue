@@ -249,26 +249,24 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
-      commitLoading: false,
-      self: this,
       internetServer_options: [],
       communicationMode_options: [],
       band_options: [],
       area_options: [],
-      mapData: [],
-      netServer: {},
-      Lng: "",
-      Lat: ""
+
+      commitLoading: false,
+
+      location: {
+        Lng: "",
+        Lat: ""
+      },
+      mapData: []
     };
   },
 
   beforeCreate() {
     this.gatewayAddForm = this.$form.createForm(this, {
       name: "gatewayAddForm"
-    });
-    this.gatewayAddForm.getFieldDecorator("keys", {
-      initialValue: [],
-      preserve: true
     });
   },
 
@@ -283,8 +281,8 @@ export default {
           zoom: this.mapData.zoom,
           center: this.mapData.center
         });
-        this.Lng = this.mapData.center[0];
-        this.Lat = this.mapData.center[1];
+        this.location.Lng = this.mapData.center[0];
+        this.location.Lat = this.mapData.center[1];
         let startIcon = new AMap.Icon({
           // 图标尺寸
           size: new AMap.Size(25, 25),
@@ -297,17 +295,18 @@ export default {
         let address = "";
         let _self = this;
         mapObj.on("click", function(e) {
-          _self.Lng = e.lnglat.getLng();
-          _self.Lat = e.lnglat.getLat();
+          _self.location.Lng = e.lnglat.getLng();
+          _self.location.Lat = e.lnglat.getLat();
           mapObj.clearMap();
           const marker = new AMap.Marker({
             // eslint-disable-line no-unused-vars
             map: mapObj,
             icon: startIcon,
-            position: [_self.Lng, _self.Lat], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            position: [_self.location.Lng, _self.location.Lat], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
             title: "网关"
           });
-          address = _self.Lng.toString() + "," + _self.Lat.toString();
+          address =
+            _self.location.Lng.toString() + "," + _self.location.Lat.toString();
           _self.gatewayAddForm.setFieldsValue({
             address: address
           });
@@ -318,7 +317,6 @@ export default {
       });
 
     this.internetServer_options = this.$store.getters.getNetworkServerOptions;
-    console.log(this.internetServer_options);
     this.area_options = this.$store.getters.getArea;
     this.communicationMode_options = this.$store.getters.getCommunicationMode_options;
     this.band_options = this.$store.getters.getBand_options;
@@ -344,8 +342,8 @@ export default {
           values.channels = "";
           values.gatewayProfileID = "";
           values.location = {
-            latitude: this.Lat,
-            longitude: this.Lng,
+            latitude: this.location.Lat,
+            longitude: this.location.Lng,
             altitude: 0.24,
             source: "UNKNOWN",
             accuracy: 0

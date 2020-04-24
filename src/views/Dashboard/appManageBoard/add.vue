@@ -2,8 +2,7 @@
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_app_add_form_content">
       <a-form
-        :form="form"
-        @submit="handleSubmit"
+        :form="appAddform"
         layout="vertical"
         class="iot_view_app_add_form"
       >
@@ -100,11 +99,13 @@
             <div class="iot_view_app_add_form_left">
               <a-button
                 type="primary"
-                html-type="submit"
+                @click="handleSubmit"
                 :loading="commitLoading"
                 >确定</a-button
               >
-              <a-button style="margin-left: 30px" @click="back">取消</a-button>
+              <a-button style="margin-left: 30px" @click="backToAppList"
+                >取消</a-button
+              >
             </div>
           </a-col>
         </a-row>
@@ -124,8 +125,7 @@ export default {
     };
   },
   beforeCreate() {
-    this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
-    this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
+    this.appAddform = this.$form.createForm(this, { name: "appAdd_form" });
   },
 
   beforeMount() {
@@ -153,7 +153,6 @@ export default {
               application: sentData
             })
             .then(res => {
-              console.log(res);
               if (res.status === 200) {
                 this.$message.success("成功创建应用:" + res.data.id);
                 setTimeout(() => {
@@ -176,7 +175,7 @@ export default {
         }
       });
     },
-    back() {
+    backToAppList() {
       this.$router.push({
         name: "appManageInit"
       });

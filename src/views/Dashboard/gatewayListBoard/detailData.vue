@@ -194,16 +194,12 @@ export default {
 
   data() {
     return {
+      //data
       name: "",
+      id: "",
       gatewayProfileID: "",
       serverName: "",
       description: "",
-
-      location: {
-        latitude: "",
-        longitude: "",
-        altitude: ""
-      },
       massageMode: "",
       band: "",
       state: "",
@@ -216,7 +212,11 @@ export default {
       province: "",
       city: "",
       district: "",
-      id: ""
+      location: {
+        latitude: "",
+        longitude: "",
+        altitude: ""
+      }
     };
   },
 

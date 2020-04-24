@@ -9,8 +9,7 @@
     >
       <a-col :span="10">
         <a-form
-          :form="form"
-          @submit="handleSubmit"
+          :form="AppEditform"
           layout="vertical"
           class="iot_view_app_edit_form"
         >
@@ -148,29 +147,31 @@
               <div class="iot_view_edit_add_form_left">
                 <a-button
                   type="primary"
-                  html-type="submit"
+                  @click="handleSubmit"
                   :loading="submitLoading"
                   >确定</a-button
                 >
-                <a-button style="margin-left: 20px" @click="back"
+                <a-button style="margin-left: 20px" @click="backToAppList"
                   >取消</a-button
                 >
                 <a-button
                   style="margin-left: 20px"
                   icon="delete"
                   type="danger"
-                  @click="showModal"
+                  @click="showDeleteAppModal"
                   >删除设备</a-button
                 >
-                <a-modal title="删除提示" :visible="visible">
+                <a-modal title="删除提示" :visible="deleteModalVisible">
                   <template slot="footer">
-                    <a-button key="back" @click="handleCancel">取消</a-button>
+                    <a-button key="back" @click="handleDeleteModalCancel"
+                      >取消</a-button
+                    >
                     <a-button
                       type="danger"
                       icon="delete"
                       style="margin-left: 16px"
-                      @click="handleOk"
-                      :loading="confirmLoading"
+                      @click="handleDeleteModal"
+                      :loading="deleteLoading"
                       >确认删除</a-button
                     >
                   </template>
@@ -193,21 +194,28 @@ export default {
   components: { ARow },
   data() {
     return {
+      //options
       serviceProfile_options: [],
+      //default Value
       defaultServiceProfile: [],
+
+      //data
       id: "",
       name: "",
       capacity: "",
       description: "",
+
+      //modal
       ModalText: "确认删除：",
-      visible: false,
-      confirmLoading: false,
+      deleteModalVisible: false,
+
+      //loading
+      deleteLoading: false,
       submitLoading: false
     };
   },
   beforeCreate() {
-    this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
-    this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
+    this.AppEditform = this.$form.createForm(this, { name: "AppEdit_form" });
   },
   beforeMount() {
     this.serviceProfile_options = getServiceOptions();
@@ -266,17 +274,17 @@ export default {
         }
       });
     },
-    back() {
+    backToAppList() {
       this.$router.push({
         name: "appManageInit"
       });
     },
-    showModal() {
-      this.visible = true;
+    showDeleteAppModal() {
+      this.deleteModalVisible = true;
       this.ModalText = "确认删除：" + this.id;
     },
-    handleOk(e) {
-      this.confirmLoading = true;
+    handleDeleteModal(e) {
+      this.deleteLoading = true;
       this.$api.appManage
         .deleteApp({
           extra: this.id
@@ -296,12 +304,12 @@ export default {
           console.log(err);
         })
         .finally(() => {
-          this.confirmLoading = false;
+          this.deleteLoading = false;
         });
     },
-    handleCancel(e) {
+    handleDeleteModalCancel(e) {
       console.log("Clicked cancel button");
-      this.visible = false;
+      this.deleteModalVisible = false;
     },
     stateChange() {
       this.areaShow = !this.areaShow;

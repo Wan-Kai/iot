@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import wifi_map from "../../../assets/wifi.png";
+import wifi_map from "@/assets/wifi.png";
 export default {
   name: "nodeDetails",
   data() {
     return {
-      isDark: false,
+      //tempData State  后续可能会变化
       infoData: [
         {
           title: "节点编号:",
@@ -173,6 +173,8 @@ export default {
           dark: true
         }
       ],
+
+      //mapData
       mapObj: {},
       mapData: []
     };

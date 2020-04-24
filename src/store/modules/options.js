@@ -47,6 +47,25 @@ const state = {
       value: "8",
       label: "8"
     }
+  ],
+
+  profession_options: [
+    {
+      value: "航天",
+      label: "航天"
+    },
+    {
+      value: "消防",
+      label: "消防"
+    },
+    {
+      value: "金融",
+      label: "金融"
+    },
+    {
+      value: "路政",
+      label: "路政"
+    }
   ]
 };
 

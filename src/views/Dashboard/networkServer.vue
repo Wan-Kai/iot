@@ -120,16 +120,15 @@ export default {
       })
       .then(res => {
         this.returnedData = res.data.result;
-
-        let temp = {
-          id: "",
-          IP: "",
-          port: "",
-          gateway: "",
-          time: "",
-          name: ""
-        };
         for (let i = 0; i < this.returnedData.length; i++) {
+          let temp = {
+            id: "",
+            IP: "",
+            port: "",
+            gateway: "",
+            time: "",
+            name: ""
+          };
           if (this.returnedData[i].server.split(":")) {
             let server = this.returnedData[i].server.split(":");
             temp.IP = server[0];

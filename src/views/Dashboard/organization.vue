@@ -26,6 +26,17 @@
       >
         //style="min-width: min-content" :scroll="{ x: min-content, y:
         min-content }"
+        <span slot="location" slot-scope="text, record">
+          {{
+            record.province +
+              "/" +
+              record.city +
+              "/" +
+              record.district +
+              "/" +
+              record.address
+          }}
+        </span>
         <span slot="canHaveGateways" slot-scope="canHaveGateways">
           <a-tag
             :color="canHaveGateways === true ? 'green' : 'red'"
@@ -66,8 +77,9 @@ const columns = [
 
   {
     title: "地址",
-    dataIndex: "area",
-    key: "area"
+    dataIndex: "location",
+    key: "location",
+    scopedSlots: { customRender: "location" }
   },
   {
     title: "是否拥有网关",
@@ -98,6 +110,11 @@ export default {
           id: "",
           name: "",
           displayName: "",
+          profession: "",
+          province: "",
+          city: "",
+          district: "",
+          address: "",
           canHaveGateways: "",
           createdAt: "",
           updatedAt: ""
@@ -130,6 +147,11 @@ export default {
             id: "",
             name: "",
             displayName: "",
+            profession: "",
+            province: "",
+            city: "",
+            district: "",
+            address: "",
             canHaveGateways: "",
             createdAt: "",
             updatedAt: ""
@@ -137,6 +159,11 @@ export default {
           temp.id = this.returnedData[i].id;
           temp.name = this.returnedData[i].name;
           temp.displayName = this.returnedData[i].displayName;
+          temp.profession = this.returnedData[i].profession;
+          temp.province = this.returnedData[i].province;
+          temp.city = this.returnedData[i].city;
+          temp.district = this.returnedData[i].district;
+          temp.address = this.returnedData[i].address;
           temp.canHaveGateways = this.returnedData[i].canHaveGateways;
           temp.createdAt = this.returnedData[i].createdAt;
           temp.updatedAt = this.returnedData[i].updatedAt;

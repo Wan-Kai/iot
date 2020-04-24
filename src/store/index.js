@@ -114,6 +114,9 @@ export default new Vuex.Store({
       return options.state.area_options;
     },
 
+    getProfessionOptions() {
+      return options.state.profession_options;
+    },
     getIsMock: () => parameter.state.isMock,
     getOrganizationID: () => parameter.state.organizationID,
 

@@ -6,6 +6,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import API from "./utils/api";
+import common from "./utils/common.js";
 import Authorized from "./components/Authorized";
 import VueAMap from "vue-amap";
 
@@ -87,9 +88,17 @@ Vue.use(Radio);
 Vue.use(Transfer);
 Vue.use(List);
 Vue.component("Authorized", Authorized);
+/**
+ * 引用公用的api里面的方法，所有页面可调用
+ */
 Vue.prototype.$api = API;
 Vue.prototype.$message = message;
 Vue.prototype.$echarts = echarts;
+
+/**
+ * 引用公用的js方法，所有页面可调用
+ */
+Vue.prototype.common = common;
 
 Vue.config.productionTip = false;
 

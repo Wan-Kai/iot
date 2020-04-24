@@ -1,31 +1,39 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0">
-    <a-form
-      :form="internetServer_edit_form"
-      layout="vertical"
-      class="iot_view_internetServer_edit_form"
-    >
+    <a-form :form="edit_form" layout="vertical" class="iot_view_edit_form">
       <a-form-item
-        label="主机名："
+        label="名称："
         :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
-        class="iot_view_internetServer_edit_formItem"
-      >
-        <span style="float: left">{{ this.server }}</span>
-      </a-form-item>
-      <a-form-item
-        label="端口："
-        :required="true"
-        :label-col="{ span: 3 }"
-        :wrapper-col="{ span: 7 }"
-        class="iot_view_internetServer_edit_formItem"
+        class="iot_view_edit_formItem"
       >
         <a-input
           v-decorator="[
-            'port',
+            'name',
             {
-              initialValue: this.port
+              initialValue: returnedData.name,
+              rules: [{ required: true, message: '请输入名称' }]
+            }
+          ]"
+          size="small"
+          style="width: 90%;float: left;text-align: left"
+        />
+      </a-form-item>
+
+      <a-form-item
+        label="主机地址："
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_edit_formItem"
+      >
+        <a-input
+          v-decorator="[
+            'ip',
+            {
+              initialValue: returnedData.ip,
+              rules: [{ required: true, message: '请输入ip' }]
             }
           ]"
           size="small"
@@ -33,17 +41,18 @@
         />
       </a-form-item>
       <a-form-item
-        label="名称："
+        label="端口："
         :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
-        class="iot_view_internetServer_edit_formItem"
+        class="iot_view_edit_formItem"
       >
         <a-input
           v-decorator="[
-            'name',
+            'port',
             {
-              initialValue: this.name
+              initialValue: returnedData.port,
+              rules: [{ required: true, message: '请输入端口' }]
             }
           ]"
           size="small"
@@ -58,59 +67,57 @@
         :wrapper-col="{ span: 7 }"
       >
         <a-switch
+          :checked="returnedData.gatewayDiscoveryEnabled"
+          :defaultChecked="returnedData.gatewayDiscoveryEnabled"
           checkedChildren="开"
           unCheckedChildren="关"
-          v-model="this.gatewayOn"
           @change="stateChange"
           style="margin-left: 10px;float: left"
+          v-decorator="[
+            'gatewayDiscoveryEnabled',
+            {
+              initialValue: returnedData.gatewayDiscoveryEnabled,
+              rules: [{ required: true, message: '是否启用网关发现' }]
+            }
+          ]"
         />
       </a-form-item>
 
       <a-form-item
-        v-if="this.gatewayOn"
+        v-if="returnedData.gatewayDiscoveryEnabled"
         label="间隔（每天）："
         :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
-        class="iot_view_internetServer_edit_formItem"
+        class="iot_view_edit_formItem"
       >
         <a-input
           size="small"
           v-decorator="[
             'gatewayDiscoveryInterval',
             {
-              initialValue: this.gatewayDiscoveryInterval,
+              initialValue: returnedData.gatewayDiscoveryInterval,
               rules: [{ required: true, message: '请输入间隔（每天）!' }]
             }
           ]"
           style="float: left;text-align: left;width: 90%"
         />
-        <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
-          <template slot="title">
-            prompt text
-          </template>
-          <a-icon
-            type="exclamation-circle"
-            style="height: 24px;line-height: 24px;width: 24px;
-          text-align: left;vertical-align: text-top"
-          />
-        </a-tooltip>
       </a-form-item>
 
       <a-form-item
-        v-if="this.gatewayOn"
+        v-if="returnedData.gatewayDiscoveryEnabled"
         label="发射频率（Hz）："
         :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
-        class="iot_view_internetServer_edit_formItem"
+        class="iot_view_edit_formItem"
       >
         <a-input
           size="small"
           v-decorator="[
             'gatewayDiscoveryTXFrequency',
             {
-              initialValue: this.gatewayDiscoveryTXFrequency,
+              initialValue: returnedData.gatewayDiscoveryTXFrequency,
               rules: [{ required: true, message: '请输入发射频率（Hz）!' }]
             }
           ]"
@@ -129,19 +136,19 @@
       </a-form-item>
 
       <a-form-item
-        v-if="this.gatewayOn"
+        v-if="returnedData.gatewayDiscoveryEnabled"
         label="发送数据率："
         :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
-        class="iot_view_internetServer_edit_formItem"
+        class="iot_view_edit_formItem"
       >
         <a-input
           size="small"
           v-decorator="[
             'gatewayDiscoveryDR',
             {
-              initialValue: this.gatewayDiscoveryDR,
+              initialValue: returnedData.gatewayDiscoveryDR,
               rules: [{ required: true, message: '请输入发送数据率!' }]
             }
           ]"
@@ -161,7 +168,7 @@
 
       <a-row>
         <a-col :span="12" :offset="3">
-          <div class="iot_view_internetServer_edit_form_left">
+          <div class="iot_view_edit_form_left">
             <a-button
               type="primary"
               @click="handleSubmit"
@@ -173,16 +180,23 @@
               icon="delete"
               style="margin-left: 16px"
               @click="showModal"
-              >删除设备</a-button
+              >删除</a-button
             >
-            <a-modal title="删除提示" :visible="visible">
+            <a-button
+              type="danger"
+              icon="delete"
+              style="margin-left: 16px"
+              @click="handleBack"
+              >返回</a-button
+            >
+            <a-modal title="删除提示" :visible="isShowModal">
               <template slot="footer">
-                <a-button key="back" @click="handleCancel">取消</a-button>
+                <a-button key="back" @click="handleDeleteCancel">取消</a-button>
                 <a-button
                   type="danger"
                   icon="delete"
                   style="margin-left: 16px"
-                  @click="handleOk"
+                  @click="handleDeleteOk"
                   :loading="confirmLoading"
                   >确认删除</a-button
                 >
@@ -197,103 +211,111 @@
 </template>
 
 <script>
+import { initNetworkServers } from "@/utils/util";
+
 export default {
   data() {
     return {
-      gatewayOn: false,
-      returnedData: {},
-      id: "",
-      server: "",
-      port: "",
-      name: "",
-      gatewayDiscoveryInterval: "",
-      gatewayDiscoveryTXFrequency: "",
-      gatewayDiscoveryDR: "",
+      returnedData: {
+        id: "",
+        name: "",
+        server: "",
+        ip: "",
+        port: "",
+
+        gatewayDiscoveryEnabled: false,
+        gatewayDiscoveryInterval: "",
+        gatewayDiscoveryTXFrequency: "",
+        gatewayDiscoveryDR: ""
+      },
+
       ModalText: "确认删除",
-      visible: false,
+      isShowModal: false,
       submitLoading: false,
       confirmLoading: false
     };
   },
   beforeCreate() {
-    this.internetServer_edit_form = this.$form.createForm(this, {
-      name: "internetServer_edit_form"
+    this.edit_form = this.$form.createForm(this, {
+      name: "edit_form"
     });
-    this.internetServer_edit_form.getFieldDecorator("keys", {
+    this.edit_form.getFieldDecorator("keys", {
       initialValue: [],
       preserve: true
     });
   },
   beforeMount() {
-    this.server = this.$route.query.server;
-    this.id = this.$route.query.nid;
-    this.port = this.$route.query.port;
-    this.$api.networkServer
-      .getServerDetail({
-        limit: 1,
-        extra: this.id
-      })
-      .then(res => {
-        console.log(res);
-        this.gatewayOn = res.data.networkServer.gatewayDiscoveryEnabled;
-        this.name = res.data.networkServer.name;
-        this.gatewayDiscoveryInterval =
-          res.data.networkServer.gatewayDiscoveryInterval;
-        this.gatewayDiscoveryTXFrequency =
-          res.data.networkServer.gatewayDiscoveryTXFrequency;
-        this.gatewayDiscoveryDR = res.data.networkServer.gatewayDiscoveryDR;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.returnedData.id = this.$route.query.id;
   },
+
+  mounted() {
+    this.getDetail();
+  },
+
   methods: {
+    getDetail() {
+      this.$api.networkServer
+        .getServerDetail({
+          limit: 1,
+          extra: this.returnedData.id
+        })
+        .then(res => {
+          //console.log(res);
+          this.returnedData.name = res.data.networkServer.name;
+          this.returnedData.server = res.data.networkServer.server;
+
+          if (this.returnedData.server.split(":")) {
+            let server = this.returnedData.server.split(":");
+            this.returnedData.ip = server[0];
+            this.returnedData.port = server[1];
+          } else {
+            this.returnedData.ip = this.returnedData.server;
+            this.returnedData.port = "";
+          }
+
+          this.returnedData.gatewayDiscoveryEnabled =
+            res.data.networkServer.gatewayDiscoveryEnabled;
+          this.returnedData.gatewayDiscoveryInterval =
+            res.data.networkServer.gatewayDiscoveryInterval;
+          this.returnedData.gatewayDiscoveryTXFrequency =
+            res.data.networkServer.gatewayDiscoveryTXFrequency;
+          this.returnedData.gatewayDiscoveryDR =
+            res.data.networkServer.gatewayDiscoveryDR;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     handleSubmit(e) {
       e.preventDefault();
-      this.internetServer_edit_form.validateFields((err, values) => {
+      this.edit_form.validateFields((err, values) => {
         if (!err) {
           this.submitLoading = true;
-          values.server = this.server + ":" + values.port;
-          console.log("Received values of form: ", values);
-          values.gatewayDiscoveryEnabled = this.gatewayOn;
+
+          var data = {
+            name: values.name,
+            server: values.ip + ":" + values.port,
+            gatewayDiscoveryEnabled: values.gatewayDiscoveryEnabled,
+            gatewayDiscoveryInterval: values.gatewayDiscoveryInterval,
+            gatewayDiscoveryTXFrequency: values.gatewayDiscoveryTXFrequency,
+            gatewayDiscoveryDR: values.gatewayDiscoveryDR
+          };
+
           this.$api.networkServer
             .updateServer({
-              extra: this.id,
-              networkServer: values
+              extra: this.returnedData.id,
+              networkServer: data
             })
             .then(res => {
               if (res.status === 200) {
                 this.$message.success("成功修改网络服务器信息");
 
-                this.$api.networkServer
-                  .getServerData({
-                    limit: 100
-                  })
-                  .then(res => {
-                    let getData = res.data.result;
+                initNetworkServers();
 
-                    let netServerData = [];
-                    let temp = {
-                      server: "",
-                      id: "",
-                      name: ""
-                    };
-
-                    for (let i = 0; i < getData.length; i++) {
-                      temp.server = getData[i].server;
-                      temp.id = getData[i].id;
-                      temp.name = getData[i].name;
-                      netServerData.push(temp);
-                    }
-                    this.$store.commit("util/setNetServer", netServerData);
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  });
+                var _this = this;
                 setTimeout(() => {
-                  this.$router.push({
-                    name: "networkServerInit"
-                  });
+                  _this.handleBack();
                 }, 100);
               } else {
                 this.$message.error(res.data.code);
@@ -314,9 +336,9 @@ export default {
     },
     showModal() {
       this.visible = true;
-      this.ModalText = "确认删除" + ":" + "@" + this.server;
+      this.ModalText = "确认删除" + ":" + "@" + this.returnedData.server;
     },
-    handleOk(e) {
+    handleDeleteOk(e) {
       this.confirmLoading = true;
 
       this.$api.networkServer
@@ -326,31 +348,14 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.confirmLoading = false;
-            this.visible = false;
+            this.isShowModal = false;
             this.$message.success("成功删除网络服务器");
 
-            this.$api.networkServer
-              .getServerData({
-                limit: 100
-              })
-              .then(res => {
-                let getData = res.data.result;
-
-                let netServerData = [];
-                let temp = {
-                  server: "",
-                  id: "",
-                  name: ""
-                };
-
-                for (let i = 0; i < getData.length; i++) {
-                  temp.server = getData[i].server;
-                  temp.id = getData[i].id;
-                  temp.name = getData[i].name;
-                  netServerData.push(temp);
-                }
-                this.$store.commit("util/setNetServer", netServerData);
-              });
+            initNetworkServers();
+            var _this = this;
+            setTimeout(() => {
+              _this.handleBack();
+            }, 100);
           } else {
             this.$message.error(res.data.code);
             this.$message.error(res.data.error);
@@ -364,24 +369,32 @@ export default {
           this.confirmLoading = false;
         });
     },
-    handleCancel(e) {
+    handleDeleteCancel(e) {
       this.visible = false;
     },
+
+    handleBack() {
+      this.$router.push({
+        name: "networkServerInit"
+      });
+    },
+
     stateChange(state) {
-      this.gatewayOn = !this.gatewayOn;
+      this.returnedData.gatewayDiscoveryEnabled = !this.returnedData
+        .gatewayDiscoveryEnabled;
     }
   }
 };
 </script>
 
 <style>
-.iot_view_internetServer_edit_form {
+.iot_view_edit_form {
   padding: 20px 5px;
 }
-.iot_view_internetServer_edit_formItem {
+.iot_view_edit_formItem {
   margin-bottom: 8px;
 }
-.iot_view_internetServer_edit_form_left {
+.iot_view_edit_form_left {
   float: left;
 }
 .ant-form-item {

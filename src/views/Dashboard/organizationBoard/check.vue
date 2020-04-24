@@ -1,167 +1,193 @@
 <template>
-  <!--  <a-layout style="background: #fff;padding: 0 14px 0">-->
-  <!--    <span>{{ $route.params.id }}</span>-->
-  <!--  </a-layout>-->
-
-  <a-layout>
-    <a-card style="width: 100%">
-      <a-row style="padding-bottom: 8px">
-        <a-col :span="24">
-          <span style="font-size: 16px;font-weight: normal;color: black"
-            >主机名： {{ this.server }}</span
-          >
-        </a-col>
-      </a-row>
-      <div class="iot_line" />
-      <a-row type="flex" justify="space-around" style="margin-top: 8px">
-        <a-col :span="8" style="width: 20%">
-          <a-row type="flex" justify="space-around" align="middle">
-            <a-col :span="8" style="height: 100%">
-              <span
-                class="iconfont icon-port"
-                style="font-size: 34px;color: #1eaf84;height: 12px;"
-              ></span>
-            </a-col>
-            <a-col :span="16" style="text-align: left">
-              <div style="font-size: 8px;color: #b0b0b0">端口</div>
-              <div style="font-size: 12px">{{ this.port }}</div>
-            </a-col>
-          </a-row>
-        </a-col>
-        <a-col :span="8" style="width: 20%">
-          <a-row type="flex" justify="space-around" align="middle">
-            <a-col :span="8" style="height: 100%">
-              <span
-                class="iconfont icon-gateway"
-                style="font-size: 34px;color: #1eaf84;height: 12px;"
-              ></span>
-            </a-col>
-            <a-col :span="16" style="text-align: left">
-              <div style="font-size: 8px;color: #b0b0b0">名称</div>
-              <div style="font-size: 12px">{{ this.name }}</div>
-            </a-col>
-          </a-row>
-        </a-col>
-        <a-col :span="8" style="width: 20%">
-          <a-row type="flex" justify="space-around" align="middle">
-            <a-col :span="8" style="height: 100%">
-              <span
-                class="iconfont icon-time"
-                style="font-size: 34px;color: #1eaf84;height: 12px;"
-              ></span>
-            </a-col>
-            <a-col :span="16" style="text-align: left">
-              <div style="font-size: 8px;color: #b0b0b0">创建时间</div>
-              <div style="font-size: 12px">{{ this.time }}</div>
-            </a-col>
-          </a-row>
-        </a-col>
-      </a-row>
-    </a-card>
-
-    <a-card
-      style="width: 100%;margin-top: 16px;height: 100%;padding: 10px 14px"
-    >
-      <a-form
-        :form="internetServer_check_form"
-        layout="vertical"
-        class="iot_view_internetServer_check_form"
+  <a-layout style="background: #fff;padding: 0 14px 0">
+    <a-form :form="edit_form" layout="vertical" class="iot_view_edit_form">
+      <a-form-item
+        label="ID"
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_edit_formItem"
       >
-        <a-form-item
-          label="间隔(每天)："
-          :required="true"
-          :label-col="{ span: 3 }"
-          :wrapper-col="{ span: 12 }"
-          class="iot_view_internetServer_check_formItem"
+        <span style="float: left">{{ returnedData.id }}</span>
+      </a-form-item>
+      <a-form-item
+        label="名称："
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_edit_formItem"
+      >
+        <span style="float: left">{{ returnedData.name }}</span>
+      </a-form-item>
+      <a-form-item
+        label="是否拥有网关："
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+        class="iot_view_edit_formItem"
+      >
+        <a-switch
+          disabled="true"
+          :checked="returnedData.canHaveGateways"
+          :defaultChecked="returnedData.canHaveGateways"
+          checkedChildren="能"
+          unCheckedChildren="否"
+          v-decorator="[
+            'canHaveGateways',
+            {
+              initialValue: returnedData.canHaveGateways,
+              rules: [{ required: true, message: '是否拥有网关' }]
+            }
+          ]"
+          style="margin-left: 10px;float: left"
         >
-          <span style="float: left"> {{ this.interval }}</span>
-        </a-form-item>
-        <a-form-item
-          label="发射频率(Hz)："
-          :required="true"
-          :label-col="{ span: 3 }"
-          :wrapper-col="{ span: 12 }"
-          class="iot_view_internetServer_check_formItem"
-        >
-          <span style="float: left"> {{ this.frequency }}</span>
-        </a-form-item>
-        <a-form-item
-          label="发送数据率："
-          :required="true"
-          :label-col="{ span: 3 }"
-          :wrapper-col="{ span: 12 }"
-          class="iot_view_internetServer_check_formItem"
-        >
-          <span style="float: left"> {{ this.dataRate }}</span>
-        </a-form-item>
-      </a-form>
-    </a-card>
+        </a-switch>
+      </a-form-item>
+
+      <a-form-item
+        class="iot_view_edit_formItem"
+        label="选择行业："
+        :required="true"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+      >
+        <span style="float: left">{{ returnedData.profession }}</span>
+      </a-form-item>
+
+      <a-form-item
+        class="iot_view_edit_formItem"
+        label="所在区域："
+        :required="false"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+      >
+        <span style="float: left">{{ getLocation }}</span>
+      </a-form-item>
+      <a-form-item
+        class="iot_view_edit_formItem"
+        label="详细地址："
+        :required="false"
+        :label-col="{ span: 3 }"
+        :wrapper-col="{ span: 7 }"
+      >
+        <span style="float: left">{{ returnedData.address }}</span>
+      </a-form-item>
+
+      <a-row>
+        <a-col :span="12" :offset="3">
+          <div class="iot_view_edit_form_left">
+            <a-button
+              type="danger"
+              icon="delete"
+              style="margin-left: 16px"
+              @click="handleBack"
+              >返回</a-button
+            >
+          </div>
+        </a-col>
+      </a-row>
+    </a-form>
   </a-layout>
 </template>
 
 <script>
-import ARow from "ant-design-vue/es/grid/Row";
-import ACol from "ant-design-vue/es/grid/Col";
-import { getNetServerIdByServer } from "@/utils/util";
+import { getAreaLabel, initOrganizations } from "@/utils/util";
+
 export default {
   data() {
     return {
-      server: "",
-      id: "",
-      port: "",
-      gateway: "",
-      time: "",
-      name: "",
-      interval: "",
-      dataRate: "",
-      frequency: ""
+      /*
+        edit_form: this.$form.createForm(this, {
+          name: "edit_form"
+        }),
+        **/
+      returnedData: {
+        id: "",
+        name: "",
+        displayName: "",
+        profession: "",
+        province: "",
+        city: "",
+        district: "",
+        address: "",
+        canHaveGateways: false,
+        createdAt: "",
+        updatedAt: ""
+      }
     };
   },
+
+  computed: {
+    getLocation() {
+      return getAreaLabel(
+        this.returnedData.province,
+        this.returnedData.city,
+        this.returnedData.district
+      );
+    }
+  },
+
   beforeCreate() {
-    this.internetServer_check_form = this.$form.createForm(this, {
-      name: "internetServer_check_form"
+    this.edit_form = this.$form.createForm(this, {
+      name: "edit_form"
     });
-    this.internetServer_check_form.getFieldDecorator("keys", {
+
+    this.edit_form.getFieldDecorator("keys", {
       initialValue: [],
       preserve: true
     });
   },
   beforeMount() {
-    this.server = this.$route.query.server;
-    this.id = this.$route.query.nid;
-    this.port = this.$route.query.port;
-    this.$api.networkServer
-      .getServerDetail({
+    this.returnedData.id = this.$route.query.id;
+  },
+
+  mounted() {
+    debugger;
+    this.$api.organization
+      .getOrganization({
         limit: 1,
-        extra: this.id
+        extra: this.returnedData.id
       })
       .then(res => {
         console.log(res);
-        this.time = res.data.createdAt;
-        this.name = res.data.networkServer.name;
-        this.interval = res.data.networkServer.gatewayDiscoveryInterval;
-        this.dataRate = res.data.networkServer.gatewayDiscoveryDR;
-        this.frequency = res.data.networkServer.gatewayDiscoveryTXFrequency;
+        this.returnedData.name = res.data.organization.name;
+        this.returnedData.displayName = res.data.organization.displayName;
+        this.returnedData.canHaveGateways =
+          res.data.organization.canHaveGateways;
+        this.returnedData.profession = res.data.organization.profession;
+        this.returnedData.province = res.data.organization.province;
+        this.returnedData.city = res.data.organization.city;
+        this.returnedData.district = res.data.organization.district;
+
+        this.returnedData.address = res.data.organization.address;
+        this.returnedData.createdAt = res.data.createdAt;
+        this.returnedData.updatedAt = res.data.updatedAt;
       })
       .catch(err => {
         console.log(err);
       });
   },
-  components: { ACol, ARow }
+  methods: {
+    handleBack() {
+      this.$router.push({
+        name: "organizationInit"
+      });
+    }
+  }
 };
 </script>
 
 <style>
-.iot_line {
-  width: 100%;
-  height: 1px;
-  border-top: solid #dddddd 1px;
-  padding: 2px 0;
+.iot_view_edit_form {
+  padding: 20px 5px;
 }
-.ant-card-wider-padding .ant-card-body {
-  padding: 16px 8px;
+.iot_view_edit_formItem {
+  margin-bottom: 8px;
 }
-.iot_view_internetServer_check_formItem {
-  margin-bottom: 14px;
+.iot_view_edit_form_left {
+  float: left;
+}
+.ant-form-item {
+  margin-bottom: 10px;
 }
 </style>

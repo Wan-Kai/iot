@@ -145,6 +145,8 @@ export function getAreaLabel(province, city, district) {
       }
     }
   }
+
+  return "";
 }
 
 export function initServiceOptions() {

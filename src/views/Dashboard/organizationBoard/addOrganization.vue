@@ -42,16 +42,6 @@
           style="margin-left: 10px;float: left"
         >
         </a-switch>
-        <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
-          <template slot="title">
-            请选择
-          </template>
-          <a-icon
-            type="exclamation-circle"
-            style="height: 24px;line-height: 24px;width: 24px;
-          text-align: left;vertical-align: text-top"
-          />
-        </a-tooltip>
       </a-form-item>
 
       <a-form-item
@@ -89,7 +79,7 @@
               rules: [{ required: false, message: '请选择所在区域' }]
             }
           ]"
-          style="margin-left: 0px;float: left"
+          style="margin-left:0px;float: left;text-align: left"
           size="small"
           :options="area_options"
           placeholder=""
@@ -115,7 +105,9 @@
             <a-button type="primary" html-type="submit" :loading="commitLoading"
               >确定</a-button
             >
-            <a-button style="margin-left: 30px" @click="back">取消</a-button>
+            <a-button style="margin-left: 30px" @click="handleBack"
+              >取消</a-button
+            >
           </div>
         </a-col>
       </a-row>
@@ -146,7 +138,7 @@ export default {
     };
   },
   beforeCreate() {
-    this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
+    this.form = this.$form.createForm(this, { name: "add_form" });
     this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
   },
   beforeMount() {
@@ -222,7 +214,7 @@ export default {
       });
     },
 
-    back() {
+    handleBack() {
       this.$router.push("/admin/dashboard/organization");
     },
 

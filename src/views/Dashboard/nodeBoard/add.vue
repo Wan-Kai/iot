@@ -110,7 +110,7 @@
                 :wrapper-col="{ span: 16 }"
                 label="NwksKey："
                 :required="true"
-                class="iot_view_node_deployEdit_formitem"
+                class="iot_view_node_add_formitem"
               >
                 <a-input
                   v-decorator="['NwksKey']"
@@ -136,7 +136,7 @@
                 :wrapper-col="{ span: 16 }"
                 label="FCntUp："
                 :required="true"
-                class="iot_view_node_deployEdit_formitem"
+                class="iot_view_node_add_formitem"
               >
                 <a-input
                   v-decorator="['FCntUp']"
@@ -162,7 +162,7 @@
                 :wrapper-col="{ span: 16 }"
                 label="FCntDn："
                 :required="true"
-                class="iot_view_node_deployEdit_formitem"
+                class="iot_view_node_add_formitem"
               >
                 <a-input
                   v-decorator="['FCntDn']"
@@ -220,31 +220,28 @@ import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import {
   getOrganizationID,
-  getNetServerOption,
+  getNetworkServerOptions,
   getNetServerIdByServer
-} from "../../../utils/util.js";
+} from "@/utils/util.js";
 export default {
   components: { ACol, ARow },
   data() {
     return {
-      macVision_option: [],
+      //options
+      internetServer_options: [],
+
       value: "1",
-      supportsJoin: true,
-      internetServer_options: []
+      supportsJoin: true
     };
   },
   beforeCreate() {
     this.nodeDeployForm = this.$form.createForm(this, {
       name: "nodeDeployForm"
     });
-    this.nodeDeployForm.getFieldDecorator("keys", {
-      initialValue: [],
-      preserve: true
-    });
   },
 
   beforeMount() {
-    this.internetServer_options = getNetServerOption();
+    this.internetServer_options = getNetworkServerOptions();
   },
 
   methods: {
@@ -252,18 +249,14 @@ export default {
       e.preventDefault();
       this.nodeDeployForm.validateFields((err, values) => {
         if (!err) {
-          let deviceProfile = {};
-          deviceProfile = values;
-          if (this.supportsJoin) {
-            deviceProfile.supportsJoin = true;
-          } else {
-            deviceProfile.supportsJoin = false;
-          }
+          let deviceProfile = values;
+          deviceProfile.supportsJoin = this.supportsJoin;
+          console.log(getOrganizationID());
           deviceProfile.organizationID = getOrganizationID();
           deviceProfile.networkServerID = getNetServerIdByServer(
             values.internetServer[0]
           );
-
+          console.log(deviceProfile);
           this.$api.node
             .creatNode({
               deviceProfile: deviceProfile
@@ -281,6 +274,8 @@ export default {
             .catch(err => {
               console.log(err);
             });
+        } else {
+          console.log(err);
         }
       });
     },

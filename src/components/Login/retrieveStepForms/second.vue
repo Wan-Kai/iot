@@ -4,7 +4,12 @@
       <a-input
         style="text-align: left"
         @change="submitOldPassword"
-        v-decorator="['pre_password']"
+        v-decorator="[
+          'pre_password',
+          {
+            rules: [{ required: true, message: '请输入旧密码' }]
+          }
+        ]"
         placeholder="请输入原密码"
       >
         <a-icon slot="prefix" type="key" style="color: rgba(0,0,0,.25)" />
@@ -15,23 +20,31 @@
       <a-input
         style="text-align: left"
         @change="submitNewPassword"
-        v-decorator="['now_password']"
+        v-decorator="[
+          'now_password',
+          {
+            rules: [{ required: true, message: '请输入新密码' }]
+          }
+        ]"
         placeholder="请输入新密码"
       >
         <a-icon slot="prefix" type="key" style="color: rgba(0,0,0,.25)" />
       </a-input>
     </a-form-item>
 
-    <a-form-item
-      class="iot_login_retrieve_step1_confirm_password"
-      :validate-status="confirmPass.validateStatus"
-      :help="confirmPass.errorMsg"
-    >
+    <a-form-item class="iot_login_retrieve_step1_confirm_password">
       <a-input
-        @change="confirmPassword"
-        placeholder="请输入确认密码"
+        placeholder="请确认密码"
         style="text-align: left"
-        v-decorator="['confirm_password']"
+        v-decorator="[
+          'confirm_password',
+          {
+            rules: [
+              { required: true, message: '错误' },
+              { validator: handleConfirmPass }
+            ]
+          }
+        ]"
       >
         <a-icon slot="prefix" type="key" style="color: rgba(0,0,0,.25)" />
       </a-input>
@@ -40,27 +53,11 @@
 </template>
 
 <script>
-function validatePrimeNumber(confirmPass, temp) {
-  console.log("打印如下");
-  console.log(temp.newPassword);
-  console.log(confirmPass);
-  if (confirmPass.toString().length === 0) {
-    return {
-      validateStatus: "error",
-      errorMsg: null
-    };
-  } else if (confirmPass === temp.newPassword) {
-    return {
-      validateStatus: "success",
-      errorMsg: null
-    };
-  }
-  return {
-    validateStatus: "error",
-    errorMsg: "两次输入的密码不一致！"
-  };
-}
-
+import {
+  setOldPassword,
+  setNewPassword,
+  setConfirmPassword
+} from "@/utils/util";
 export default {
   data() {
     this.form = this.$form.createForm(this, { name: "retrieve_step2" });
@@ -69,42 +66,29 @@ export default {
         value: "",
         validateStatus: "",
         errorMsg: ""
-      }
+      },
+      newPassword: ""
     };
   },
   methods: {
     submitOldPassword() {
       setTimeout(() => {
-        this.form.validateFieldsAndScroll((err, values) => {
-          this.$store.commit("retrieve/setOldPassword", {
-            oldPassword: values.pre_password
-          });
-        });
+        setOldPassword(this.form.getFieldValue("pre_password"));
       }, 0);
     },
     submitNewPassword() {
       setTimeout(() => {
-        this.form.validateFieldsAndScroll((err, values) => {
-          this.$store.commit("retrieve/setNewPassword", {
-            newPassword: values.now_password
-          });
-        });
+        setNewPassword(this.form.getFieldValue("now_password"));
+        this.newPassword = this.form.getFieldValue("now_password");
       }, 0);
     },
-    confirmPassword(value) {
-      let temp = this.$store.getters.getNewPassword;
-      console.log(temp);
-      setTimeout(() => {
-        this.form.validateFieldsAndScroll((err, values) => {
-          this.confirmPass = {
-            ...validatePrimeNumber(values.confirm_password, temp),
-            value
-          };
-          this.$store.commit("retrieve/setConfirmPassword", {
-            confirmPassword: values.confirm_password
-          });
-        });
-      });
+    handleConfirmPass(rule, value, callback) {
+      console.log(this.newPassword);
+      if (this.newPassword === value) {
+        setConfirmPassword(value);
+        callback();
+      }
+      callback("两次输入的密码不一致！");
     }
   }
 };

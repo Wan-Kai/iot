@@ -165,6 +165,7 @@
 
 <script>
 import { initOrganizations } from "@/utils/util";
+import { setNetServer } from "@/utils/util";
 
 export default {
   data() {
@@ -291,11 +292,9 @@ export default {
                 this.$message.success("成功修改组织机构信息");
 
                 initOrganizations();
-
+                var _this = this;
                 setTimeout(() => {
-                  this.$router.push({
-                    name: "organizationInit"
-                  });
+                  _this.handleBack();
                 }, 100);
               } else {
                 this.$message.error(res.data.code);
@@ -340,11 +339,9 @@ export default {
             this.$message.success("成功删除组织机构");
 
             initOrganizations();
-
+            var _this = this;
             setTimeout(() => {
-              this.$router.push({
-                name: "organizationInit"
-              });
+              _this.handleBack();
             }, 100);
           } else {
             this.$message.error(res.data.code);

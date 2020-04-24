@@ -212,6 +212,7 @@
 
 <script>
 import { initNetworkServers } from "@/utils/util";
+import { setNetServer } from "@/utils/util";
 
 export default {
   data() {
@@ -312,7 +313,6 @@ export default {
                 this.$message.success("成功修改网络服务器信息");
 
                 initNetworkServers();
-
                 var _this = this;
                 setTimeout(() => {
                   _this.handleBack();

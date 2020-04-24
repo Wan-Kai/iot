@@ -168,7 +168,7 @@
         </div>
       </a-col>
       <a-col :span="14">
-        <div class="iot_amap-gatewayDetail-container">
+        <div class="iot_amap_gatewayDetail_container">
           <el-amap vid="gateway_detail"> </el-amap>
         </div>
       </a-col>
@@ -194,16 +194,14 @@ export default {
 
   data() {
     return {
+      //params
+      id: "",
+
+      //data
       name: "",
       gatewayProfileID: "",
       serverName: "",
       description: "",
-
-      location: {
-        latitude: "",
-        longitude: "",
-        altitude: ""
-      },
       massageMode: "",
       band: "",
       state: "",
@@ -216,7 +214,11 @@ export default {
       province: "",
       city: "",
       district: "",
-      id: ""
+      location: {
+        latitude: "",
+        longitude: "",
+        altitude: ""
+      }
     };
   },
 
@@ -251,22 +253,13 @@ export default {
           infoData.gateway.district
         );
 
-        // let netServer = this.$store.getters.getNetServer;
-
-        // this.tableData.gateway.serverName = "空";
-        // for(let i=0;i<netServer.length;i++){
-        //   if(netServer[i].id === this.tableData.gateway.id){
-        //     this.tableData.gateway.serverName = netServer[i].name
-        //   }
-        // }
-
         let mapObj = new AMap.Map("gateway_detail", {
           // eslint-disable-line no-unused-vars
           resizeEnable: true, //自适应大小
           zoom: 14,
           center: [
-            this.infoData.gateway.location.longitude,
-            this.infoData.gateway.location.latitude
+            infoData.gateway.location.longitude,
+            infoData.gateway.location.latitude
           ]
         });
         let startIcon = new AMap.Icon({
@@ -499,7 +492,7 @@ export default {
 .iot_view_gatewayList_detail_textCard_text_dark {
   background: #f0f0f0;
 }
-.iot_amap-gatewayDetail-container {
+.iot_amap_gatewayDetail_container {
   height: 384px;
   width: 100%;
 }

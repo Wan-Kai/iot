@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >节点编号： {{ this.number }}</span
+            >节点编号： {{ this.id }}</span
           >
         </a-col>
       </a-row>
@@ -104,12 +104,13 @@ export default {
   },
   data() {
     return {
-      number: "",
+      //params
+      id: "",
       defaultTab: ""
     };
   },
   beforeMount() {
-    this.number = this.$route.query.number;
+    this.id = this.$route.query.id;
     this.defaultTab = this.$route.query.tab;
   }
 };

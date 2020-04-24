@@ -21,8 +21,8 @@
             :wrapper-col="{ span: 16 }"
           >
             <a-radio-group
-              @change="radioOnChange"
-              v-model="value"
+              @change="netInRadioOnChange"
+              v-model="netInValue"
               style="float: left"
             >
               <a-radio value="1">OTAA</a-radio>
@@ -270,7 +270,11 @@
       </a-col>
     </a-row>
     <div>
-      <a-modal title="删除提示" :visible="visible" @cancel="handleCancel">
+      <a-modal
+        title="删除提示"
+        :visible="DeleteNodeVisible"
+        @cancel="handleCancel"
+      >
         <template slot="footer">
           <a-button key="back" @click="handleCancel">取消</a-button>
           <a-button
@@ -296,17 +300,21 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
-      number: "",
+      id: "",
 
+      //data
       name: "",
       macVersion: "",
       supportsJoin: true,
+      netInValue: "1",
+
+      //modal
       ModalText: "",
-      areaShow: false,
+      DeleteNodeVisible: false,
+
+      //loading
       submitLoading: false,
-      confirmLoading: false,
-      visible: false,
-      value: "1"
+      confirmLoading: false
     };
   },
 
@@ -314,17 +322,13 @@ export default {
     this.nodeDeployForm = this.$form.createForm(this, {
       name: "nodeDeployForm"
     });
-    this.nodeDeployForm.getFieldDecorator("keys", {
-      initialValue: [],
-      preserve: true
-    });
   },
 
   beforeMount() {
-    this.number = this.$route.query.number;
+    this.id = this.$route.query.id;
     this.$api.node
       .getNodeById({
-        extra: this.number
+        extra: this.id
       })
       .then(res => {
         let data = res.data;
@@ -335,9 +339,9 @@ export default {
 
         console.log(infoDataTemp.supportsJoin);
         if (infoDataTemp.supportsJoin.toString() === "true") {
-          this.value = "1";
+          this.netInValue = "1";
         } else {
-          this.value = "2";
+          this.netInValue = "2";
           this.supportsJoin = false;
         }
       })
@@ -361,7 +365,7 @@ export default {
           deviceProfile.organizationID = getOrganizationID();
           this.$api.node
             .updateNode({
-              extra: this.number,
+              extra: this.id,
               deviceProfile: deviceProfile
             })
             .then(res => {
@@ -381,10 +385,10 @@ export default {
       });
     },
     showModal() {
-      this.visible = true;
-      this.ModalText = "确认删除" + ":" + this.number;
+      this.DeleteNodeVisible = true;
+      this.ModalText = "确认删除" + ":" + this.id;
     },
-    radioOnChange(e) {
+    netInRadioOnChange(e) {
       if (e.target.value === "1") {
         this.supportsJoin = true;
       } else if (e.target.value === "2") {
@@ -395,7 +399,7 @@ export default {
       this.confirmLoading = true;
       this.$api.node
         .deleteNode({
-          extra: this.number
+          extra: this.id
         })
         .then(res => {
           if (res.status === 200) {
@@ -412,11 +416,11 @@ export default {
         })
         .finally(() => {
           this.confirmLoading = false;
-          this.visible = false;
+          this.DeleteNodeVisible = false;
         });
     },
     handleCancel(e) {
-      this.visible = false;
+      this.DeleteNodeVisible = false;
     },
     back() {
       this.$router.push({

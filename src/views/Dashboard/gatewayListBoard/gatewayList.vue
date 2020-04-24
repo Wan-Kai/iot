@@ -7,13 +7,13 @@
         style="width: 300px"
       />
       <div class="iot_view_gatewayManege_list_top_right">
-        <a-button type="primary" icon="plus" @click="add">
+        <a-button type="primary" icon="plus" @click="addGateway">
           添加
         </a-button>
         <a-button
           icon="download"
           style="margin-left: 20px"
-          @click="showModalIn"
+          @click="showAddModalIn"
         >
           批量导入
         </a-button>
@@ -57,7 +57,7 @@
         <a-button
           icon="download"
           style="margin-left: 20px"
-          @click="showModalOut"
+          @click="handleExport"
         >
           批量导出
         </a-button>
@@ -73,7 +73,7 @@
           <a-button
             key="submit"
             type="primary"
-            :loading="importLoadingState"
+            :loading="exportLoadingState"
             @click="handleExportOk"
           >
             确定
@@ -99,16 +99,22 @@
         </span>
 
         <span slot="action" slot-scope="text, record">
-          <a @click="check(record)">查看</a>
+          <a @click="checkGateway(record)">查看</a>
           <a-divider type="vertical" />
-          <a @click="edit(record)">编辑</a>
+          <a @click="editGateway(record)">编辑</a>
         </span>
       </a-table>
       <div class="iot_view_gatewayList_button_layout">
-        <a-button class="iot_view_gatewayList_delete_button" icon="delete"
+        <a-button
+          class="iot_view_gatewayList_delete_button"
+          icon="delete"
+          @click="deleteGateway"
           >删除</a-button
         >
-        <a-button class="iot_view_gatewayList_export_button" icon="download"
+        <a-button
+          class="iot_view_gatewayList_export_button"
+          icon="download"
+          @click="exportGateway"
           >导出</a-button
         >
       </div>
@@ -191,12 +197,15 @@ export default {
       rowSelection,
       tableLoadingState: true,
 
+      //importControl
       importLoadingState: false,
       importDialogVisibleState: false,
 
+      //exportControl
       exportLoadingState: false,
       exportDialogVisibleState: false,
 
+      //importData
       address: "E/admin",
       warning: "警告信息",
 
@@ -246,23 +255,23 @@ export default {
       });
   },
   methods: {
-    check(currentRecord) {
+    checkGateway(currentRecord) {
       this.$router.push({
         name: "checkGatewayManage",
         query: { id: currentRecord["id"], tab: "1" }
       });
     },
-    edit(currentRecord) {
+    editGateway(currentRecord) {
       this.$router.push({
         name: "checkGatewayManage",
         query: { id: currentRecord["id"], tab: "3" }
       });
     },
-    add() {
+    addGateway() {
       this.$router.push({ name: "addGatewayManage" });
     },
 
-    showModalIn() {
+    showAddModalIn() {
       this.importDialogVisibleState = true;
     },
 
@@ -277,7 +286,7 @@ export default {
       this.importDialogVisibleState = false;
     },
 
-    showModalOut() {
+    handleExport() {
       this.exportDialogVisibleState = true;
     },
     handleExportOk() {
@@ -289,7 +298,9 @@ export default {
     },
     handleExportCancel() {
       this.exportDialogVisibleState = false;
-    }
+    },
+    deleteGateway() {},
+    exportGateway() {}
   }
 };
 </script>

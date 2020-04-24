@@ -24,16 +24,16 @@
         <div style="margin-top: 18px">
           <a-table
             :columns="columns"
-            :dataSource="interData"
+            :dataSource="tableData"
             style="min-width: auto"
             class="iot_view_internetServer_table"
             :pagination="pagination"
             rowKey="id"
           >
             <span slot="action" slot-scope="text, record">
-              <a @click="checkRouter(record)">查看</a>
+              <a @click="checkGateway(record)">查看</a>
               <a-divider type="vertical" />
-              <a @click="editRouter(record)">编辑</a>
+              <a @click="editGateway(record)">编辑</a>
             </span>
           </a-table>
         </div>
@@ -46,8 +46,8 @@
 const columns = [
   {
     title: "网关编号",
-    dataIndex: "number",
-    key: "number"
+    dataIndex: "id",
+    key: "id"
   },
   {
     title: "管理",
@@ -59,12 +59,14 @@ import ACol from "ant-design-vue/es/grid/Col";
 export default {
   data() {
     return {
+      //data
       gatewayNum: 10,
       online: 8,
       outline: 2,
 
+      //tableData
       columns,
-      interData: [],
+      tableData: [],
 
       pagination: {
         size: "small",
@@ -85,23 +87,23 @@ export default {
         page: 0
       })
       .then(res => {
-        this.interData = res.data.result;
+        this.tableData = res.data.result;
       })
       .catch(err => {
         console.log(err);
       });
   },
   methods: {
-    checkRouter(data) {
+    checkGateway(data) {
       this.$router.push({
         name: "checkGatewayManage",
-        query: { number: data["number"], id: "1" }
+        query: { id: data["id"], tab: "1" }
       });
     },
-    editRouter(data) {
+    editGateway(data) {
       this.$router.push({
         name: "checkGatewayManage",
-        query: { number: data["number"], id: "3" }
+        query: { id: data["id"], tab: "3" }
       });
     }
   },

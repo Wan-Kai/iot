@@ -122,14 +122,15 @@ export default {
   },
   data() {
     return {
+      defaultTab: "1",
       id: "",
+
+      //data
       internalState: "",
       sign: "",
       up: "",
       down: "",
-      heartTime: "",
-
-      defaultTab: "1"
+      heartTime: ""
     };
   },
   beforeMount() {
@@ -199,7 +200,5 @@ export default {
 }
 .ant-card-wider-padding .ant-card-body {
   padding: 16px 8px;
-}
-.iot_view_gatewayList_check_form {
 }
 </style>

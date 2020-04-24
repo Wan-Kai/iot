@@ -70,6 +70,86 @@ const state = {
 };
 
 const getters = {
+  getOrganizationOptions() {
+    let organization_options = [];
+    let organization = state.organization_list;
+
+    for (let i = 0; i < organization.length; i++) {
+      let temp = {
+        value: "",
+        label: "",
+        id: ""
+      };
+      temp.label = organization[i].name;
+      temp.value = organization[i].id;
+      temp.id = organization[i].id;
+      organization_options.push(temp);
+    }
+    return organization_options;
+  },
+
+  getOrganizations() {
+    return state.organization_list;
+  },
+
+  getNetworkServerOptions() {
+    let networkServer_options = [];
+    let netServer = state.networkServer_list;
+
+    for (let i = 0; i < netServer.length; i++) {
+      let temp = {
+        value: "",
+        label: "",
+        id: ""
+      };
+      temp.label = netServer[i].name + "@" + netServer[i].server;
+      temp.value = netServer[i].server;
+      temp.id = netServer[i].id;
+      networkServer_options.push(temp);
+    }
+    return networkServer_options;
+  },
+
+  getNetworkServers() {
+    return state.networkServer_list;
+  },
+
+  getArea() {
+    return state.area_options;
+  },
+
+  getServiceOptions() {
+    let service_options = [];
+    let servicesList = state.service_list;
+    let networkServerList = state.networkServer_list;
+    for (let i = 0; i < servicesList.length; i++) {
+      for (let j = 0; j < networkServerList.length; j++) {
+        if (servicesList[i].networkServerID === networkServerList[j].id) {
+          let temp = {
+            label: servicesList[i].name + "@" + networkServerList[j].name,
+            name: servicesList[i].name,
+            value: servicesList[i].id
+          };
+          service_options.push(temp);
+          break;
+        }
+      }
+    }
+    return service_options;
+  },
+
+  getProfessionOptions() {
+    return state.profession_options;
+  },
+
+  getCommunicationMode_options() {
+    return state.communicationMode_options;
+  },
+
+  //band_options
+  getBand_options() {
+    return state.band_options;
+  }
   /*
   getOrganizations() {
     return state.organization_list;

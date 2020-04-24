@@ -156,10 +156,9 @@
             <a-row>
               <a-col :span="16" :offset="8">
                 <div style="display: flex">
-                  <a-button type="primary">保存</a-button>
-                  <a-button style="margin: 0 16px">取消</a-button>
-                  <a-button type="danger" icon="delete" @click="showModal"
-                    >删除设备</a-button
+                  <a-button type="primary" @click="handleSubmit">保存</a-button>
+                  <a-button style="margin: 0 16px" @click="backToNodeList"
+                    >取消</a-button
                   >
                 </div>
               </a-col>
@@ -183,7 +182,7 @@
                 <a-switch
                   checkedChildren="开"
                   unCheckedChildren="关"
-                  @change="stateChange"
+                  @change="areaStateChange"
                   style="float: left"
                 />
               </a-form-item>
@@ -229,20 +228,6 @@
                 </a-tooltip>
               </a-form-item>
             </a-form>
-            <a-modal title="删除提示" :visible="visible" @cancel="handleCancel">
-              <template slot="footer">
-                <a-button key="back" @click="handleCancel">取消</a-button>
-                <a-button
-                  type="danger"
-                  icon="delete"
-                  style="margin-left: 16px"
-                  @click="handleOk"
-                  :loading="confirmLoading"
-                  >确认删除</a-button
-                >
-              </template>
-              <p>{{ ModalText }}</p>
-            </a-modal>
           </div>
           <div class="iot_amap_App_nodeAdd_container">
             <el-amap vid="App_note_add_map"> </el-amap>
@@ -259,26 +244,29 @@ export default {
   name: "addNode",
   data() {
     return {
-      class_options: [],
-      defaultDataClass: "",
+      //params
+      id: "",
+
+      //options
       DevEUI_options: [],
-      defaultDevEUI: [],
       area_options: [],
       devProfile_options: [],
-      defaultDevProfile: [],
-      AppEUI: "暂定",
 
+      //data
+      AppEUI: "暂定",
       ModalText: "",
       areaShow: false,
-      submitLoading: false,
-      confirmLoading: false,
-      visible: false,
-      value: 1,
-      Lng: "",
-      Lat: "",
+      location: {
+        Lng: "",
+        Lat: ""
+      },
 
       mapObj: {},
-      mapData: []
+      mapData: [],
+
+      //loading
+      submitLoading: false,
+      confirmLoading: false
     };
   },
   beforeCreate() {
@@ -288,6 +276,7 @@ export default {
     });
   },
   beforeMount() {
+    this.id = this.$route.query.id;
     this.$api.index
       .mapMarkers({})
       .then(res => {
@@ -319,8 +308,8 @@ export default {
         let address = "";
         this.mapObj.on("click", function(e) {
           if (_self.areaShow) {
-            _self.Lng = e.lnglat.getLng();
-            _self.Lat = e.lnglat.getLat();
+            _self.location.Lng = e.lnglat.getLng();
+            _self.location.Lat = e.lnglat.getLat();
             _self.mapObj.clearMap();
             const marker = new AMap.Marker({
               // eslint-disable-line no-unused-vars
@@ -329,7 +318,10 @@ export default {
               position: [e.lnglat.getLng(), e.lnglat.getLat()], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
               title: "网关"
             });
-            address = _self.Lng.toString() + "," + _self.Lat.toString();
+            address =
+              _self.location.Lng.toString() +
+              "," +
+              _self.location.Lat.toString();
             _self.nodeDeployFormMap.setFieldsValue({
               address: address
             });
@@ -342,19 +334,17 @@ export default {
   },
   methods: {
     handleSubmit() {},
-    showModal() {
-      this.visible = true;
-      this.ModalText = "确认删除" + ":" + this.id;
+    backToNodeList() {
+      this.$router.push({
+        name: "checkApp",
+        query: { id: this.id, tab: "1" }
+      });
     },
-    stateChange() {
+    areaStateChange() {
       this.areaShow = !this.areaShow;
       if (!this.areaShow) {
         this.mapObj.clearMap();
       }
-    },
-    handleOk(e) {},
-    handleCancel(e) {
-      this.visible = false;
     }
   }
 };

@@ -1,3 +1,5 @@
+const namespaced = true;
+
 const state = {
   state: {
     isMock: false,
@@ -7,19 +9,17 @@ const state = {
 };
 
 const getters = {
-  /*
-  getIsMock: () => state.isMock,
-  getOrganizationID: () => state.organizationID
-  */
+  getIsMock: () => state.state.isMock,
+  getOrganizationID: () => state.state.organizationID
 };
 
 const actions = {};
 
 const mutations = {
-  setOrganizationID(state, data) {
-    //设置参数
-    state.organizationID = data;
-  }
+  // setOrganizationID(state, data) {
+  //   //设置参数
+  //   state.organizationID = data;
+  // }
 };
 
 export default {

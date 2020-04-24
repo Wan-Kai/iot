@@ -72,7 +72,7 @@
               <a-cascader
                 v-decorator="[
                   'networkServerName',
-                  { initialValue: this.defaultData }
+                  { initialValue: this.defaultNetworkServerName }
                 ]"
                 style="width: 90%;float: left"
                 size="small"
@@ -102,7 +102,7 @@
               <a-cascader
                 v-decorator="[
                   'communicationMode',
-                  { initialValue: this.defaultDataModulation }
+                  { initialValue: this.defaultModulation }
                 ]"
                 style="width: 90%;float: left"
                 size="small"
@@ -173,7 +173,7 @@
             >
               <p style="text-align: left;margin-bottom: 2px;">所在区域</p>
               <a-cascader
-                v-decorator="['area', { initialValue: this.defaultDataArea }]"
+                v-decorator="['area', { initialValue: this.defaultArea }]"
                 style="width: 90%;float: left"
                 size="small"
                 :options="area_options"
@@ -204,14 +204,14 @@
               </a-col>
             </a-form-item>
           </a-form>
-          <a-modal title="删除提示" :visible="visible" @cancel="handleCancel">
+          <a-modal title="删除提示" :visible="deleteModalVisible">
             <template slot="footer">
-              <a-button key="back" @click="handleCancel">取消</a-button>
+              <a-button key="back" @click="handleModalCancel">取消</a-button>
               <a-button
                 type="danger"
                 icon="delete"
                 style="margin-left: 16px"
-                @click="handleOk"
+                @click="handleDeleteGateway"
                 :loading="confirmLoading"
                 >确认删除</a-button
               >
@@ -226,8 +226,10 @@
                 :loading="submitLoading"
                 >保存</a-button
               >
-              <a-button style="margin: 0 16px" @click="back">取消</a-button>
-              <a-button type="danger" icon="delete" @click="showModal"
+              <a-button style="margin: 0 16px" @click="backToGatewayList"
+                >取消</a-button
+              >
+              <a-button type="danger" icon="delete" @click="showDeleteModal"
                 >删除设备</a-button
               >
             </a-col>
@@ -247,23 +249,37 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "@/assets/wifi.png";
-import { getNetworkServerById, getNetworkServerIdByServer } from "@/utils/util";
+import {
+  getNetworkServerById,
+  getNetworkServerIdByServer,
+  getCommunicationMode_options,
+  getArea,
+  getBand_options,
+  getNetworkServerOptions
+} from "@/utils/util";
 
 export default {
   components: { ACol, ARow },
   data() {
     return {
-      defaultData: [],
-      defaultDataModulation: [],
-      defaultDataArea: [],
+      //params
       id: "",
-      name: "",
-      description: "",
-      networkServerID: "",
+
+      //options
       internetServer_options: [],
       communicationMode_options: [],
       band_options: [],
       area_options: [],
+
+      //defaultValues
+      defaultNetworkServerName: [],
+      defaultModulation: [],
+      defaultArea: [],
+
+      //data
+      name: "",
+      description: "",
+      networkServerID: "",
       location: {
         latitude: 0.25,
         longitude: 0.26,
@@ -271,9 +287,15 @@ export default {
         source: "UNKNOWN",
         accuracy: 0
       },
+
+      //mapData
       mapData: [],
+
+      //modal
       ModalText: "Content of the modal",
-      visible: false,
+      deleteModalVisible: false,
+
+      //loading
       submitLoading: false,
       confirmLoading: false
     };
@@ -283,18 +305,14 @@ export default {
     this.gatewayDeployForm = this.$form.createForm(this, {
       name: "gatewayDeployForm"
     });
-    this.gatewayDeployForm.getFieldDecorator("keys", {
-      initialValue: [],
-      preserve: true
-    });
   },
 
   beforeMount() {
     this.id = this.$route.query.id;
 
-    this.communicationMode_options = this.$store.getters.getCommunicationMode_options;
-    this.area_options = this.$store.getters.getArea;
-    this.band_options = this.$store.getters.getBand_options;
+    this.communicationMode_options = getCommunicationMode_options();
+    this.area_options = getArea();
+    this.band_options = getBand_options();
     this.$api.index
       .mapMarkers({})
       .then(res => {
@@ -311,18 +329,18 @@ export default {
       .then(res => {
         let infoDataTemp = res.data;
         let address = "";
-        this.internetServer_options = this.$store.getters.getNetworkServerOptions;
+        this.internetServer_options = getNetworkServerOptions();
         let defaultValue = getNetworkServerById(
           infoDataTemp.gateway.networkServerID
         );
         if (defaultValue) {
-          this.defaultData.push(defaultValue);
+          this.defaultNetworkServerName.push(defaultValue);
         }
 
-        this.defaultDataModulation.push(infoDataTemp.gateway.modulation);
-        this.defaultDataArea.push(infoDataTemp.gateway.province);
-        this.defaultDataArea.push(infoDataTemp.gateway.city);
-        this.defaultDataArea.push(infoDataTemp.gateway.district);
+        this.defaultModulation.push(infoDataTemp.gateway.modulation);
+        this.defaultArea.push(infoDataTemp.gateway.province);
+        this.defaultArea.push(infoDataTemp.gateway.city);
+        this.defaultArea.push(infoDataTemp.gateway.district);
         this.name = infoDataTemp.gateway.name;
         this.description = infoDataTemp.gateway.description;
         this.location = infoDataTemp.gateway.location;
@@ -452,11 +470,11 @@ export default {
         });
       }
     },
-    showModal() {
-      this.visible = true;
+    showDeleteModal() {
+      this.deleteModalVisible = true;
       this.ModalText = "确认删除" + ":" + this.id;
     },
-    handleOk(e) {
+    handleDeleteGateway(e) {
       this.confirmLoading = true;
       this.$api.gateway
         .deleteGateway({
@@ -464,7 +482,7 @@ export default {
         })
         .then(res => {
           if (res.status === 200) {
-            this.visible = false;
+            this.deleteModalVisible = false;
             this.$message.success("成功删除网络服务器");
             setTimeout(() => {
               this.$router.push({
@@ -484,10 +502,10 @@ export default {
           this.confirmLoading = false;
         });
     },
-    handleCancel(e) {
-      this.visible = false;
+    handleModalCancel(e) {
+      this.deleteModalVisible = false;
     },
-    back() {
+    backToGatewayList() {
       this.$router.push({
         name: "gatewayInit"
       });

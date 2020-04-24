@@ -2,7 +2,7 @@
   <div>
     <a-table
       :columns="columns"
-      :dataSource="infoData"
+      :dataSource="tableData"
       style="min-width: auto"
       class="iot_view_nodeManage_table"
       :pagination="pagination"
@@ -65,9 +65,12 @@ export default {
   data() {
     return {
       columns,
+
+      //params
       id: "",
-      infoData: [],
-      nodeVisible: false,
+
+      //tableData
+      tableData: [],
 
       pagination: {
         size: "small",
@@ -83,7 +86,7 @@ export default {
     };
   },
   beforeMount() {
-    this.id = this.$route.query.number;
+    this.id = this.$route.query.id;
     this.$api.node
       .getNodeInApp({
         applicationID: this.id,
@@ -94,7 +97,7 @@ export default {
         infoDataTemp.forEach(item => {
           item.state = "off";
         });
-        this.infoData = res.data.result;
+        this.tableData = res.data.result;
       })
       .catch(err => {
         console.log(err);
@@ -102,17 +105,15 @@ export default {
   },
   methods: {
     checkRouter(record) {
-      console.log(record);
       this.$router.push({
         name: "checkNodeInApp",
-        query: { number: record.DevEUI, tab: "1" }
+        query: { id: record.devEUI, tab: "1" }
       });
     },
     editRouter(record) {
-      console.log(record);
       this.$router.push({
         name: "checkNodeInApp",
-        query: { number: record.DevEUI, tab: "2" }
+        query: { id: record.devEUI, tab: "2" }
       });
     }
   }

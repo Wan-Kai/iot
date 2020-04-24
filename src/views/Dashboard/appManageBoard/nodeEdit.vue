@@ -10,7 +10,7 @@
       <a-col :span="10">
         <a-row class="iot_view_App_node_deployEdit_form_content">
           <a-form
-            :form="nodeDeployForm"
+            :form="nodeEditForm"
             layout="vertical"
             class="iot_view_App_node_deployEdit_form"
           >
@@ -224,15 +224,19 @@
               </a-tooltip>
             </a-form-item>
           </a-form>
-          <a-modal title="删除提示" :visible="visible" @cancel="handleCancel">
+          <a-modal
+            title="删除提示"
+            :visible="deleteModalVisible"
+            @cancel="handleModalCancel"
+          >
             <template slot="footer">
-              <a-button key="back" @click="handleCancel">取消</a-button>
+              <a-button key="back" @click="handleModalCancel">取消</a-button>
               <a-button
                 type="danger"
                 icon="delete"
                 style="margin-left: 16px"
-                @click="handleOk"
-                :loading="confirmLoading"
+                @click="handleModalDelete"
+                :loading="deleteLoading"
                 >确认删除</a-button
               >
             </template>
@@ -253,42 +257,43 @@ export default {
   name: "nodeEdit",
   data() {
     return {
+      //options
       class_options: [],
-      defaultDataClass: "",
       DevEUI_options: [],
-      defaultDevEUI: [],
       area_options: [],
+
+      //default Values
+      defaultDevEUI: [],
       devProfile_options: [],
       defaultDevProfile: [],
+
+      //data
       AppEUI: "暂定",
-
-      ModalText: "",
       areaShow: false,
-      submitLoading: false,
-      confirmLoading: false,
-      visible: false,
-      value: 1,
-      Lng: "",
-      Lat: "",
 
+      submitLoading: false,
+
+      //modal
+      ModalText: "",
+      deleteLoading: false,
+      deleteModalVisible: false,
+
+      location: {
+        Lng: "",
+        Lat: ""
+      },
+
+      //mapData
       mapObj: {},
       mapData: []
     };
   },
   beforeCreate() {
-    this.nodeDeployForm = this.$form.createForm(this, {
+    this.nodeEditForm = this.$form.createForm(this, {
       name: "nodeDeployForm"
-    });
-    this.nodeDeployForm.getFieldDecorator("keys", {
-      initialValue: [],
-      preserve: true
     });
     this.nodeDeployFormMap = this.$form.createForm(this, {
       name: "nodeDeployForm"
-    });
-    this.nodeDeployFormMap.getFieldDecorator("keys", {
-      initialValue: [],
-      preserve: true
     });
   },
 
@@ -324,8 +329,8 @@ export default {
         let address = "";
         this.mapObj.on("click", function(e) {
           if (_self.areaShow) {
-            _self.Lng = e.lnglat.getLng();
-            _self.Lat = e.lnglat.getLat();
+            _self.location.Lng = e.lnglat.getLng();
+            _self.location.Lat = e.lnglat.getLat();
             _self.mapObj.clearMap();
             const marker = new AMap.Marker({
               // eslint-disable-line no-unused-vars
@@ -334,7 +339,10 @@ export default {
               position: [e.lnglat.getLng(), e.lnglat.getLat()], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
               title: "网关"
             });
-            address = _self.Lng.toString() + "," + _self.Lat.toString();
+            address =
+              _self.location.Lng.toString() +
+              "," +
+              _self.location.Lat.toString();
             _self.nodeDeployFormMap.setFieldsValue({
               address: address
             });
@@ -349,7 +357,7 @@ export default {
   methods: {
     handleSubmit() {},
     showModal() {
-      this.visible = true;
+      this.deleteModalVisible = true;
       this.ModalText = "确认删除" + ":" + this.id;
     },
     stateChange() {
@@ -358,9 +366,9 @@ export default {
         this.mapObj.clearMap();
       }
     },
-    handleOk(e) {},
-    handleCancel(e) {
-      this.visible = false;
+    handleModalDelete(e) {},
+    handleModalCancel(e) {
+      this.deleteModalVisible = false;
     }
   }
 };

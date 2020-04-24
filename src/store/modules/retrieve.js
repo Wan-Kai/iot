@@ -15,8 +15,6 @@ const state = {
 };
 
 const getters = {
-  //注册相关
-  /*
   getPhoneNumber: () => state.step1.phoneNumber,
 
   getRetrieveNote: () => state.step1.note,
@@ -34,7 +32,6 @@ const getters = {
     }
     return false;
   }
-  */
 };
 
 const actions = {};
@@ -59,6 +56,13 @@ const mutations = {
   setConfirmPassword(state, data) {
     //设置参数
     state.step2.confirmPassword = data;
+  },
+  resetData(state) {
+    state.step1.phoneNumber = "";
+    state.step1.note = "";
+    state.step2.oldPassword = "";
+    state.step2.newPassword = "";
+    state.step2.confirmPassword = "";
   }
 };
 

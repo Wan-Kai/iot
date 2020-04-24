@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >编号： {{ this.number }}</span
+            >编号： {{ this.id }}</span
           >
         </a-col>
       </a-row>
@@ -63,14 +63,19 @@
         </a-tabs>
       </div>
       <a-modal
-        v-model="nodeVisible"
+        v-model="nodeListModalVisible"
         title="应用节点分配"
         onOk="handleOk"
         style="min-width: fit-content"
       >
         <template slot="footer" style="float: right">
-          <a-button key="cancel">确定</a-button>
-          <a-button key="cancel" @click="cancel">取消</a-button>
+          <a-button
+            key="comfirm"
+            @click="handleNodeChangeComfirm"
+            :loading="nodeComfirmLoading"
+            >确定</a-button
+          >
+          <a-button key="cancel" @click="handleNodeChangeCancel">取消</a-button>
         </template>
 
         <a-transfer
@@ -83,7 +88,7 @@
           :titles="['所有节点', '选中节点']"
           :operations="['选中', '撤回']"
           :targetKeys="targetKeys"
-          @change="handleChange"
+          @change="handleNodeChange"
           :render="item => `${item.title}`"
         >
           <span slot="notFoundContent">
@@ -104,29 +109,36 @@ export default {
   components: { ACol, ARow, NodeList, Edit },
   data() {
     return {
-      number: "1",
+      //params
+      id: "1",
+      defaultTab: "1",
 
+      //data
       appName: "lora100",
       capacity: "暂无",
       usedCapacity: "暂无",
       time: "暂无",
       description: "描述内容描述内容描述内容描述内容描述内容描述内容描述内容",
-      nodeVisible: false,
 
-      defaultTab: "1",
-      mockData: [],
-      targetKeys: []
+      //modal
+      nodeListModalVisible: false,
+      targetKeys: [],
+
+      //loading
+      nodeComfirmLoading: false,
+
+      mockData: []
     };
   },
   beforeMount() {
-    this.number = this.$route.query.number;
+    this.id = this.$route.query.id;
     if (this.$route.query.tab) {
       this.defaultTab = this.$route.query.tab;
     }
 
     this.$api.appManage
       .getAppDetail({
-        extra: this.number
+        extra: this.id
       })
       .then(res => {
         console.log(res);
@@ -143,16 +155,24 @@ export default {
     // this.getMock();
   },
   methods: {
-    cancel() {
-      this.nodeVisible = !this.nodeVisible;
+    handleNodeChangeComfirm() {
+      this.nodeComfirmLoading = true;
     },
     addNodes() {
-      this.nodeVisible = !this.nodeVisible;
+      this.nodeListModalVisible = !this.nodeListModalVisible;
     },
     addNode() {
       this.$router.push({
-        name: "addNodeInApp"
+        name: "addNodeInApp",
+        query: { id: this.id }
       });
+    },
+    handleNodeChangeCancel() {
+      this.nodeListModalVisible = !this.nodeListModalVisible;
+    },
+    handleNodeChange(targetKeys, moveKeys) {
+      console.log(targetKeys, moveKeys);
+      this.targetKeys = targetKeys;
     },
     getMock() {
       const targetKeys = [];
@@ -169,10 +189,6 @@ export default {
         mockData.push(data);
       }
       this.mockData = mockData;
-      this.targetKeys = targetKeys;
-    },
-    handleChange(targetKeys, moveKeys) {
-      console.log(targetKeys, moveKeys);
       this.targetKeys = targetKeys;
     }
   }

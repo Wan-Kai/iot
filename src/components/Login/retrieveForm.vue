@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { getRetrieveNote, getStep2State, resetData } from "@/utils/util";
 export default {
   data() {
     return {
@@ -59,14 +60,16 @@ export default {
   methods: {
     next() {
       if (this.current === 0) {
-        let note = this.$store.getters.getRetrieveNote;
+        let note = getRetrieveNote();
+        console.log("获取note");
+        console.log(getRetrieveNote());
         if (note.note === "888888") {
           this.current++;
         } else {
           this.$message.error("请输入验证码： 888888 (六个8)");
         }
       } else if (this.current === 1) {
-        if (this.$store.getters.getStep2State) {
+        if (getStep2State()) {
           this.current++;
         } else {
           this.$message.error("请求错误，请检查是否填写相应数据");
@@ -88,6 +91,7 @@ export default {
       }
     },
     successSubmit() {
+      resetData();
       this.$message.success("请重新登录");
       this.$router.push("/user/login");
     }

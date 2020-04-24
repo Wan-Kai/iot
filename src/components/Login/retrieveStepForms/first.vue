@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import { setPhoneNumber, setNote } from "@/utils/util";
 export default {
   data() {
     this.form = this.$form.createForm(this, { name: "retrieve_step1" });
@@ -64,9 +65,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.$message.success("短信验证码已发送");
-          this.$store.commit("retrieve/setPhoneNumber", {
-            phoneNumber: values.phoneNumber
-          });
+          setPhoneNumber(values.phoneNumber);
         }
       });
     },
@@ -74,9 +73,7 @@ export default {
     noteChange() {
       setTimeout(() => {
         this.form.validateFieldsAndScroll((err, values) => {
-          this.$store.commit("retrieve/setNote", {
-            note: values.note
-          });
+          setNote(values.note);
         });
       }, 0);
     }

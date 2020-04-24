@@ -16,10 +16,14 @@
           </a-input-group>
         </a-col>
         <a-col :span="8" :offset="8">
-          <a-button type="primary" icon="plus" @click="add">
+          <a-button type="primary" icon="plus" @click="addNode">
             节点注册
           </a-button>
-          <a-button style="margin: 0 22px" icon="download" @click="showModalIn">
+          <a-button
+            style="margin: 0 22px"
+            icon="download"
+            @click="showImportModalIn"
+          >
             批量导入
           </a-button>
           <a-modal
@@ -59,7 +63,7 @@
               <p style="margin-bottom: 0">Some contents...</p>
             </a-card>
           </a-modal>
-          <a-button icon="download" @click="showModalOut">
+          <a-button icon="download" @click="showExportModalOut">
             批量导出
           </a-button>
           <a-modal
@@ -74,7 +78,7 @@
             <a-button
               key="submit"
               type="primary"
-              :loading="importLoadingState"
+              :loading="exportLoadingState"
               @click="handleExportOk"
             >
               确定
@@ -167,9 +171,11 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
+      //table
       columns,
       tableData: [],
       tableLoadingState: true,
+
       importLoadingState: false,
       importDialogVisibleState: false,
 
@@ -215,7 +221,7 @@ export default {
       });
   },
   methods: {
-    add() {
+    addNode() {
       this.$router.push({
         name: "addNodeManage"
       });
@@ -223,16 +229,16 @@ export default {
     check(data) {
       this.$router.push({
         name: "checkNodeManage",
-        query: { number: data["id"], tab: "1" }
+        query: { id: data["id"], tab: "1" }
       });
     },
     edit(data) {
       this.$router.push({
         name: "checkNodeManage",
-        query: { number: data["id"], tab: "2" }
+        query: { id: data["id"], tab: "2" }
       });
     },
-    showModalIn() {
+    showImportModalIn() {
       this.importDialogVisibleState = true;
     },
     handleImportOk() {
@@ -246,7 +252,7 @@ export default {
       this.importDialogVisibleState = false;
     },
 
-    showModalOut() {
+    showExportModalOut() {
       this.exportDialogVisibleState = true;
     },
     handleExportOk() {

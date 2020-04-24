@@ -249,7 +249,14 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "@/assets/wifi.png";
-import { getNetworkServerById, getNetworkServerIdByServer } from "@/utils/util";
+import {
+  getNetworkServerById,
+  getNetworkServerIdByServer,
+  getCommunicationMode_options,
+  getArea,
+  getBand_options,
+  getNetworkServerOptions
+} from "@/utils/util";
 
 export default {
   components: { ACol, ARow },
@@ -303,9 +310,9 @@ export default {
   beforeMount() {
     this.id = this.$route.query.id;
 
-    this.communicationMode_options = this.$store.getters.getCommunicationMode_options;
-    this.area_options = this.$store.getters.getArea;
-    this.band_options = this.$store.getters.getBand_options;
+    this.communicationMode_options = getCommunicationMode_options();
+    this.area_options = getArea();
+    this.band_options = getBand_options();
     this.$api.index
       .mapMarkers({})
       .then(res => {
@@ -322,7 +329,7 @@ export default {
       .then(res => {
         let infoDataTemp = res.data;
         let address = "";
-        this.internetServer_options = this.$store.getters.getNetworkServerOptions;
+        this.internetServer_options = getNetworkServerOptions();
         let defaultValue = getNetworkServerById(
           infoDataTemp.gateway.networkServerID
         );

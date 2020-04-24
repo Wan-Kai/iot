@@ -197,6 +197,7 @@
 </template>
 
 <script>
+import { setNetServer } from "@/utils/util";
 export default {
   data() {
     return {
@@ -293,7 +294,7 @@ export default {
                       temp.name = getData[i].name;
                       netServerData.push(temp);
                     }
-                    this.$store.commit("util/setNetServer", netServerData);
+                    setNetServer(netServerData);
                   })
                   .catch(err => {
                     console.log(err);
@@ -357,7 +358,7 @@ export default {
                   temp.name = getData[i].name;
                   netServerData.push(temp);
                 }
-                this.$store.commit("util/setNetServer", netServerData);
+                setNetServer(netServerData);
               });
           } else {
             this.$message.error(res.data.code);

@@ -78,7 +78,8 @@
 import {
   initNetworkServers,
   initServiceOptions,
-  initOrganizations
+  initOrganizations,
+  setSessionKey
 } from "@/utils/util";
 export default {
   data() {
@@ -102,10 +103,7 @@ export default {
             .then(res => {
               if (res.status === 200) {
                 this.$message.success("登录成功");
-                debugger;
-                this.$store.commit("login/setUser", {
-                  sessionKey: res.data.jwt
-                });
+                setSessionKey(res.data.jwt);
 
                 setTimeout(() => {
                   initOrganizations();
@@ -117,12 +115,6 @@ export default {
               } else {
                 this.$message.error("请检查用户名和密码!");
               }
-              // let item = this.$store.getters.getLoginState;
-              // console.log(item);
-              // this.$store.commit("login/setLogin", {
-              //   isLogin: "1",
-              //   key:s "admin"
-              // });
             })
             .catch(err => {
               console.log(err);

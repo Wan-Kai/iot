@@ -243,7 +243,12 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
-import { getNetworkServerOptions } from "@/utils/util";
+import {
+  getNetworkServerOptions,
+  getArea,
+  getCommunicationMode_options,
+  getBand_options
+} from "@/utils/util";
 
 export default {
   components: { ACol, ARow },
@@ -321,10 +326,10 @@ export default {
         console.log(err);
       });
 
-    this.internetServer_options = this.$store.getters.getNetworkServerOptions;
-    this.area_options = this.$store.getters.getArea;
-    this.communicationMode_options = this.$store.getters.getCommunicationMode_options;
-    this.band_options = this.$store.getters.getBand_options;
+    this.internetServer_options = getNetworkServerOptions();
+    this.area_options = getArea();
+    this.communicationMode_options = getCommunicationMode_options();
+    this.band_options = getBand_options();
   },
   methods: {
     handleSubmit(e) {

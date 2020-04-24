@@ -127,11 +127,7 @@
 <script>
 import Header from "./Header";
 import Footer from "./Footer";
-import {
-  initNetworkServers,
-  initServiceOptions,
-  initOrganizations
-} from "@/utils/util";
+import { setArea } from "@/utils/util";
 
 export default {
   data() {
@@ -153,7 +149,7 @@ export default {
     this.$api.util
       .getAreaData()
       .then(res => {
-        this.$store.commit("options/setArea", res.data.area_options);
+        setArea(res.data.area_options);
       })
       .catch(err => {
         console.log(err);

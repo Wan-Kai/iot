@@ -2,6 +2,22 @@ import store from "../store/index";
 import api from "./api";
 import options from "../store/modules/options";
 
+export function getPhoneNumber() {
+  return store.getters["retrieve/getPhoneNumber"];
+}
+
+export function getRetrieveNote() {
+  return store.getters["retrieve/getRetrieveNote"];
+}
+
+export function getStep2State() {
+  return store.getters["retrieve/getStep2State"];
+}
+
+export function getSessionkey() {
+  return store.getters["login/getSessionkey"];
+}
+
 export function initOrganizations() {
   api.organization
     .getOrganizations({
@@ -40,23 +56,20 @@ export function initOrganizations() {
 }
 
 export function getOrganizationID() {
-  console.log("util");
   return store.getters["parameter/getOrganizationID"];
 }
 
 export function getOrganizationOptions() {
-  return store.getters.getOrganizationOptions;
+  return store.getters["options/getOrganizationOptions"];
 }
 
 export function getOrganizationNameById(id) {
-  let organizations = store.getters.getOrganizations;
-  //debugger
+  let organizations = store.getters["options/getOrganizations"];
   for (let i = 0; i < organizations.length; i++) {
     if (organizations[i].id === id) {
       return organizations[i].name;
     }
   }
-  console.log("错误");
 }
 
 export function initNetworkServers() {
@@ -86,11 +99,11 @@ export function initNetworkServers() {
 }
 
 export function getNetworkServerOptions() {
-  return store.getters.getNetworkServerOptions;
+  return store.getters["options/getNetworkServerOptions"];
 }
 
 export function getNetworkServerIdByServer(server) {
-  let netServer = store.getters.getNetworkServers;
+  let netServer = store.getters["options/getNetworkServers"];
   for (let i = 0; i < netServer.length; i++) {
     if (netServer[i].server === server) {
       return netServer[i].id;
@@ -101,7 +114,7 @@ export function getNetworkServerIdByServer(server) {
 
 export function getNetworkServerById(id) {
   //return store.getters.getNetworkServerById(id);
-  let netServer = store.getters.getNetworkServers;
+  let netServer = store.getters["options/getNetworkServers"];
   for (let i = 0; i < netServer.length; i++) {
     if (netServer[i].id === id) {
       return netServer[i].server;
@@ -111,7 +124,7 @@ export function getNetworkServerById(id) {
 }
 
 export function getNetworkServerNameById(id) {
-  let netServer = store.getters.getNetworkServers;
+  let netServer = store.getters["options/getNetworkServers"];
   //console.log(netServer);
   for (let i = 0; i < netServer.length; i++) {
     if (netServer[i].id === id) {
@@ -122,11 +135,19 @@ export function getNetworkServerNameById(id) {
 }
 
 export function getArea() {
-  return store.getters.getArea;
+  return store.getters["options/getArea"];
+}
+
+export function getCommunicationMode_options() {
+  return store.getters["options/getCommunicationMode_options"];
+}
+
+export function getBand_options() {
+  return store.getters["options/getBand_options"];
 }
 
 export function getAreaLabel(province, city, district) {
-  let area = store.getters.getArea;
+  let area = store.getters["options/getArea"];
   for (let i = 0; i < area.length; i++) {
     if (area[i].value === province) {
       for (let j = 0; j < area[i].children.length; j++) {
@@ -176,9 +197,57 @@ export function initServiceOptions() {
 }
 
 export function getServiceOptions() {
-  return store.getters.getServiceOptions;
+  return store.getters["options/getServiceOptions"];
 }
 
 export function getProfessionOptions() {
-  return store.getters.getProfessionOptions;
+  return store.getters["options/getProfessionOptions"];
+}
+
+export function setSessionKey(sessionKey) {
+  store.commit("login/setUser", {
+    sessionKey: sessionKey
+  });
+}
+
+export function setPhoneNumber(phoneNumber) {
+  store.commit("retrieve/setPhoneNumber", {
+    phoneNumber: phoneNumber
+  });
+}
+
+export function setNote(note) {
+  store.commit("retrieve/setNote", {
+    note: note
+  });
+}
+
+export function setOldPassword(pre_password) {
+  store.commit("retrieve/setOldPassword", {
+    oldPassword: pre_password
+  });
+}
+
+export function setNewPassword(now_password) {
+  store.commit("retrieve/setNewPassword", {
+    newPassword: now_password
+  });
+}
+
+export function setConfirmPassword(confirm_password) {
+  store.commit("retrieve/setConfirmPassword", {
+    confirmPassword: confirm_password
+  });
+}
+
+export function resetData() {
+  store.commit("retrieve/resetData", {});
+}
+
+export function setArea(area_options) {
+  store.commit("options/setArea", area_options);
+}
+
+export function setNetServer(netServerData) {
+  store.commit("util/setNetServer", netServerData);
 }

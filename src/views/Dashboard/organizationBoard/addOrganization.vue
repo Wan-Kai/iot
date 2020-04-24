@@ -124,7 +124,7 @@
 </template>
 
 <script>
-import { initOrganizations } from "@/utils/util";
+import { initOrganizations, getArea, getProfessionOptions } from "@/utils/util";
 
 export default {
   data() {
@@ -150,8 +150,8 @@ export default {
     this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
   },
   beforeMount() {
-    this.area_options = this.$store.getters.getArea;
-    this.profession_options = this.$store.getters.getProfessionOptions;
+    this.area_options = getArea();
+    this.profession_options = getProfessionOptions();
   },
   methods: {
     handleSubmit(e) {

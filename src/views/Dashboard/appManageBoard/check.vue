@@ -109,6 +109,7 @@ export default {
   components: { ACol, ARow, NodeList, Edit },
   data() {
     return {
+      //params
       id: "1",
       defaultTab: "1",
 
@@ -137,7 +138,7 @@ export default {
 
     this.$api.appManage
       .getAppDetail({
-        extra: this.number
+        extra: this.id
       })
       .then(res => {
         console.log(res);

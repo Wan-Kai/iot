@@ -168,7 +168,7 @@
         </div>
       </a-col>
       <a-col :span="14">
-        <div class="iot_amap-gatewayDetail-container">
+        <div class="iot_amap_gatewayDetail_container">
           <el-amap vid="gateway_detail"> </el-amap>
         </div>
       </a-col>
@@ -194,9 +194,11 @@ export default {
 
   data() {
     return {
+      //params
+      id: "",
+
       //data
       name: "",
-      id: "",
       gatewayProfileID: "",
       serverName: "",
       description: "",
@@ -265,8 +267,8 @@ export default {
           resizeEnable: true, //自适应大小
           zoom: 14,
           center: [
-            this.infoData.gateway.location.longitude,
-            this.infoData.gateway.location.latitude
+            infoData.gateway.location.longitude,
+            infoData.gateway.location.latitude
           ]
         });
         let startIcon = new AMap.Icon({
@@ -499,7 +501,7 @@ export default {
 .iot_view_gatewayList_detail_textCard_text_dark {
   background: #f0f0f0;
 }
-.iot_amap-gatewayDetail-container {
+.iot_amap_gatewayDetail_container {
   height: 384px;
   width: 100%;
 }

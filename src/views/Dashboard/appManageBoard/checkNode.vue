@@ -104,14 +104,13 @@ export default {
   },
   data() {
     return {
+      //params
       id: "",
       defaultTab: ""
     };
   },
   beforeMount() {
     this.id = this.$route.query.id;
-    console.log("收到");
-    console.log(this.$route.query.id);
     this.defaultTab = this.$route.query.tab;
   }
 };

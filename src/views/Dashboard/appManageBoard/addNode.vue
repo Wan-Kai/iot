@@ -244,16 +244,13 @@ export default {
   name: "addNode",
   data() {
     return {
+      //params
       id: "",
+
       //options
-      class_options: [],
       DevEUI_options: [],
       area_options: [],
       devProfile_options: [],
-
-      //default Value
-      defaultDevEUI: [],
-      defaultDevProfile: [],
 
       //data
       AppEUI: "暂定",

@@ -197,12 +197,15 @@ export default {
       rowSelection,
       tableLoadingState: true,
 
+      //importControl
       importLoadingState: false,
       importDialogVisibleState: false,
 
+      //exportControl
       exportLoadingState: false,
       exportDialogVisibleState: false,
 
+      //importData
       address: "E/admin",
       warning: "警告信息",
 

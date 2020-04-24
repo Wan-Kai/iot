@@ -123,9 +123,9 @@ export default {
   data() {
     return {
       defaultTab: "1",
+      id: "",
 
       //data
-      id: "",
       internalState: "",
       sign: "",
       up: "",

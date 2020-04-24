@@ -115,7 +115,6 @@ export default new Vuex.Store({
     },
 
     getIsMock: () => parameter.state.isMock,
-    getOrganizationID: () => parameter.state.organizationID,
 
     getPhoneNumber: () => retrieve.state.step1.phoneNumber,
 

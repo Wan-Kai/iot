@@ -249,17 +249,22 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
+      //options
       internetServer_options: [],
       communicationMode_options: [],
       band_options: [],
       area_options: [],
 
+      //loading
       commitLoading: false,
 
+      //data
       location: {
         Lng: "",
         Lat: ""
       },
+
+      //mapData
       mapData: []
     };
   },

@@ -204,18 +204,14 @@
               </a-col>
             </a-form-item>
           </a-form>
-          <a-modal
-            title="删除提示"
-            :visible="deleteModalVisible"
-            @cancel="handleCancel"
-          >
+          <a-modal title="删除提示" :visible="deleteModalVisible">
             <template slot="footer">
-              <a-button key="back" @click="handleCancel">取消</a-button>
+              <a-button key="back" @click="handleModalCancel">取消</a-button>
               <a-button
                 type="danger"
                 icon="delete"
                 style="margin-left: 16px"
-                @click="handleOk"
+                @click="handleDeleteGateway"
                 :loading="confirmLoading"
                 >确认删除</a-button
               >
@@ -230,8 +226,10 @@
                 :loading="submitLoading"
                 >保存</a-button
               >
-              <a-button style="margin: 0 16px" @click="back">取消</a-button>
-              <a-button type="danger" icon="delete" @click="showModal"
+              <a-button style="margin: 0 16px" @click="backToGatewayList"
+                >取消</a-button
+              >
+              <a-button type="danger" icon="delete" @click="showDeleteModal"
                 >删除设备</a-button
               >
             </a-col>
@@ -257,6 +255,9 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
+      //params
+      id: "",
+
       //options
       internetServer_options: [],
       communicationMode_options: [],
@@ -269,7 +270,6 @@ export default {
       defaultArea: [],
 
       //data
-      id: "",
       name: "",
       description: "",
       networkServerID: "",
@@ -463,11 +463,11 @@ export default {
         });
       }
     },
-    showModal() {
-      this.visible = true;
+    showDeleteModal() {
+      this.deleteModalVisible = true;
       this.ModalText = "确认删除" + ":" + this.id;
     },
-    handleOk(e) {
+    handleDeleteGateway(e) {
       this.confirmLoading = true;
       this.$api.gateway
         .deleteGateway({
@@ -475,7 +475,7 @@ export default {
         })
         .then(res => {
           if (res.status === 200) {
-            this.visible = false;
+            this.deleteModalVisible = false;
             this.$message.success("成功删除网络服务器");
             setTimeout(() => {
               this.$router.push({
@@ -495,10 +495,10 @@ export default {
           this.confirmLoading = false;
         });
     },
-    handleCancel(e) {
-      this.visible = false;
+    handleModalCancel(e) {
+      this.deleteModalVisible = false;
     },
-    back() {
+    backToGatewayList() {
       this.$router.push({
         name: "gatewayInit"
       });

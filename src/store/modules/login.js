@@ -18,10 +18,9 @@ const state = {
 
 // getters
 const getters = {
-  /*
-   getIsLogin: () => state.all.isLogin,
-    getLoginState: () => state.all,
-   */
+  getSessionkey() {
+    return state.all.sessionKey;
+  }
 };
 
 // actions

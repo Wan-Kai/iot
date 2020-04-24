@@ -120,8 +120,11 @@ import { getServiceOptions } from "@/utils/util";
 export default {
   data() {
     return {
-      commitLoading: false,
-      serviceProfile_options: []
+      //options
+      serviceProfile_options: [],
+
+      //loading
+      commitLoading: false
     };
   },
   beforeCreate() {
@@ -136,7 +139,7 @@ export default {
     handleSubmit(e) {
       let self = this;
       e.preventDefault();
-      this.form.validateFields((err, values) => {
+      this.appAddform.validateFields((err, values) => {
         console.log(values);
         if (!err) {
           self.commitLoading = true;

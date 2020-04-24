@@ -194,13 +194,15 @@ export default {
   components: { ARow },
   data() {
     return {
+      //params
+      id: "",
+
       //options
       serviceProfile_options: [],
       //default Value
       defaultServiceProfile: [],
 
       //data
-      id: "",
       name: "",
       capacity: "",
       description: "",
@@ -218,10 +220,11 @@ export default {
     this.AppEditform = this.$form.createForm(this, { name: "AppEdit_form" });
   },
   beforeMount() {
+    this.id = this.$route.query.id;
     this.serviceProfile_options = getServiceOptions();
     this.$api.appManage
       .getAppDetail({
-        extra: this.$route.query.number
+        extra: this.id
       })
       .then(res => {
         let infoDataTemp = res.data.application;
@@ -237,7 +240,7 @@ export default {
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      this.form.validateFields((err, values) => {
+      this.AppEditform.validateFields((err, values) => {
         if (!err) {
           this.submitLoading = true;
           console.log(values);

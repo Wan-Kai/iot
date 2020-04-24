@@ -65,9 +65,12 @@ export default {
   data() {
     return {
       columns,
+
+      //params
       id: "",
+
+      //tableData
       tableData: [],
-      nodeVisible: false,
 
       pagination: {
         size: "small",

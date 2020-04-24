@@ -40,7 +40,8 @@ export function initOrganizations() {
 }
 
 export function getOrganizationID() {
-  return store.getters.getOrganization;
+  console.log("util");
+  return store.getters["parameter/getOrganizationID"];
 }
 
 export function getOrganizationOptions() {

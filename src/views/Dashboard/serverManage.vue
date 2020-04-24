@@ -66,7 +66,7 @@ const columns = [
     dataIndex: "organizationName"
   },
   {
-    title: "创业时间",
+    title: "创建时间",
     key: "createdAt",
     dataIndex: "createdAt"
   },

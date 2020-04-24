@@ -6,7 +6,7 @@
       class="iot_view_internetServer_edit_form"
     >
       <a-form-item
-        label="主机名："
+        label="ID"
         :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
@@ -200,15 +200,20 @@
 export default {
   data() {
     return {
-      gatewayOn: false,
-      returnedData: {},
-      id: "",
-      server: "",
-      port: "",
-      name: "",
-      gatewayDiscoveryInterval: "",
-      gatewayDiscoveryTXFrequency: "",
-      gatewayDiscoveryDR: "",
+      returnedData: {
+        id: "",
+        name: "",
+        displayName: "",
+        profession: "",
+        province: "",
+        city: "",
+        district: "",
+        address: "",
+        canHaveGateways: false,
+        createdAt: "",
+        updatedAt: ""
+      },
+
       ModalText: "确认删除",
       visible: false,
       submitLoading: false,
@@ -225,23 +230,26 @@ export default {
     });
   },
   beforeMount() {
-    this.server = this.$route.query.server;
-    this.id = this.$route.query.nid;
-    this.port = this.$route.query.port;
-    this.$api.networkServer
-      .getServerDetail({
+    this.returnedData.id = this.$route.query.id;
+
+    this.$api.organization
+      .getOrganization({
         limit: 1,
         extra: this.id
       })
       .then(res => {
         console.log(res);
-        this.gatewayOn = res.data.networkServer.gatewayDiscoveryEnabled;
-        this.name = res.data.networkServer.name;
-        this.gatewayDiscoveryInterval =
-          res.data.networkServer.gatewayDiscoveryInterval;
-        this.gatewayDiscoveryTXFrequency =
-          res.data.networkServer.gatewayDiscoveryTXFrequency;
-        this.gatewayDiscoveryDR = res.data.networkServer.gatewayDiscoveryDR;
+        this.returnedData.name = res.data.organization.name;
+        this.returnedData.displayName = res.data.organization.displayName;
+        this.returnedData.canHaveGateways =
+          res.data.organization.canHaveGateways;
+        this.returnedData.profession = res.data.organization.profession;
+        this.returnedData.province = res.data.organization.province;
+        this.returnedData.city = res.data.organization.city;
+        this.returnedData.district = res.data.organization.district;
+        this.returnedData.address = res.data.organization.address;
+        this.returnedData.createdAt = res.data.createdAt;
+        this.returnedData.updatedAt = res.data.updatedAt;
       })
       .catch(err => {
         console.log(err);

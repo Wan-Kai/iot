@@ -178,3 +178,7 @@ export function initServiceOptions() {
 export function getServiceOptions() {
   return store.getters.getServiceOptions;
 }
+
+export function getProfessionOptions() {
+  return store.getters.getProfessionOptions;
+}

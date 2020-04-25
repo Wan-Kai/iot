@@ -1,6 +1,5 @@
 import axios from "axios"; // 引入axios
 import store from "../store/index";
-import { getSessionkey } from "./util";
 import router from "../router/index";
 
 // 环境的切换
@@ -81,7 +80,7 @@ export function get(url, data = {}) {
     method: "get",
     params: data,
     headers: {
-      Authorization: getSessionkey()
+      Authorization: store.getters["login/getSessionkey"]
     }
   };
   // sendObject.data=JSON.stringify(data);
@@ -120,7 +119,7 @@ export function post(url, data = {}) {
     method: "post",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: getSessionkey()
+      Authorization: store.getters["login/getSessionkey"]
     },
     data: data
   };
@@ -135,7 +134,7 @@ export function put(url, data = {}) {
     method: "put",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: getSessionkey()
+      Authorization: store.getters["login/getSessionkey"]
     },
     data: JSON.stringify(data)
   });
@@ -147,7 +146,7 @@ export function deletes(url, data = {}) {
     url: url,
     method: "delete",
     headers: {
-      Authorization: getSessionkey()
+      Authorization: store.getters["login/getSessionkey"]
     },
     data: JSON.stringify(data)
   };

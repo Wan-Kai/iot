@@ -21,7 +21,7 @@
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">网络状态</div>
               <div style="font-size: 12px">
-                {{ this.internalState }}
+                {{ this.returnedData.internalState }}
               </div>
             </a-col>
           </a-row>
@@ -36,7 +36,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">信号</div>
-              <div style="font-size: 12px">{{ this.sign }}</div>
+              <div style="font-size: 12px">{{ this.returnedData.sign }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -50,7 +50,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">上行</div>
-              <div style="font-size: 12px">{{ this.up }}</div>
+              <div style="font-size: 12px">{{ this.returnedData.up }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -64,7 +64,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">下行</div>
-              <div style="font-size: 12px">{{ this.down }}</div>
+              <div style="font-size: 12px">{{ this.returnedData.down }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -78,7 +78,9 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">最后心跳时间</div>
-              <div style="font-size: 12px">{{ this.heartTime }}</div>
+              <div style="font-size: 12px">
+                {{ this.returnedData.heartTime }}
+              </div>
             </a-col>
           </a-row>
         </a-col>
@@ -122,15 +124,18 @@ export default {
   },
   data() {
     return {
+      //params
       defaultTab: "1",
       id: "",
 
       //data
-      internalState: "",
-      sign: "",
-      up: "",
-      down: "",
-      heartTime: ""
+      returnedData: {
+        internalState: "",
+        sign: "",
+        up: "",
+        down: "",
+        heartTime: ""
+      }
     };
   },
   beforeMount() {
@@ -141,7 +146,7 @@ export default {
         extra: this.id
       })
       .then(res => {
-        this.infoData = res.data;
+        this.returnedData = res.data;
         if (res.data.lastSeenAt) {
           console.log("little test");
           this.internalState = "测试";

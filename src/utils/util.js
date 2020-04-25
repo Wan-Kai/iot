@@ -14,10 +14,6 @@ export function getStep2State() {
   return store.getters["retrieve/getStep2State"];
 }
 
-export function getSessionkey() {
-  return store.getters["login/getSessionkey"];
-}
-
 export function initOrganizations() {
   api.organization
     .getOrganizations({
@@ -251,5 +247,5 @@ export function setArea(area_options) {
 }
 
 export function setNetServer(netServerData) {
-  store.commit("util/setNetServer", netServerData);
+  store.commit("options/setNetworkServers", netServerData);
 }

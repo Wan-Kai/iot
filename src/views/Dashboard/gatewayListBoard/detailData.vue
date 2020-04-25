@@ -25,7 +25,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.name }}
+                {{ this.returnedData.name }}
               </p>
             </a-col>
           </a-row>
@@ -35,7 +35,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.serverName }}
+                {{ this.returnedData.serverName }}
               </p>
             </a-col>
           </a-row>
@@ -45,7 +45,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.massageMode }}
+                {{ this.returnedData.massageMode }}
               </p>
             </a-col>
           </a-row>
@@ -55,7 +55,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.band }}
+                {{ this.returnedData.band }}
               </p>
             </a-col>
           </a-row>
@@ -65,7 +65,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.state }}
+                {{ this.returnedData.state }}
               </p>
             </a-col>
           </a-row>
@@ -75,7 +75,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.single }}
+                {{ this.returnedData.single }}
               </p>
             </a-col>
           </a-row>
@@ -87,7 +87,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.up }}
+                {{ this.returnedData.up }}
               </p>
             </a-col>
           </a-row>
@@ -99,7 +99,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.down }}
+                {{ this.returnedData.down }}
               </p>
             </a-col>
           </a-row>
@@ -111,7 +111,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.lastSeenAt }}
+                {{ this.returnedData.lastSeenAt }}
               </p>
             </a-col>
           </a-row>
@@ -121,7 +121,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.createdAt }}
+                {{ this.returnedData.createdAt }}
               </p>
             </a-col>
           </a-row>
@@ -131,7 +131,11 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.location.latitude + "/" + this.location.longitude }}
+                {{
+                  this.returnedData.location.latitude +
+                    "/" +
+                    this.returnedData.location.longitude
+                }}
               </p>
             </a-col>
           </a-row>
@@ -141,7 +145,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.location.altitude }}
+                {{ this.returnedData.location.altitude }}
               </p>
             </a-col>
           </a-row>
@@ -151,7 +155,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.area }}
+                {{ this.returnedData.area }}
               </p>
             </a-col>
           </a-row>
@@ -161,7 +165,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.description }}
+                {{ this.returnedData.description }}
               </p>
             </a-col>
           </a-row>
@@ -198,26 +202,28 @@ export default {
       id: "",
 
       //data
-      name: "",
-      gatewayProfileID: "",
-      serverName: "",
-      description: "",
-      massageMode: "",
-      band: "",
-      state: "",
-      single: "",
-      up: "",
-      down: "",
-      lastSeenAt: "",
-      createdAt: "",
-      area: "",
-      province: "",
-      city: "",
-      district: "",
-      location: {
-        latitude: "",
-        longitude: "",
-        altitude: ""
+      returnedData: {
+        name: "",
+        gatewayProfileID: "",
+        serverName: "",
+        description: "",
+        massageMode: "",
+        band: "",
+        state: "",
+        single: "",
+        up: "",
+        down: "",
+        lastSeenAt: "",
+        createdAt: "",
+        area: "",
+        province: "",
+        city: "",
+        district: "",
+        location: {
+          latitude: "",
+          longitude: "",
+          altitude: ""
+        }
       }
     };
   },
@@ -230,29 +236,32 @@ export default {
       })
       .then(res => {
         let infoData = res.data;
-        console.log(infoData);
-        this.area =
+        let infoDataTemp = {};
+
+        infoDataTemp.area =
           infoData.gateway.province +
           "/" +
           infoData.gateway.city +
           "/" +
           infoData.gateway.district;
 
-        this.name = infoData.gateway.name;
-        this.gatewayProfileID = infoData.gateway.gatewayProfileID;
-        this.serverName = getNetworkServerNameById(
+        infoDataTemp.name = infoData.gateway.name;
+        infoDataTemp.gatewayProfileID = infoData.gateway.gatewayProfileID;
+        infoDataTemp.serverName = getNetworkServerNameById(
           infoData.gateway.networkServerID
         );
-        this.description = infoData.gateway.description;
-        this.location = infoData.gateway.location;
-        this.lastSeenAt = infoData.lastSeenAt;
-        this.createdAt = infoData.createdAt;
-        this.area = getAreaLabel(
+        infoDataTemp.description = infoData.gateway.description;
+        infoDataTemp.location = infoData.gateway.location;
+        infoDataTemp.lastSeenAt = infoData.lastSeenAt;
+        infoDataTemp.createdAt = infoData.createdAt;
+        infoDataTemp.area = getAreaLabel(
           infoData.gateway.province,
           infoData.gateway.city,
           infoData.gateway.district
         );
+        this.returnedData = infoDataTemp;
 
+        console.log(this.returnedData);
         let mapObj = new AMap.Map("gateway_detail", {
           // eslint-disable-line no-unused-vars
           resizeEnable: true, //自适应大小

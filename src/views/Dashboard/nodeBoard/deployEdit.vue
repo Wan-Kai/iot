@@ -22,7 +22,7 @@
           >
             <a-radio-group
               @change="netInRadioOnChange"
-              v-model="netInValue"
+              v-model="returnedData.netInValue"
               style="float: left"
             >
               <a-radio value="1">OTAA</a-radio>
@@ -41,7 +41,7 @@
               v-decorator="[
                 'macVersion',
                 {
-                  initialValue: this.macVersion
+                  initialValue: this.returnedData.macVersion
                 }
               ]"
               size="small"
@@ -70,7 +70,7 @@
               v-decorator="[
                 'name',
                 {
-                  initialValue: this.name
+                  initialValue: this.returnedData.name
                 }
               ]"
               size="small"
@@ -80,7 +80,7 @@
           </a-form-item>
 
           <a-form-item
-            v-if="!this.supportsJoin"
+            v-if="!this.returnedData.supportsJoin"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
             label="NwksKey："
@@ -106,7 +106,7 @@
           </a-form-item>
 
           <a-form-item
-            v-if="!this.supportsJoin"
+            v-if="!this.returnedData.supportsJoin"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
             label="FCntUp："
@@ -258,7 +258,7 @@
         </a-form>
         <a-row>
           <a-col :span="16" :offset="8">
-            <div style="display: flex">
+            <div style="display: flex;margin-bottom: 20px">
               <a-button type="primary" @click="handleSubmit">保存</a-button>
               <a-button style="margin: 0 16px" @click="back">取消</a-button>
               <a-button type="danger" icon="delete" @click="showModal"
@@ -300,13 +300,16 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
+      //params
       id: "",
 
       //data
-      name: "",
-      macVersion: "",
-      supportsJoin: true,
-      netInValue: "1",
+      returnedData: {
+        name: "",
+        macVersion: "",
+        supportsJoin: true,
+        netInValue: "1"
+      },
 
       //modal
       ModalText: "",
@@ -334,15 +337,14 @@ export default {
         let data = res.data;
 
         let infoDataTemp = data.deviceProfile;
-        this.macVersion = infoDataTemp.macVersion;
-        this.name = infoDataTemp.name;
+        this.returnedData.macVersion = infoDataTemp.macVersion;
+        this.returnedData.name = infoDataTemp.name;
 
-        console.log(infoDataTemp.supportsJoin);
         if (infoDataTemp.supportsJoin.toString() === "true") {
-          this.netInValue = "1";
+          this.returnedData.netInValue = "1";
         } else {
-          this.netInValue = "2";
-          this.supportsJoin = false;
+          this.returnedData.netInValue = "2";
+          this.returnedData.supportsJoin = false;
         }
       })
       .catch(err => {
@@ -357,7 +359,7 @@ export default {
         if (!err) {
           let deviceProfile = {};
           deviceProfile = values;
-          if (this.supportsJoin) {
+          if (this.returnedData.supportsJoin) {
             deviceProfile.supportsJoin = true;
           } else {
             deviceProfile.supportsJoin = false;
@@ -390,9 +392,9 @@ export default {
     },
     netInRadioOnChange(e) {
       if (e.target.value === "1") {
-        this.supportsJoin = true;
+        this.returnedData.supportsJoin = true;
       } else if (e.target.value === "2") {
-        this.supportsJoin = false;
+        this.returnedData.supportsJoin = false;
       }
     },
     handleOk(e) {

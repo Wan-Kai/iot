@@ -41,7 +41,6 @@
                   v-decorator="[
                     'AppEUI',
                     {
-                      initialValue: this.defaultDevEUI,
                       rules: [{ required: true, message: '请选择应用编号' }]
                     }
                   ]"
@@ -70,7 +69,12 @@
                 :wrapper-col="{ span: 16 }"
               >
                 <a-input
-                  v-decorator="['AppEUI']"
+                  v-decorator="[
+                    'AppEUI',
+                    {
+                      value: this.id
+                    }
+                  ]"
                   size="small"
                   style="width: 90%;float: left;text-align: left"
                 />
@@ -112,7 +116,6 @@
                   v-decorator="[
                     'devProfile',
                     {
-                      initialValue: this.defaultDevProfile,
                       rules: [{ required: true, message: '请选择设备配置文件' }]
                     }
                   ]"
@@ -142,12 +145,7 @@
               >
                 <a-textarea
                   placeholder="请填写节点描述，最多100个汉字"
-                  v-decorator="[
-                    'description',
-                    {
-                      initialValue: '描述'
-                    }
-                  ]"
+                  v-decorator="['description']"
                   :rows="4"
                   style="width: 90%;float: left;"
                 />
@@ -277,6 +275,7 @@ export default {
   },
   beforeMount() {
     this.id = this.$route.query.id;
+    console.log(this.id);
     this.$api.index
       .mapMarkers({})
       .then(res => {

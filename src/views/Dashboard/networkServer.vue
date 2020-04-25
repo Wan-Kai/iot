@@ -1,25 +1,25 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
-    <div class="iot_view_internetServer_top">
+    <div class="iot_view_top">
       <a-input-search
-        class="iot_view_internetServer_top_search"
-        placeholder="请输入要查找的内容"
+        class="iot_view_top_search"
+        placeholder="请输入要查找的网络服务器"
       />
       <a-button
-        class="iot_view_internetServer_top_add"
+        class="iot_view_top_add"
         type="primary"
         icon="plus"
-        @click="handleSubmit"
+        @click="addNetworkServer"
       >
         添加服务器
       </a-button>
     </div>
-    <div class="iot_view_internetServer_table_layout">
+    <div class="iot_view_table_layout">
       <a-table
         :columns="columns"
         :dataSource="tableData"
         style="min-width: auto"
-        class="iot_view_internetServer_table"
+        class="iot_view_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
         :key="record => record.uid"
@@ -27,9 +27,15 @@
       >
         //style="min-width: min-content" :scroll="{ x: min-content, y:
         min-content }"
-        <span slot="tags" slot-scope="tags">
-          <a-tag :color="tags === 'on' ? 'green' : 'red'" :key="tags">
-            {{ tags.toUpperCase() }}
+        <span
+          slot="gatewayDiscoveryEnabled"
+          slot-scope="gatewayDiscoveryEnabled"
+        >
+          <a-tag
+            :color="gatewayDiscoveryEnabled === true ? 'green' : 'red'"
+            :key="gatewayDiscoveryEnabled"
+          >
+            {{ gatewayDiscoveryEnabled == true ? "ON" : "OFF" }}
           </a-tag>
         </span>
         <span slot="time"> 创建时间</span>
@@ -57,8 +63,8 @@ const columns = [
   },
   {
     title: "主机名",
-    dataIndex: "IP",
-    key: "IP"
+    dataIndex: "ip",
+    key: "ip"
   },
   {
     title: "端口",
@@ -67,14 +73,14 @@ const columns = [
   },
   {
     title: "网关发现",
-    dataIndex: "gateway",
-    key: "gateway",
-    scopedSlots: { customRender: "tags" }
+    dataIndex: "gatewayDiscoveryEnabled",
+    key: "gatewayDiscoveryEnabled",
+    scopedSlots: { customRender: "gatewayDiscoveryEnabled" }
   },
   {
     title: "创建时间",
-    key: "time",
-    dataIndex: "time"
+    key: "createdAt",
+    dataIndex: "createdAt"
   },
   {
     title: "管理",
@@ -92,9 +98,11 @@ export default {
       returnedData: [
         {
           id: "",
-          IP: "",
           name: "",
           server: "",
+          ip: "",
+          port: "",
+          gatewayDiscoveryEnabled: false,
           createdAt: "",
           updatedAt: ""
         }
@@ -114,55 +122,62 @@ export default {
     };
   },
   beforeMount() {
-    this.$api.networkServer
-      .getServerData({
-        limit: 10
-      })
-      .then(res => {
-        this.returnedData = res.data.result;
-        for (let i = 0; i < this.returnedData.length; i++) {
-          let temp = {
-            id: "",
-            IP: "",
-            port: "",
-            gateway: "",
-            time: "",
-            name: ""
-          };
-          if (this.returnedData[i].server.split(":")) {
-            let server = this.returnedData[i].server.split(":");
-            temp.IP = server[0];
-            temp.port = server[1];
-          } else {
-            temp.IP = this.returnedData[i].server;
-            temp.port = "";
-          }
-          temp.gateway = "off";
-          temp.time = this.returnedData[i].createdAt;
-          temp.id = this.returnedData[i].id;
-          temp.name = this.returnedData[i].name;
-
-          this.tableData.push(temp);
-        }
-        this.tableLoadingState = false;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getTable();
   },
   methods: {
-    handleSubmit() {
+    getTable() {
+      this.$api.networkServer
+        .getServerData({
+          limit: 10
+        })
+        .then(res => {
+          this.returnedData = res.data.result;
+          for (let i = 0; i < this.returnedData.length; i++) {
+            let temp = {
+              id: "",
+              name: "",
+              server: "",
+              ip: "",
+              port: "",
+              gatewayDiscoveryEnabled: false,
+              createdAt: "",
+              updatedAt: ""
+            };
+            if (this.returnedData[i].server.split(":")) {
+              let server = this.returnedData[i].server.split(":");
+              temp.ip = server[0];
+              temp.port = server[1];
+            } else {
+              temp.ip = this.returnedData[i].server;
+              temp.port = "";
+            }
+            temp.gatewayDiscoveryEnabled = false;
+            temp.createdAt = this.returnedData[i].createdAt;
+            temp.updatedAt = this.returnedData[i].updatedAt;
+            temp.id = this.returnedData[i].id;
+            temp.name = this.returnedData[i].name;
+            temp.server = this.returnedData[i].server;
+
+            this.tableData.push(temp);
+          }
+          this.tableLoadingState = false;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    addNetworkServer() {
       setTimeout(() => {
         this.$router.push("/admin/dashboard/networkServer/addNetworkServer");
       }, 100);
     },
     checkNetworkServer(currentRecord) {
+      debugger;
       this.$router.push({
         name: "checkNetworkServer",
         query: {
-          nid: currentRecord["id"],
-          server: currentRecord["IP"],
-          port: currentRecord["port"]
+          id: currentRecord["id"]
         }
       });
     },
@@ -170,7 +185,7 @@ export default {
       this.$router.push({
         name: "editNetworkServer",
         query: {
-          nid: currentRecord["id"],
+          id: currentRecord["id"],
           server: currentRecord["IP"],
           port: currentRecord["port"]
         }
@@ -185,26 +200,26 @@ export default {
 /*  height: 30px;*/
 /*  line-height: 28px;*/
 /*}*/
-.iot_view_internetServer_top_search {
+.iot_view_top_search {
   float: left;
   width: 300px;
   text-align: left;
 }
-.iot_view_internetServer_top_add {
+.iot_view_top_add {
   float: right;
 }
-.iot_view_internetServer_top {
+.iot_view_top {
   width: 100%;
   margin-top: 14px;
   margin-bottom: 14px;
 }
-.iot_view_internetServer_top_button_text {
+.iot_view_top_button_text {
   color: white;
 }
-.iot_view_internetServer_table_layout {
+.iot_view_table_layout {
   min-height: fit-content;
 }
-.iot_view_internetServer_table {
+.iot_view_table {
   font-size: 10px;
   line-height: 8px;
 }

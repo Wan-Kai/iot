@@ -52,9 +52,7 @@ service.interceptors.response.use(
   error => {
     console.log("收到的错误");
     console.log(error.response);
-    if (error.response && error.response.status === 404) {
-      router.push({ path: "/404" });
-    } else if (error.response && error.response.status === 403) {
+    if (error.response && error.response.status === 403) {
       store.commit("login/reset");
       alert("登录失效，请重新登录！");
       router.push({ path: "/user/login" });

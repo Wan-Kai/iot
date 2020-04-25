@@ -9,17 +9,173 @@
     >
       <a-col :span="10">
         <div class="iot_view_node_detail_textCard">
-          <a-row
-            :class="{ black: item.dark }"
-            v-for="item in infoData"
-            :key="item.id"
-          >
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_node_detail_textCard_p">{{ item.title }}</p>
+              <p class="iot_view_node_detail_textCard_p">节点编号：</p>
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ item.value }}
+                {{ this.returnedData.deviceProfileID }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">应用编号：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.applicationID }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">节点名称：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.name }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">入网方式：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.skipFCntCheck }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">协议版本：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.macVersion }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">频段：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.band }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">Class：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.class }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">"网络状态：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.netState }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">信号：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.sign }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">所在网关：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.gateway }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">AppKey：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.appKey }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">超时周期（分钟）：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.overTime }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">最后心跳时间：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.lastSeenAt }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">使用状态：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.useState }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">添加时间：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.createdAt }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">地理位置：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.area }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">节点描述：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.returnedData.description }}
               </p>
             </a-col>
           </a-row>
@@ -51,128 +207,29 @@ export default {
   name: "nodeDetails",
   data() {
     return {
-      //tempData State  后续可能会变化
-      infoData: [
-        {
-          title: "节点编号:",
-          name: "",
-          value: "result",
-          id: "1",
-          dark: true
-        },
-        {
-          title: "应用编号:",
-          name: "",
-          value: "result2",
-          id: "2",
-          dark: false
-        },
-        {
-          title: "节点名称:",
-          name: "",
-          value: "result2",
-          id: "3",
-          dark: true
-        },
-        {
-          title: "入网方式:",
-          name: "",
-          value: "result",
-          id: "4",
-          dark: false
-        },
-        {
-          title: "协议版本:",
-          name: "",
-          value: "result2",
-          id: "5",
-          dark: true
-        },
-        {
-          title: "频段:",
-          name: "",
-          value: "result2",
-          id: "6",
-          dark: false
-        },
-        {
-          title: "Class:",
-          name: "",
-          value: "result2",
-          id: "7",
-          dark: true
-        },
-        {
-          title: "网络状态:",
-          name: "",
-          value: "result2",
-          id: "8",
-          dark: false
-        },
-        {
-          title: "信号:",
-          name: "",
-          value: "result2",
-          id: "9",
-          dark: true
-        },
-        {
-          title: "所在网关:",
-          name: "",
-          value: "result2",
-          id: "10",
-          dark: false
-        },
-        {
-          title: "AppKey:",
-          name: "",
-          value: "result2",
-          id: "11",
-          dark: true
-        },
-        {
-          title: "超时周期（分钟）:",
-          name: "",
-          value: "result",
-          id: "12",
-          dark: false
-        },
-        {
-          title: "最后心跳时间:",
-          name: "",
-          value: "result",
-          id: "13",
-          dark: true
-        },
-        {
-          title: "使用状态:",
-          name: "",
-          value: "result2",
-          id: "14",
-          dark: false
-        },
-        {
-          title: "添加时间:",
-          name: "",
-          value: "result",
-          id: "15",
-          dark: true
-        },
-        {
-          title: "地理位置:",
-          name: "",
-          value: "result",
-          id: "16",
-          dark: false
-        },
-        {
-          title: "节点描述:",
-          name: "",
-          value: "result",
-          id: "17",
-          dark: true
-        }
-      ],
+      //params
+      id: "",
+      appId: "",
+
+      returnedData: {
+        deviceProfileID: "",
+        applicationID: "",
+        name: "",
+        skipFCntCheck: "",
+        macVersion: "缺失",
+        band: "缺失",
+        class: "缺失",
+        netState: "缺失",
+        sign: "缺失",
+        gateway: "",
+        appKey: "",
+        overTime: "",
+        lastSeenAt: "",
+        useState: "",
+        createdAt: "",
+        area: "",
+        description: ""
+      },
 
       //mapData
       mapObj: {},
@@ -180,6 +237,37 @@ export default {
     };
   },
   beforeMount() {
+    this.id = sessionStorage.getItem("devEUI");
+    this.appId = sessionStorage.getItem("appId");
+
+    this.$api.appManage
+      .getAppNode({
+        extra: this.id
+      })
+      .then(res => {
+        let infoDataTemp = res.data;
+
+        this.returnedData.deviceProfileID = infoDataTemp.device.deviceProfileID;
+        this.returnedData.applicationID = infoDataTemp.device.applicationID;
+        this.returnedData.name = infoDataTemp.device.name;
+        this.returnedData.skipFCntCheck = infoDataTemp.device.skipFCntCheck;
+        this.returnedData.macVersion = "暂定";
+        this.returnedData.band = "暂定";
+        this.returnedData.class = "暂定";
+        this.returnedData.netState = "暂定";
+        this.returnedData.sign = "暂定";
+        this.returnedData.gateway = "暂定";
+        this.returnedData.appKey = "暂定";
+        this.returnedData.useState = "暂定";
+        this.returnedData.createdAt = "暂定";
+        this.returnedData.area = infoDataTemp.location;
+        this.returnedData.description = infoDataTemp.device.description;
+        this.returnedData.lastSeenAt = infoDataTemp.lastSeenAt;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
     this.$api.index
       .mapMarkers({})
       .then(res => {
@@ -415,8 +503,11 @@ export default {
   margin-left: 10px;
   font-size: 8px;
 }
-.black {
+.iot_view_gatewayList_detail_textCard_text_dark {
   background: #f0f0f0;
+}
+.iot_view_gatewayList_detail_textCard_text_light {
+  background: #fff;
 }
 .iot_amap_app_nodeEdit_container {
   height: 410px;

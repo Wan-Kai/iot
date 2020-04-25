@@ -110,8 +110,8 @@ export default {
     };
   },
   beforeMount() {
-    this.id = this.$route.query.id;
-    this.defaultTab = this.$route.query.tab;
+    this.id = sessionStorage.getItem("devEUI");
+    this.defaultTab = sessionStorage.getItem("tab");
   }
 };
 </script>

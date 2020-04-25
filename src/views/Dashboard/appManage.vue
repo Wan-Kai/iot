@@ -140,16 +140,18 @@ export default {
 
     checkRouter(record) {
       console.log(record);
+      sessionStorage.setItem("appId", record.id);
+      sessionStorage.setItem("tab", "1");
       this.$router.push({
-        name: "checkApp",
-        query: { id: record.id, tab: "1" }
+        name: "checkApp"
       });
     },
     editRouter(record) {
       console.log(record);
+      sessionStorage.setItem("id", record.id);
+      sessionStorage.setItem("tab", "2");
       this.$router.push({
-        name: "checkApp",
-        query: { id: record.id, tab: "2" }
+        name: "checkApp"
       });
     },
     handleCancel() {

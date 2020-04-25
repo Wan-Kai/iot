@@ -86,7 +86,7 @@ export default {
     };
   },
   beforeMount() {
-    this.id = this.$route.query.id;
+    this.id = sessionStorage.getItem("appId");
     this.$api.node
       .getNodeInApp({
         applicationID: this.id,
@@ -105,15 +105,19 @@ export default {
   },
   methods: {
     checkRouter(record) {
+      sessionStorage.setItem("appId", this.id);
+      sessionStorage.setItem("tab", "1");
+      sessionStorage.setItem("devEUI", record.devEUI);
       this.$router.push({
-        name: "checkNodeInApp",
-        query: { id: record.devEUI, tab: "1" }
+        name: "checkNodeInApp"
       });
     },
     editRouter(record) {
+      sessionStorage.setItem("appId", this.id);
+      sessionStorage.setItem("tab", "2");
+      sessionStorage.setItem("devEUI", record.devEUI);
       this.$router.push({
-        name: "checkNodeInApp",
-        query: { id: record.devEUI, tab: "2" }
+        name: "checkNodeInApp"
       });
     }
   }

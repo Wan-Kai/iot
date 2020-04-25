@@ -22,7 +22,12 @@
               :wrapper-col="{ span: 16 }"
             >
               <a-input
-                v-decorator="['nodeName']"
+                v-decorator="[
+                  'name',
+                  {
+                    initialValue: this.returnedData.name
+                  }
+                ]"
                 size="small"
                 style="width: 90%;float: left;text-align: left"
               >
@@ -36,18 +41,15 @@
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
             >
-              <a-cascader
+              <a-input
                 v-decorator="[
-                  'AppEUI',
+                  'devEUI',
                   {
-                    initialValue: this.defaultDevEUI,
-                    rules: [{ required: true, message: '请选择应用编号' }]
+                    initialValue: this.id
                   }
                 ]"
-                style="width: 90%;float: left;text-align: left"
                 size="small"
-                :options="DevEUI_options"
-                placeholder=""
+                style="width: 90%;float: left;text-align: left"
               />
               <a-tooltip placement="rightTop">
                 <template slot="title">
@@ -68,7 +70,17 @@
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
             >
-              {{ AppEUI }}
+              <a-input
+                v-decorator="[
+                  'appEUI',
+                  {
+                    initialValue: this.appId
+                  }
+                ]"
+                size="small"
+                :disabled="appEditable"
+                style="width: 90%;float: left;text-align: left"
+              />
             </a-form-item>
 
             <a-form-item
@@ -79,7 +91,12 @@
               :wrapper-col="{ span: 16 }"
             >
               <a-input
-                v-decorator="['AppKey']"
+                v-decorator="[
+                  'appKey',
+                  {
+                    initialValue: returnedData.appKey
+                  }
+                ]"
                 size="small"
                 style="width: 90%;float: left;text-align: left"
               >
@@ -140,7 +157,7 @@
                 v-decorator="[
                   'description',
                   {
-                    initialValue: '描述'
+                    initialValue: returnedData.description
                   }
                 ]"
                 :rows="4"
@@ -151,8 +168,15 @@
           <a-row>
             <a-col :span="16" :offset="8">
               <div style="display: flex">
-                <a-button type="primary">保存</a-button>
-                <a-button style="margin: 0 16px">取消</a-button>
+                <a-button
+                  type="primary"
+                  @click="handleSubmit"
+                  :loading="submitLoading"
+                  >保存</a-button
+                >
+                <a-button style="margin: 0 16px" @click="backToNodeList"
+                  >取消</a-button
+                >
                 <a-button type="danger" icon="delete" @click="showModal"
                   >删除设备</a-button
                 >
@@ -191,7 +215,12 @@
               :wrapper-col="{ span: 18 }"
             >
               <a-cascader
-                v-decorator="['area']"
+                v-decorator="[
+                  'area',
+                  {
+                    initialValue: this.defaultArea
+                  }
+                ]"
                 style="width: 90%;float: left;text-align: left"
                 size="small"
                 :options="area_options"
@@ -253,22 +282,30 @@
 
 <script>
 import wifi_map from "../../../assets/wifi.png";
+import { getDeviceProfileService_options, getArea } from "@/utils/util";
 export default {
   name: "nodeEdit",
   data() {
     return {
+      //params
+      id: "",
+      appId: "",
+
       //options
-      class_options: [],
-      DevEUI_options: [],
+      devProfile_options: [],
       area_options: [],
 
       //default Values
-      defaultDevEUI: [],
-      devProfile_options: [],
       defaultDevProfile: [],
+      defaultArea: [],
 
       //data
-      AppEUI: "暂定",
+      returnedData: {
+        name: "",
+        appKey: "",
+        description: "",
+        deviceProfileID: ""
+      },
       areaShow: false,
 
       submitLoading: false,
@@ -283,6 +320,8 @@ export default {
         Lat: ""
       },
 
+      //control
+      appEditable: true,
       //mapData
       mapObj: {},
       mapData: []
@@ -298,6 +337,33 @@ export default {
   },
 
   beforeMount() {
+    this.id = sessionStorage.getItem("devEUI");
+    this.appId = sessionStorage.getItem("appId");
+
+    this.devProfile_options = getDeviceProfileService_options();
+    this.area_options = getArea();
+    this.$api.appManage
+      .getAppNode({
+        extra: this.id
+      })
+      .then(res => {
+        let infoDataTemp = res.data;
+
+        this.returnedData.name = infoDataTemp.device.name;
+        this.returnedData.appKey = "暂定";
+        this.returnedData.description = infoDataTemp.device.description;
+        this.defaultDevProfile.push(infoDataTemp.device.deviceProfileID);
+
+        if (infoDataTemp.location) {
+          this.areaShow = true;
+          this.defaultArea.push(infoDataTemp.device.province);
+          this.defaultArea.push(infoDataTemp.device.city);
+          this.defaultArea.push(infoDataTemp.device.district);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
     this.$api.index
       .mapMarkers({})
       .then(res => {
@@ -355,7 +421,47 @@ export default {
   },
 
   methods: {
-    handleSubmit() {},
+    handleSubmit(e) {
+      e.preventDefault();
+      this.nodeEditForm.validateFields((err, values) => {
+        if (!err) {
+          this.submitLoading = true;
+          let sentData = {};
+          sentData.name = values.name;
+          sentData.description = values.description;
+          sentData.devEUI = values.devEUI;
+          sentData.deviceProfileID = values.devProfile[0];
+          sentData.applicationID = values.appEUI;
+          sentData.appKey = values.appKey;
+          console.log(sentData);
+
+          this.$api.appManage
+            .updateAppNode({
+              extra: this.id,
+              device: sentData
+            })
+            .then(res => {
+              if (res.status === 200) {
+                this.$message.success("成功修改节点:" + this.id);
+                sessionStorage.setItem("tab", "1");
+                setTimeout(() => {
+                  this.$router.push({
+                    name: "checkApp"
+                  });
+                }, 100);
+              } else {
+                this.$message.error(res.data.error);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            })
+            .finally(() => {
+              this.submitLoading = false;
+            });
+        }
+      });
+    },
     showModal() {
       this.deleteModalVisible = true;
       this.ModalText = "确认删除" + ":" + this.id;
@@ -366,9 +472,41 @@ export default {
         this.mapObj.clearMap();
       }
     },
-    handleModalDelete(e) {},
+    handleModalDelete(e) {
+      this.deleteLoading = true;
+      this.$api.appManage
+        .deleteAppNode({
+          extra: this.id
+        })
+        .then(res => {
+          console.log(res);
+          if (res.status === 200) {
+            this.$message.success("成功删除：" + this.id);
+            sessionStorage.setItem("tab", "1");
+            setTimeout(() => {
+              this.$router.push({
+                name: "checkApp"
+              });
+            }, 100);
+          } else {
+            this.$message.error(res.data.error);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.deleteLoading = false;
+        });
+    },
     handleModalCancel(e) {
       this.deleteModalVisible = false;
+    },
+    backToNodeList() {
+      sessionStorage.setItem("tab", "1");
+      this.$router.push({
+        name: "checkApp"
+      });
     }
   }
 };

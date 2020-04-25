@@ -80,7 +80,8 @@ import {
   initServiceOptions,
   initOrganizations,
   setSessionKey,
-  initProfile
+  initProfile,
+  initDevProfileServices
 } from "@/utils/util";
 export default {
   data() {
@@ -112,6 +113,7 @@ export default {
                   initOrganizations();
                   initNetworkServers();
                   initServiceOptions();
+                  initDevProfileServices();
 
                   this.$router.push("/admin/dashboard");
                 }, 300);

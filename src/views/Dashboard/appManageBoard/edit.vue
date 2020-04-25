@@ -220,7 +220,7 @@ export default {
     this.AppEditform = this.$form.createForm(this, { name: "AppEdit_form" });
   },
   beforeMount() {
-    this.id = this.$route.query.id;
+    this.id = sessionStorage.getItem("id");
     this.serviceProfile_options = getServiceOptions();
     this.$api.appManage
       .getAppDetail({
@@ -278,6 +278,7 @@ export default {
       });
     },
     backToAppList() {
+      sessionStorage.setItem("tab", "1");
       this.$router.push({
         name: "appManageInit"
       });
@@ -301,6 +302,8 @@ export default {
                 name: "appManageInit"
               });
             }, 200);
+          } else {
+            this.$message.error(res.data.error);
           }
         })
         .catch(err => {

@@ -49,6 +49,7 @@ const state = {
     }
   ],
 
+  deviceProfileService_options: [],
   profession_options: [
     {
       value: "航天",
@@ -90,6 +91,10 @@ const getters = {
 
   getOrganizations() {
     return state.organization_list;
+  },
+
+  getDeviceProfileService_options() {
+    return state.deviceProfileService_options;
   },
 
   getNetworkServerOptions() {
@@ -281,6 +286,9 @@ const mutations = {
   },
   setServices(state, data) {
     state.service_list = data;
+  },
+  setDeviceProfileService_options(state, data) {
+    state.deviceProfileService_options = data;
   }
 };
 

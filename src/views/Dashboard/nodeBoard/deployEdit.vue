@@ -260,8 +260,10 @@
           <a-col :span="16" :offset="8">
             <div style="display: flex;margin-bottom: 20px">
               <a-button type="primary" @click="handleSubmit">保存</a-button>
-              <a-button style="margin: 0 16px" @click="back">取消</a-button>
-              <a-button type="danger" icon="delete" @click="showModal"
+              <a-button style="margin: 0 16px" @click="backToNodeList"
+                >取消</a-button
+              >
+              <a-button type="danger" icon="delete" @click="showDeleteModal"
                 >删除设备</a-button
               >
             </div>
@@ -281,7 +283,7 @@
             type="danger"
             icon="delete"
             style="margin-left: 16px"
-            @click="handleOk"
+            @click="handleDelete"
             :loading="confirmLoading"
             >确认删除</a-button
           >
@@ -295,7 +297,10 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-import { getOrganizationID } from "../../../utils/util.js";
+import {
+  getOrganizationID,
+  initDevProfileServices
+} from "../../../utils/util.js";
 export default {
   components: { ACol, ARow },
   data() {
@@ -382,11 +387,14 @@ export default {
             })
             .catch(err => {
               console.log(err);
+            })
+            .finally(() => {
+              initDevProfileServices();
             });
         }
       });
     },
-    showModal() {
+    showDeleteModal() {
       this.DeleteNodeVisible = true;
       this.ModalText = "确认删除" + ":" + this.id;
     },
@@ -397,7 +405,7 @@ export default {
         this.returnedData.supportsJoin = false;
       }
     },
-    handleOk(e) {
+    handleDelete(e) {
       this.confirmLoading = true;
       this.$api.node
         .deleteNode({
@@ -419,12 +427,13 @@ export default {
         .finally(() => {
           this.confirmLoading = false;
           this.DeleteNodeVisible = false;
+          initDevProfileServices();
         });
     },
     handleCancel(e) {
       this.DeleteNodeVisible = false;
     },
-    back() {
+    backToNodeList() {
       this.$router.push({
         name: "nodeManageInit"
       });

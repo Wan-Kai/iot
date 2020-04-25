@@ -214,6 +214,22 @@ export default {
       return deletes("/applications/" + data.extra, data);
     },
 
+    AppNodes: data => {
+      return get("/devices", data);
+    },
+    createAppNode: data => {
+      return post("/devices", data);
+    },
+    getAppNode: data => {
+      return get("/devices/" + data.extra, data);
+    },
+    updateAppNode: data => {
+      return put("/devices/" + data.extra, data);
+    },
+    deleteAppNode: data => {
+      return deletes("/devices/" + data.extra, data);
+    },
+
     getAppNodeList: data => {
       return post("/admin/app/nodeData", data);
     }

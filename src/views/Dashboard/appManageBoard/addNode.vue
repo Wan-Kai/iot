@@ -23,7 +23,7 @@
                 :wrapper-col="{ span: 16 }"
               >
                 <a-input
-                  v-decorator="['nodeName']"
+                  v-decorator="['name']"
                   size="small"
                   style="width: 90%;float: left;text-align: left"
                 >
@@ -37,17 +37,10 @@
                 :label-col="{ span: 8 }"
                 :wrapper-col="{ span: 16 }"
               >
-                <a-cascader
-                  v-decorator="[
-                    'AppEUI',
-                    {
-                      rules: [{ required: true, message: '请选择应用编号' }]
-                    }
-                  ]"
-                  style="width: 90%;float: left;text-align: left"
+                <a-input
+                  v-decorator="['devEUI']"
                   size="small"
-                  :options="DevEUI_options"
-                  placeholder=""
+                  style="width: 90%;float: left;text-align: left"
                 />
                 <a-tooltip placement="rightTop">
                   <template slot="title">
@@ -70,12 +63,13 @@
               >
                 <a-input
                   v-decorator="[
-                    'AppEUI',
+                    'appEUI',
                     {
-                      value: this.id
+                      initialValue: this.id
                     }
                   ]"
                   size="small"
+                  :disabled="appEditable"
                   style="width: 90%;float: left;text-align: left"
                 />
               </a-form-item>
@@ -88,7 +82,7 @@
                 :wrapper-col="{ span: 16 }"
               >
                 <a-input
-                  v-decorator="['AppKey']"
+                  v-decorator="['appKey']"
                   size="small"
                   style="width: 90%;float: left;text-align: left"
                 >
@@ -154,7 +148,12 @@
             <a-row>
               <a-col :span="16" :offset="8">
                 <div style="display: flex">
-                  <a-button type="primary" @click="handleSubmit">保存</a-button>
+                  <a-button
+                    type="primary"
+                    @click="handleSubmit"
+                    :loading="submitLoading"
+                    >保存</a-button
+                  >
                   <a-button style="margin: 0 16px" @click="backToNodeList"
                     >取消</a-button
                   >
@@ -238,6 +237,7 @@
 
 <script>
 import wifi_map from "@/assets/wifi.png";
+import { getDeviceProfileService_options } from "@/utils/util";
 export default {
   name: "addNode",
   data() {
@@ -249,6 +249,8 @@ export default {
       DevEUI_options: [],
       area_options: [],
       devProfile_options: [],
+
+      appEditable: true,
 
       //data
       AppEUI: "暂定",
@@ -274,8 +276,8 @@ export default {
     });
   },
   beforeMount() {
-    this.id = this.$route.query.id;
-    console.log(this.id);
+    this.id = sessionStorage.getItem("appId");
+    this.devProfile_options = getDeviceProfileService_options();
     this.$api.index
       .mapMarkers({})
       .then(res => {
@@ -332,11 +334,52 @@ export default {
       });
   },
   methods: {
-    handleSubmit() {},
+    handleSubmit(e) {
+      e.preventDefault();
+      this.nodeAddForm.validateFields((err, values) => {
+        if (!err) {
+          this.submitLoading = true;
+          let sentData = {};
+          sentData.name = values.name;
+          sentData.description = values.description;
+          sentData.devEUI = values.devEUI;
+          sentData.deviceProfileID = values.devProfile[0];
+          sentData.applicationID = values.appEUI;
+          sentData.appKey = values.appKey;
+          console.log(sentData);
+
+          this.$api.appManage
+            .createAppNode({
+              device: sentData
+            })
+            .then(res => {
+              if (res.status === 200) {
+                this.$message.success("成功创建节点:" + sentData.name);
+                sessionStorage.setItem("tab", "1");
+                setTimeout(() => {
+                  this.$router.push({
+                    name: "checkApp"
+                  });
+                }, 100);
+                console.log(res);
+              } else {
+                console.log(res);
+                this.$message.error(res.data.error);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            })
+            .finally(() => {
+              this.submitLoading = false;
+            });
+        }
+      });
+    },
     backToNodeList() {
+      sessionStorage.setItem("tab", "1");
       this.$router.push({
-        name: "checkApp",
-        query: { id: this.id, tab: "1" }
+        name: "checkApp"
       });
     },
     areaStateChange() {

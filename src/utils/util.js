@@ -92,8 +92,50 @@ export function getCurrentOrganizations() {
   return store.getters["login/getCurrentOrganizations"];
 }
 
+export function initDevProfileServices() {
+  api.node
+    .getNode({
+      limit: 200
+    })
+    .then(res => {
+      let getData = res.data.result;
+
+      let DevProfileServices = [];
+      for (let i = 0; i < getData.length; i++) {
+        let temp = {
+          createdAt: "",
+          id: "",
+          name: "",
+          networkServerID: "",
+          organizationID: "",
+          updatedAt: ""
+        };
+        temp.id = getData[i].id;
+        temp.name = getData[i].name;
+        temp.value = getData[i].id;
+        temp.label = getData[i].name;
+        temp.createdAt = getData[i].createdAt;
+        temp.networkServerID = getData[i].networkServerID;
+        temp.organizationID = getData[i].organizationID;
+        temp.updatedAt = getData[i].updatedAt;
+        DevProfileServices.push(temp);
+      }
+      store.commit(
+        "options/setDeviceProfileService_options",
+        DevProfileServices
+      );
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
 export function getOrganizationID() {
   return store.getters["parameter/getOrganizationID"];
+}
+
+export function getDeviceProfileService_options() {
+  return store.getters["options/getDeviceProfileService_options"];
 }
 
 export function getOrganizationOptions() {

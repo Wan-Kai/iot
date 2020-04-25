@@ -221,7 +221,8 @@ import ACol from "ant-design-vue/es/grid/Col";
 import {
   getOrganizationID,
   getNetworkServerOptions,
-  getNetworkServerIdByServer
+  getNetworkServerIdByServer,
+  initDevProfileServices
 } from "@/utils/util.js";
 export default {
   components: { ACol, ARow },
@@ -273,6 +274,9 @@ export default {
             })
             .catch(err => {
               console.log(err);
+            })
+            .finally(() => {
+              initDevProfileServices();
             });
         } else {
           console.log(err);

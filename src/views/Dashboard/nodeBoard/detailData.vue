@@ -25,7 +25,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.name }}
+                {{ this.returnedData.name }}
               </p>
             </a-col>
           </a-row>
@@ -35,7 +35,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.supportsJoinType }}
+                {{ this.returnedData.supportsJoinType }}
               </p>
             </a-col>
           </a-row>
@@ -45,7 +45,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.macVersion }}
+                {{ this.returnedData.macVersion }}
               </p>
             </a-col>
           </a-row>
@@ -55,7 +55,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.overTime }}
+                {{ this.returnedData.overTime }}
               </p>
             </a-col>
           </a-row>
@@ -65,7 +65,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.state }}
+                {{ this.returnedData.state }}
               </p>
             </a-col>
           </a-row>
@@ -75,7 +75,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.createdAt }}
+                {{ this.returnedData.createdAt }}
               </p>
             </a-col>
           </a-row>
@@ -106,13 +106,16 @@ export default {
     return {
       isDark: false,
       id: "",
-      name: "",
-      supportsJoinType: "",
-      macVersion: "",
-      overTime: "",
-      state: "",
-      createdAt: "",
-      updatedAt: ""
+
+      returnedData: {
+        name: "",
+        supportsJoinType: "",
+        macVersion: "",
+        overTime: "",
+        state: "",
+        createdAt: "",
+        updatedAt: ""
+      }
     };
   },
 
@@ -127,15 +130,15 @@ export default {
         console.log(data);
 
         let infoDataTemp = data.deviceProfile;
-        this.createdAt = data.createdAt;
-        this.updatedAt = data.updatedAt;
-        this.name = infoDataTemp.name;
-        this.macVersion = infoDataTemp.macVersion;
+        this.returnedData.createdAt = data.createdAt;
+        this.returnedData.updatedAt = data.updatedAt;
+        this.returnedData.name = infoDataTemp.name;
+        this.returnedData.macVersion = infoDataTemp.macVersion;
 
         if (infoDataTemp.supportsJoin === "true") {
-          this.supportsJoinType = "OTAA";
+          this.returnedData.supportsJoinType = "OTAA";
         } else {
-          this.supportsJoinType = "ABP";
+          this.returnedData.supportsJoinType = "ABP";
         }
       })
       .catch(err => {

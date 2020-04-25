@@ -221,7 +221,7 @@ import ACol from "ant-design-vue/es/grid/Col";
 import {
   getOrganizationID,
   getNetworkServerOptions,
-  getNetServerIdByServer
+  getNetworkServerIdByServer
 } from "@/utils/util.js";
 export default {
   components: { ACol, ARow },
@@ -253,7 +253,7 @@ export default {
           deviceProfile.supportsJoin = this.supportsJoin;
           console.log(getOrganizationID());
           deviceProfile.organizationID = getOrganizationID();
-          deviceProfile.networkServerID = getNetServerIdByServer(
+          deviceProfile.networkServerID = getNetworkServerIdByServer(
             values.internetServer[0]
           );
           console.log(deviceProfile);

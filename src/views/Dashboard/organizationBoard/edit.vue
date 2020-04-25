@@ -132,7 +132,7 @@
               type="danger"
               icon="delete"
               style="margin-left: 16px"
-              @click="showModal"
+              @click="handleDelete"
               >删除</a-button
             >
             <a-button
@@ -164,7 +164,12 @@
 </template>
 
 <script>
-import { initOrganizations } from "@/utils/util";
+import {
+  initProfile,
+  initOrganizations,
+  getArea,
+  getProfessionOptions
+} from "@/utils/util";
 import { setNetServer } from "@/utils/util";
 
 export default {
@@ -208,9 +213,10 @@ export default {
     });
   },
   beforeMount() {
-    this.area_options = this.$store.getters.getArea;
-    this.profession_options = this.$store.getters.getProfessionOptions;
     this.returnedData.id = this.$route.query.id;
+
+    this.area_options = getArea();
+    this.profession_options = getProfessionOptions();
   },
 
   mounted() {
@@ -320,7 +326,7 @@ export default {
       });
     },
 
-    showModal() {
+    handleDelete() {
       this.isShowModal = true;
       this.ModalText = "确认删除" + ":" + this.returnedData.name;
     },
@@ -338,6 +344,8 @@ export default {
             this.isShowModal = false;
             this.$message.success("成功删除组织机构");
 
+            //删除成功之后，重新更新profile
+            initProfile();
             initOrganizations();
             var _this = this;
             setTimeout(() => {

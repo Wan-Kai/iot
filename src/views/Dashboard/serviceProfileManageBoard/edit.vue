@@ -1,14 +1,14 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
-    <div class="iot_view_serverManage_edit_form_content">
+    <div class="iot_view_edit_form_content">
       <a-form
         :form="form"
         @submit="handleSubmit"
         layout="vertical"
-        class="iot_view_serverManage_edit_form"
+        class="iot_view_edit_form"
       >
         <a-form-item
-          class="iot_view_serverManage_edit_formItem"
+          class="iot_view_edit_formItem"
           label="选择企业："
           :required="true"
           :label-col="{ span: 3 }"
@@ -18,8 +18,8 @@
             v-decorator="[
               'company',
               {
-                initialValue: this.defaultCompany,
-                rules: [{ required: true, message: '请选择服务名' }]
+                initialValue: [this.returnedData.organizationID],
+                rules: [{ required: true, message: '请选择企业' }]
               }
             ]"
             style="width: 90%;float: left;text-align: left"
@@ -44,14 +44,14 @@
           :required="true"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
-          class="iot_view_serverManage_edit_formItem"
+          class="iot_view_edit_formItem"
         >
           <a-input
             size="small"
             v-decorator="[
               'name',
               {
-                initialValue: this.name,
+                initialValue: this.returnedData.name,
                 rules: [{ required: true, message: '请输入服务名称!' }]
               }
             ]"
@@ -70,7 +70,7 @@
         </a-form-item>
 
         <a-form-item
-          class="iot_view_serverManage_edit_formItem"
+          class="iot_view_edit_formItem"
           label="选择网络服务器："
           :required="true"
           :label-col="{ span: 3 }"
@@ -80,7 +80,7 @@
             v-decorator="[
               'server',
               {
-                initialValue: this.defaultNetworkServer,
+                initialValue: [this.returnedData.networkServerID],
                 rules: [{ required: true, message: '请选择网络服务器' }]
               }
             ]"
@@ -106,14 +106,21 @@
           :required="true"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
-          class="iot_view_serverManage_edit_formItem"
+          class="iot_view_edit_formItem"
         >
           <a-switch
             checkedChildren="开"
             unCheckedChildren="关"
-            :checked="addGWMetaData"
+            :checked="returnedData.addGWMetaData"
             @change="stateChange"
             style="margin-left: 10px;float: left"
+            v-decorator="[
+              'addGWMetaData',
+              {
+                initialValue: returnedData.addGWMetaData,
+                rules: [{ required: true, message: '是否添加网关元数据' }]
+              }
+            ]"
           />
           <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
             <template slot="title">
@@ -132,14 +139,21 @@
           :required="true"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
-          class="iot_view_serverManage_edit_formItem"
+          class="iot_view_edit_formItem"
         >
           <a-switch
             checkedChildren="开"
             unCheckedChildren="关"
-            :checked="hrAllowed"
+            :checked="returnedData.hrAllowed"
             @change="areaChange"
             style="margin-left: 10px;float: left"
+            v-decorator="[
+              'hrAllowed',
+              {
+                initialValue: returnedData.hrAllowed,
+                rules: [{ required: true, message: '是否启用地理位置' }]
+              }
+            ]"
           />
           <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
             <template slot="title">
@@ -158,14 +172,14 @@
           :required="true"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
-          class="iot_view_serverManage_edit_formItem"
+          class="iot_view_edit_formItem"
         >
           <a-input
             size="small"
             v-decorator="[
               'frequency',
               {
-                initialValue: this.devStatusReqFreq,
+                initialValue: this.returnedData.devStatusReqFreq,
                 rules: [{ required: true, message: '请输入设备状态请求频率!' }]
               }
             ]"
@@ -188,14 +202,14 @@
           :required="true"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
-          class="iot_view_serverManage_edit_formItem"
+          class="iot_view_edit_formItem"
         >
           <a-input
             size="small"
             v-decorator="[
               'minDataRate',
               {
-                initialValue: this.drMax,
+                initialValue: this.returnedData.drMin,
                 rules: [{ required: true, message: '请输入最低允许数据速率!' }]
               }
             ]"
@@ -218,14 +232,14 @@
           :required="true"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
-          class="iot_view_serverManage_edit_formItem"
+          class="iot_view_edit_formItem"
         >
           <a-input
             size="small"
             v-decorator="[
               'maxDataRate',
               {
-                initialValue: this.drMin,
+                initialValue: this.returnedData.drMax,
                 rules: [{ required: true, message: '请输入最高允许数据速率!' }]
               }
             ]"
@@ -245,27 +259,33 @@
 
         <a-row>
           <a-col :span="7" :offset="3">
-            <div class="iot_view_serverManage_edit_form_left">
+            <div class="iot_view_edit_form_left">
               <a-button
                 type="primary"
                 html-type="submit"
-                :loading="commitLoading"
+                :loading="confirmLoading"
                 >确定</a-button
               >
-              <a-button style="margin: 0 30px" @click="back">取消</a-button>
-              <a-button type="danger" icon="delete" @click="showModal"
-                >删除设备</a-button
+              <a-button style="margin: 0 30px" @click="handleBack"
+                >取消</a-button
+              >
+              <a-button type="danger" icon="delete" @click="handleDelete"
+                >删除</a-button
               >
             </div>
           </a-col>
-          <a-modal title="删除提示" :visible="visible" @cancel="handleCancel">
+          <a-modal
+            title="删除提示"
+            :visible="isShowModal"
+            @cancel="handleDeleteCancel"
+          >
             <template slot="footer">
-              <a-button key="back" @click="handleCancel">取消</a-button>
+              <a-button key="back" @click="handleDeleteCancel">取消</a-button>
               <a-button
                 type="danger"
                 icon="delete"
                 style="margin-left: 16px"
-                @click="handleOk"
+                @click="handleDeleteOk"
                 :loading="confirmLoading"
                 >确认删除</a-button
               >
@@ -283,29 +303,35 @@ import {
   getOrganizationOptions,
   getNetworkServerOptions,
   getNetworkServerById,
-  getNetworkServerIdByServer
+  getNetworkServerIdByServer,
+  initServiceOptions
 } from "@/utils/util";
 export default {
   name: "edit",
   data() {
     return {
-      id: "",
-      commitLoading: false,
       company_options: [],
       networkServer_options: [],
+
       defaultCompany: [],
       defaultNetworkServer: [],
 
-      addGWMetaData: false,
-      hrAllowed: false,
-      name: "",
-      devStatusReqFreq: 0,
-      drMax: 0,
-      drMin: 0,
+      returnedData: {
+        id: "",
+        name: "",
+        networkServerID: "",
+        organizationID: "",
+        addGWMetaData: false,
+        hrAllowed: false,
+        devStatusReqFreq: 0,
+        drMax: 0,
+        drMin: 0
+      },
 
-      visible: false,
-      confirmLoading: false,
-      ModalText: ""
+      isShowModal: false,
+      ModalText: "确认删除",
+      submitLoading: false,
+      confirmLoading: false
     };
   },
   beforeCreate() {
@@ -313,63 +339,71 @@ export default {
     this.form.getFieldDecorator("keys", { initialValue: [], preserve: true });
   },
   beforeMount() {
-    this.id = this.$route.query.number;
+    this.returnedData.id = this.$route.query.id;
     this.company_options = getOrganizationOptions();
     this.networkServer_options = getNetworkServerOptions();
-    this.$api.serviceProfile
-      .getService({
-        extra: this.id
-      })
-      .then(res => {
-        console.log(res);
-        let infoDataTemp = res.data;
-        // this.createdAt = infoDataTemp.createdAt;
-        this.defaultNetworkServer.push(
-          getNetworkServerById(infoDataTemp.serviceProfile.networkServerID)
-        );
-        this.defaultCompany.push(infoDataTemp.serviceProfile.organizationID);
-        //
-        this.addGWMetaData = infoDataTemp.serviceProfile.addGWMetaData;
-        this.hrAllowed = infoDataTemp.serviceProfile.hrAllowed;
-        this.name = infoDataTemp.serviceProfile.name;
-        this.devStatusReqFreq = infoDataTemp.serviceProfile.devStatusReqFreq;
-        this.drMax = infoDataTemp.serviceProfile.drMax;
-        this.drMin = infoDataTemp.serviceProfile.drMin;
-      });
   },
+
+  mounted() {
+    this.getDetail();
+  },
+
   methods: {
+    getDetail() {
+      this.$api.serviceProfile
+        .getService({
+          extra: this.returnedData.id
+        })
+        .then(res => {
+          console.log(res);
+          this.returnedData = res.data.serviceProfile;
+          /*
+          this.defaultNetworkServer.push(
+            getNetworkServerById(this.returnedData.networkServerID)
+          );
+          this.defaultCompany.push(this.returnedData.organizationID);
+          */
+        });
+    },
+
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.commitLoading = true;
+          this.confirmLoading = true;
           console.log(values);
           let sentData = {};
           sentData.name = values.name;
+
+          /*
           sentData.networkServerID = getNetworkServerIdByServer(
             values.server[0]
           );
+          */
+          sentData.networkServerID = values.server[0];
           sentData.organizationID = values.company[0];
-          sentData.addGWMetaData = this.addGWMetaData;
-          sentData.hrAllowed = this.hrAllowed;
+          sentData.addGWMetaData = values.addGWMetaData;
+          sentData.hrAllowed = values.hrAllowed;
           sentData.devStatusReqFreq = values.frequency;
           sentData.drMax = values.maxDataRate;
           sentData.drMin = values.minDataRate;
-          console.log(sentData);
-
+          //console.log(sentData);
+          debugger;
           this.$api.serviceProfile
-            .updateServer({
-              extra: this.id,
+            .updateSerice({
+              extra: this.returnedData.id,
               serviceProfile: sentData
             })
             .then(res => {
               if (res.status === 200) {
-                this.$message.success("成功修改服务管理信息");
-                this.$router.push({
-                  name: "serverManageInit"
-                });
+                this.$message.success("修改服务信息成功");
+                initServiceOptions();
+                var _this = this;
+                setTimeout(() => {
+                  _this.handleBack();
+                }, 100);
               } else {
-                this.$message.error("修改服务管理信息失败");
+                this.$message.error("修改服务信息失败");
                 this.$message.error(res.data.error);
               }
             })
@@ -377,41 +411,44 @@ export default {
               console.log(err);
             })
             .finally(() => {
-              this.commitLoading = false;
+              this.confirmLoading = false;
             });
         }
       });
     },
     stateChange() {
-      this.addGWMetaData = !this.addGWMetaData;
+      this.returnedData.addGWMetaData = !this.returnedData.addGWMetaData;
     },
     areaChange() {
-      this.hrAllowed = !this.hrAllowed;
+      this.returnedData.hrAllowed = !this.returnedData.hrAllowed;
     },
-    back() {
+
+    handleBack() {
       this.$router.push({
-        name: "serverManageInit"
+        name: "serviceProfileManageInit"
       });
     },
-    showModal() {
-      this.visible = true;
-      this.ModalText = "确认删除" + ":" + this.id;
+    handleDelete() {
+      this.isShowModal = true;
+      this.ModalText = "确认删除" + ":" + this.returnedData.name;
     },
-    handleCancel() {
-      this.visible = false;
+    handleDeleteCancel() {
+      this.isShowModal = false;
     },
-    handleOk() {
+    handleDeleteOk() {
       this.confirmLoading = true;
       this.$api.serviceProfile
         .deleteService({
-          extra: this.id
+          extra: this.returnedData.id
         })
         .then(res => {
           if (res.status === 200) {
-            this.$message.success("成功删除服务管理信息");
-            this.$router.push({
-              name: "serverManageInit"
-            });
+            this.$message.success("删除服务信息成功");
+            initServiceOptions();
+            var _this = this;
+            setTimeout(() => {
+              _this.handleBack();
+            }, 100);
           } else {
             this.$message.error("删除服务管理信息失败");
             this.$message.error(res.data.error);

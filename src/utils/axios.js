@@ -73,22 +73,6 @@ service.interceptors.response.use(
 );
 
 //get方法
-export function get(url, data = {}) {
-  data.IERealTime = new Date().getTime(); //get方法加一个时间参数,解决ie下可能缓存问题.
-  let sendObject = {
-    url: url,
-    method: "get",
-    params: data,
-    headers: {
-      Authorization: store.getters["login/getSessionkey"]
-    }
-  };
-  // sendObject.data=JSON.stringify(data);
-  //debugger
-  return service(sendObject).catch(() => {});
-}
-
-//get方法
 export function getLocal(url, data = {}) {
   let sendObject = {
     url: url,
@@ -111,6 +95,22 @@ export function login(url, data = {}) {
   return service(sendObject).catch(() => {});
 }
 
+//get方法
+export function get(url, data = {}) {
+  data.IERealTime = new Date().getTime(); //get方法加一个时间参数,解决ie下可能缓存问题.
+  let sendObject = {
+    url: url,
+    method: "get",
+    params: data,
+    headers: {
+      Authorization: store.getters["login/getSessionKey"]
+    }
+  };
+  // sendObject.data=JSON.stringify(data);
+  //debugger
+  return service(sendObject).catch(() => {});
+}
+
 //封装post请求
 export function post(url, data = {}) {
   //默认配置
@@ -119,7 +119,7 @@ export function post(url, data = {}) {
     method: "post",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: store.getters["login/getSessionkey"]
+      Authorization: store.getters["login/getSessionKey"]
     },
     data: data
   };
@@ -134,7 +134,7 @@ export function put(url, data = {}) {
     method: "put",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: store.getters["login/getSessionkey"]
+      Authorization: store.getters["login/getSessionKey"]
     },
     data: JSON.stringify(data)
   });
@@ -146,7 +146,7 @@ export function deletes(url, data = {}) {
     url: url,
     method: "delete",
     headers: {
-      Authorization: store.getters["login/getSessionkey"]
+      Authorization: store.getters["login/getSessionKey"]
     },
     data: JSON.stringify(data)
   };

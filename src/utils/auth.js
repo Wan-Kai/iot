@@ -1,12 +1,12 @@
-import { getKey, getLoginState } from "../store/modules/login";
+import { getRole, getLoginState } from "../store/modules/login";
 
 export function getCurrentAuthority() {
-  const user = [];
-  user.push(getKey());
-  return user;
+  const roles = [];
+  roles.push(getRole());
+  return roles;
 }
 
-export function check(authority) {
+export function checkAuthority(authority) {
   const current = getCurrentAuthority();
   return current.some(item => authority.includes(item));
 }

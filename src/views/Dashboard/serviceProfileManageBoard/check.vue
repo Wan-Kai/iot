@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >编号： {{ this.id }}</span
+            >编号： {{ this.returnedData.id }}</span
           >
         </a-col>
       </a-row>
@@ -20,7 +20,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">企业</div>
-              <div style="font-size: 12px">{{ this.company }}</div>
+              <div style="font-size: 12px">{{ this.getOrganizationName }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -34,7 +34,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">网络服务器</div>
-              <div style="font-size: 12px">{{ this.server }}</div>
+              <div style="font-size: 12px">{{ this.getNetworkServerName }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -48,7 +48,9 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">创建时间</div>
-              <div style="font-size: 12px">{{ this.createdAt }}</div>
+              <div style="font-size: 12px">
+                {{ this.returnedData.createdAt }}
+              </div>
             </a-col>
           </a-row>
         </a-col>
@@ -58,55 +60,55 @@
     <a-card
       style="width: 100%;margin-top: 16px;height: 100%;padding: 10px 14px"
     >
-      <a-form
-        :form="form"
-        layout="vertical"
-        class="iot_view_internetServer_check_form"
-      >
+      <a-form :form="form" layout="vertical" class="iot_view_check_form">
         <a-form-item
           label="是否添加网关元数据："
           :required="true"
-          :label-col="{ span: 3 }"
+          :label-col="{ span: 6 }"
           :wrapper-col="{ span: 12 }"
-          class="iot_view_internetServer_check_formItem"
+          class="iot_view_check_formItem"
         >
-          <span style="float: left"> {{ this.addGWMetaData }}</span>
+          <span style="float: left">
+            {{ this.returnedData.addGWMetaData }}</span
+          >
         </a-form-item>
         <a-form-item
           label="启用地理位置："
           :required="true"
-          :label-col="{ span: 3 }"
+          :label-col="{ span: 6 }"
           :wrapper-col="{ span: 12 }"
-          class="iot_view_internetServer_check_formItem"
+          class="iot_view_check_formItem"
         >
-          <span style="float: left"> {{ this.hrAllowed }}</span>
+          <span style="float: left"> {{ this.returnedData.hrAllowed }}</span>
         </a-form-item>
         <a-form-item
           label="设备状态请求频率："
           :required="true"
-          :label-col="{ span: 3 }"
+          :label-col="{ span: 6 }"
           :wrapper-col="{ span: 12 }"
-          class="iot_view_internetServer_check_formItem"
+          class="iot_view_check_formItem"
         >
-          <span style="float: left"> {{ this.devStatusReqFreq }}</span>
+          <span style="float: left">
+            {{ this.returnedData.devStatusReqFreq }}</span
+          >
         </a-form-item>
         <a-form-item
           label="最低允许数据速率："
           :required="true"
-          :label-col="{ span: 3 }"
+          :label-col="{ span: 6 }"
           :wrapper-col="{ span: 12 }"
-          class="iot_view_internetServer_check_formItem"
+          class="iot_view_check_formItem"
         >
-          <span style="float: left"> {{ this.drMax }}</span>
+          <span style="float: left"> {{ this.returnedData.drMin }}</span>
         </a-form-item>
         <a-form-item
           label="最高允许数据速率："
           :required="true"
-          :label-col="{ span: 3 }"
+          :label-col="{ span: 6 }"
           :wrapper-col="{ span: 12 }"
-          class="iot_view_internetServer_check_formItem"
+          class="iot_view_check_formItem"
         >
-          <span style="float: left"> {{ this.drMin }}</span>
+          <span style="float: left"> {{ this.returnedData.drMax }}</span>
         </a-form-item>
       </a-form>
     </a-card>
@@ -122,20 +124,23 @@ export default {
   name: "check",
   data() {
     return {
-      company: "",
-      server: "",
-      id: "",
-      createdAt: "",
-      addGWMetaData: false,
-      hrAllowed: false,
-      devStatusReqFreq: "",
-      drMax: "",
-      drMin: ""
+      returnedData: {
+        id: "",
+        name: "",
+        networkServerID: "",
+        organizationID: "",
+        addGWMetaData: false,
+        hrAllowed: false,
+        devStatusReqFreq: 0,
+        drMax: 0,
+        drMin: 0,
+        createdAt: ""
+      }
     };
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, {
-      name: "internetServer_check_form"
+      name: "check_form"
     });
     this.form.getFieldDecorator("keys", {
       initialValue: [],
@@ -143,28 +148,47 @@ export default {
     });
   },
   beforeMount() {
-    this.id = this.$route.query.number;
-    this.$api.serviceProfile
-      .getService({
-        extra: this.id
-      })
-      .then(res => {
-        console.log(res);
-        let infoDataTemp = res.data;
-        this.createdAt = infoDataTemp.createdAt;
-        this.server = getNetworkServerNameById(
-          infoDataTemp.serviceProfile.networkServerID
-        );
-        this.company = getOrganizationNameById(
-          infoDataTemp.serviceProfile.organizationID
-        );
+    this.returnedData.id = this.$route.query.id;
+  },
 
-        this.addGWMetaData = infoDataTemp.serviceProfile.addGWMetaData;
-        this.hrAllowed = infoDataTemp.serviceProfile.hrAllowed;
-        this.devStatusReqFreq = infoDataTemp.serviceProfile.devStatusReqFreq;
-        this.drMax = infoDataTemp.serviceProfile.drMax;
-        this.drMin = infoDataTemp.serviceProfile.drMin;
-      });
+  mounted() {
+    this.getDetail();
+  },
+
+  computed: {
+    getOrganizationName() {
+      return getOrganizationNameById(this.returnedData.organizationID);
+    },
+
+    getNetworkServerName() {
+      return getNetworkServerNameById(this.returnedData.networkServerID);
+    }
+  },
+  methods: {
+    getDetail() {
+      var _this = this;
+      this.$api.serviceProfile
+        .getService({
+          extra: this.returnedData.id
+        })
+        .then(res => {
+          console.log(res);
+          let infoDataTemp = res.data;
+          _this.returnedData.createdAt = infoDataTemp.createdAt;
+          _this.returnedData.name = infoDataTemp.serviceProfile.name;
+          _this.returnedData.networkServerID =
+            infoDataTemp.serviceProfile.networkServerID;
+          _this.returnedData.organizationID =
+            infoDataTemp.serviceProfile.organizationID;
+          _this.returnedData.addGWMetaData =
+            infoDataTemp.serviceProfile.addGWMetaData;
+          _this.returnedData.hrAllowed = infoDataTemp.serviceProfile.hrAllowed;
+          _this.returnedData.devStatusReqFreq =
+            infoDataTemp.serviceProfile.devStatusReqFreq;
+          _this.returnedData.drMax = infoDataTemp.serviceProfile.drMax;
+          _this.returnedData.drMin = infoDataTemp.serviceProfile.drMin;
+        });
+    }
   }
 };
 </script>
@@ -179,7 +203,12 @@ export default {
 .ant-card-wider-padding .ant-card-body {
   padding: 16px 8px;
 }
-.iot_view_internetServer_check_formItem {
+
+.iot_view_check_form {
+  padding: 20px 5px;
+}
+
+.iot_view_check_formItem {
   margin-bottom: 14px;
 }
 </style>

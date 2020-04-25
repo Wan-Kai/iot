@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import findLast from "lodash/findLast";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-import { check, isLogin } from "../utils/auth";
+import { checkAuthority, isLogin } from "../utils/auth";
 import FirstStep from "../components/Login/retrieveStepForms/first";
 import SecondStep from "../components/Login/retrieveStepForms/second";
 import ThirdStep from "../components/Login/retrieveStepForms/third";
@@ -203,49 +203,49 @@ const routes = [
 
       //服务管理
       {
-        path: "/admin/dashboard/serverManage",
-        name: "serverManage",
+        path: "/admin/dashboard/serviceProfileManage",
+        name: "serviceProfileManage",
         meta: { title: "服务管理" },
         component: { render: h => h("router-view") },
         children: [
           {
-            path: "/admin/dashboard/serverManage",
-            redirect: "/admin/dashboard/serverManage/init"
+            path: "/admin/dashboard/serviceProfileManage",
+            redirect: "/admin/dashboard/serviceProfileManage/init"
           },
           {
-            path: "/admin/dashboard/serverManage/init",
-            name: "serverManageInit",
+            path: "/admin/dashboard/serviceProfileManage/init",
+            name: "serviceProfileManageInit",
             meta: { title: "" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serverManage.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serviceProfileManage.vue"
               )
           },
           {
-            path: "/admin/dashboard/serverManage/add",
-            name: "serverManageAdd",
+            path: "/admin/dashboard/serviceProfileManage/add",
+            name: "serviceProfileManageAdd",
             meta: { title: "添加服务" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serverManageBoard/add.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serviceProfileManageBoard/add.vue"
               )
           },
           {
-            path: "/admin/dashboard/serverManage/check",
-            name: "serverManageCheck",
+            path: "/admin/dashboard/serviceProfileManage/check",
+            name: "serviceProfileManageCheck",
             meta: { title: "查看服务" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serverManageBoard/check.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serviceProfileManageBoard/check.vue"
               )
           },
           {
-            path: "/admin/dashboard/serverManage/edit",
-            name: "serverManageEdit",
+            path: "/admin/dashboard/serviceProfileManage/edit",
+            name: "serviceProfileManageEdit",
             meta: { title: "编辑服务" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serverManageBoard/edit.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/serviceProfileManageBoard/edit.vue"
               )
           }
         ]
@@ -568,7 +568,7 @@ router.beforeEach((to, from, next) => {
     NProgress.start();
   }
   const record = findLast(to.matched, record => record.meta.authority);
-  if (record && !check(record.meta.authority)) {
+  if (record && !checkAuthority(record.meta.authority)) {
     if (!isLogin() && to.path !== "/user/login") {
       next({
         path: "/user/login"

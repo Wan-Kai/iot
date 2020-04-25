@@ -34,7 +34,7 @@
               >
             </a-menu-item>
             <a-menu-item key="12">
-              <router-link to="/admin/dashboard/serverManage"
+              <router-link to="/admin/dashboard/serviceProfileManage"
                 >服务管理</router-link
               >
             </a-menu-item>

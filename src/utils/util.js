@@ -14,7 +14,25 @@ export function getStep2State() {
   return store.getters["retrieve/getStep2State"];
 }
 
+//初始化个人及所关联的组织机构信息
+export function initProfile() {
+  api.login
+    .getProfile()
+    .then(res => {
+      let user = res.data.user;
+      store.commit("login/setCurrentUser", user);
+
+      let organizations = res.data.organizations;
+      store.commit("login/setCurrentOrganizations", organizations);
+    })
+    .catch(err => {
+      debugger;
+      console.log(err);
+    });
+}
+
 export function initOrganizations() {
+  //获取所有的组织机构
   api.organization
     .getOrganizations({
       limit: 100
@@ -23,8 +41,23 @@ export function initOrganizations() {
       debugger;
       let getData = res.data.result;
 
+      //仅显示在有权限的组织机构
+      let currentOrganizations = store.getters["login/getCurrentOrganizations"];
+      if (currentOrganizations == null || currentOrganizations.length == 0)
+        return;
+
       let organizationData = [];
       for (let i = 0; i < getData.length; i++) {
+        var existed = false;
+        var id = getData[i].id;
+        for (let j = 0; j < currentOrganizations.length; j++) {
+          if (currentOrganizations[j].organizationID === id) {
+            existed = true;
+            break;
+          }
+        }
+        if (existed == false) continue;
+
         let temp = {
           id: "",
           name: "",
@@ -49,6 +82,14 @@ export function initOrganizations() {
       debugger;
       console.log(err);
     });
+}
+
+export function getCurrentUser() {
+  return store.getters["login/getCurrentUser"];
+}
+
+export function getCurrentOrganizations() {
+  return store.getters["login/getCurrentOrganizations"];
 }
 
 export function getOrganizationID() {
@@ -203,9 +244,7 @@ export function getProfessionOptions() {
 }
 
 export function setSessionKey(sessionKey) {
-  store.commit("login/setUser", {
-    sessionKey: sessionKey
-  });
+  store.commit("login/setSessionKey", sessionKey);
 }
 
 export function setPhoneNumber(phoneNumber) {

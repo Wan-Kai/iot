@@ -1,6 +1,6 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
-    <div class="iot_view_serverManage_add_form_content">
+    <div class="iot_view_add_form_content">
       <a-row
         style="background: #fff"
         type="flex"
@@ -13,10 +13,10 @@
             :form="form"
             @submit="handleSubmit"
             layout="vertical"
-            class="iot_view_serverManage_add_form"
+            class="iot_view_add_form"
           >
             <a-form-item
-              class="iot_view_serverManage_add_formItem"
+              class="iot_view_add_formItem"
               label="选择企业："
               :required="true"
               :label-col="{ span: 8 }"
@@ -51,7 +51,7 @@
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
-              class="iot_view_serverManage_add_formItem"
+              class="iot_view_add_formItem"
             >
               <a-input
                 size="small"
@@ -74,7 +74,7 @@
             </a-form-item>
 
             <a-form-item
-              class="iot_view_serverManage_add_formItem"
+              class="iot_view_add_formItem"
               label="选择网络服务器："
               :required="true"
               :label-col="{ span: 8 }"
@@ -109,7 +109,7 @@
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
-              class="iot_view_serverManage_add_formItem"
+              class="iot_view_add_formItem"
             >
               <a-switch
                 checkedChildren="开"
@@ -137,7 +137,7 @@
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
-              class="iot_view_serverManage_add_formItem"
+              class="iot_view_add_formItem"
             >
               <a-switch
                 checkedChildren="开"
@@ -165,7 +165,7 @@
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
-              class="iot_view_serverManage_add_formItem"
+              class="iot_view_add_formItem"
             >
               <a-input
                 size="small"
@@ -196,7 +196,7 @@
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
-              class="iot_view_serverManage_add_formItem"
+              class="iot_view_add_formItem"
             >
               <a-input
                 size="small"
@@ -227,7 +227,7 @@
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
-              class="iot_view_serverManage_add_formItem"
+              class="iot_view_add_formItem"
             >
               <a-input
                 size="small"
@@ -255,14 +255,14 @@
 
             <a-row>
               <a-col :span="16" :offset="8">
-                <div class="iot_view_serverManage_add_form_left">
+                <div class="iot_view_add_form_left">
                   <a-button
                     type="primary"
                     html-type="submit"
                     :loading="commitLoading"
                     >确定</a-button
                   >
-                  <a-button style="margin-left: 30px" @click="back"
+                  <a-button style="margin-left: 30px" @click="handleBack"
                     >取消</a-button
                   >
                 </div>
@@ -280,7 +280,8 @@
 import {
   getOrganizationOptions,
   getNetworkServerOptions,
-  getNetworkServerIdByServer
+  getNetworkServerIdByServer,
+  initServiceOptions
 } from "@/utils/util";
 export default {
   name: "add",
@@ -328,10 +329,11 @@ export default {
             .then(res => {
               if (res.status === 200) {
                 this.$message.success("成功创建服务:" + values.name);
+
+                initServiceOptions();
+                var _this = this;
                 setTimeout(() => {
-                  this.$router.push({
-                    name: "serverManageInit"
-                  });
+                  _this.handleBack();
                 }, 100);
               } else {
                 console.log("res失败");
@@ -354,9 +356,10 @@ export default {
     areaChange() {
       this.hrAllowed = !this.hrAllowed;
     },
-    back() {
+
+    handleBack() {
       this.$router.push({
-        name: "serverManageInit"
+        name: "serviceProfileManageInit"
       });
     }
   }
@@ -364,15 +367,15 @@ export default {
 </script>
 
 <style>
-.iot_view_serverManage_add_form_content {
+.iot_view_add_form_content {
   margin-top: 20px;
 }
-.iot_view_serverManage_add_form {
+.iot_view_add_form {
 }
-.iot_view_serverManage_add_formItem {
+.iot_view_add_formItem {
   margin-bottom: 8px;
 }
-.iot_view_serverManage_add_form_left {
+.iot_view_add_form_left {
   float: left;
 }
 .iot_amap_serverManage_container {

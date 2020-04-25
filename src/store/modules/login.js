@@ -1,33 +1,56 @@
 /**
  *  存放用户数据
  * **/
-
 // initial state
 const state = {
+  /*
   all: {
     username: "",
-    isLogin: "",
     userId: "",
+    isLogin: "",
     sessionKey: ""
   },
+  */
+
   login: {
     isLogin: "0",
-    key: "guest"
-  }
+    role: "guest"
+  },
+  sessionKey: "",
+
+  currentUser: {
+    id: "",
+    username: "",
+    sessionTTL: 0,
+    isAdmin: false,
+    isActive: false,
+    email: "",
+    note: ""
+  },
+
+  currentOrganizations: []
 };
 
 // getters
 const getters = {
-  getSessionkey() {
-    return state.all.sessionKey;
+  getSessionKey() {
+    return state.sessionKey;
+  },
+
+  getCurrentUser() {
+    return state.currentUser;
+  },
+
+  getCurrentOrganizations() {
+    return state.currentOrganizations;
   }
 };
 
 // actions
 const actions = {};
 
-export function getKey() {
-  return state.login.key;
+export function getRole() {
+  return state.login.role;
 }
 
 export function getLoginState() {
@@ -36,21 +59,32 @@ export function getLoginState() {
 
 // mutations
 const mutations = {
-  setUser(state, all) {
-    //设置参数
-    //debugger
-    state.all = all;
-  },
   setLogin(state, login) {
     state.login = login;
   },
+
+  setSessionKey(state, sessionKey) {
+    state.sessionKey = sessionKey;
+  },
+
+  setCurrentUser(state, user) {
+    //设置参数
+    //debugger
+    state.currentUser = user;
+  },
+
+  setCurrentOrganizations(state, organizations) {
+    state.currentOrganizations = organizations;
+  },
+
   reset(state) {
-    state.all.username = "";
-    state.all.isLogin = "";
-    state.all.userId = "";
-    state.all.sessionKey = "";
     state.login.isLogin = "0";
     state.login.key = "guest";
+
+    state.sessionKey = "";
+
+    state.currentUser = null;
+    state.currentOrganizations = [];
   }
 };
 

@@ -1,10 +1,10 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
-    <div class="iot_view_server_manage_top">
+    <div class="iot_view_top">
       <a-row>
         <a-col :span="12">
           <a-input-search
-            class="iot_view_server_manage_top_search"
+            class="iot_view_top_search"
             placeholder="请输入要查找的内容"
           />
         </a-col>
@@ -12,7 +12,7 @@
           <a-button
             type="primary"
             icon="plus"
-            @click="createServer"
+            @click="createServiceProfile"
             style="float: right"
           >
             添加服务
@@ -20,12 +20,12 @@
         </a-col>
       </a-row>
     </div>
-    <div class="iot_view_server_manage_table_layout">
+    <div class="iot_view_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="interData"
+        :dataSource="tableData"
         style="min-width: auto"
-        class="iot_view_server_manage_table"
+        class="iot_view_table"
         :pagination="pagination"
         :loading="tableLoadingState"
         :rowKey="record => record.uid"
@@ -37,7 +37,7 @@
           <a @click="editRouter(record)">编辑</a>
         </span>
       </a-table>
-      <div class="iot_view_server_manage_button">
+      <div class="iot_view_button">
         <a-button v-if="!tableLoadingState">批量选择</a-button>
         <a-button
           v-if="!tableLoadingState"
@@ -79,11 +79,11 @@ const columns = [
 
 import { getOrganizationNameById } from "@/utils/util";
 export default {
-  name: "serverManage",
+  name: "serviceProfileManage",
   data() {
     return {
       columns,
-      interData: [],
+      tableData: [],
       messageDetail: [],
       tableLoadingState: true,
 
@@ -101,45 +101,52 @@ export default {
     };
   },
   beforeMount() {
-    this.$api.serviceProfile
-      .getServices({
-        limit: 100
-      })
-      .then(res => {
-        console.log(res);
-        let infoDataTemp = res.data.result;
-        infoDataTemp.forEach(item => {
-          item.organizationName = getOrganizationNameById(item.organizationID);
-          console.log(item.organizationName);
-        });
-        this.interData = infoDataTemp;
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .finally(() => {
-        this.tableLoadingState = false;
-      });
+    this.getTable();
   },
   methods: {
-    createServer() {
+    getTable() {
+      this.$api.serviceProfile
+        .getServices({
+          limit: 100
+        })
+        .then(res => {
+          console.log(res);
+          let returnedData = res.data.result;
+          returnedData.forEach(item => {
+            debugger;
+            item.organizationName = getOrganizationNameById(
+              item.organizationID
+            );
+            console.log(item.organizationName);
+          });
+          this.tableData = returnedData;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.tableLoadingState = false;
+        });
+    },
+
+    createServiceProfile() {
       this.$router.push({
-        name: "serverManageAdd"
+        name: "serviceProfileManageAdd"
       });
     },
 
     checkRouter(record) {
       console.log(record);
       this.$router.push({
-        name: "serverManageCheck",
-        query: { number: record.id, tab: "1" }
+        name: "serviceProfileManageCheck",
+        query: { id: record.id, tab: "1" }
       });
     },
     editRouter(record) {
       console.log(record);
       this.$router.push({
-        name: "serverManageEdit",
-        query: { number: record.id, tab: "2" }
+        name: "serviceProfileManageEdit",
+        query: { id: record.id, tab: "2" }
       });
     },
     handleDelete() {}
@@ -148,7 +155,7 @@ export default {
 </script>
 
 <style>
-.iot_view_server_manage_top {
+.iot_view_top {
   width: 100%;
   margin-top: 14px;
   margin-bottom: 14px;
@@ -156,17 +163,17 @@ export default {
   height: 26px;
   line-height: 26px;
 }
-.iot_view_server_manage_top_search {
+.iot_view_top_search {
   float: left;
   width: 300px;
   text-align: left;
 }
-.iot_view_server_manage_table_layout {
+.iot_view_table_layout {
   min-height: fit-content;
 }
-.iot_view_server_manage_table {
+.iot_view_table {
 }
-.iot_view_server_manage_button {
+.iot_view_button {
   float: left;
   margin-top: -40px;
 }

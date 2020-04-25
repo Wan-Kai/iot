@@ -1,5 +1,5 @@
 <script>
-import { check } from "../utils/auth";
+import { checkAuthority } from "../utils/auth";
 export default {
   functional: true,
   props: {
@@ -10,7 +10,7 @@ export default {
   },
   render(h, context) {
     const { props, scopedSlots } = context;
-    return check(props.authority) ? scopedSlots.default() : null;
+    return checkAuthority(props.authority) ? scopedSlots.default() : null;
   }
 };
 </script>

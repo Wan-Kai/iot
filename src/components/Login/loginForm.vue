@@ -79,7 +79,8 @@ import {
   initNetworkServers,
   initServiceOptions,
   initOrganizations,
-  setSessionKey
+  setSessionKey,
+  initProfile
 } from "@/utils/util";
 export default {
   data() {
@@ -103,9 +104,11 @@ export default {
             .then(res => {
               if (res.status === 200) {
                 this.$message.success("登录成功");
+
                 setSessionKey(res.data.jwt);
 
                 setTimeout(() => {
+                  initProfile();
                   initOrganizations();
                   initNetworkServers();
                   initServiceOptions();

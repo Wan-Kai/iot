@@ -103,7 +103,7 @@ const getters = {
         id: ""
       };
       temp.label = netServer[i].name + "@" + netServer[i].server;
-      temp.value = netServer[i].server;
+      temp.value = netServer[i].id;
       temp.id = netServer[i].id;
       networkServer_options.push(temp);
     }
@@ -128,7 +128,8 @@ const getters = {
           let temp = {
             label: servicesList[i].name + "@" + networkServerList[j].name,
             name: servicesList[i].name,
-            value: servicesList[i].id
+            value: servicesList[i].id,
+            id: servicesList[i].id
           };
           service_options.push(temp);
           break;

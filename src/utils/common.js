@@ -12,6 +12,20 @@ export default {
     return guid.toUpperCase();
   },
 
+  generateDevEUI(organizationID, index) {
+    var totalLength = 16;
+    //左边6位
+    var leftStr = (Array(length).join("0") + organizationID).slice(-6);
+    //中间4位
+    var centerStr = new Date().getFullYear();
+
+    //右边6位
+    var rightStr = (Array(length).join("0") + index).slice(-6);
+
+    var result = leftStr + "" + centerStr + "" + rightStr;
+    return result;
+  },
+
   /**
    * 字符串判空
    * true：为空
@@ -25,7 +39,7 @@ export default {
     }
   },
   /**
-   * 返回date类型的yyymmdd格式
+   * 返回date类型的yyyy-mm-dd格式
    */
   getNowDate: function(date) {
     var seperator1 = "-";
@@ -47,7 +61,7 @@ export default {
    * @param {Object} d
    * @param {Object} formatStr
    */
-  farmatDate: function(d, formatStr) {
+  formatDate: function(d, formatStr) {
     var str = formatStr;
     var Week = ["日", "一", "二", "三", "四", "五", "六"];
 

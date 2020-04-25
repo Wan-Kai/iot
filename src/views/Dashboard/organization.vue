@@ -62,7 +62,11 @@
 </template>
 
 <script>
-import { getAreaLabel, initOrganizations } from "@/utils/util";
+import {
+  getAreaLabel,
+  getCurrentOrganizations,
+  initOrganizations
+} from "@/utils/util";
 const columns = [
   {
     title: "ID",
@@ -161,12 +165,26 @@ export default {
     getTable() {
       this.$api.organization
         .getOrganizations({
-          limit: 10
+          limit: 100
         })
         .then(res => {
           this.returnedData = res.data.result;
 
+          var currentOrganizations = getCurrentOrganizations();
+          if (currentOrganizations == null || currentOrganizations.length == 0)
+            return;
+
           for (let i = 0; i < this.returnedData.length; i++) {
+            var existed = false;
+            var id = this.returnedData[i].id;
+            for (let j = 0; j < currentOrganizations.length; j++) {
+              if (currentOrganizations[j].organizationID === id) {
+                existed = true;
+                break;
+              }
+            }
+            if (existed == false) continue;
+
             let temp = {
               id: "",
               name: "",

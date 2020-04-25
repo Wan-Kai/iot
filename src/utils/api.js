@@ -5,6 +5,10 @@ export default {
   login: {
     login: data => {
       return login("/internal/login", data);
+    },
+
+    getProfile: data => {
+      return get("/internal/profile", data);
     }
   },
   index: {
@@ -78,7 +82,7 @@ export default {
     createService: data => {
       return post("/service-profiles", data);
     },
-    updateServer: data => {
+    updateSerice: data => {
       return put("/service-profiles/" + data.extra, data);
     },
     getService: data => {
@@ -104,6 +108,10 @@ export default {
     },
     deleteOrganization: data => {
       return deletes("/organizations/" + data.extra, data);
+    },
+
+    addUser: data => {
+      return post("/organizations/" + data.extra + "/users", data);
     }
   },
 

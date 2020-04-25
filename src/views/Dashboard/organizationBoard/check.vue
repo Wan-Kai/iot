@@ -27,7 +27,7 @@
         class="iot_view_edit_formItem"
       >
         <a-switch
-          disabled="true"
+          :disabled="true"
           :checked="returnedData.canHaveGateways"
           :defaultChecked="returnedData.canHaveGateways"
           checkedChildren="能"

@@ -116,7 +116,13 @@
 </template>
 
 <script>
-import { initOrganizations, getArea, getProfessionOptions } from "@/utils/util";
+import {
+  initOrganizations,
+  getArea,
+  getProfessionOptions,
+  initProfile,
+  getCurrentUser
+} from "@/utils/util";
 
 export default {
   data() {
@@ -192,13 +198,37 @@ export default {
             .then(res => {
               if (res.status === 200) {
                 this.commitLoading = false;
-                this.$message.success("成功创建企业");
+                this.$message.success("添加企业成功");
 
-                initOrganizations();
-                var _this = this;
-                setTimeout(() => {
-                  _this.handleBack();
-                }, 100);
+                debugger;
+                //需要将当前用户添加到组织机构中
+                var newOrganizationID = res.data.id;
+                var currentUser = getCurrentUser();
+                var data = {
+                  isAdmin: true,
+                  isDeviceAdmin: true,
+                  isGatewayAdmin: true,
+                  organizationID: newOrganizationID,
+                  userID: currentUser.id,
+                  username: currentUser.username
+                };
+                this.$api.organization
+                  .addUser({
+                    extra: newOrganizationID,
+                    organizationUser: data
+                  })
+                  .then(res => {
+                    //添加成功之后，重新更新profile
+                    initProfile();
+                    initOrganizations();
+                    var _this = this;
+                    setTimeout(() => {
+                      _this.handleBack();
+                    }, 100);
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
               } else {
                 this.$message.error(res.data.code);
                 this.$message.error(res.data.error);

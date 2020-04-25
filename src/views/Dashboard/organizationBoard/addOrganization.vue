@@ -195,9 +195,9 @@ export default {
                 this.$message.success("成功创建企业");
 
                 initOrganizations();
-
+                var _this = this;
                 setTimeout(() => {
-                  this.$router.push("/admin/dashboard/organization");
+                  _this.handleBack();
                 }, 100);
               } else {
                 this.$message.error(res.data.code);

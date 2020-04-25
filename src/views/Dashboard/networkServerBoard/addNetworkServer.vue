@@ -188,9 +188,9 @@ export default {
                 this.$message.success("成功创建新服务器");
 
                 initNetworkServers();
-
+                var _this = this;
                 setTimeout(() => {
-                  this.$router.push("/admin/dashboard/networkServer");
+                  _this.handleBack();
                 }, 100);
               } else {
                 this.$message.error(res.data.code);

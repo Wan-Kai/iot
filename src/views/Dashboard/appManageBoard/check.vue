@@ -107,6 +107,7 @@ import ARow from "ant-design-vue/es/grid/Row";
 import NodeList from "./nodeList";
 import Edit from "./edit.vue";
 import ACol from "ant-design-vue/es/grid/Col";
+import { getOrganizationNameById } from "@/utils/util";
 export default {
   components: { ACol, ARow, NodeList, Edit },
   inject: ["reload"],
@@ -115,6 +116,7 @@ export default {
       //params
       id: "1",
       defaultTab: "1",
+      organizationName: "",
 
       //data
       returnedData: {
@@ -124,8 +126,9 @@ export default {
         time: "暂无",
         description: "描述内容描述内容描述内容描述内容描述内容描述内容描述内容"
       },
-
-      //modal
+      //批量添加数据
+      maxEndOfSix: 0, //所有node节点最大后六位int数
+      sentData: [],
       nodeListModalVisible: false,
       targetKeys: [],
       targetKeysTemp: [],
@@ -156,6 +159,8 @@ export default {
   },
   mounted() {
     this.getData();
+    this.getMaxNodeDevProfileId();
+    this.organizationName = getOrganizationNameById(this.id);
   },
   methods: {
     handleNodeChangeComfirm() {
@@ -168,35 +173,44 @@ export default {
       let addNodes = this.targetKeys.filter(
         temp => !this.targetKeysTemp.includes(temp)
       );
-
-      console.log(addNodes);
-      let sentData = {
-        applicationID: this.id,
-        name: "name",
-        description: "",
-        devEUI: "",
-        deviceProfileID: ""
-      };
       if (addNodes.length > 0) {
+        //为解决闭包问题，分开写读入for函数和请求api的for函数
         for (let i = 0; i < addNodes.length; i++) {
-          //Todo
-          sentData.deviceProfileID = addNodes[i];
-          //创建新节点
-          // this.$api.appManage
-          //         .createAppNode({
-          //           device: sentData
-          //         }).then(res => {
-          //   if (res.status === 200) {
-          //     console.log(res)
-          //   }
-          // }).catch(err =>{
-          //   console.log(err)
-          // })
+          this.maxEndOfSix++;
+          let sentDataTemp = {
+            applicationID: this.id,
+            devEUI: this.common.generateDevEUI(this.id, this.maxEndOfSix),
+            description: "批量添加，第" + this.maxEndOfSix + "个",
+            deviceProfileID: addNodes[i],
+            name: this.organizationName + this.maxEndOfSix
+          };
+          this.sentData.push(sentDataTemp);
+        }
+        for (let j = 0; j < addNodes.length; j++) {
+          (function(num, _self) {
+            // 此时访问的num，是上层函数执行环境的num，数组有10个函数对象，每个对象的执行环境下的number都不一样
+            _self.$api.appManage
+              .createAppNode({
+                device: _self.sentData[num]
+              })
+              .then(res => {
+                if (res.status === 200) {
+                  _self.$message.success(
+                    "创建节点成功" + _self.sentData[num].devEUI
+                  );
+                } else {
+                  _self.$message.error("创建节点" + _self.sentData[num].devEUI);
+                }
+              })
+              .catch(err => {
+                _self.$message.error(err);
+              });
+          })(j, this);
         }
       }
 
       //刷新界面
-      //this.reload();
+      this.reload();
 
       //同步修改暂存区
       this.targetKeysTemp = this.targetKeys;
@@ -238,6 +252,28 @@ export default {
           console.log(err);
         });
       this.nodeData = nodeData;
+    },
+    getMaxNodeDevProfileId() {
+      this.$api.node
+        .getNodeInApp({
+          limit: 1000
+        })
+        .then(res => {
+          let devices = res.data.result;
+          let maxEndOfSix = 0;
+
+          devices.forEach(item => {
+            let num = parseInt(item.devEUI.substr(10, 6));
+            if (maxEndOfSix < num) {
+              maxEndOfSix = num;
+            }
+          });
+          this.maxEndOfSix = maxEndOfSix;
+          //console.log((Array(6).join("0") + maxEndOfSix).slice(-6));
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

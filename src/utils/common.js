@@ -15,12 +15,12 @@ export default {
   generateDevEUI(organizationID, index) {
     var totalLength = 16;
     //左边6位
-    var leftStr = (Array(length).join("0") + organizationID).slice(-6);
+    var leftStr = (Array(6).join("0") + organizationID).slice(-6);
     //中间4位
     var centerStr = new Date().getFullYear();
 
     //右边6位
-    var rightStr = (Array(length).join("0") + index).slice(-6);
+    var rightStr = (Array(6).join("0") + index).slice(-6);
 
     var result = leftStr + "" + centerStr + "" + rightStr;
     return result;

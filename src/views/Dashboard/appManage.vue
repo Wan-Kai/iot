@@ -148,7 +148,7 @@ export default {
     },
     editRouter(record) {
       console.log(record);
-      sessionStorage.setItem("id", record.id);
+      sessionStorage.setItem("appId", record.id);
       sessionStorage.setItem("tab", "2");
       this.$router.push({
         name: "checkApp"

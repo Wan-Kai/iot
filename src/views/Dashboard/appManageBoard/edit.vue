@@ -220,7 +220,7 @@ export default {
     this.AppEditform = this.$form.createForm(this, { name: "AppEdit_form" });
   },
   beforeMount() {
-    this.id = sessionStorage.getItem("id");
+    this.id = sessionStorage.getItem("appId");
     this.serviceProfile_options = getServiceOptions();
     this.$api.appManage
       .getAppDetail({

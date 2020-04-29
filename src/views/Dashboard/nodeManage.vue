@@ -1,6 +1,6 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
-    <div class="iot_view_nodeManage_top">
+    <div class="iot_view_top">
       <a-row>
         <a-col :span="8">
           <a-input-group compact style="float: left;width: 100%">
@@ -9,8 +9,8 @@
               placeholder="请输入编号查询"
             />
             <a-select style="width: 40%;float: left;text-align: left">
-              <a-select-option value="test">研发测试</a-select-option>
-              <a-select-option value="sell">销售</a-select-option>
+              <a-select-option value="0">未部署</a-select-option>
+              <a-select-option value="1">已部署</a-select-option>
             </a-select>
             <a-button style="float: left" icon="search" />
           </a-input-group>
@@ -22,7 +22,7 @@
           <a-button
             style="margin: 0 22px"
             icon="download"
-            @click="showImportModalIn"
+            @click="handleImport"
           >
             批量导入
           </a-button>
@@ -58,12 +58,12 @@
               {{ this.warning }}
             </p>
 
-            <a-card class="iot_view_nodeManage_in_card">
+            <a-card class="iot_view_in_card">
               <p style="margin-bottom: 0">Some contents...</p>
               <p style="margin-bottom: 0">Some contents...</p>
             </a-card>
           </a-modal>
-          <a-button icon="download" @click="showExportModalOut">
+          <a-button icon="download" @click="handleExport">
             批量导出
           </a-button>
           <a-modal
@@ -87,20 +87,20 @@
         </a-col>
       </a-row>
     </div>
-    <div class="iot_view_nodeManage_table_layout">
+    <div class="iot_view_table_layout">
       <a-table
         :columns="columns"
         :dataSource="tableData"
         style="min-width: auto"
-        class="iot_view_nodeManage_table"
+        class="iot_view_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
         :loading="tableLoadingState"
       >
-        <span slot="state" slot-scope="tags">
-          <a-tag :color="tags === 'on' ? 'green' : 'red'" :key="tags">
-            {{ tags.toUpperCase() }}
-          </a-tag>
+        <span slot="state" slot-scope="text, record">
+          <span>
+            {{ record.device.devEUI | nodeState }}
+          </span>
         </span>
 
         <span slot="action" slot-scope="text, record">
@@ -109,13 +109,9 @@
           <a @click="edit(record)">编辑</a>
         </span>
       </a-table>
-      <div class="iot_view_nodeManage_button_layout">
-        <a-button class="iot_view_nodeManage_delete_button" icon="delete"
-          >删除</a-button
-        >
-        <a-button class="iot_view_nodeManage_export_button" icon="download"
-          >导出</a-button
-        >
+      <div class="iot_view_button_layout">
+        <a-button class="iot_view_button_delete" icon="delete">删除</a-button>
+        <a-button class="iot_view_button_export" icon="download">导出</a-button>
       </div>
     </div>
   </a-layout>
@@ -128,19 +124,20 @@ import { getNetworkServerNameById } from "@/utils/util";
 const columns = [
   {
     title: "节点编号",
-    dataIndex: "id",
-    key: "id"
+    dataIndex: "device_profile_id",
+    key: "device_profile_id"
   },
   {
     title: "节点名称",
-    dataIndex: "name",
-    key: "name"
+    dataIndex: "device_profile_name",
+    key: "device_profile_name"
   },
   {
     title: "网络服务器",
-    dataIndex: "server",
-    key: "server "
+    dataIndex: "networkServerName",
+    key: "networkServerName "
   },
+  /*
   {
     title: "协议版本",
     dataIndex: "macVersion",
@@ -151,10 +148,11 @@ const columns = [
     dataIndex: "supportsJoinType",
     key: "supportsJoinType "
   },
+  */
   {
     title: "使用状态",
-    key: "type",
-    dataIndex: "type"
+    key: "state",
+    scopedSlots: { customRender: "state" }
   },
   {
     title: "创建时间",
@@ -175,6 +173,33 @@ export default {
       columns,
       tableData: [],
       tableLoadingState: true,
+
+      returnedData: [
+        {
+          device_profile_id: "",
+          device_profile_name: "",
+          network_server_id: "",
+          networkServerName: "",
+
+          organization_id: "",
+
+          device: {
+            devEUI: "",
+            deviceStatusBattery: "",
+            deviceStatusMargin: "",
+            deviceStatusExternalPowerSource: "",
+            deviceStatusBatteryLevelUnavailable: "",
+            deviceStatusBatteryLevel: "",
+            province: "",
+            city: "",
+            district: "",
+            firstSeenAt: "",
+            lastSeenAt: ""
+          },
+          createdAt: "",
+          updatedAt: ""
+        }
+      ],
 
       importLoadingState: false,
       importDialogVisibleState: false,
@@ -198,47 +223,68 @@ export default {
       }
     };
   },
+
+  computed: {},
+
   beforeMount() {
-    this.$api.node
-      .getNode({
-        limit: 100
-      })
-      .then(res => {
-        let infoDataTemp = res.data.result;
-        console.log(res.data.result);
-        for (let i = 0; i < infoDataTemp.length; i++) {
-          infoDataTemp[i].server = getNetworkServerNameById(
-            infoDataTemp[i].networkServerID
-          );
-        }
-        this.tableData = infoDataTemp;
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .finally(() => {
-        this.tableLoadingState = false;
-      });
+    this.getTable();
   },
   methods: {
+    getTable() {
+      this.$api.node
+        .getDeviceProfileAndDevice({
+          limit: 100
+        })
+        .then(res => {
+          this.returnedData = res.data.result;
+          for (let i = 0; i < this.returnedData.length; i++) {
+            this.returnedData[i].networkServerName = getNetworkServerNameById(
+              this.returnedData[i].network_server_id
+            );
+          }
+
+          this.tableData = this.returnedData;
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.tableLoadingState = false;
+        });
+    },
+
+    getServerName(record) {
+      //alert(record.network_server_id);
+      return getNetworkServerNameById(record.network_server_id);
+    },
+
     addNode() {
       this.$router.push({
         name: "addNodeManage"
       });
     },
     check(data) {
+      debugger;
       this.$router.push({
         name: "checkNodeManage",
-        query: { id: data["id"], tab: "1" }
+        query: {
+          id: data["device_profile_id"],
+          devEUI: data["device"]["devEUI"],
+          tab: "1"
+        }
       });
     },
     edit(data) {
       this.$router.push({
         name: "checkNodeManage",
-        query: { id: data["id"], tab: "2" }
+        query: {
+          id: data["device_profile_id"],
+          devEUI: data["device"]["devEUI"],
+          tab: "2"
+        }
       });
     },
-    showImportModalIn() {
+    handleImport() {
       this.importDialogVisibleState = true;
     },
     handleImportOk() {
@@ -252,7 +298,7 @@ export default {
       this.importDialogVisibleState = false;
     },
 
-    showExportModalOut() {
+    handleExport() {
       this.exportDialogVisibleState = true;
     },
     handleExportOk() {
@@ -270,26 +316,26 @@ export default {
 </script>
 
 <style>
-.iot_view_nodeManage_top {
+.iot_view_top {
   width: 100%;
   margin-bottom: 14px;
   margin-top: 14px;
 }
-.iot_view_nodeManage_table_layout {
+.iot_view_table_layout {
   min-height: fit-content;
 }
-.iot_view_nodeManage_in_card {
+.iot_view_in_card {
   height: 200px;
   background: #dddddd;
 }
-.iot_view_nodeManage_button_layout {
+.iot_view_button_layout {
   position: fixed;
   float: left;
   margin-top: -40px;
 }
-.iot_view_nodeManage_delete_button {
+.iot_view_button_delete {
 }
-.iot_view_nodeManage_export_button {
+.iot_view_button_export {
   margin-left: 10px;
 }
 .ant-table-thead > tr > th,

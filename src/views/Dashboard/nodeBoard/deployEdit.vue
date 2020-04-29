@@ -5,9 +5,9 @@
       type="flex"
       justify="space-between"
       align="top"
-      :gutter="16"
+      :gutter="20"
     >
-      <a-col :span="10">
+      <a-col :span="16">
         <a-form
           :form="nodeDeployForm"
           layout="vertical"
@@ -132,7 +132,7 @@
           </a-form-item>
 
           <a-form-item
-            v-if="!this.supportsJoin"
+            v-if="!this.returnedData.supportsJoin"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
             label="FCntDn："
@@ -297,19 +297,16 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-import {
-  getOrganizationID,
-  initDevProfileServices
-} from "../../../utils/util.js";
+import { initDevProfileServices } from "../../../utils/util.js";
 export default {
   components: { ACol, ARow },
   data() {
     return {
       //params
-      id: "",
 
       //data
       returnedData: {
+        id: "",
         name: "",
         macVersion: "",
         supportsJoin: true,
@@ -333,10 +330,10 @@ export default {
   },
 
   beforeMount() {
-    this.id = this.$route.query.id;
+    this.returnedData.id = this.$route.query.id;
     this.$api.node
-      .getNodeById({
-        extra: this.id
+      .getDeviceProfileById({
+        extra: this.returnedData.id
       })
       .then(res => {
         let data = res.data;
@@ -369,10 +366,10 @@ export default {
           } else {
             deviceProfile.supportsJoin = false;
           }
-          deviceProfile.organizationID = getOrganizationID();
+          deviceProfile.organizationID = this.common.getCurrentOrganizationID();
           this.$api.node
             .updateNode({
-              extra: this.id,
+              extra: this.returnedData.id,
               deviceProfile: deviceProfile
             })
             .then(res => {
@@ -409,7 +406,7 @@ export default {
       this.confirmLoading = true;
       this.$api.node
         .deleteNode({
-          extra: this.id
+          extra: this.returnedData.id
         })
         .then(res => {
           if (res.status === 200) {

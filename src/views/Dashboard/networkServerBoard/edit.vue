@@ -32,7 +32,7 @@
           v-decorator="[
             'ip',
             {
-              initialValue: returnedData.ip,
+              initialValue: this.getIp,
               rules: [{ required: true, message: '请输入ip' }]
             }
           ]"
@@ -51,7 +51,7 @@
           v-decorator="[
             'port',
             {
-              initialValue: returnedData.port,
+              initialValue: this.getPort,
               rules: [{ required: true, message: '请输入端口' }]
             }
           ]"
@@ -179,7 +179,7 @@
               type="danger"
               icon="delete"
               style="margin-left: 16px"
-              @click="showModal"
+              @click="handleDelete"
               >删除</a-button
             >
             <a-button
@@ -221,9 +221,6 @@ export default {
         id: "",
         name: "",
         server: "",
-        ip: "",
-        port: "",
-
         gatewayDiscoveryEnabled: false,
         gatewayDiscoveryInterval: "",
         gatewayDiscoveryTXFrequency: "",
@@ -236,6 +233,28 @@ export default {
       confirmLoading: false
     };
   },
+
+  computed: {
+    getIp() {
+      if (this.common.isEmpty(this.returnedData.server)) return "";
+      if (this.returnedData.server.split(":")) {
+        let server = this.returnedData.server.split(":");
+        return server[0];
+      } else {
+        return this.returnedData.server;
+      }
+    },
+    getPort() {
+      if (this.common.isEmpty(this.returnedData.server)) return "";
+      if (this.returnedData.server.split(":")) {
+        let server = this.returnedData.server.split(":");
+        return server[1];
+      } else {
+        return "";
+      }
+    }
+  },
+
   beforeCreate() {
     this.edit_form = this.$form.createForm(this, {
       name: "edit_form"
@@ -264,16 +283,6 @@ export default {
           //console.log(res);
           this.returnedData.name = res.data.networkServer.name;
           this.returnedData.server = res.data.networkServer.server;
-
-          if (this.returnedData.server.split(":")) {
-            let server = this.returnedData.server.split(":");
-            this.returnedData.ip = server[0];
-            this.returnedData.port = server[1];
-          } else {
-            this.returnedData.ip = this.returnedData.server;
-            this.returnedData.port = "";
-          }
-
           this.returnedData.gatewayDiscoveryEnabled =
             res.data.networkServer.gatewayDiscoveryEnabled;
           this.returnedData.gatewayDiscoveryInterval =
@@ -334,7 +343,7 @@ export default {
         }
       });
     },
-    showModal() {
+    handleDelete() {
       this.visible = true;
       this.ModalText = "确认删除" + ":" + "@" + this.returnedData.server;
     },

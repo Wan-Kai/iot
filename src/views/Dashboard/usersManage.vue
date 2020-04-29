@@ -16,21 +16,26 @@
             style="float: right"
             @click="addUser"
           >
-            添加账号
+            添加用户
           </a-button>
         </a-col>
       </a-row>
     </div>
     <div class="iot_view_userManage_table_layout">
       <a-table
-        :rowSelection="rowSelection"
         :columns="columns"
-        :dataSource="interData"
+        :dataSource="returnedData"
         style="min-width: auto"
         class="iot_view_userManage_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
       >
+        <span slot="role" slot-scope="text, record">
+          <span>
+            {{ record.isAdmin | roleName }}
+          </span>
+        </span>
+
         <span slot="action" slot-scope="text, record">
           <a @click="checkRouter(record)">查看</a>
           <a-divider type="vertical" />
@@ -49,38 +54,34 @@ import ACol from "ant-design-vue/es/grid/Col";
 const columns = [
   {
     title: "手机号",
-    dataIndex: "phoneNumber",
-    key: "phoneNumber"
+    dataIndex: "phonenumber",
+    key: "phonenumber"
   },
   {
     title: "姓名",
-    dataIndex: "name",
-    key: "name"
+    dataIndex: "username",
+    key: "username"
   },
   {
     title: "邮箱",
     dataIndex: "email",
     key: "email"
   },
-  {
-    title: "单位",
-    key: "unit",
-    dataIndex: "unit"
-  },
+
   {
     title: "备注",
-    key: "description",
-    dataIndex: "description"
+    key: "note",
+    dataIndex: "note"
   },
   {
     title: "角色",
     key: "role",
-    dataIndex: "role"
+    scopedSlots: { customRender: "role" }
   },
   {
     title: "创建时间",
-    key: "time",
-    dataIndex: "time"
+    key: "createdAt",
+    dataIndex: "createdAt"
   },
   {
     title: "操作",
@@ -93,8 +94,22 @@ export default {
   data() {
     return {
       columns,
-      interData: [],
+      tableData: [],
 
+      returnedData: [
+        {
+          userID: "",
+          username: "",
+          isAdmin: false,
+          isGatewayAdmin: false,
+          isDeviceAdmin: false,
+          createdAt: "",
+          updatedAt: "",
+          phonenumber: "",
+          email: "",
+          note: ""
+        }
+      ],
       pagination: {
         size: "small",
         defaultPageSize: 10,
@@ -109,28 +124,32 @@ export default {
     };
   },
   beforeMount() {
-    this.$api.usersManage
-      .usersData({
-        page: 0
-      })
-      .then(res => {
-        this.interData = res.data.result;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getTable();
   },
   methods: {
+    getTable() {
+      this.$api.usersManage
+        .getOrganizationUsers({
+          limit: 100
+        })
+        .then(res => {
+          this.returnedData = res.data.result;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     checkRouter(record) {
       this.$router.push({
         name: "checkUser",
-        query: { number: record["phoneNumber"], id: "1" }
+        query: { id: record["userID"] }
       });
     },
     editRouter(record) {
       this.$router.push({
         name: "editUser",
-        query: { number: record["phoneNumber"], id: "1" }
+        query: { id: record["userID"] }
       });
     },
     addUser() {

@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >节点编号： {{ this.id }}</span
+            >节点编号： {{ this.deviceProfile.id }}</span
           >
         </a-col>
       </a-row>
@@ -21,7 +21,7 @@
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">网络状态</div>
               <div style="font-size: 12px">
-                {{ this.returnedData.internalState }}
+                {{ this.getNetworkStatus }}
               </div>
             </a-col>
           </a-row>
@@ -36,7 +36,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">信号强度</div>
-              <div style="font-size: 12px">{{ this.returnedData.sign }}</div>
+              <div style="font-size: 12px">{{ this.getSign }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -50,7 +50,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">所在网关</div>
-              <div style="font-size: 12px">{{ this.returnedData.gateway }}</div>
+              <div style="font-size: 12px">{{ this.getGateway }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -65,7 +65,7 @@
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">最后心跳时间</div>
               <div style="font-size: 12px">
-                {{ this.returnedData.heartTime }}
+                {{ this.getHeartTime }}
               </div>
             </a-col>
           </a-row>
@@ -107,35 +107,113 @@ export default {
   },
   data() {
     return {
-      id: 0,
-
       defaultTab: "1",
 
       //data
-      returnedData: {
-        internalState: "",
-        sign: "",
-        gateway: "",
-        heartTime: ""
+      deviceProfile: {
+        id: "",
+        name: ""
+        //internalState: "",
+        //sign: "",
+        //gateway: "",
+        //heartTime: ""
+      },
+
+      deviceDetail: {
+        devEUI: "",
+        name: "",
+        description: "",
+        province: "",
+        city: "",
+        district: "",
+        location: {
+          accuracy: 0,
+          altitude: 0,
+          latitude: 0,
+          longitude: 0,
+          source: "UNKNOWN"
+        },
+
+        deviceStatusBattery: 0,
+        deviceStatusMargin: 0,
+        lastSeenAt: ""
       }
     };
   },
+
+  computed: {
+    getNodeState() {
+      debugger;
+      if (
+        this.common.isEmpty(this.deviceDetail.devEUI) ||
+        this.deviceDetail.devEUI === "0000000000000000"
+      )
+        return "未部署";
+      else return "已部署";
+    },
+    getNetworkStatus() {
+      return "off";
+    },
+    getSign() {
+      return this.deviceDetail.deviceStatusBattery;
+    },
+
+    getGateway() {
+      return "";
+    },
+
+    getHeartTime() {
+      return this.deviceDetail.lastSeenAt;
+    }
+  },
+
   beforeMount() {
-    this.id = this.$route.query.id;
+    this.deviceProfile.id = this.$route.query.id;
+    this.deviceDetail.devEUI = this.$route.query.devEUI;
     this.defaultTab = this.$route.query.tab;
 
-    this.$api.node
-      .getNodeById({
-        extra: this.id
-      })
-      .then(res => {
-        let data = res.data;
-        console.log(data);
-        this.returnedData = data;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getDeviceDetail();
+  },
+
+  methods: {
+    getDeviceProfileDetail() {
+      this.$api.node
+        .getDeviceProfileById({
+          extra: this.deviceProfile.id
+        })
+        .then(res => {
+          let data = res.data;
+          console.log(data);
+          this.returnedData = data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    getDeviceDetail() {
+      debugger;
+      if (
+        this.common.isEmpty(this.deviceDetail.devEUI) ||
+        this.deviceDetail.devEUI === "0000000000000000"
+      )
+        return;
+
+      this.$api.appManage
+        .getAppNodeDetail({ extra: this.deviceDetail.devEUI })
+        .then(res => {
+          let temp = res.data;
+
+          this.deviceDetail = temp.device;
+          this.deviceDetail.location = temp.location;
+          this.deviceDetail.deviceStatusBattery = temp.deviceStatusBattery;
+          this.deviceDetail.deviceStatusMargin = temp.deviceStatusMargin;
+          this.deviceDetail.lastSeenAt = temp.lastSeenAt;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>

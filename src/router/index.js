@@ -135,14 +135,14 @@ const routes = [
               import("../views/Dashboard/organizationBoard/addOrganization.vue")
           },
           {
-            path: "/admin/dashboard/organization/check/:id",
+            path: "/admin/dashboard/organization/check",
             name: "checkOrganization",
             meta: { title: "查看企业" },
             component: () =>
               import("../views/Dashboard/organizationBoard/check.vue")
           },
           {
-            path: "/admin/dashboard/organization/edit/:id",
+            path: "/admin/dashboard/organization/edit",
             name: "editOrganization",
             meta: { title: "编辑企业" },
             component: () =>
@@ -181,7 +181,7 @@ const routes = [
               )
           },
           {
-            path: "/admin/dashboard/networkServer/check/:id",
+            path: "/admin/dashboard/networkServer/check",
             name: "checkNetworkServer",
             meta: { title: "查看服务器" },
             component: () =>
@@ -190,7 +190,7 @@ const routes = [
               )
           },
           {
-            path: "/admin/dashboard/networkServer/edit/:id",
+            path: "/admin/dashboard/networkServer/edit",
             name: "editNetworkServer",
             meta: { title: "编辑服务器" },
             component: () =>
@@ -298,6 +298,15 @@ const routes = [
             path: "/admin/dashboard/gatewayListBoard/check",
             name: "checkGatewayManage",
             meta: { title: "查看网关" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/gatewayListBoard/check.vue"
+              )
+          },
+          {
+            path: "/admin/dashboard/gatewayListBoard/check",
+            name: "editGatewayManage",
+            meta: { title: "编辑网关" },
             component: () =>
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/gatewayListBoard/check.vue"

@@ -15,7 +15,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.id }}
+                {{ this.returnedData.id }}
               </p>
             </a-col>
           </a-row>
@@ -35,7 +35,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.returnedData.supportsJoinType }}
+                {{ this.getSupportJoinType }}
               </p>
             </a-col>
           </a-row>
@@ -65,7 +65,7 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.returnedData.state }}
+                {{ this.getNodeState }}
               </p>
             </a-col>
           </a-row>
@@ -105,51 +105,73 @@ export default {
   data() {
     return {
       isDark: false,
-      id: "",
 
       returnedData: {
+        id: "",
         name: "",
         supportsJoinType: "",
         macVersion: "",
         overTime: "",
-        state: "",
+
         createdAt: "",
         updatedAt: ""
+      },
+
+      deviceDetail: {
+        devEUI: ""
       }
     };
   },
 
-  beforeMount() {
-    this.id = this.$route.query.id;
-    this.$api.node
-      .getNodeById({
-        extra: this.id
-      })
-      .then(res => {
-        let data = res.data;
-        console.log(data);
+  computed: {
+    getNodeState() {
+      if (
+        this.common.isEmpty(this.deviceDetail.devEUI) ||
+        this.deviceDetail.devEUI === "0000000000000000"
+      )
+        return "未部署";
+      else return "已部署";
+    },
 
-        let infoDataTemp = data.deviceProfile;
-        this.returnedData.createdAt = data.createdAt;
-        this.returnedData.updatedAt = data.updatedAt;
-        this.returnedData.name = infoDataTemp.name;
-        this.returnedData.macVersion = infoDataTemp.macVersion;
-
-        if (infoDataTemp.supportsJoin === "true") {
-          this.returnedData.supportsJoinType = "OTAA";
-        } else {
-          this.returnedData.supportsJoinType = "ABP";
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    getSupportJoinType() {
+      if (this.returnedData.supportsJoin) {
+        return "OTAA";
+      } else return "ABP";
+    }
   },
+
+  beforeMount() {
+    this.returnedData.id = this.$route.query.id;
+    this.deviceDetail.devEUI = this.$route.query.devEUI;
+    this.getDeviceProfileDetail();
+  },
+
   mounted() {
     this.drawLineUp();
     this.drawLineDown();
   },
   methods: {
+    getDeviceProfileDetail() {
+      this.$api.node
+        .getDeviceProfileById({
+          extra: this.returnedData.id
+        })
+        .then(res => {
+          let data = res.data;
+          //console.log(data);
+
+          let infoDataTemp = data.deviceProfile;
+          this.returnedData.createdAt = data.createdAt;
+          this.returnedData.updatedAt = data.updatedAt;
+          this.returnedData.name = infoDataTemp.name;
+          this.returnedData.macVersion = infoDataTemp.macVersion;
+          this.returnedData.supportsJoin = infoDataTemp.supportsJoin;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     drawLineUp() {
       // 基于准备好的dom，初始化echarts实例
       let myChartUp = this.$echarts.init(document.getElementById("myChartUp"));

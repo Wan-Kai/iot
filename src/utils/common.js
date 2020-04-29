@@ -1,4 +1,15 @@
+import store from "../store/index";
+
 export default {
+  getCurrentOrganizationID: function() {
+    var organizations = store.getters["login/getCurrentOrganizations"];
+    if (organizations != null && organizations.length > 0) {
+      return organizations[0].organizationID;
+    }
+
+    return store.getters["login/getOrganizationID"];
+  },
+
   /**
    * uuid
    */

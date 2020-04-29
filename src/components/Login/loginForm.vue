@@ -109,11 +109,13 @@ export default {
                 setSessionKey(res.data.jwt);
 
                 setTimeout(() => {
-                  initProfile();
+                  initProfile(); //{
+
                   initOrganizations();
                   initNetworkServers();
                   initServiceOptions();
-                  initDevProfileServices();
+                  //initDevProfileServices();
+                  //});
 
                   this.$router.push("/admin/dashboard");
                 }, 300);

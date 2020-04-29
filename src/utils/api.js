@@ -1,5 +1,6 @@
 // 引入 axios 封装方法
 import { post, get, put, deletes, login, getLocal } from "./axios";
+import common from "./common";
 
 export default {
   login: {
@@ -77,6 +78,9 @@ export default {
 
   serviceProfile: {
     getServices: data => {
+      if (!data.organizationID || common.isEmpty(data.organizationID)) {
+        data.organizationID = common.getCurrentOrganizationID();
+      }
       return get("/service-profiles", data);
     },
     createService: data => {
@@ -110,6 +114,7 @@ export default {
       return deletes("/organizations/" + data.extra, data);
     },
 
+    //添加一个已经存在的用户，主要用于将当前用户添加至新建的组织机构中
     addUser: data => {
       return post("/organizations/" + data.extra + "/users", data);
     }
@@ -126,10 +131,13 @@ export default {
     */
     //获取表格数据
     gatewayList: data => {
+      if (!data.organizationID || common.isEmpty(data.organizationID)) {
+        data.organizationID = common.getCurrentOrganizationID();
+      }
       return get("/gateways", data);
     },
     gatewayDetail: data => {
-      return get("/gateways/" + data.extra, data);
+      return get("/gateways/" + data.extra);
     },
     createGateway: data => {
       return post("/gateways", data);
@@ -163,10 +171,21 @@ export default {
       return post("/admin/gateway/nlogFlow/data", data);
     },
 
-    getNode: data => {
+    getDeviceProfile: data => {
+      if (!data.organizationID || common.isEmpty(data.organizationID)) {
+        data.organizationID = common.getCurrentOrganizationID();
+      }
       return get("/device-profiles", data);
     },
-    getNodeById: data => {
+
+    getDeviceProfileAndDevice: data => {
+      if (!data.organizationID || common.isEmpty(data.organizationID)) {
+        data.organizationID = common.getCurrentOrganizationID();
+      }
+      return get("/DPsandDevs", data);
+    },
+
+    getDeviceProfileById: data => {
       return get("/device-profiles/" + data.extra, data);
     },
     updateNode: data => {
@@ -177,26 +196,13 @@ export default {
     },
     deleteNode: data => {
       return deletes("/device-profiles/" + data.extra, data);
-    },
-
-    getNodeInApp: data => {
-      return get("/devices", data);
-    },
-    getNodeByIdInApp: data => {
-      return get("/devices/" + data.extra, data);
-    },
-    updateNodeInApp: data => {
-      return put("/devices/" + data.extra, data);
-    },
-    creatNodeInApp: data => {
-      return post("/devices", data);
-    },
-    deleteNodeInApp: data => {
-      return deletes("/devices/" + data.extra, data);
     }
   },
   appManage: {
     getAppList: data => {
+      if (!data.organizationID || common.isEmpty(data.organizationID)) {
+        data.organizationID = common.getCurrentOrganizationID();
+      }
       return get("/applications", data);
     },
     getAppDetail: data => {
@@ -214,29 +220,85 @@ export default {
       return deletes("/applications/" + data.extra, data);
     },
 
-    AppNodes: data => {
+    getNodeInApp: data => {
       return get("/devices", data);
     },
+
+    getAppNodeDetail: data => {
+      return get("/devices/" + data.extra, data);
+    },
+
     createAppNode: data => {
       return post("/devices", data);
     },
-    getAppNode: data => {
-      return get("/devices/" + data.extra, data);
-    },
+
     updateAppNode: data => {
       return put("/devices/" + data.extra, data);
     },
     deleteAppNode: data => {
       return deletes("/devices/" + data.extra, data);
-    },
-
-    getAppNodeList: data => {
-      return post("/admin/app/nodeData", data);
     }
   },
   usersManage: {
     usersData: data => {
       return post("/admin/users/data", data);
+    },
+
+    //查询当前组织机构的用户
+    getOrganizationUsers: data => {
+      if (!data.organizationID || common.isEmpty(data.organizationID)) {
+        data.organizationID = common.getCurrentOrganizationID();
+      }
+      return get("/organizations/" + data.organizationID + "/users", data);
+    },
+
+    //查询用户详细信息
+    getUserDetail: data => {
+      return get("/users/" + data.extra, data);
+    },
+
+    //添加用户的同时，添加到当前组织机构中
+    addUser: data => {
+      if (!data.organizationID || common.isEmpty(data.organizationID)) {
+        data.organizationID = common.getCurrentOrganizationID();
+      }
+      debugger;
+      var temp = {
+        organizations: [
+          {
+            isAdmin: data.isAdmin,
+            isDeviceAdmin: data.isAdmin,
+            isGatewayAdmin: data.isAdmin,
+            organizationID: data.organizationID
+          }
+        ],
+        password: data.password,
+        user: {
+          username: data.username,
+          email: data.email,
+          isActive: data.isAdmin,
+          isAdmin: data.isAdmin,
+          note: data.note //电话号码
+        }
+      };
+      debugger;
+      return post("/users", temp);
+    },
+
+    //在删除用户的同时，会自动删除组织机构中的用户
+    deleteUser: data => {
+      return deletes("/users/" + data.extra, data);
+    },
+
+    //更新用户信息
+    updateUser: data => {
+      return put("/users/" + data.extra, data);
+    },
+
+    //更新用户密码
+    updatePassword: data => {
+      debugger;
+      return put("/users/" + data.extra + "/password", data);
     }
   },
   util: {

@@ -81,7 +81,7 @@
         </template>
 
         <a-transfer
-          :dataSource="nodeData"
+          :dataSource="undeployedNodes"
           showSearch
           :listStyle="{
             width: '250px',
@@ -124,16 +124,17 @@ export default {
         capacity: "暂无",
         usedCapacity: "暂无",
         time: "暂无",
-        description: "描述内容描述内容描述内容描述内容描述内容描述内容描述内容"
+        description: ""
       },
       //批量添加数据
       maxEndOfSix: 0, //所有node节点最大后六位int数
-      sentData: [],
+
       nodeListModalVisible: false,
+      undeployedNodes: [],
       targetKeys: [],
       targetKeysTemp: [],
-      nodeData: [],
       chosenData: [],
+      sentData: [],
 
       //loading
       nodeComfirmLoading: false
@@ -143,22 +144,10 @@ export default {
     this.id = sessionStorage.getItem("appId");
     this.defaultTab = sessionStorage.getItem("tab");
 
-    this.$api.appManage
-      .getAppDetail({
-        extra: this.id
-      })
-      .then(res => {
-        let infoDataTemp = res.data.application;
-
-        this.returnedData.appName = infoDataTemp.name;
-        this.returnedData.description = infoDataTemp.description;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getAppDetail();
   },
   mounted() {
-    this.getData();
+    this.getUnDeployedNodes();
     this.getMaxNodeDevProfileId();
     this.organizationName = getOrganizationNameById(this.id);
   },
@@ -173,16 +162,18 @@ export default {
       let addNodes = this.targetKeys.filter(
         temp => !this.targetKeysTemp.includes(temp)
       );
+      debugger;
       if (addNodes.length > 0) {
         //为解决闭包问题，分开写读入for函数和请求api的for函数
         for (let i = 0; i < addNodes.length; i++) {
           this.maxEndOfSix++;
+          var devEUI = this.common.generateDevEUI(this.id, this.maxEndOfSix);
           let sentDataTemp = {
             applicationID: this.id,
-            devEUI: this.common.generateDevEUI(this.id, this.maxEndOfSix),
+            devEUI: devEUI,
             description: "批量添加，第" + this.maxEndOfSix + "个",
             deviceProfileID: addNodes[i],
-            name: this.organizationName + this.maxEndOfSix
+            name: devEUI
           };
           this.sentData.push(sentDataTemp);
         }
@@ -215,6 +206,23 @@ export default {
       //同步修改暂存区
       this.targetKeysTemp = this.targetKeys;
     },
+
+    getAppDetail() {
+      this.$api.appManage
+        .getAppDetail({
+          extra: this.id
+        })
+        .then(res => {
+          let infoDataTemp = res.data.application;
+
+          this.returnedData.appName = infoDataTemp.name;
+          this.returnedData.description = infoDataTemp.description;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     addNodes() {
       this.nodeListModalVisible = !this.nodeListModalVisible;
     },
@@ -231,18 +239,22 @@ export default {
     handleNodeChange(targetKeys, moveKeys) {
       this.targetKeys = targetKeys;
     },
-    getData() {
+
+    getUnDeployedNodes() {
       const nodeData = [];
+      var _this = this;
       this.$api.node
-        .getNode({
+        .getDeviceProfileAndDevice({
           limit: 100
         })
         .then(res => {
           let infoDataTemp = res.data.result;
           for (let i = 0; i < infoDataTemp.length; i++) {
+            if (_this.isDeviceDeployed(infoDataTemp[i].device.devEUI)) continue;
+
             const data = {
-              key: infoDataTemp[i].id,
-              title: infoDataTemp[i].name,
+              key: infoDataTemp[i].device_profile_id,
+              title: infoDataTemp[i].device_profile_name,
               chosen: false
             };
             nodeData.push(data);
@@ -251,11 +263,19 @@ export default {
         .catch(err => {
           console.log(err);
         });
-      this.nodeData = nodeData;
+      this.undeployedNodes = nodeData;
     },
+
+    isDeviceDeployed(devEUI) {
+      if (this.common.isEmpty(devEUI) || devEUI === "0000000000000000")
+        return false;
+      else return true;
+    },
+
     getMaxNodeDevProfileId() {
-      this.$api.node
+      this.$api.appManage
         .getNodeInApp({
+          applicationID: this.id,
           limit: 1000
         })
         .then(res => {

@@ -8,129 +8,129 @@
       :gutter="16"
     >
       <a-col :span="10">
-        <div class="iot_view_gatewayList_detail_textCard">
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+        <div class="iot_view_detail_textCard">
+          <a-row class="iot_view_detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">网关ID：</p>
+              <p class="iot_view_detail_textCard_p">网关ID：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.id }}
+              <p class="iot_view_detail_textCard_p">
+                {{ this.returnedData.id }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_detail_textCard_text_light">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">网关名称：</p>
+              <p class="iot_view_detail_textCard_p">网关名称：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
+              <p class="iot_view_detail_textCard_p">
                 {{ this.returnedData.name }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">网络服务器：</p>
+              <p class="iot_view_detail_textCard_p">网络服务器：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.returnedData.serverName }}
+              <p class="iot_view_detail_textCard_p">
+                {{ this.getServerName }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_detail_textCard_text_light">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">通信模式：</p>
+              <p class="iot_view_detail_textCard_p">通信模式：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.returnedData.massageMode }}
+              <p class="iot_view_detail_textCard_p">
+                {{ this.returnedData.modulation }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">频段：</p>
+              <p class="iot_view_detail_textCard_p">频段：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.returnedData.band }}
+              <p class="iot_view_detail_textCard_p">
+                {{ this.returnedData.channels }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_detail_textCard_text_light">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">状态：</p>
+              <p class="iot_view_detail_textCard_p">状态：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.returnedData.state }}
+              <p class="iot_view_detail_textCard_p">
+                {{ this.getState }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">信号：</p>
+              <p class="iot_view_detail_textCard_p">信号：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.returnedData.single }}
+              <p class="iot_view_detail_textCard_p">
+                {{ this.getSign }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_detail_textCard_text_light">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">
+              <p class="iot_view_detail_textCard_p">
                 上行数据量(24h)：
               </p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.returnedData.up }}
+              <p class="iot_view_detail_textCard_p">
+                {{ this.getUp }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">
+              <p class="iot_view_detail_textCard_p">
                 下行数据量(24h)：
               </p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.returnedData.down }}
+              <p class="iot_view_detail_textCard_p">
+                {{ this.getDown }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_detail_textCard_text_light">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">
+              <p class="iot_view_detail_textCard_p">
                 最后心跳时间：
               </p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
+              <p class="iot_view_detail_textCard_p">
                 {{ this.returnedData.lastSeenAt }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">添加时间：</p>
+              <p class="iot_view_detail_textCard_p">添加时间：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
+              <p class="iot_view_detail_textCard_p">
                 {{ this.returnedData.createdAt }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_detail_textCard_text_light">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">经纬度：</p>
+              <p class="iot_view_detail_textCard_p">经纬度：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
+              <p class="iot_view_detail_textCard_p">
                 {{
                   this.returnedData.location.latitude +
                     "/" +
@@ -139,32 +139,32 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">海拔：</p>
+              <p class="iot_view_detail_textCard_p">海拔：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
+              <p class="iot_view_detail_textCard_p">
                 {{ this.returnedData.location.altitude }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view__detail_textCard_text_light">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">地理位置：</p>
+              <p class="iot_view_detail_textCard_p">地理位置：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
-                {{ this.returnedData.area }}
+              <p class="iot_view_detail_textCard_p">
+                {{ this.getArea }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view__detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_gatewayList_detail_textCard_p">网关描述：</p>
+              <p class="iot_view_detail_textCard_p">网关描述：</p>
             </a-col>
             <a-col :span="16">
-              <p class="iot_view_gatewayList_detail_textCard_p">
+              <p class="iot_view_detail_textCard_p">
                 {{ this.returnedData.description }}
               </p>
             </a-col>
@@ -198,104 +198,134 @@ export default {
 
   data() {
     return {
-      //params
-      id: "",
-
-      //data
       returnedData: {
+        id: "",
         name: "",
-        gatewayProfileID: "",
-        serverName: "",
         description: "",
-        massageMode: "",
-        band: "",
-        state: "",
-        single: "",
-        up: "",
-        down: "",
-        lastSeenAt: "",
-        createdAt: "",
-        area: "",
+
+        networkServerID: "",
+        organizationID: "",
+
         province: "",
         city: "",
         district: "",
+
         location: {
           latitude: "",
           longitude: "",
           altitude: ""
-        }
+        },
+
+        modulation: "",
+        channels: "",
+
+        createdAt: "",
+        updatedAt: "",
+
+        firstSeenAt: "",
+        lastSeenAt: "",
+
+        gatewayProfileID: ""
       }
     };
   },
 
-  beforeMount() {
-    this.id = this.$route.query.id;
-    this.$api.gateway
-      .gatewayDetail({
-        extra: this.id
-      })
-      .then(res => {
-        let infoData = res.data;
-        let infoDataTemp = {};
+  computed: {
+    getState() {
+      return "off";
+    },
 
-        infoDataTemp.area =
-          infoData.gateway.province +
-          "/" +
-          infoData.gateway.city +
-          "/" +
-          infoData.gateway.district;
+    getSign() {
+      return "off";
+    },
 
-        infoDataTemp.name = infoData.gateway.name;
-        infoDataTemp.gatewayProfileID = infoData.gateway.gatewayProfileID;
-        infoDataTemp.serverName = getNetworkServerNameById(
-          infoData.gateway.networkServerID
-        );
-        infoDataTemp.description = infoData.gateway.description;
-        infoDataTemp.location = infoData.gateway.location;
-        infoDataTemp.lastSeenAt = infoData.lastSeenAt;
-        infoDataTemp.createdAt = infoData.createdAt;
-        infoDataTemp.area = getAreaLabel(
-          infoData.gateway.province,
-          infoData.gateway.city,
-          infoData.gateway.district
-        );
-        this.returnedData = infoDataTemp;
+    getUp() {
+      return "";
+    },
 
-        console.log(this.returnedData);
-        let mapObj = new AMap.Map("gateway_detail", {
-          // eslint-disable-line no-unused-vars
-          resizeEnable: true, //自适应大小
-          zoom: 14,
-          center: [
-            infoData.gateway.location.longitude,
-            infoData.gateway.location.latitude
-          ]
-        });
-        let startIcon = new AMap.Icon({
-          // 图标尺寸
-          size: new AMap.Size(25, 25),
-          // 图标的取图地址
-          image: wifi_map, // 您自己的图标
-          // 图标所用图片大小
-          imageSize: new AMap.Size(25, 25)
-        });
-        const marker = new AMap.Marker({
-          // eslint-disable-line no-unused-vars
-          map: mapObj,
-          icon: startIcon,
-          position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: "网关"
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    getDown() {
+      return "";
+    },
+
+    getArea() {
+      return getAreaLabel(
+        this.returnedData.province,
+        this.returnedData.city,
+        this.returnedData.district
+      );
+    },
+
+    getServerName() {
+      debugger;
+      return getNetworkServerNameById(this.returnedData.networkServerID);
+    }
   },
+
+  beforeMount() {
+    this.returnedData.id = this.$route.query.id;
+    this.getDetail(this.returnedData.id);
+  },
+
   updated() {
     this.drawLineUp();
     this.drawLineDown();
   },
   methods: {
+    getDetail(id) {
+      this.$api.gateway
+        .gatewayDetail({
+          extra: id
+        })
+        .then(res => {
+          let infoData = res.data;
+          this.returnedData.id = infoData.gateway.id;
+          this.returnedData.name = infoData.gateway.name;
+          this.returnedData.description = infoData.gateway.description;
+          this.returnedData.gatewayProfileID =
+            infoData.gateway.gatewayProfileID;
+          this.returnedData.networkServerID = infoData.gateway.networkServerID;
+
+          this.returnedData.modulation = infoData.gateway.modulation;
+          this.returnedData.channels = infoData.gateway.channels;
+
+          this.returnedData.province = infoData.gateway.province;
+          this.returnedData.city = infoData.gateway.city;
+          this.returnedData.district = infoData.gateway.district;
+          this.returnedData.location = infoData.gateway.location;
+
+          this.returnedData.lastSeenAt = infoData.lastSeenAt;
+          this.returnedData.createdAt = infoData.createdAt;
+
+          let mapObj = new AMap.Map("gateway_detail", {
+            // eslint-disable-line no-unused-vars
+            resizeEnable: true, //自适应大小
+            zoom: 14,
+            center: [
+              infoData.gateway.location.longitude,
+              infoData.gateway.location.latitude
+            ]
+          });
+          let startIcon = new AMap.Icon({
+            // 图标尺寸
+            size: new AMap.Size(25, 25),
+            // 图标的取图地址
+            image: wifi_map, // 您自己的图标
+            // 图标所用图片大小
+            imageSize: new AMap.Size(25, 25)
+          });
+          const marker = new AMap.Marker({
+            // eslint-disable-line no-unused-vars
+            map: mapObj,
+            icon: startIcon,
+            position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            title: "网关"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     drawLineUp() {
       // 基于准备好的dom，初始化echarts实例
       let myChartUp = this.$echarts.init(
@@ -485,20 +515,20 @@ export default {
 </script>
 
 <style scoped>
-.iot_view_gatewayList_detail_textCard {
+.iot_view_detail_textCard {
   border-style: solid;
   border-color: #e8e8e8;
   border-width: 1px;
   background: #fff;
 }
-.iot_view_gatewayList_detail_textCard_p {
+.iot_view_detail_textCard_p {
   line-height: 24px;
   height: 24px;
   margin-bottom: 0;
   margin-left: 10px;
   font-size: 10px;
 }
-.iot_view_gatewayList_detail_textCard_text_dark {
+.iot_view_detail_textCard_text_dark {
   background: #f0f0f0;
 }
 .iot_amap_gatewayDetail_container {

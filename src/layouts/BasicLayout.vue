@@ -21,27 +21,29 @@
               <a-icon type="idcard" />首页
             </router-link>
           </a-menu-item>
-          <a-sub-menu key="sub1">
-            <span slot="title"><a-icon type="hdd" />基础管理</span>
-            <a-menu-item key="13">
-              <router-link to="/admin/dashboard/organization"
-                >组织机构</router-link
-              >
-            </a-menu-item>
-            <a-menu-item key="2">
-              <router-link to="/admin/dashboard/networkServer"
-                >网络服务器</router-link
-              >
-            </a-menu-item>
-            <a-menu-item key="12">
-              <router-link to="/admin/dashboard/serviceProfileManage"
-                >服务管理</router-link
-              >
-            </a-menu-item>
-            <a-menu-item key="3">
-              <router-link to="/admin/dashboard/message">消息</router-link>
-            </a-menu-item>
-          </a-sub-menu>
+          <Authorized :authority="['admin']">
+            <a-sub-menu key="sub1">
+              <span slot="title"><a-icon type="hdd" />基础管理</span>
+              <a-menu-item key="13">
+                <router-link to="/admin/dashboard/organization"
+                  >组织机构</router-link
+                >
+              </a-menu-item>
+              <a-menu-item key="2">
+                <router-link to="/admin/dashboard/networkServer"
+                  >网络服务器</router-link
+                >
+              </a-menu-item>
+              <a-menu-item key="12">
+                <router-link to="/admin/dashboard/serviceProfileManage"
+                  >服务管理</router-link
+                >
+              </a-menu-item>
+              <a-menu-item key="3">
+                <router-link to="/admin/dashboard/message">消息</router-link>
+              </a-menu-item>
+            </a-sub-menu>
+          </Authorized>
           <a-sub-menu key="sub2">
             <span slot="title"><a-icon type="gateway" />网关</span>
             <a-menu-item key="4">
@@ -73,12 +75,14 @@
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="sub5">
-            <span slot="title"><a-icon type="idcard" />账号</span>
-            <a-menu-item key="9">
-              <router-link to="/admin/dashboard/usersManage"
-                >账号管理</router-link
-              >
-            </a-menu-item>
+            <span slot="title"><a-icon type="idcard" />用户</span>
+            <Authorized :authority="['admin']">
+              <a-menu-item key="9">
+                <router-link to="/admin/dashboard/usersManage"
+                  >用户管理</router-link
+                >
+              </a-menu-item>
+            </Authorized>
             <a-menu-item key="10">
               <router-link to="/admin/dashboard/personData"
                 >个人资料</router-link
@@ -86,6 +90,7 @@
             </a-menu-item>
           </a-sub-menu>
 
+          <!--
           <Authorized :authority="['admin']">
             <a-menu-item key="11">
               <router-link to="/admin/dashboard/iLogFlow">
@@ -94,6 +99,7 @@
               </router-link>
             </a-menu-item>
           </Authorized>
+           -->
         </a-menu>
       </a-layout-sider>
       <a-layout style="padding: 0 18px 5px;min-height: 100%">

@@ -26,11 +26,11 @@
               >
                 <a-radio-group
                   @change="radioOnChange"
-                  v-model="value"
+                  v-model="currentRecord.supportsJoinType"
                   style="text-align: left;float: left"
                 >
-                  <a-radio value="1">OTAA</a-radio>
-                  <a-radio value="2">ABP</a-radio>
+                  <a-radio value="OTAA">OTAA</a-radio>
+                  <a-radio value="ABP">ABP</a-radio>
                 </a-radio-group>
               </a-form-item>
 
@@ -43,14 +43,14 @@
               >
                 <a-cascader
                   v-decorator="[
-                    'internetServer',
+                    'networkServer',
                     {
                       rules: [{ required: true, message: '请选择网络服务器' }]
                     }
                   ]"
                   style="width: 90%;float: left;text-align: left"
                   size="small"
-                  :options="internetServer_options"
+                  :options="networkServer_options"
                   placeholder=""
                 />
                 <a-tooltip placement="rightTop">
@@ -105,33 +105,7 @@
               </a-form-item>
 
               <a-form-item
-                v-if="!this.supportsJoin"
-                :label-col="{ span: 8 }"
-                :wrapper-col="{ span: 16 }"
-                label="NwksKey："
-                :required="true"
-                class="iot_view_node_add_formitem"
-              >
-                <a-input
-                  v-decorator="['NwksKey']"
-                  size="small"
-                  style="width: 90%;float: left;text-align: left"
-                >
-                </a-input>
-                <a-tooltip placement="rightTop">
-                  <template slot="title">
-                    temp
-                  </template>
-                  <a-icon
-                    type="exclamation-circle"
-                    style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                  />
-                </a-tooltip>
-              </a-form-item>
-
-              <a-form-item
-                v-if="!this.supportsJoin"
+                v-if="!this.currentRecord.supportsJoin"
                 :label-col="{ span: 8 }"
                 :wrapper-col="{ span: 16 }"
                 label="FCntUp："
@@ -157,7 +131,7 @@
               </a-form-item>
 
               <a-form-item
-                v-if="!this.supportsJoin"
+                v-if="!this.currentRecord.supportsJoin"
                 :label-col="{ span: 8 }"
                 :wrapper-col="{ span: 16 }"
                 label="FCntDn："
@@ -190,7 +164,7 @@
                 :wrapper-col="{ span: 16 }"
               >
                 <a-input
-                  v-decorator="['AppKey']"
+                  v-decorator="['maxDutyCycle']"
                   size="small"
                   style="width: 90%;float: left;text-align: left"
                 >
@@ -219,7 +193,6 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import {
-  getOrganizationID,
   getNetworkServerOptions,
   getNetworkServerIdByServer,
   initDevProfileServices
@@ -229,12 +202,17 @@ export default {
   data() {
     return {
       //options
-      internetServer_options: [],
+      networkServer_options: [],
 
-      value: "1",
-      supportsJoin: true
+      currentRecord: {
+        supportsJoin: true,
+        supportsJoinType: "OTAA"
+      }
     };
   },
+
+  computed: {},
+
   beforeCreate() {
     this.nodeDeployForm = this.$form.createForm(this, {
       name: "nodeDeployForm"
@@ -242,7 +220,7 @@ export default {
   },
 
   beforeMount() {
-    this.internetServer_options = getNetworkServerOptions();
+    this.networkServer_options = getNetworkServerOptions();
   },
 
   methods: {
@@ -251,12 +229,13 @@ export default {
       this.nodeDeployForm.validateFields((err, values) => {
         if (!err) {
           let deviceProfile = values;
-          deviceProfile.supportsJoin = this.supportsJoin;
-          console.log(getOrganizationID());
-          deviceProfile.organizationID = getOrganizationID();
-          deviceProfile.networkServerID = getNetworkServerIdByServer(
-            values.internetServer[0]
-          );
+          deviceProfile.supportsJoin = this.currentRecord.supportsJoin;
+          deviceProfile.organizationID = this.common.getCurrentOrganizationID();
+          deviceProfile.networkServerID = values.networkServer[0];
+
+          //deviceProfile.networkServerID = getNetworkServerIdByServer(
+          //  values.networkServer[0]
+          //);
           console.log(deviceProfile);
           this.$api.node
             .creatNode({
@@ -284,10 +263,13 @@ export default {
       });
     },
     radioOnChange(e) {
-      if (e.target.value === "1") {
-        this.supportsJoin = true;
-      } else if (e.target.value === "2") {
-        this.supportsJoin = false;
+      debugger;
+      if (e.target.value === "OTTA") {
+        this.currentRecord.supportsJoin = true;
+        this.currentRecord.supportsJoinType = "1";
+      } else if (e.target.value === "ABP") {
+        this.currentRecord.supportsJoin = false;
+        this.currentRecord.supportsJoinType = "2";
       }
     },
     handleCancel() {

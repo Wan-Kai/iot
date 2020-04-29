@@ -148,7 +148,7 @@ export default {
           sentData.serviceProfileID = values.serviceProfile[0];
           sentData.name = values.name;
           sentData.description = values.description;
-          sentData.organizationID = 1;
+          sentData.organizationID = this.common.getCurrentOrganizationID();
           sentData.capacity = values.capacity;
           console.log(sentData);
           this.$api.appManage

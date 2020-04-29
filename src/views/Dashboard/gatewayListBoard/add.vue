@@ -10,33 +10,10 @@
       :gutter="16"
     >
       <a-col :span="10">
-        <a-row class="iot_view_gatewayList_add_form_content">
-          <a-form
-            :form="gatewayAddForm"
-            layout="vertical"
-            class="iot_view_gatewayList_add_form"
-          >
+        <a-row class="iot_view_add_form_content">
+          <a-form :form="addForm" layout="vertical" class="iot_view_add_form">
             <a-form-item
-              class="iot_view_gatewayList_add_formitem"
-              label="网关名称："
-              :required="true"
-              :label-col="{ span: 6 }"
-              :wrapper-col="{ span: 18 }"
-            >
-              <a-input
-                v-decorator="[
-                  'name',
-                  {
-                    rules: [{ required: true, message: '请填写网关名称' }]
-                  }
-                ]"
-                size="small"
-                style="width: 90%;float: left;text-align: left"
-              />
-            </a-form-item>
-
-            <a-form-item
-              class="iot_view_gatewayList_add_formitem"
+              class="iot_view_add_formitem"
               label="网关ID："
               :required="true"
               :label-col="{ span: 6 }"
@@ -70,8 +47,28 @@
                 />
               </a-tooltip>
             </a-form-item>
+
             <a-form-item
-              class="iot_view_gatewayList_add_formitem"
+              class="iot_view_add_formitem"
+              label="网关名称："
+              :required="true"
+              :label-col="{ span: 6 }"
+              :wrapper-col="{ span: 18 }"
+            >
+              <a-input
+                v-decorator="[
+                  'name',
+                  {
+                    rules: [{ required: true, message: '请填写网关名称' }]
+                  }
+                ]"
+                size="small"
+                style="width: 90%;float: left;text-align: left"
+              />
+            </a-form-item>
+
+            <a-form-item
+              class="iot_view_add_formitem"
               label="网络服务器："
               :required="true"
               :label-col="{ span: 6 }"
@@ -79,14 +76,14 @@
             >
               <a-cascader
                 v-decorator="[
-                  'internetServer',
+                  'networkServer',
                   {
                     rules: [{ required: true, message: '请选择网络服务器' }]
                   }
                 ]"
                 style="width: 90%;float: left;text-align: left"
                 size="small"
-                :options="internetServer_options"
+                :options="networkServer_options"
                 placeholder=""
               />
               <a-tooltip placement="rightTop">
@@ -102,7 +99,7 @@
             </a-form-item>
 
             <a-form-item
-              class="iot_view_gatewayList_add_formitem"
+              class="iot_view_add_formitem"
               label="通信模式："
               :required="true"
               :label-col="{ span: 6 }"
@@ -110,7 +107,7 @@
             >
               <a-cascader
                 v-decorator="[
-                  'communicationMode',
+                  'modulation',
                   {
                     rules: [{ required: true, message: '请选择通信模式' }]
                   }
@@ -132,14 +129,14 @@
               </a-tooltip>
             </a-form-item>
             <a-form-item
-              class="iot_view_gatewayList_add_formitem"
+              class="iot_view_add_formitem"
               label="频段："
               :required="true"
               :label-col="{ span: 6 }"
               :wrapper-col="{ span: 18 }"
             >
               <a-cascader
-                v-decorator="['band']"
+                v-decorator="['channels']"
                 style="width: 90%;float: left;text-align: left"
                 size="small"
                 :options="band_options"
@@ -157,7 +154,7 @@
               </a-tooltip>
             </a-form-item>
             <a-form-item
-              class="iot_view_gatewayList_add_formitem"
+              class="iot_view_add_formitem"
               label="网关描述："
               :required="false"
               :label-col="{ span: 6 }"
@@ -171,7 +168,7 @@
               />
             </a-form-item>
             <a-form-item
-              class="iot_view_gatewayList_add_formitem"
+              class="iot_view_add_formitem"
               label="位置信息："
               :required="true"
               :label-col="{ span: 6 }"
@@ -191,10 +188,7 @@
                 placeholder=""
               />
             </a-form-item>
-            <a-form-item
-              class="iot_view_gatewayList_add_formitem"
-              :required="true"
-            >
+            <a-form-item class="iot_view_add_formitem" :required="true">
               <a-col :offset="6">
                 <p style="margin-bottom: 2px;text-align: left">详细位置</p>
                 <a-input
@@ -247,7 +241,8 @@ import {
   getNetworkServerOptions,
   getArea,
   getCommunicationMode_options,
-  getBand_options
+  getBand_options,
+  getCurrentOrganizationID
 } from "@/utils/util";
 
 export default {
@@ -255,124 +250,150 @@ export default {
   data() {
     return {
       //options
-      internetServer_options: [],
+      networkServer_options: [],
       communicationMode_options: [],
       band_options: [],
       area_options: [],
 
-      //loading
-      commitLoading: false,
+      currentRecord: {
+        id: "",
+        name: "",
+        description: "",
+        organizationID: "",
+        networkServerID: false,
+        modulation: "",
+        channels: "",
 
-      //data
-      location: {
-        Lng: "",
-        Lat: ""
+        province: "",
+        city: "",
+        district: "",
+        area: "",
+        location: {
+          Lng: "",
+          Lat: ""
+        }
       },
 
       //mapData
-      mapData: []
+      mapData: [],
+
+      //loading
+      commitLoading: false
     };
   },
 
   beforeCreate() {
-    this.gatewayAddForm = this.$form.createForm(this, {
-      name: "gatewayAddForm"
+    this.addForm = this.$form.createForm(this, {
+      name: "addForm"
     });
   },
 
   beforeMount() {
-    this.$api.index
-      .mapMarkers({})
-      .then(res => {
-        this.mapData = res.data.result;
-        let mapObj = new AMap.Map("gateway_add_map", {
-          // eslint-disable-line no-unused-vars
-          resizeEnable: true, //自适应大小
-          zoom: this.mapData.zoom,
-          center: this.mapData.center
-        });
-        this.location.Lng = this.mapData.center[0];
-        this.location.Lat = this.mapData.center[1];
-        let startIcon = new AMap.Icon({
-          // 图标尺寸
-          size: new AMap.Size(25, 25),
-          // 图标的取图地址
-          image: wifi_map, // 您自己的图标
-          // 图标所用图片大小
-          imageSize: new AMap.Size(25, 25)
-        });
-
-        let address = "";
-        let _self = this;
-        mapObj.on("click", function(e) {
-          _self.location.Lng = e.lnglat.getLng();
-          _self.location.Lat = e.lnglat.getLat();
-          mapObj.clearMap();
-          const marker = new AMap.Marker({
-            // eslint-disable-line no-unused-vars
-            map: mapObj,
-            icon: startIcon,
-            position: [_self.location.Lng, _self.location.Lat], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-            title: "网关"
-          });
-          address =
-            _self.location.Lng.toString() + "," + _self.location.Lat.toString();
-          _self.gatewayAddForm.setFieldsValue({
-            address: address
-          });
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    this.internetServer_options = getNetworkServerOptions();
+    this.networkServer_options = getNetworkServerOptions();
     this.area_options = getArea();
     this.communicationMode_options = getCommunicationMode_options();
     this.band_options = getBand_options();
+
+    this.getMap();
   },
+
   methods: {
+    getMap() {
+      this.$api.index
+        .mapMarkers({})
+        .then(res => {
+          this.mapData = res.data.result;
+          let mapObj = new AMap.Map("gateway_add_map", {
+            // eslint-disable-line no-unused-vars
+            resizeEnable: true, //自适应大小
+            zoom: this.mapData.zoom,
+            center: this.mapData.center
+          });
+          this.currentRecord.location.Lng = this.mapData.center[0];
+          this.currentRecord.location.Lat = this.mapData.center[1];
+          let startIcon = new AMap.Icon({
+            // 图标尺寸
+            size: new AMap.Size(25, 25),
+            // 图标的取图地址
+            image: wifi_map, // 您自己的图标
+            // 图标所用图片大小
+            imageSize: new AMap.Size(25, 25)
+          });
+
+          let address = "";
+          let _self = this;
+          mapObj.on("click", function(e) {
+            _self.currentRecord.location.Lng = e.lnglat.getLng();
+            _self.currentRecord.location.Lat = e.lnglat.getLat();
+            mapObj.clearMap();
+            const marker = new AMap.Marker({
+              // eslint-disable-line no-unused-vars
+              map: mapObj,
+              icon: startIcon,
+              position: [
+                _self.currentRecord.location.Lng,
+                _self.currentRecord.location.Lat
+              ], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              title: "网关"
+            });
+            address =
+              _self.currentRecord.location.Lng.toString() +
+              "," +
+              _self.currentRecord.location.Lat.toString();
+            _self.addForm.setFieldsValue({
+              address: address
+            });
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     handleSubmit(e) {
       e.preventDefault();
-      this.gatewayAddForm.validateFields((err, values) => {
+      this.addForm.validateFields((err, values) => {
         if (!err) {
           this.commitLoading = true;
-          for (let i = 0; i < this.internetServer_options.length; i++) {
-            if (
-              values.internetServer[0] === this.internetServer_options[i].value
-            ) {
-              values.networkServerID = this.internetServer_options[i].id;
-            }
-          }
-          values.organizationID = 1;
-          values.modulation = values.communicationMode[0];
-          values.province = values.area[0];
-          values.city = values.area[1];
-          values.district = values.area[2];
-          values.channels = "";
-          values.gatewayProfileID = "";
-          values.location = {
-            latitude: this.location.Lat,
-            longitude: this.location.Lng,
-            altitude: 0.24,
-            source: "UNKNOWN",
-            accuracy: 0
+
+          var data = {
+            id: values.id,
+            name: values.name,
+            description: values.description,
+            organizationID: getCurrentOrganizationID(),
+            networkServerID: values.networkServer[0],
+
+            province: values.area[0],
+            city: values.area[1],
+            district: values.area[2],
+
+            location: {
+              latitude: this.currentRecord.location.latitude,
+              longitude: this.currentRecord.location.longitude,
+              altitude: 0.24,
+              source: "UNKNOWN",
+              accuracy: 0
+            },
+
+            discoveryEnabled: true,
+            modulation: values.communicationMode[0],
+            channels: values.band[0],
+            gatewayProfileID: ""
           };
-          values.discoveryEnabled = true;
-          console.log(values);
+
+          console.log(data);
+
           this.$api.gateway
             .createGateway({
-              gateway: values
+              gateway: data
             })
             .then(res => {
-              console.log("拿到返回");
               console.log(res);
               if (res.status === 200) {
-                this.$message.success("成功创建网关:" + values.id);
+                this.$message.success("创建网关成功:" + values.id);
+                var _this = this;
                 setTimeout(() => {
-                  this.$router.push({
-                    name: "gatewayInit"
-                  });
+                  _this.handleBack();
                 }, 500);
               } else if (res.status === 400) {
                 console.log(res);
@@ -402,13 +423,13 @@ export default {
 </script>
 
 <style scoped>
-.iot_view_gatewayList_add_form_content {
+.iot_view_add_form_content {
   padding-bottom: 32px;
 }
-.iot_view_gatewayList_add_form {
+.iot_view_add_form {
   margin-bottom: 12px;
 }
-.iot_view_gatewayList_add_formitem {
+.iot_view_add_formitem {
   margin-bottom: 8px;
   padding-bottom: 0px;
 }

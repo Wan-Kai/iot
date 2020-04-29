@@ -241,7 +241,7 @@ export default {
     this.appId = sessionStorage.getItem("appId");
 
     this.$api.appManage
-      .getAppNode({
+      .getAppNodeDetail({
         extra: this.id
       })
       .then(res => {
@@ -250,6 +250,7 @@ export default {
         this.returnedData.deviceProfileID = infoDataTemp.device.deviceProfileID;
         this.returnedData.applicationID = infoDataTemp.device.applicationID;
         this.returnedData.name = infoDataTemp.device.name;
+        this.returnedData.description = infoDataTemp.device.description;
         this.returnedData.skipFCntCheck = infoDataTemp.device.skipFCntCheck;
         this.returnedData.macVersion = "暂定";
         this.returnedData.band = "暂定";
@@ -261,7 +262,7 @@ export default {
         this.returnedData.useState = "暂定";
         this.returnedData.createdAt = "暂定";
         this.returnedData.area = infoDataTemp.location;
-        this.returnedData.description = infoDataTemp.device.description;
+
         this.returnedData.lastSeenAt = infoDataTemp.lastSeenAt;
       })
       .catch(err => {

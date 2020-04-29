@@ -1,19 +1,19 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0">
-    <div class="iot_view_gatewayManege_list_top">
+    <div class="iot_view_top">
       <a-input-search
-        class="iot_view_gatewayManege_list_top_search"
-        placeholder="请输入要查找的内容"
+        class="iot_view_top_search"
+        placeholder="请输入要查找的网关"
         style="width: 300px"
       />
-      <div class="iot_view_gatewayManege_list_top_right">
+      <div class="iot_view_top_right">
         <a-button type="primary" icon="plus" @click="addGateway">
           添加
         </a-button>
         <a-button
           icon="download"
           style="margin-left: 20px"
-          @click="showAddModalIn"
+          @click="handleImport"
         >
           批量导入
         </a-button>
@@ -49,7 +49,7 @@
             {{ this.warning }}
           </p>
 
-          <a-card class="iot_view_gatewayList_in_card">
+          <a-card class="iot_view_card">
             <p style="margin-bottom: 0">Some contents...</p>
             <p style="margin-bottom: 0">Some contents...</p>
           </a-card>
@@ -87,14 +87,14 @@
         :columns="columns"
         :dataSource="tableData"
         style="min-width: auto"
-        class="iot_view_gatawayManage_table"
+        class="iot_view_table"
         :pagination="pagination"
         rowKey="id"
         :loading="tableLoadingState"
       >
-        <span slot="state" slot-scope="tags">
-          <a-tag :color="tags === 'on' ? 'green' : 'red'" :key="tags">
-            {{ tags.toUpperCase() }}
+        <span slot="state" slot-scope="state">
+          <a-tag :color="state === 'on' ? 'green' : 'red'" :key="state">
+            {{ state.toUpperCase() }}
           </a-tag>
         </span>
 
@@ -104,15 +104,15 @@
           <a @click="editGateway(record)">编辑</a>
         </span>
       </a-table>
-      <div class="iot_view_gatewayList_button_layout">
+      <div class="iot_view_button_layout">
         <a-button
-          class="iot_view_gatewayList_delete_button"
+          class="iot_view_button_delete"
           icon="delete"
           @click="deleteGateway"
           >删除</a-button
         >
         <a-button
-          class="iot_view_gatewayList_export_button"
+          class="iot_view_button_export"
           icon="download"
           @click="exportGateway"
           >导出</a-button
@@ -142,14 +142,14 @@ const rowSelection = {
 };
 const columns = [
   {
-    title: "网关名称",
-    dataIndex: "name",
-    key: "name"
-  },
-  {
     title: "网关ID",
     dataIndex: "id",
     key: "id"
+  },
+  {
+    title: "网关名称",
+    dataIndex: "name",
+    key: "name"
   },
   {
     title: "网络服务器",
@@ -157,9 +157,14 @@ const columns = [
     dataIndex: "networkServerName"
   },
   {
-    title: "通信方式/频段",
-    key: "band",
-    dataIndex: "band"
+    title: "通信模式",
+    key: "modulation",
+    dataIndex: "modulation"
+  },
+  {
+    title: "频段",
+    key: "channels",
+    dataIndex: "channels"
   },
   {
     title: "状态",
@@ -194,6 +199,33 @@ export default {
       columns,
       tableData: [],
 
+      returnedData: [
+        {
+          id: "",
+          name: "",
+          description: "",
+
+          networkServerID: "",
+          networkServerName: "", //根据networkServerID计算得到
+
+          organizationID: "",
+
+          province: "",
+          city: "",
+          district: "",
+          area: "", //根据省市区计算得到
+
+          modulation: "",
+          channels: "",
+
+          createdAt: "",
+          updatedAt: "",
+
+          firstSeenAt: "",
+          lastSeenAt: "",
+          state: "" //根据最近在线时间计算
+        }
+      ],
       rowSelection,
       tableLoadingState: true,
 
@@ -223,38 +255,43 @@ export default {
       }
     };
   },
-  beforeMount() {
-    this.$api.gateway
-      .gatewayList({
-        limit: 100
-      })
-      .then(res => {
-        let returnedData = res.data.result;
-        // this.tableData = res.data.result;
 
-        //console.log(returnedData);
-        for (let i = 0; i < returnedData.length; i++) {
-          returnedData[i].state = "off";
-          returnedData[i].area = getAreaLabel(
-            returnedData[i].province,
-            returnedData[i].city,
-            returnedData[i].district
-          );
-          returnedData[i].networkServerName = getNetworkServerNameById(
-            returnedData[i].networkServerID
-          );
-        }
-        this.tableData = returnedData;
-      })
-      .catch(err => {
-        console.log("出现错误");
-        console.log(err);
-      })
-      .finally(() => {
-        this.tableLoadingState = false;
-      });
+  beforeMount() {
+    this.getTable();
   },
+
   methods: {
+    getTable() {
+      this.$api.gateway
+        .gatewayList({
+          limit: 100
+        })
+        .then(res => {
+          this.returnedData = res.data.result;
+          // this.tableData = res.data.result;
+
+          //console.log(data);
+          for (let i = 0; i < this.returnedData.length; i++) {
+            this.returnedData[i].state = "off";
+            this.returnedData[i].area = getAreaLabel(
+              this.returnedData[i].province,
+              this.returnedData[i].city,
+              this.returnedData[i].district
+            );
+            this.returnedData[i].networkServerName = getNetworkServerNameById(
+              this.returnedData[i].networkServerID
+            );
+          }
+          this.tableData = this.returnedData;
+        })
+        .catch(err => {
+          console.log("出现错误");
+          console.log(err);
+        })
+        .finally(() => {
+          this.tableLoadingState = false;
+        });
+    },
     checkGateway(currentRecord) {
       this.$router.push({
         name: "checkGatewayManage",
@@ -263,7 +300,7 @@ export default {
     },
     editGateway(currentRecord) {
       this.$router.push({
-        name: "checkGatewayManage",
+        name: "editGatewayManage",
         query: { id: currentRecord["id"], tab: "3" }
       });
     },
@@ -271,7 +308,7 @@ export default {
       this.$router.push({ name: "addGatewayManage" });
     },
 
-    showAddModalIn() {
+    handleImport() {
       this.importDialogVisibleState = true;
     },
 
@@ -306,32 +343,37 @@ export default {
 </script>
 
 <style>
-.iot_view_gatewayManege_list_top {
+.iot_view_top {
   width: 100%;
   margin-bottom: 8px;
 }
-.iot_view_gatewayManege_list_top_search {
+.iot_view_top_search {
   float: left;
 }
-.iot_view_gatewayManege_list_top_right {
+.iot_view_top_right {
   float: right;
 }
-.iot_view_gatawayManage_table {
+.iot_view_table {
   margin-top: 5px;
 }
-.iot_view_gatewayList_in_card {
+.iot_view_card {
   height: 200px;
   background: #dddddd;
 }
-.iot_view_gatewayList_button_layout {
+.iot_view_button_layout {
   position: fixed;
   float: left;
   margin-top: -40px;
 }
 
-.iot_view_gatewayList_delete_button {
+.iot_view_button_delete {
 }
-.iot_view_gatewayList_export_button {
+
+.iot_view_button_import {
+  margin-left: 10px;
+}
+
+.iot_view_button_export {
   margin-left: 10px;
 }
 .ant-table-thead > tr > th,

@@ -8,7 +8,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >主机名： {{ returnedData.ip }}</span
+            >主机名： {{ this.getIp }}</span
           >
         </a-col>
       </a-row>
@@ -24,7 +24,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">端口</div>
-              <div style="font-size: 12px">{{ returnedData.port }}</div>
+              <div style="font-size: 12px">{{ this.getPort }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -112,8 +112,6 @@ export default {
         id: "",
         name: "",
         server: "",
-        ip: "",
-        port: "",
         gatewayDiscoveryEnabled: false,
         gatewayDiscoveryInterval: "",
         gatewayDiscoveryTXFrequency: "",
@@ -130,6 +128,28 @@ export default {
       preserve: true
     });
   },
+
+  computed: {
+    getIp() {
+      if (this.common.isEmpty(this.returnedData.server)) return "";
+      if (this.returnedData.server.split(":")) {
+        let server = this.returnedData.server.split(":");
+        return server[0];
+      } else {
+        return this.returnedData.server;
+      }
+    },
+    getPort() {
+      if (this.common.isEmpty(this.returnedData.server)) return "";
+      if (this.returnedData.server.split(":")) {
+        let server = this.returnedData.server.split(":");
+        return server[1];
+      } else {
+        return "";
+      }
+    }
+  },
+
   beforeMount() {
     this.returnedData.id = this.$route.query.id;
   },

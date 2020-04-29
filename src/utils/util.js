@@ -1,6 +1,7 @@
 import store from "../store/index";
-import api from "./api";
 import options from "../store/modules/options";
+import api from "./api";
+import common from "./common";
 
 export function getPhoneNumber() {
   return store.getters["retrieve/getPhoneNumber"];
@@ -26,7 +27,7 @@ export function initProfile() {
       store.commit("login/setCurrentOrganizations", organizations);
     })
     .catch(err => {
-      debugger;
+      //bugger;
       console.log(err);
     });
 }
@@ -38,7 +39,7 @@ export function initOrganizations() {
       limit: 100
     })
     .then(res => {
-      debugger;
+      //debugger;
       let getData = res.data.result;
 
       //仅显示在有权限的组织机构
@@ -79,7 +80,7 @@ export function initOrganizations() {
       store.commit("options/setOrganizations", organizationData);
     })
     .catch(err => {
-      debugger;
+      //debugger;
       console.log(err);
     });
 }
@@ -93,10 +94,11 @@ export function getCurrentOrganizations() {
 }
 
 export function initDevProfileServices() {
+  var parameter = {
+    limit: 200
+  };
   api.node
-    .getNode({
-      limit: 200
-    })
+    .getDeviceProfile(parameter)
     .then(res => {
       let getData = res.data.result;
 
@@ -130,10 +132,6 @@ export function initDevProfileServices() {
     });
 }
 
-export function getOrganizationID() {
-  return store.getters["parameter/getOrganizationID"];
-}
-
 export function getDeviceProfileService_options() {
   return store.getters["options/getDeviceProfileService_options"];
 }
@@ -152,6 +150,7 @@ export function getOrganizationNameById(id) {
 }
 
 export function initNetworkServers() {
+  //debugger
   api.networkServer
     .getServerData({
       limit: 100
@@ -203,6 +202,7 @@ export function getNetworkServerById(id) {
 }
 
 export function getNetworkServerNameById(id) {
+  //debugger
   let netServer = store.getters["options/getNetworkServers"];
   //console.log(netServer);
   for (let i = 0; i < netServer.length; i++) {
@@ -251,10 +251,11 @@ export function getAreaLabel(province, city, district) {
 }
 
 export function initServiceOptions() {
+  var parameter = {
+    limit: 200
+  };
   api.serviceProfile
-    .getServices({
-      limit: 100
-    })
+    .getServices(parameter)
     .then(res => {
       let result = res.data.result;
 

@@ -71,6 +71,11 @@ const mutations = {
     //设置参数
     //debugger
     state.currentUser = user;
+
+    state.login.isLogin = true;
+    if (user.isAdmin) {
+      state.login.role = "admin";
+    }
   },
 
   setCurrentOrganizations(state, organizations) {
@@ -79,7 +84,7 @@ const mutations = {
 
   reset(state) {
     state.login.isLogin = "0";
-    state.login.key = "guest";
+    state.login.role = "guest";
 
     state.sessionKey = "";
 

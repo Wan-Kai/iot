@@ -10,6 +10,9 @@ import common from "./utils/common.js";
 import Authorized from "./components/Authorized";
 import VueAMap from "vue-amap";
 
+// 引入过滤器
+import "@/utils/filter";
+
 // 引入 ECharts 主模块
 let echarts = require("echarts/lib/echarts");
 // 引入柱状图

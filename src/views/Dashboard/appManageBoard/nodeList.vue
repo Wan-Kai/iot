@@ -30,7 +30,7 @@
 <script>
 const columns = [
   {
-    title: "节点编号",
+    title: "节点编号(devEUI)",
     dataIndex: "devEUI",
     key: "devEUI"
   },
@@ -87,23 +87,27 @@ export default {
   },
   beforeMount() {
     this.id = sessionStorage.getItem("appId");
-    this.$api.node
-      .getNodeInApp({
-        applicationID: this.id,
-        limit: 100
-      })
-      .then(res => {
-        let infoDataTemp = res.data.result;
-        infoDataTemp.forEach(item => {
-          item.state = "off";
-        });
-        this.tableData = res.data.result;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getAppNodes();
   },
   methods: {
+    getAppNodes() {
+      this.$api.appManage
+        .getNodeInApp({
+          applicationID: this.id,
+          limit: 100
+        })
+        .then(res => {
+          let infoDataTemp = res.data.result;
+          infoDataTemp.forEach(item => {
+            item.state = "off";
+          });
+          this.tableData = res.data.result;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     checkRouter(record) {
       sessionStorage.setItem("appId", this.id);
       sessionStorage.setItem("tab", "1");

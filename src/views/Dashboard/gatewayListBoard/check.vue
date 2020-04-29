@@ -21,7 +21,7 @@
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">网络状态</div>
               <div style="font-size: 12px">
-                {{ this.returnedData.internalState }}
+                {{ this.networkState }}
               </div>
             </a-col>
           </a-row>
@@ -36,7 +36,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">信号</div>
-              <div style="font-size: 12px">{{ this.returnedData.sign }}</div>
+              <div style="font-size: 12px">{{ this.sign }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -50,7 +50,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">上行</div>
-              <div style="font-size: 12px">{{ this.returnedData.up }}</div>
+              <div style="font-size: 12px">{{ this.up }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -64,7 +64,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">下行</div>
-              <div style="font-size: 12px">{{ this.returnedData.down }}</div>
+              <div style="font-size: 12px">{{ this.down }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -79,7 +79,7 @@
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">最后心跳时间</div>
               <div style="font-size: 12px">
-                {{ this.returnedData.heartTime }}
+                {{ this.heartTime }}
               </div>
             </a-col>
           </a-row>
@@ -94,17 +94,24 @@
         <a-tabs
           type="card"
           :defaultActiveKey="defaultTab"
+          :activeKey="defaultTab"
           size="small"
           style="text-align: left;padding-top: 0;height: min-content"
+          @change="changeTab"
         >
-          <a-tab-pane tab="详细信息" key="1" style="height: auto">
-            <Detail />
+          <a-tab-pane tab="详细信息" key="1" style="height: auto" forceRender>
+            <Detail ref="gatewayDetail" />
           </a-tab-pane>
-          <a-tab-pane tab="最新一帧上行数据" key="2" style="height: auto">
+          <a-tab-pane
+            tab="最新一帧上行数据"
+            key="2"
+            style="height: auto"
+            forceRender
+          >
             暂定
           </a-tab-pane>
-          <a-tab-pane tab="配置修改" key="3" style="height: auto">
-            <DeployEdit />
+          <a-tab-pane tab="配置修改" key="3" style="height: auto" forceRender>
+            <DeployEdit ref="gatewayEdit" />
           </a-tab-pane>
         </a-tabs>
       </div>
@@ -124,74 +131,58 @@ export default {
   },
   data() {
     return {
-      //params
-      defaultTab: "1",
-      id: "",
-
       //data
       returnedData: {
-        internalState: "",
-        sign: "",
-        up: "",
-        down: "",
-        heartTime: ""
-      }
+        id: ""
+      },
+
+      //params
+      defaultTab: "1",
+      networkState: "",
+      sign: "",
+      up: "",
+      down: "",
+      heartTime: ""
     };
   },
   beforeMount() {
-    this.id = this.$route.query.id;
+    this.returnedData.id = this.$route.query.id;
     this.defaultTab = this.$route.query.tab;
-    this.$api.gateway
-      .gatewayDetail({
-        extra: this.id
-      })
-      .then(res => {
-        this.returnedData = res.data;
-        if (res.data.lastSeenAt) {
-          console.log("little test");
-          this.internalState = "测试";
-          this.heartTime = "有数据";
-        } else {
-          this.internalState = "离线";
-          this.heartTime = "暂无数据";
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+
+    this.getDetail();
   },
+
   methods: {
-    // getTime(){
-    //   let date = new Date();
-    //   let seperator1 = "-";
-    //   let seperator2 = ":";
-    //   //以下代码依次是获取当前时间的年月日时分秒
-    //   let year = date.getFullYear();
-    //   let month = date.getMonth() + 1;
-    //   let strDate = date.getDate();
-    //   let minute = date.getMinutes();
-    //   let hour = date.getHours();
-    //   let second = date.getSeconds();
-    //   //固定时间格式
-    //   if (month >= 1 && month <= 9) {
-    //     month = "0" + month;
-    //   }
-    //   if (strDate >= 0 && strDate <= 9) {
-    //     strDate = "0" + strDate;
-    //   }
-    //   if (hour >= 0 && hour <= 9) {
-    //     hour = "0" + hour;
-    //   }
-    //   if (minute >= 0 && minute <= 9) {
-    //     minute = "0" + minute;
-    //   }
-    //   if (second >= 0 && second <= 9) {
-    //     second = "0" + second;
-    //   }
-    //   let currentdateNow =  year + seperator1 + month + seperator1 + strDate
-    //           + " " + hour + seperator2 + minute + seperator2 + second;
-    //   return currentdateNow;
-    // }
+    getDetail() {
+      this.$api.gateway
+        .gatewayDetail({
+          extra: this.id
+        })
+        .then(res => {
+          this.returnedData = res.data;
+          if (res.data.lastSeenAt) {
+            console.log("little test");
+            this.networkState = "测试";
+            this.heartTime = "有数据";
+          } else {
+            this.networkState = "离线";
+            this.heartTime = "暂无数据";
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    changeTab(key) {
+      //alert(key);
+      this.defaultTab = key;
+      if (key == 1) {
+        //this.$refs.gatewayDetail.getDetail(this.returnedData.id);
+      } else if (key == 3) {
+        //this.$refs.gatewayEdit.getDetail(this.returnedData.id);
+      }
+    }
   }
 };
 </script>

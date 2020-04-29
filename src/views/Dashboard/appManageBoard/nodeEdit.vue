@@ -48,6 +48,7 @@
                     initialValue: this.id
                   }
                 ]"
+                :disabled="appEditable"
                 size="small"
                 style="width: 90%;float: left;text-align: left"
               />
@@ -115,34 +116,23 @@
 
             <a-form-item
               class="iot_view_App_node_deployEdit_formitem"
-              label="设备配置文件："
+              label="节点编号："
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
             >
-              <a-cascader
+              <a-input
                 v-decorator="[
                   'devProfile',
                   {
-                    initialValue: this.defaultDevProfile,
-                    rules: [{ required: true, message: '请选择设备配置文件' }]
+                    initialValue: this.returnedData.deviceProfileID
                   }
                 ]"
-                style="width: 90%;float: left;text-align: left"
+                :disabled="appEditable"
                 size="small"
-                :options="devProfile_options"
-                placeholder=""
-              />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
+                style="width: 90%;float: left;text-align: left"
+              >
+              </a-input>
             </a-form-item>
 
             <a-form-item
@@ -301,10 +291,11 @@ export default {
 
       //data
       returnedData: {
+        deviceProfileID: "",
+        applicationID: "",
         name: "",
         appKey: "",
-        description: "",
-        deviceProfileID: ""
+        description: ""
       },
       areaShow: false,
 
@@ -343,16 +334,17 @@ export default {
     this.devProfile_options = getDeviceProfileService_options();
     this.area_options = getArea();
     this.$api.appManage
-      .getAppNode({
+      .getAppNodeDetail({
         extra: this.id
       })
       .then(res => {
         let infoDataTemp = res.data;
 
+        this.returnedData.deviceProfileID = infoDataTemp.device.deviceProfileID;
+        this.returnedData.applicationID = infoDataTemp.device.applicationID;
         this.returnedData.name = infoDataTemp.device.name;
-        this.returnedData.appKey = "暂定";
         this.returnedData.description = infoDataTemp.device.description;
-        this.defaultDevProfile.push(infoDataTemp.device.deviceProfileID);
+        this.returnedData.appKey = "";
 
         if (infoDataTemp.location) {
           this.areaShow = true;

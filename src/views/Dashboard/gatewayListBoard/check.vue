@@ -99,12 +99,7 @@
           style="text-align: left;padding-top: 0;height: min-content"
           @change="changeTab"
         >
-          <a-tab-pane
-            tab="详细信息"
-            key="1"
-            style="height: auto;top: 0px"
-            forceRender
-          >
+          <a-tab-pane tab="详细信息" key="1" style="height: auto" forceRender>
             <Detail ref="gatewayDetail" />
           </a-tab-pane>
           <a-tab-pane
@@ -115,12 +110,7 @@
           >
             暂定
           </a-tab-pane>
-          <a-tab-pane
-            tab="配置修改"
-            key="3"
-            style="height: auto;top: 0px;"
-            forceRender
-          >
+          <a-tab-pane tab="配置修改" key="3" style="height: auto;" forceRender>
             <DeployEdit ref="gatewayEdit" />
           </a-tab-pane>
         </a-tabs>

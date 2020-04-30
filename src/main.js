@@ -125,12 +125,12 @@ VueAMap.initAMapApiLoader({
   uiVersion: "1.0.11" // 版本号
 });
 
-const amapKeys = Object.keys(localStorage).filter(key => key.match(/^_AMap_/));
-
-amapKeys.forEach(key => {
-  // console.log(key)
-  localStorage.removeItem(key);
-});
+// const amapKeys = Object.keys(localStorage).filter(key => key.match(/^_AMap_/));
+//
+// amapKeys.forEach(key => {
+//   // console.log(key)
+//   localStorage.removeItem(key);
+// });
 Vue.use(VueAMap);
 
 new Vue({

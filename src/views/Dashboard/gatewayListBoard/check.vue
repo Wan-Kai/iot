@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >网关编号： {{ this.id }}</span
+            >网关MAC： {{ this.returnedData.id }}</span
           >
         </a-col>
       </a-row>
@@ -21,7 +21,7 @@
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">网络状态</div>
               <div style="font-size: 12px">
-                {{ this.networkState }}
+                {{ this.getState }}
               </div>
             </a-col>
           </a-row>
@@ -36,7 +36,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">信号</div>
-              <div style="font-size: 12px">{{ this.sign }}</div>
+              <div style="font-size: 12px">{{ this.getSign }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -50,7 +50,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">上行</div>
-              <div style="font-size: 12px">{{ this.up }}</div>
+              <div style="font-size: 12px">{{ this.getUp }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -64,7 +64,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">下行</div>
-              <div style="font-size: 12px">{{ this.down }}</div>
+              <div style="font-size: 12px">{{ this.getDown }}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -79,7 +79,7 @@
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">最后心跳时间</div>
               <div style="font-size: 12px">
-                {{ this.heartTime }}
+                {{ this.returnedData.lastSeenAt }}
               </div>
             </a-col>
           </a-row>
@@ -99,7 +99,12 @@
           style="text-align: left;padding-top: 0;height: min-content"
           @change="changeTab"
         >
-          <a-tab-pane tab="详细信息" key="1" style="height: auto" forceRender>
+          <a-tab-pane
+            tab="详细信息"
+            key="1"
+            style="height: auto;top: 0px"
+            forceRender
+          >
             <Detail ref="gatewayDetail" />
           </a-tab-pane>
           <a-tab-pane
@@ -110,7 +115,12 @@
           >
             暂定
           </a-tab-pane>
-          <a-tab-pane tab="配置修改" key="3" style="height: auto" forceRender>
+          <a-tab-pane
+            tab="配置修改"
+            key="3"
+            style="height: auto;top: 0px;"
+            forceRender
+          >
             <DeployEdit ref="gatewayEdit" />
           </a-tab-pane>
         </a-tabs>
@@ -121,6 +131,7 @@
 
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
+import { getNetworkServerNameById, getAreaLabel } from "../../../utils/util";
 import Detail from "./detailData";
 import DeployEdit from "./deployEdit";
 export default {
@@ -133,41 +144,78 @@ export default {
     return {
       //data
       returnedData: {
-        id: ""
-      },
+        id: "",
 
+        networkServerID: "",
+
+        createdAt: "",
+        updatedAt: "",
+
+        firstSeenAt: "",
+        lastSeenAt: ""
+      },
       //params
-      defaultTab: "1",
-      networkState: "",
-      sign: "",
-      up: "",
-      down: "",
-      heartTime: ""
+      defaultTab: "1"
     };
+  },
+
+  computed: {
+    getState() {
+      return "off";
+    },
+
+    getSign() {
+      return "off";
+    },
+
+    getUp() {
+      return "";
+    },
+
+    getDown() {
+      return "";
+    },
+
+    getArea() {
+      return getAreaLabel(
+        this.returnedData.province,
+        this.returnedData.city,
+        this.returnedData.district
+      );
+    },
+
+    getServerName() {
+      //debugger;
+      return getNetworkServerNameById(this.returnedData.networkServerID);
+    }
   },
   beforeMount() {
     this.returnedData.id = this.$route.query.id;
     this.defaultTab = this.$route.query.tab;
 
-    this.getDetail();
+    this.getDetail(this.returnedData.id);
   },
 
   methods: {
-    getDetail() {
+    getDetail(id) {
       this.$api.gateway
         .gatewayDetail({
-          extra: this.id
+          extra: id
         })
         .then(res => {
-          this.returnedData = res.data;
+          this.returnedData = res.data.gateway;
+          this.returnedData.lastSeenAt = res.data.lastSeenAt;
+          this.returnedData.firstSeenAt = res.data.firstSeenAt;
+          /*
           if (res.data.lastSeenAt) {
             console.log("little test");
-            this.networkState = "测试";
-            this.heartTime = "有数据";
+            this.returnedData.networkState = "测试";
+            this.returnedData.heartTime = "有数据";
           } else {
-            this.networkState = "离线";
-            this.heartTime = "暂无数据";
+            this.returnedData.networkState = "离线";
+            this.returnedData.heartTime = "暂无数据";
           }
+          */
         })
         .catch(err => {
           console.log(err);

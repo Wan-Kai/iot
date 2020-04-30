@@ -16,7 +16,7 @@
           >
             <a-form-item
               class="iot_view_edit_formitem"
-              label="网关ID："
+              label="网关MAC："
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
@@ -240,7 +240,7 @@
                 >取消</a-button
               >
               <a-button type="danger" icon="delete" @click="handleDelete"
-                >删除设备</a-button
+                >删除</a-button
               >
             </a-col>
           </a-row>
@@ -384,14 +384,6 @@ export default {
           let address = "";
 
           /*
-          let defaultValue = getNetworkServerById(
-            infoDataTemp.gateway.networkServerID
-          );
-          if (defaultValue) {
-            this.defaultNetworkServerName.push(defaultValue);
-          }
-
-
           this.defaultModulation.push(infoDataTemp.gateway.modulation);
           this.defaultArea.push(infoDataTemp.gateway.province);
           this.defaultArea.push(infoDataTemp.gateway.city);
@@ -424,7 +416,6 @@ export default {
             address: address
           });
           */
-
           let mapObj = new AMap.Map("gateway_edit_map", {
             // eslint-disable-line no-unused-vars
             resizeEnable: true, //自适应大小
@@ -454,6 +445,7 @@ export default {
             ], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
             title: "网关"
           });
+
           mapObj.on("click", function(e) {
             _self.returnedData.location.longitude = e.lnglat.getLng();
             _self.returnedData.location.latitude = e.lnglat.getLat();
@@ -604,14 +596,18 @@ export default {
 
 <style>
 .iot_view_edit_form_content {
-  padding-bottom: 32px;
+  padding-top: 32px;
+  //padding-bottom:32px;
 }
 .iot_view_edit_form {
-  margin-bottom: 12px;
+  margin-top: 12px;
+  //margin-bottom: 12px;
 }
 .iot_view_edit_formitem {
-  margin-bottom: 8px;
-  padding-bottom: 0px;
+  margin-top: 8px;
+  padding-top: 0px;
+  //margin-bottom: 8px;
+  //padding-bottom: 0px;
 }
 .iot_amap-gatewayEdit_container {
   height: 400px;

@@ -142,7 +142,7 @@ const rowSelection = {
 };
 const columns = [
   {
-    title: "网关ID",
+    title: "网关MAC",
     dataIndex: "id",
     key: "id"
   },

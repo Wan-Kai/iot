@@ -11,7 +11,7 @@
         <div class="iot_view_detail_textCard">
           <a-row class="iot_view_detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_detail_textCard_p">网关ID：</p>
+              <p class="iot_view_detail_textCard_p">网关MAC：</p>
             </a-col>
             <a-col :span="16">
               <p class="iot_view_detail_textCard_p">
@@ -256,7 +256,7 @@ export default {
     },
 
     getServerName() {
-      debugger;
+      //debugger;
       return getNetworkServerNameById(this.returnedData.networkServerID);
     }
   },

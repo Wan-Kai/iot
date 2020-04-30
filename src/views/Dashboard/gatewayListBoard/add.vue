@@ -14,7 +14,7 @@
           <a-form :form="addForm" layout="vertical" class="iot_view_add_form">
             <a-form-item
               class="iot_view_add_formitem"
-              label="网关ID："
+              label="网关MAC："
               :required="true"
               :label-col="{ span: 6 }"
               :wrapper-col="{ span: 18 }"

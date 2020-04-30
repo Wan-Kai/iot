@@ -264,7 +264,7 @@
                 >取消</a-button
               >
               <a-button type="danger" icon="delete" @click="showDeleteModal"
-                >删除设备</a-button
+                >删除</a-button
               >
             </div>
           </a-col>

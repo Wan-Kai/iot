@@ -167,6 +167,7 @@ export default {
         id: "",
         username: "",
         isAdmin: false,
+        isActive: false,
 
         phonenumber: "",
         email: "",
@@ -209,14 +210,39 @@ export default {
   beforeMount() {
     var currentUser = this.common.getCurrentUser();
     this.returnedData.id = currentUser.id;
+
+    this.getDetail();
+    /*
     this.returnedData.username = currentUser.username;
     this.returnedData.email = currentUser.email;
     this.returnedData.phonenumber = currentUser.phonenumber;
     this.returnedData.note = currentUser.note;
     this.returnedData.isAdmin = currentUser.isAdmin;
+    this.returnedData.isActive = currentUser.isActive;
+    */
   },
 
   methods: {
+    getDetail() {
+      this.$api.usersManage
+        .getUserDetail({ extra: this.returnedData.id })
+        .then(res => {
+          console.log(res);
+          this.returnedData.createdAt = res.data.createdAt;
+          this.returnedData.updatedAt = res.data.updatedAt;
+          this.returnedData.id = res.data.user.id;
+          this.returnedData.username = res.data.user.username;
+          this.returnedData.phonenumber = res.data.user.phonenumber;
+          this.returnedData.email = res.data.user.email;
+          this.returnedData.note = res.data.user.note;
+          this.returnedData.isAdmin = res.data.user.isAdmin;
+          this.returnedData.isActive = res.data.user.isActive;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     handleSubmit(e) {
       e.preventDefault();
       this.edit_form.validateFields((err, values) => {
@@ -229,7 +255,9 @@ export default {
             username: values.username,
             email: values.email,
             phonenumber: values.phoneNumber,
-            note: values.note
+            note: values.note,
+            isAdmin: this.returnedData.isAdmin,
+            isActive: this.returnedData.isActive
           };
 
           debugger;

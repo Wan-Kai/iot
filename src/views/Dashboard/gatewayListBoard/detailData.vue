@@ -159,7 +159,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view__detail_textCard_text_dark">
+          <a-row class="iot_view_detail_textCard_text_dark">
             <a-col :span="8">
               <p class="iot_view_detail_textCard_p">网关描述：</p>
             </a-col>
@@ -260,12 +260,11 @@ export default {
       return getNetworkServerNameById(this.returnedData.networkServerID);
     }
   },
-
+  created() {},
   beforeMount() {
     this.returnedData.id = this.$route.query.id;
     this.getDetail(this.returnedData.id);
   },
-
   updated() {
     this.drawLineUp();
     this.drawLineDown();
@@ -301,10 +300,11 @@ export default {
             resizeEnable: true, //自适应大小
             zoom: 14,
             center: [
-              infoData.gateway.location.longitude,
-              infoData.gateway.location.latitude
+              this.returnedData.location.longitude,
+              this.returnedData.location.latitude
             ]
           });
+          console.log(mapObj);
           let startIcon = new AMap.Icon({
             // 图标尺寸
             size: new AMap.Size(25, 25),

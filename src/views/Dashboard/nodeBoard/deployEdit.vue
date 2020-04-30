@@ -7,7 +7,7 @@
       align="top"
       :gutter="20"
     >
-      <a-col :span="16">
+      <a-col :span="12">
         <a-form
           :form="nodeDeployForm"
           layout="vertical"
@@ -440,9 +440,6 @@ export default {
 </script>
 
 <style>
-.iot_view_node_deployEdit_form_content {
-  padding-bottom: 32px;
-}
 .iot_view_node_deployEdit_form {
   margin-bottom: 12px;
 }

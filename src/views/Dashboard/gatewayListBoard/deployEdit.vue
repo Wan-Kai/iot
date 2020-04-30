@@ -199,7 +199,7 @@
                 <a-input
                   v-decorator="['location', { initialValue: this.getLocation }]"
                   size="small"
-                  style="width: 90%;float: left;margin-bottom: 12px"
+                  style="width: 90%;float: left;margin-bottom: 0px"
                 />
                 <a-tooltip placement="rightTop">
                   <template slot="title">
@@ -214,36 +214,18 @@
               </a-col>
             </a-form-item>
           </a-form>
-          <a-modal title="删除提示" :visible="isShowModal">
-            <template slot="footer">
-              <a-button key="back" @click="handleDeleteCancel">取消</a-button>
-              <a-button
-                type="danger"
-                icon="delete"
-                style="margin-left: 16px"
-                @click="handleDeleteOk"
-                :loading="confirmLoading"
-                >确认删除</a-button
-              >
-            </template>
-            <p>{{ ModalText }}</p>
-          </a-modal>
-          <a-row>
-            <a-col :span="16" :offset="8">
-              <a-button
-                type="primary"
-                @click="handleSubmit"
-                :loading="submitLoading"
-                >保存</a-button
-              >
-              <a-button style="margin: 0 16px" @click="handleBack"
-                >取消</a-button
-              >
-              <a-button type="danger" icon="delete" @click="handleDelete"
-                >删除</a-button
-              >
-            </a-col>
-          </a-row>
+          <a-col :span="16" :offset="8">
+            <a-button
+              type="primary"
+              @click="handleSubmit"
+              :loading="submitLoading"
+              >保存</a-button
+            >
+            <a-button style="margin: 0 16px" @click="handleBack">取消</a-button>
+            <a-button type="danger" icon="delete" @click="handleDelete"
+              >删除</a-button
+            >
+          </a-col>
         </a-row>
       </a-col>
       <a-col :span="14">
@@ -252,6 +234,20 @@
         </div>
       </a-col>
     </a-row>
+    <a-modal title="删除提示" :visible="isShowModal">
+      <template slot="footer">
+        <a-button key="back" @click="handleDeleteCancel">取消</a-button>
+        <a-button
+          type="danger"
+          icon="delete"
+          style="margin-left: 16px"
+          @click="handleDeleteOk"
+          :loading="confirmLoading"
+          >确认删除</a-button
+        >
+      </template>
+      <p>{{ ModalText }}</p>
+    </a-modal>
   </a-layout>
 </template>
 
@@ -596,18 +592,14 @@ export default {
 
 <style>
 .iot_view_edit_form_content {
-  padding-top: 32px;
-  //padding-bottom:32px;
+  padding-bottom: 12px;
 }
 .iot_view_edit_form {
-  margin-top: 12px;
-  //margin-bottom: 12px;
+  margin-bottom: 12px;
 }
 .iot_view_edit_formitem {
-  margin-top: 8px;
-  padding-top: 0px;
-  //margin-bottom: 8px;
-  //padding-bottom: 0px;
+  margin-bottom: 8px;
+  padding-bottom: 0px;
 }
 .iot_amap-gatewayEdit_container {
   height: 400px;

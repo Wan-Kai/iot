@@ -1,6 +1,10 @@
 import store from "../store/index";
 
 export default {
+  getCurrentUser: function() {
+    return store.getters["login/getCurrentUser"];
+  },
+
   getCurrentOrganizationID: function() {
     var organizations = store.getters["login/getCurrentOrganizations"];
     if (organizations != null && organizations.length > 0) {

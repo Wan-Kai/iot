@@ -181,9 +181,9 @@
     <div style="background: #fff">
       <div
         id="gateway_myChartUp"
-        style="width: 100%; height:300px;margin-top: 30px"
+        style="width: auto; height:300px;margin-top: 30px"
       ></div>
-      <div id="gateway_myChartDown" style="width: 100%; height:300px"></div>
+      <div id="gateway_myChartDown" style="width: auto; height:300px"></div>
     </div>
   </a-layout>
 </template>

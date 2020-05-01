@@ -52,7 +52,7 @@
               >
             </a-menu-item>
             <a-menu-item key="5">
-              <router-link to="/admin/dashboard/iLogFlow">日志流水</router-link>
+              <router-link to="/admin/dashboard/iLogFlow">日志查询</router-link>
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="sub3">
@@ -63,7 +63,9 @@
               >
             </a-menu-item>
             <a-menu-item key="7">
-              <router-link to="/admin/dashboard/nLogFlow">日志流水</router-link>
+              <router-link to="/admin/dashboard/nLogFlow"
+                >上行日志查询</router-link
+              >
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="sub4">

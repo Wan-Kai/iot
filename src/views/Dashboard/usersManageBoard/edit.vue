@@ -105,7 +105,7 @@
                   'note',
                   {
                     initialValue: returnedData.note,
-                    rules: [{ required: true, message: '请输入电子邮箱!' }]
+                    rules: [{ required: false, message: '请输入备注!' }]
                   }
                 ]"
                 :rows="4"

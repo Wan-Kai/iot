@@ -17,9 +17,11 @@ export function getStep2State() {
 
 //初始化个人及所关联的组织机构信息
 export function initProfile() {
+  debugger;
   api.login
     .getProfile()
     .then(res => {
+      debugger;
       let user = res.data.user;
       store.commit("login/setCurrentUser", user);
 
@@ -83,10 +85,6 @@ export function initOrganizations() {
       //debugger;
       console.log(err);
     });
-}
-
-export function getCurrentUser() {
-  return store.getters["login/getCurrentUser"];
 }
 
 export function getCurrentOrganizations() {

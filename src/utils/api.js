@@ -252,6 +252,11 @@ export default {
     //更新节点的keys
     updateModeKey: data => {
       return put("/devices/" + data.extra + "/keys", data);
+    },
+
+    //删除节点的keys
+    deleteNodeKey: data => {
+      return deletes("/devices/" + data.extra + "/keys", data);
     }
   },
   usersManage: {

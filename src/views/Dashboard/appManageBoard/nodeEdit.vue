@@ -451,6 +451,24 @@ export default {
         });
     },
 
+    async deleteAppNodeKey(devEUI) {
+      var data = {
+        extra: devEUI
+      };
+
+      this.$api.appManage
+        .deleteNodeKey(data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$message.success("删除appKey成功");
+          } else {
+            this.$message.error(res.data.error);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     getMap() {
       this.$api.index
         .mapMarkers({})
@@ -576,6 +594,7 @@ export default {
           console.log(res);
           if (res.status === 200) {
             this.$message.success("成功删除：" + this.id);
+
             sessionStorage.setItem("tab", "1");
             setTimeout(() => {
               this.$router.push({

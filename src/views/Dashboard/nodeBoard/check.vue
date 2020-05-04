@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >节点编号： {{ this.deviceProfile.id }}</span
+            >节点ID： {{ this.deviceProfile.id }}</span
           >
         </a-col>
       </a-row>

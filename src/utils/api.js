@@ -237,6 +237,21 @@ export default {
     },
     deleteAppNode: data => {
       return deletes("/devices/" + data.extra, data);
+    },
+
+    //获取节点的keys
+    getNodeKey: data => {
+      return get("/devices/" + data.extra + "/keys", data);
+    },
+
+    //创建节点的keys
+    createModeKey: data => {
+      return post("/devices/" + data.extra + "/keys", data);
+    },
+
+    //更新节点的keys
+    updateModeKey: data => {
+      return put("/devices/" + data.extra + "/keys", data);
     }
   },
   usersManage: {

@@ -38,7 +38,18 @@
                 :wrapper-col="{ span: 16 }"
               >
                 <a-input
-                  v-decorator="['devEUI']"
+                  v-decorator="[
+                    'devEUI',
+                    {
+                      rules: [
+                        {
+                          required: true,
+                          message: '长度为16位，不允许有中文',
+                          pattern: /^[^\u4e00-\u9fa5]{16}$/
+                        }
+                      ]
+                    }
+                  ]"
                   size="small"
                   style="width: 90%;float: left;text-align: left"
                 />
@@ -82,7 +93,18 @@
                 :wrapper-col="{ span: 16 }"
               >
                 <a-input
-                  v-decorator="['appKey']"
+                  v-decorator="[
+                    'appKey',
+                    {
+                      rules: [
+                        {
+                          required: true,
+                          message: '长度为32位，不允许有中文',
+                          pattern: /^[^\u4e00-\u9fa5]{32}$/
+                        }
+                      ]
+                    }
+                  ]"
                   size="small"
                   style="width: 90%;float: left;text-align: left"
                 >
@@ -101,7 +123,7 @@
 
               <a-form-item
                 class="iot_view_App_node_add_formitem"
-                label="设备配置文件："
+                label="节点描述："
                 :required="true"
                 :label-col="{ span: 8 }"
                 :wrapper-col="{ span: 16 }"
@@ -110,7 +132,7 @@
                   v-decorator="[
                     'devProfile',
                     {
-                      rules: [{ required: true, message: '请选择设备配置文件' }]
+                      rules: [{ required: true, message: '请选择节点' }]
                     }
                   ]"
                   style="width: 90%;float: left;text-align: left"
@@ -132,7 +154,7 @@
 
               <a-form-item
                 class="iot_view_App_node_add_formitem"
-                label="节点描述："
+                label="补充说明："
                 :required="false"
                 :label-col="{ span: 8 }"
                 :wrapper-col="{ span: 16 }"
@@ -246,7 +268,6 @@ export default {
       id: "",
 
       //options
-      DevEUI_options: [],
       area_options: [],
       devProfile_options: [],
 
@@ -395,6 +416,9 @@ export default {
             .then(res => {
               if (res.status === 200) {
                 this.$message.success("成功创建节点:" + sentData.name);
+
+                this.createAppNodeKey(values.devEUI, values.appKey);
+
                 sessionStorage.setItem("tab", "1");
                 setTimeout(() => {
                   this.$router.push({
@@ -416,6 +440,32 @@ export default {
         }
       });
     },
+
+    async createAppNodeKey(devEUI, nwkKey) {
+      var data = {
+        extra: devEUI,
+        deviceKeys: {
+          devEUI: devEUI,
+          appKey: "00000000000000000000000000000000",
+          genAppKey: "00000000000000000000000000000000",
+          nwkKey: nwkKey
+        }
+      };
+
+      this.$api.appManage
+        .createModeKey(data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$message.success("设置appKey成功");
+          } else {
+            this.$message.error(res.data.error);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     backToNodeList() {
       sessionStorage.setItem("tab", "1");
       this.$router.push({

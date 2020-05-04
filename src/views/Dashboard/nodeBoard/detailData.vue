@@ -11,7 +11,7 @@
         <div class="iot_view_node_detail_textCard">
           <a-row class="black">
             <a-col :span="8">
-              <p class="iot_view_node_detail_textCard_p">节点编号:</p>
+              <p class="iot_view_node_detail_textCard_p">节点ID:</p>
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">

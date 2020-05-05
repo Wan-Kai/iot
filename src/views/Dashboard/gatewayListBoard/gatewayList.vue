@@ -1,6 +1,6 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0">
-    <div class="iot_view_top">
+    <div class="iot_view_gatewayList_top">
       <a-input-search
         class="iot_view_top_search"
         placeholder="请输入要查找的网关"
@@ -343,9 +343,10 @@ export default {
 </script>
 
 <style>
-.iot_view_top {
+.iot_view_gatewayList_top {
   width: 100%;
   margin-bottom: 8px;
+  margin-top: 0;
 }
 .iot_view_top_search {
   float: left;

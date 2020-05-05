@@ -2,15 +2,20 @@
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div>
       <a-tabs
-        defaultActiveKey="1"
+        defaultActiveKey="gatewayList"
         @change="callback"
         size="small"
         style="text-align: left"
       >
-        <a-tab-pane tab="网关列表" key="1" style="height: 100%">
+        <a-tab-pane tab="网关列表" key="gatewayList" style="height: 100%">
           <gatewayList />
         </a-tab-pane>
-        <a-tab-pane tab="网关分布图" key="2" style="height: 100%">
+        <a-tab-pane
+          tab="网关分布图"
+          key="gateawayMap"
+          style="height: 100%"
+          force-render
+        >
           <gateawayMap />
         </a-tab-pane>
       </a-tabs>

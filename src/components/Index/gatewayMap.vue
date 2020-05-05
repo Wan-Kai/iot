@@ -6,16 +6,7 @@
       </p>
     </div>
     <div class="iot_amap_gatewayMap_container">
-      <!--      <el-amap-->
-      <!--        vid="index_map"-->
-      <!--        :center="center"-->
-      <!--        :map-manager="amapManager"-->
-      <!--        :zoom="zoom"-->
-      <!--        :events="events"-->
-      <!--        class="iot_amap_gateawyMap_demo"-->
-      <!--      >-->
-      <!--      </el-amap>-->
-      <el-amap vid="indexMap"> </el-amap>
+      <el-amap vid="indexMap" :center="center"> </el-amap>
     </div>
   </a-layout>
 </template>
@@ -25,49 +16,68 @@ import wifi_map from "../../assets/wifi.png";
 export default {
   data() {
     return {
+      //默认中心，避免出现无法找到 IV 报错
+      center: [114.364131, 30.522437],
+
       mapData: [],
+      tableData: [],
       lng: "",
       lat: ""
     };
   },
   beforeMount() {
-    this.$api.index
-      .mapMarkers({})
-      .then(res => {
-        this.mapData = res.data.result;
-        let mapObj = new AMap.Map("indexMap", {
-          // eslint-disable-line no-unused-vars
-          resizeEnable: true, //自适应大小
-          zoom: this.mapData.zoom,
-          center: this.mapData.center
-        });
-
-        let startIcon = new AMap.Icon({
-          // 图标尺寸
-          size: new AMap.Size(25, 25),
-          // 图标的取图地址
-          image: wifi_map, // 您自己的图标
-          // 图标所用图片大小
-          imageSize: new AMap.Size(25, 25)
-        });
-        this.mapData.markers.forEach(item => {
-          const marker = new AMap.Marker({
-            // eslint-disable-line no-unused-vars
-            map: mapObj,
-            icon: startIcon,
-            position: new AMap.LngLat(item.X, item.Y), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-            title: "网关"
-          });
-        });
-
-        //自适应多个标记点
-        let newCenter = mapObj.setFitView(); // eslint-disable-line no-unused-vars
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.infoData();
   },
-  methods: {}
+  methods: {
+    infoData() {
+      this.$api.gateway
+        .gatewayList({
+          limit: 1000
+        })
+        .then(res => {
+          this.tableData = res.data.result;
+          this.drawMap();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    drawMap() {
+      let mapObj = new AMap.Map("indexMap", {
+        // eslint-disable-line no-unused-vars
+        resizeEnable: true, //自适应大小
+        center: new AMap.LngLat(
+          this.tableData[0].location.longitude,
+          this.tableData[0].location.latitude
+        )
+      });
+
+      let startIcon = new AMap.Icon({
+        // 图标尺寸
+        size: new AMap.Size(25, 25),
+        // 图标的取图地址
+        image: wifi_map, // 您自己的图标
+        // 图标所用图片大小
+        imageSize: new AMap.Size(25, 25)
+      });
+
+      this.tableData.forEach(item => {
+        const marker = new AMap.Marker({
+          // eslint-disable-line no-unused-vars
+          map: mapObj,
+          icon: startIcon,
+          position: new AMap.LngLat(
+            item.location.longitude,
+            item.location.latitude
+          ), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          title: item.name
+        });
+      });
+
+      //自适应多个标记点
+      let newCenter = mapObj.setFitView(); // eslint-disable-line no-unused-vars
+    }
+  }
 };
 </script>
 

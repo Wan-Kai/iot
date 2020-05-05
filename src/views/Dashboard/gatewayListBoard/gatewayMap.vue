@@ -1,6 +1,6 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0">
-    <a-row>
+    <a-row :gutter="16">
       <a-col :span="16">
         <div>
           <span style="font-size: 14px">网关数：{{ gatewayNum }}</span>
@@ -8,10 +8,9 @@
           <span style="font-size: 14px">掉线：{{ outline }}</span>
         </div>
         <div style="margin-top: 10px">
-          <img
-            src="../../../assets/map.png"
-            style="height: 412px;display: inherit"
-          />
+          <div class="iot_amap-gatewayMap_container">
+            <el-amap vid="gateway_map" :center="center"> </el-amap>
+          </div>
         </div>
       </a-col>
       <a-col :span="8">
@@ -28,7 +27,6 @@
             style="min-width: auto"
             class="iot_view_internetServer_table"
             :pagination="pagination"
-            rowKey="id"
           >
             <span slot="action" slot-scope="text, record">
               <a @click="checkGateway(record)">查看</a>
@@ -56,17 +54,22 @@ const columns = [
   }
 ];
 import ACol from "ant-design-vue/es/grid/Col";
+import wifi_map from "../../../assets/wifi.png";
 export default {
   data() {
     return {
+      //默认中心，避免出现无法找到 IV 报错
+      center: [114.364131, 30.522437],
+
       //data
       gatewayNum: 10,
-      online: 8,
-      outline: 2,
+      online: "暂定",
+      outline: "暂定",
 
       //tableData
       columns,
       tableData: [],
+      mapData: {},
 
       pagination: {
         size: "small",
@@ -82,18 +85,59 @@ export default {
     };
   },
   beforeMount() {
-    this.$api.gateway
-      .gatewayMap({
-        page: 0
-      })
-      .then(res => {
-        this.tableData = res.data.result;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.infoData();
   },
+  mounted() {},
   methods: {
+    infoData() {
+      this.$api.gateway
+        .gatewayList({
+          limit: 1000
+        })
+        .then(res => {
+          this.gatewayNum = res.data.totalCount;
+          this.tableData = res.data.result;
+          this.drawMap();
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    drawMap() {
+      let mapObj = new AMap.Map("gateway_map", {
+        // eslint-disable-line no-unused-vars
+        resizeEnable: true, //自适应大小
+        center: new AMap.LngLat(
+          this.tableData[0].location.longitude,
+          this.tableData[0].location.latitude
+        )
+      });
+
+      let startIcon = new AMap.Icon({
+        // 图标尺寸
+        size: new AMap.Size(25, 25),
+        // 图标的取图地址
+        image: wifi_map, // 您自己的图标
+        // 图标所用图片大小
+        imageSize: new AMap.Size(25, 25)
+      });
+
+      this.tableData.forEach(item => {
+        const marker = new AMap.Marker({
+          // eslint-disable-line no-unused-vars
+          map: mapObj,
+          icon: startIcon,
+          position: new AMap.LngLat(
+            item.location.longitude,
+            item.location.latitude
+          ), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          title: item.name
+        });
+      });
+
+      //自适应多个标记点
+      let newCenter = mapObj.setFitView(); // eslint-disable-line no-unused-vars
+    },
     checkGateway(data) {
       this.$router.push({
         name: "checkGatewayManage",
@@ -113,6 +157,10 @@ export default {
 
 <style>
 .iot_view_gatewayMap_top_search {
+  width: 100%;
+}
+.iot_amap-gatewayMap_container {
+  height: 400px;
   width: 100%;
 }
 </style>

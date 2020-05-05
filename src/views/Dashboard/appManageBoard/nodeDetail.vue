@@ -183,7 +183,7 @@
       </a-col>
       <a-col :span="14">
         <div class="iot_amap_app_nodeEdit_container">
-          <el-amap vid="app_note_edit_map"> </el-amap>
+          <el-amap vid="app_note_edit_map" :center="center"> </el-amap>
         </div>
       </a-col>
     </a-row>
@@ -207,6 +207,9 @@ export default {
   name: "nodeDetails",
   data() {
     return {
+      //默认中心，避免出现无法找到 IV 报错
+      center: [114.364131, 30.522437],
+
       //params
       id: "",
       appId: "",

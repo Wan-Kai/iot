@@ -108,15 +108,15 @@ export default {
                 debugger;
                 setSessionKey(res.data.jwt);
 
+                initProfile(); //{
+
+                initOrganizations();
+                initNetworkServers();
+                initServiceOptions();
+                //initDevProfileServices();
+                //});
+
                 setTimeout(() => {
-                  initProfile(); //{
-
-                  initOrganizations();
-                  initNetworkServers();
-                  initServiceOptions();
-                  //initDevProfileServices();
-                  //});
-
                   this.$router.push("/admin/dashboard");
                 }, 300);
               } else {

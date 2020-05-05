@@ -94,32 +94,34 @@
         <a-tabs
           type="card"
           :defaultActiveKey="defaultTab"
+          :active-key="defaultTab"
+          @change="changeTab"
           size="small"
           style="text-align: left;padding-top: 0;height: min-content"
         >
-          <!--          <a-tab-pane tab="详细信息" key="1" style="height: auto" forceRender>-->
-          <!--            <Detail ref="gatewayDetail" />-->
-          <!--          </a-tab-pane>-->
-          <!--          <a-tab-pane-->
-          <!--            tab="最新一帧上行数据"-->
-          <!--            key="2"-->
-          <!--            style="height: auto"-->
-          <!--            forceRender-->
-          <!--          >-->
-          <!--            暂定-->
-          <!--          </a-tab-pane>-->
-          <!--          <a-tab-pane tab="配置修改" key="3" style="height: auto;" forceRender>-->
-          <!--            <DeployEdit ref="gatewayEdit" />-->
-          <!--          </a-tab-pane>-->
-          <a-tab-pane tab="详细信息" key="1" style="height: auto">
-            <Detail />
+          <a-tab-pane tab="详细信息" key="1" style="height: auto" forceRender>
+            <Detail ref="gatewayDetail" />
           </a-tab-pane>
-          <a-tab-pane tab="最新一帧上行数据" key="2" style="height: auto">
+          <a-tab-pane
+            tab="最新一帧上行数据"
+            key="2"
+            style="height: auto"
+            forceRender
+          >
             暂定
           </a-tab-pane>
-          <a-tab-pane tab="配置修改" key="3" style="height: auto;">
-            <DeployEdit />
+          <a-tab-pane tab="配置修改" key="3" style="height: auto;" forceRender>
+            <DeployEdit ref="gatewayEdit" />
           </a-tab-pane>
+          <!--          <a-tab-pane tab="详细信息" key="1" style="height: auto">-->
+          <!--            <Detail />-->
+          <!--          </a-tab-pane>-->
+          <!--          <a-tab-pane tab="最新一帧上行数据" key="2" style="height: auto">-->
+          <!--            暂定-->
+          <!--          </a-tab-pane>-->
+          <!--          <a-tab-pane tab="配置修改" key="3" style="height: auto;">-->
+          <!--            <DeployEdit />-->
+          <!--          </a-tab-pane>-->
         </a-tabs>
       </div>
     </a-layout>
@@ -217,17 +219,17 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
 
-    // changeTab(key) {
-    //   //alert(key);
-    //   this.defaultTab = key;
-    //   if (key == 1) {
-    //     //this.$refs.gatewayDetail.getDetail(this.returnedData.id);
-    //   } else if (key == 3) {
-    //     //this.$refs.gatewayEdit.getDetail(this.returnedData.id);
-    //   }
-    // }
+    changeTab(key) {
+      //alert(key);
+      this.defaultTab = key;
+      if (key == 1) {
+        //this.$refs.gatewayDetail.getDetail(this.returnedData.id);
+      } else if (key == 3) {
+        //this.$refs.gatewayEdit.getDetail(this.returnedData.id);
+      }
+    }
   }
 };
 </script>

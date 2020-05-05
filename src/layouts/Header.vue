@@ -13,14 +13,18 @@
       <a-avatar icon="user" class="iot_avatar" />
       <a-dropdown>
         <a class="ant-dropdown-link" style="color: white">
-          userName <a-icon type="down" />
+          {{ this.getUserName }} <a-icon type="down" />
         </a>
         <a-menu slot="overlay">
+          <!--
           <a-menu-item>
             <a href="javascript:;">用户详情</a>
           </a-menu-item>
+          -->
           <a-menu-item>
-            <a href="javascript:;">退出登录</a>
+            <router-link to="/user/login" id="router" class="iot_register_text"
+              >退出</router-link
+            >
           </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -31,8 +35,19 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      userName: "hh"
+    };
   },
+
+  computed: {
+    getUserName() {
+      var user = this.common.getCurrentUser();
+      if (user) return user.username;
+      return "";
+    }
+  },
+
   methods: {
     onSearch() {}
   }

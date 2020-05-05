@@ -46,8 +46,10 @@ export function initOrganizations() {
 
       //仅显示在有权限的组织机构
       let currentOrganizations = store.getters["login/getCurrentOrganizations"];
-      if (currentOrganizations == null || currentOrganizations.length == 0)
+      if (currentOrganizations == null || currentOrganizations.length == 0) {
+        store.commit("options/setOrganizations", null);
         return;
+      }
 
       let organizationData = [];
       for (let i = 0; i < getData.length; i++) {
@@ -145,6 +147,8 @@ export function getOrganizationNameById(id) {
       return organizations[i].name;
     }
   }
+
+  return "";
 }
 
 export function initNetworkServers() {

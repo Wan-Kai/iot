@@ -192,9 +192,10 @@ export default {
           var data = {
             username: values.username,
             password: values.password,
+            phonenumber: values.phoneNumber,
             email: values.email,
             isAdmin: this.currentRecord.isAdmin,
-            note: values.note
+            note: ""
           };
 
           this.$api.usersManage

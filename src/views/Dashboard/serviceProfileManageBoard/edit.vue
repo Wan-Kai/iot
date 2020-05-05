@@ -390,7 +390,7 @@ export default {
           //console.log(sentData);
           debugger;
           this.$api.serviceProfile
-            .updateSerice({
+            .updateService({
               extra: this.returnedData.id,
               serviceProfile: sentData
             })

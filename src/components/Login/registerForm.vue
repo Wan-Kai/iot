@@ -8,7 +8,28 @@
     <div class="iot_register_layout_text">
       <a class="iot_register_layout_text_content">注册</a>
     </div>
-    <a-form :form="form">
+    <a-form :form="form" @submit="handleSubmit">
+      <a-form-item>
+        <a-input
+          v-decorator="[
+            'username',
+            { rules: [{ required: true, message: '请输入用户姓名!' }] }
+          ]"
+          placeholder="用户名"
+          style="float: left;text-align: left"
+        />
+      </a-form-item>
+      <a-form-item>
+        <a-input
+          v-decorator="[
+            'email',
+            { rules: [{ required: true, message: '请输入电子邮箱!' }] }
+          ]"
+          placeholder="电子邮箱"
+          style="float: left;text-align: left"
+        />
+      </a-form-item>
+
       <a-form-item class="iot_register_phoneNumber">
         <a-input
           v-decorator="[
@@ -24,6 +45,7 @@
           <a-icon slot="prefix" type="phone" style="color: rgba(0,0,0,.25)" />
         </a-input>
       </a-form-item>
+      <!--
       <a-form-item class="iot_register_note">
         <a-input
           class="iot_register_note_input"
@@ -43,6 +65,7 @@
           发送验证码
         </a-button>
       </a-form-item>
+      -->
       <a-form-item class="iot_register_password">
         <a-input
           v-decorator="[
@@ -74,7 +97,12 @@
         >
           <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
         </a-input>
-        <a-button type="primary" class="register_form_submit_button">
+        <a-button
+          type="primary"
+          class="register_form_submit_button"
+          html-type="submit"
+          :loading="commitLoading"
+        >
           注册
         </a-button>
         <div class="iot_register_text_content">
@@ -89,20 +117,76 @@
 </template>
 
 <script>
+import {
+  initNetworkServers,
+  initServiceOptions,
+  initOrganizations,
+  setSessionKey,
+  initProfile,
+  initDevProfileServices
+} from "@/utils/util";
 export default {
   data() {
     this.form = this.$form.createForm(this);
     return {
       phoneNumber: "",
-      password: ""
+      password: "",
+      commitLoading: false
     };
   },
   methods: {
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
+        if (values.password != values.secondPassword) {
+          alert("两次密码不一致，请核对");
+          return;
+        }
+
         if (!err) {
           console.log("Received values of form: ", values);
+          this.commitLoading = true;
+          var data = {
+            username: values.username,
+            password: values.password,
+            email: values.email,
+            phonenumber: values.phoneNumber,
+            isAdmin: true,
+            isActive: true,
+            note: ""
+          };
+
+          this.$api.login
+            .register(data)
+            .then(res => {
+              if (res.status === 200) {
+                this.commitLoading = false;
+                this.$message.success("注册成功");
+
+                setSessionKey(res.data.jwt);
+
+                setTimeout(() => {
+                  initProfile(); //{
+
+                  initOrganizations();
+                  initNetworkServers();
+                  initServiceOptions();
+                  //initDevProfileServices();
+                  //});
+
+                  this.$router.push("/admin/dashboard");
+                }, 300);
+              } else {
+                this.$message.error(res.data.code);
+                this.$message.error(res.data.error);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            })
+            .finally(() => {
+              this.commitLoading = false;
+            });
         }
       });
     },

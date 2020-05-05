@@ -10,8 +10,8 @@ export default {
     if (organizations != null && organizations.length > 0) {
       return organizations[0].organizationID;
     }
-
-    return store.getters["login/getOrganizationID"];
+    return "";
+    //return store.getters["login/getOrganizationID"];
   },
 
   /**

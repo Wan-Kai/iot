@@ -8,6 +8,21 @@ export default {
       return login("/internal/login", data);
     },
 
+    register: data => {
+      var temp = {
+        password: data.password,
+        user: {
+          username: data.username,
+          email: data.email,
+          phonenumber: data.phonenumber,
+          isActive: data.isAdmin,
+          isAdmin: data.isAdmin,
+          note: data.note //电话号码
+        }
+      };
+      return login("/wildusers", temp);
+    },
+
     getProfile: data => {
       return get("/internal/profile", data);
     }
@@ -86,7 +101,7 @@ export default {
     createService: data => {
       return post("/service-profiles", data);
     },
-    updateSerice: data => {
+    updateService: data => {
       return put("/service-profiles/" + data.extra, data);
     },
     getService: data => {
@@ -179,8 +194,8 @@ export default {
     },
 
     getDeviceProfileAndDevice: data => {
-      if (!data.organizationID || common.isEmpty(data.organizationID)) {
-        data.organizationID = common.getCurrentOrganizationID();
+      if (!data.OrganizationID || common.isEmpty(data.OrganizationID)) {
+        data.OrganizationID = common.getCurrentOrganizationID();
       }
       return get("/DPsandDevs", data);
     },
@@ -296,6 +311,7 @@ export default {
         user: {
           username: data.username,
           email: data.email,
+          phonenumber: data.phonenumber,
           isActive: data.isAdmin,
           isAdmin: data.isAdmin,
           note: data.note //电话号码

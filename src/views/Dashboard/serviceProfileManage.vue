@@ -112,14 +112,15 @@ export default {
         .then(res => {
           console.log(res);
           let returnedData = res.data.result;
-          returnedData.forEach(item => {
-            debugger;
+
+          for (let i = 0; i < this.returnedData.length; i++) {
+            var item = this.returnedData[i];
             item.organizationName = getOrganizationNameById(
               item.organizationID
             );
-            console.log(item.organizationName);
-          });
-          this.tableData = returnedData;
+            if (this.common.isEmpty(item.organizationName)) continue;
+            this.tableData.push(item);
+          }
         })
         .catch(err => {
           console.log(err);

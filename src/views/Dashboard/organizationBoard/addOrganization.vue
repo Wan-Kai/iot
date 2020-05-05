@@ -203,7 +203,7 @@ export default {
                 debugger;
                 //需要将当前用户添加到组织机构中
                 var newOrganizationID = res.data.id;
-                var currentUser = getCurrentUser();
+                var currentUser = this.common.getCurrentUser();
                 var data = {
                   isAdmin: true,
                   isDeviceAdmin: true,

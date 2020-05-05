@@ -123,12 +123,12 @@ import ACol from "ant-design-vue/es/grid/Col";
 import { getNetworkServerNameById } from "@/utils/util";
 const columns = [
   {
-    title: "节点编号",
+    title: "节点ID",
     dataIndex: "device_profile_id",
     key: "device_profile_id"
   },
   {
-    title: "节点名称",
+    title: "节点描述",
     dataIndex: "device_profile_name",
     key: "device_profile_name"
   },

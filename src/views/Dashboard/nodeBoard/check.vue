@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >节点编号： {{ this.deviceProfile.id }}</span
+            >节点ID： {{ this.deviceProfile.id }}</span
           >
         </a-col>
       </a-row>
@@ -83,10 +83,10 @@
           size="small"
           style="text-align: left;padding-top: 0;height: min-content"
         >
-          <a-tab-pane tab="详细信息" key="1" style="height: auto">
+          <a-tab-pane tab="详细信息" key="1">
             <detailData />
           </a-tab-pane>
-          <a-tab-pane tab="配置修改" key="2" style="height: auto">
+          <a-tab-pane tab="配置修改" key="2">
             <deployEdit />
           </a-tab-pane>
         </a-tabs>

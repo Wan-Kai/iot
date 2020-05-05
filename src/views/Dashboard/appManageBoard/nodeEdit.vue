@@ -95,7 +95,14 @@
                 v-decorator="[
                   'appKey',
                   {
-                    initialValue: returnedData.appKey
+                    initialValue: returnedKey.nwkKey,
+                    rules: [
+                      {
+                        required: true,
+                        message: '长度为32位，不允许有中文',
+                        pattern: /^[^\u4e00-\u9fa5]{32}$/
+                      }
+                    ]
                   }
                 ]"
                 size="small"
@@ -286,7 +293,6 @@ export default {
       area_options: [],
 
       //default Values
-      defaultDevProfile: [],
       defaultArea: [],
 
       //data
@@ -294,9 +300,16 @@ export default {
         deviceProfileID: "",
         applicationID: "",
         name: "",
-        appKey: "",
         description: ""
       },
+
+      returnedKey: {
+        hasKey: false,
+        appKey: "",
+        genAppKey: "",
+        nwkKey: ""
+      },
+
       areaShow: false,
 
       submitLoading: false,
@@ -333,86 +346,186 @@ export default {
 
     this.devProfile_options = getDeviceProfileService_options();
     this.area_options = getArea();
-    this.$api.appManage
-      .getAppNodeDetail({
-        extra: this.id
-      })
-      .then(res => {
-        let infoDataTemp = res.data;
 
-        this.returnedData.deviceProfileID = infoDataTemp.device.deviceProfileID;
-        this.returnedData.applicationID = infoDataTemp.device.applicationID;
-        this.returnedData.name = infoDataTemp.device.name;
-        this.returnedData.description = infoDataTemp.device.description;
-        this.returnedData.appKey = "";
+    this.getAppNodeDetail();
+    this.getAppNodeKey();
 
-        if (infoDataTemp.location) {
-          this.areaShow = true;
-          this.defaultArea.push(infoDataTemp.device.province);
-          this.defaultArea.push(infoDataTemp.device.city);
-          this.defaultArea.push(infoDataTemp.device.district);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    this.$api.index
-      .mapMarkers({})
-      .then(res => {
-        this.mapData = res.data.result;
-        this.mapObj = new AMap.Map("App_note_edit_map", {
-          // eslint-disable-line no-unused-vars
-          resizeEnable: true, //自适应大小
-          zoom: this.mapData.zoom,
-          center: this.mapData.center
-        });
-        let startIcon = new AMap.Icon({
-          // 图标尺寸
-          size: new AMap.Size(25, 25),
-          // 图标的取图地址
-          image: wifi_map, // 您自己的图标
-          // 图标所用图片大小
-          imageSize: new AMap.Size(25, 25)
-        });
-        if (this.mapData.center) {
-          const marker = new AMap.Marker({
-            // eslint-disable-line no-unused-vars
-            map: this.mapObj,
-            icon: startIcon,
-            position: this.mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-            title: "网关"
-          });
-        }
-        let _self = this;
-        let address = "";
-        this.mapObj.on("click", function(e) {
-          if (_self.areaShow) {
-            _self.location.Lng = e.lnglat.getLng();
-            _self.location.Lat = e.lnglat.getLat();
-            _self.mapObj.clearMap();
-            const marker = new AMap.Marker({
-              // eslint-disable-line no-unused-vars
-              map: _self.mapObj,
-              icon: startIcon,
-              position: [e.lnglat.getLng(), e.lnglat.getLat()], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-              title: "网关"
-            });
-            address =
-              _self.location.Lng.toString() +
-              "," +
-              _self.location.Lat.toString();
-            _self.nodeDeployFormMap.setFieldsValue({
-              address: address
-            });
-          }
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getMap();
   },
 
   methods: {
+    getAppNodeDetail() {
+      this.$api.appManage
+        .getAppNodeDetail({
+          extra: this.id
+        })
+        .then(res => {
+          let infoDataTemp = res.data;
+
+          this.returnedData.deviceProfileID =
+            infoDataTemp.device.deviceProfileID;
+          this.returnedData.applicationID = infoDataTemp.device.applicationID;
+          this.returnedData.name = infoDataTemp.device.name;
+          this.returnedData.description = infoDataTemp.device.description;
+
+          if (infoDataTemp.location) {
+            this.areaShow = true;
+            this.defaultArea.push(infoDataTemp.device.province);
+            this.defaultArea.push(infoDataTemp.device.city);
+            this.defaultArea.push(infoDataTemp.device.district);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    getAppNodeKey() {
+      this.$api.appManage
+        .getNodeKey({
+          extra: this.id
+        })
+        .then(res => {
+          let infoDataTemp = res.data;
+
+          this.returnedKey.hasKey = true;
+          this.returnedKey.appKey = infoDataTemp.deviceKeys.appKey;
+          this.returnedKey.genAppKey = infoDataTemp.deviceKeys.genAppKey;
+          this.returnedKey.nwkKey = infoDataTemp.deviceKeys.nwkKey;
+        })
+        .catch(err => {
+          console.log(err);
+          this.returnedKey.hasKey = false;
+        });
+    },
+
+    async createAppNodeKey(devEUI, nwkKey) {
+      var data = {
+        extra: devEUI,
+        deviceKeys: {
+          devEUI: devEUI,
+          appKey: "00000000000000000000000000000000",
+          genAppKey: "00000000000000000000000000000000",
+          nwkKey: nwkKey
+        }
+      };
+
+      this.$api.appManage
+        .createModeKey(data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$message.success("设置appKey成功");
+          } else {
+            this.$message.error(res.data.error);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    async updateAppNodeKey(devEUI, nwkKey) {
+      if (nwkKey === this.returnedKey.nwkKey) return;
+
+      var data = {
+        extra: devEUI,
+        deviceKeys: {
+          devEUI: devEUI,
+          appKey: "00000000000000000000000000000000",
+          genAppKey: "00000000000000000000000000000000",
+          nwkKey: nwkKey
+        }
+      };
+
+      this.$api.appManage
+        .updateModeKey(data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$message.success("更新appKey成功");
+          } else {
+            this.$message.error(res.data.error);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    async deleteAppNodeKey(devEUI) {
+      var data = {
+        extra: devEUI
+      };
+
+      this.$api.appManage
+        .deleteNodeKey(data)
+        .then(res => {
+          if (res.status === 200) {
+            this.$message.success("删除appKey成功");
+          } else {
+            this.$message.error(res.data.error);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getMap() {
+      this.$api.index
+        .mapMarkers({})
+        .then(res => {
+          this.mapData = res.data.result;
+          this.mapObj = new AMap.Map("App_note_edit_map", {
+            // eslint-disable-line no-unused-vars
+            resizeEnable: true, //自适应大小
+            zoom: this.mapData.zoom,
+            center: this.mapData.center
+          });
+          let startIcon = new AMap.Icon({
+            // 图标尺寸
+            size: new AMap.Size(25, 25),
+            // 图标的取图地址
+            image: wifi_map, // 您自己的图标
+            // 图标所用图片大小
+            imageSize: new AMap.Size(25, 25)
+          });
+          if (this.mapData.center) {
+            const marker = new AMap.Marker({
+              // eslint-disable-line no-unused-vars
+              map: this.mapObj,
+              icon: startIcon,
+              position: this.mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              title: "网关"
+            });
+          }
+          let _self = this;
+          let address = "";
+          this.mapObj.on("click", function(e) {
+            if (_self.areaShow) {
+              _self.location.Lng = e.lnglat.getLng();
+              _self.location.Lat = e.lnglat.getLat();
+              _self.mapObj.clearMap();
+              const marker = new AMap.Marker({
+                // eslint-disable-line no-unused-vars
+                map: _self.mapObj,
+                icon: startIcon,
+                position: [e.lnglat.getLng(), e.lnglat.getLat()], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title: "网关"
+              });
+              address =
+                _self.location.Lng.toString() +
+                "," +
+                _self.location.Lat.toString();
+              _self.nodeDeployFormMap.setFieldsValue({
+                address: address
+              });
+            }
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     handleSubmit(e) {
       e.preventDefault();
       this.nodeEditForm.validateFields((err, values) => {
@@ -422,11 +535,11 @@ export default {
           sentData.name = values.name;
           sentData.description = values.description;
           sentData.devEUI = values.devEUI;
-          sentData.deviceProfileID = values.devProfile[0];
+          sentData.deviceProfileID = values.devProfile;
           sentData.applicationID = values.appEUI;
-          sentData.appKey = values.appKey;
+          //sentData.appKey = values.appKey;
           console.log(sentData);
-
+          debugger;
           this.$api.appManage
             .updateAppNode({
               extra: this.id,
@@ -435,6 +548,13 @@ export default {
             .then(res => {
               if (res.status === 200) {
                 this.$message.success("成功修改节点:" + this.id);
+
+                if (this.returnedKey.hasKey) {
+                  this.updateAppNodeKey(values.devEUI, values.appKey);
+                } else {
+                  this.createAppNodeKey(values.devEUI, values.appKey);
+                }
+
                 sessionStorage.setItem("tab", "1");
                 setTimeout(() => {
                   this.$router.push({
@@ -474,6 +594,7 @@ export default {
           console.log(res);
           if (res.status === 200) {
             this.$message.success("成功删除：" + this.id);
+
             sessionStorage.setItem("tab", "1");
             setTimeout(() => {
               this.$router.push({

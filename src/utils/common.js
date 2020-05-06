@@ -53,10 +53,52 @@ export default {
       return false;
     }
   },
+
+  getBeginTimestamp: function(date) {
+    var day = this.formatDate(date, "yyyy-MM-dd");
+    day += "T00:00:00Z";
+    return day;
+  },
+
+  getEndTimestamp: function(date) {
+    var day = this.formatDate(date, "yyyy-MM-ddTHH:mm:ssZ");
+    //day += "T23:59:59Z";
+    var time = this.getNowTime();
+    day = day.replace("00:00:00", time);
+    return day;
+  },
+
+  getDateFromStr: function(dateString) {
+    //debugger
+    if (dateString) {
+      var date = new Date(dateString.replace(/-/, "/"));
+      return date;
+    }
+  },
+
+  getDateTimeFromStr: function(dateString) {
+    if (dateString) {
+      var arr1 = dateString.split(" ");
+      var sdate = arr1[0].split("-");
+      var date = new Date(sdate[0], sdate[1] - 1, sdate[2]);
+      return date;
+    }
+  },
+
+  getNextDate: function(date, day) {
+    //debugger
+    var dd = new Date(date);
+    dd.setDate(dd.getDate() + day);
+    return this.formatDate(dd, "yyyy-MM-dd");
+  },
   /**
    * 返回date类型的yyyy-mm-dd格式
    */
-  getNowDate: function(date) {
+  getNowDate: function() {
+    var d = new Date();
+    return this.formatDate(d, "yyyy-MM-dd");
+
+    /*
     var seperator1 = "-";
     var year = date.getFullYear(); //年
     var month = date.getMonth() + 1; //月
@@ -69,6 +111,17 @@ export default {
     }
     var currentdate = year + seperator1 + month + seperator1 + strDate;
     return currentdate;
+    */
+  },
+
+  getNowDateTime: function() {
+    var d = new Date();
+    return this.formatDate(d, "yyyy-MM-dd HH:mm:ss");
+  },
+
+  getNowTime: function() {
+    var d = new Date();
+    return this.formatDate(d, "HH:mm:ss");
   },
 
   /**

@@ -53,7 +53,6 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 export default {
-  name: "activeNodeList",
   components: { ACol, ARow },
   data() {
     return {

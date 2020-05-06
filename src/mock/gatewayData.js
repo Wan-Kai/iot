@@ -83,16 +83,15 @@ const IlogFlowData = Mock.mock({
   "result|20": [
     {
       gatewayId: "B45sadsa45",
-      heartTime: "@date('yyyy-MM-dd HH:mm:ss')",
-      period: "30",
-      delayTime: "38",
-      type: "heartbeat",
-      gatewayTime: "@date('yyyy-MM-dd HH:mm:ss')" + " CST",
-      radioFrame: "4",
-      rightBagNumber: "4",
-      transportBagNumber: "4",
-      downBagNumber: "4",
-      transportSusBagNumber: "4"
+      //heartTime: "@date('yyyy-MM-dd HH:mm:ss')",
+      //period: "30",
+      //delayTime: "38",
+      //type: "heartbeat",
+      timestamp: "@date('yyyy-MM-dd HH:mm:ss')" + " CST",
+      rxPacketsReceived: "4",
+      rxPacketsReceivedOK: "4",
+      txPacketsEmitted: "4",
+      txPacketsReceived: "4"
     }
   ]
 });

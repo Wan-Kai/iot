@@ -36,15 +36,6 @@ export default {
     }
   },
   networkServer: {
-    /* mock
-    getServerData: data => {
-      return get("/admin/server/data", data);
-    },
-    getServerById: data => {
-      return get("/admin/server/data", data);
-    },
-    */
-
     getServerData: data => {
       return get("/network-servers", data);
     },
@@ -62,27 +53,21 @@ export default {
       return deletes("/network-servers/" + data.extra, data);
     },
 
-    getServerManageData: data => {
-      return get("/network-servers-temp", data);
+    //get data of network server from mock
+    /* mock
+    getServerData: data => {
+      return get("/admin/server/data", data);
     },
+    getServerById: data => {
+      return get("/admin/server/data", data);
+    },
+    */
 
-    getServerManageDetail: data => {
-      return get("/network-servers-temp/" + data.extra, data);
-    },
-    createServerManage: data => {
-      return post("/network-servers-temp", data);
-    },
-    updateServerManage: data => {
-      return put("/network-servers-temp/" + data.extra, data);
-    },
-    deleteServerManage: data => {
-      return deletes("/network-servers-temp/" + data.extra, data);
-    },
-
+    //get data of message from mock
     getMessage: data => {
       return post("/admin/server/message", data);
     },
-    //消息
+
     getMessageDetail: data => {
       return post("/admin/server/message/detail", data);
     },
@@ -136,14 +121,6 @@ export default {
   },
 
   gateway: {
-    /* mock
-    getGateway: data => {
-      return get("/admin/gateway/data", data);
-    },
-    getGatewayById: data => {
-      return get("/admin/gateway/data", data);
-    },
-    */
     //获取表格数据
     gatewayList: data => {
       if (!data.organizationID || common.isEmpty(data.organizationID)) {
@@ -165,6 +142,30 @@ export default {
       return deletes("/gateways/" + data.extra, data);
     },
 
+    statGateway: data => {
+      if (!data.interval || common.isEmpty(data.interval)) {
+        data.interval = "hour";
+      }
+
+      if (!data.startTimestamp || common.isEmpty(data.startTimestamp)) {
+        data.startTimestamp = common.getBeginTimestamp(new Date());
+      } else {
+        data.startTimestamp = common.getBeginTimestamp(
+          common.getDateFromStr(data.startTimestamp)
+        );
+      }
+      if (!data.endTimestamp || common.isEmpty(data.endTimestamp)) {
+        data.endTimestamp = common.getEndTimestamp(new Date());
+      } else {
+        data.endTimestamp = common.getEndTimestamp(
+          common.getDateFromStr(data.endTimestamp)
+        );
+      }
+      console.log(data);
+      return get("/gateways/" + data.extra + "/stats", data);
+    },
+
+    //get data from mock
     ilogFlowData: data => {
       return post("/admin/gateway/ilogFlow/data", data);
     },
@@ -173,19 +174,6 @@ export default {
     }
   },
   node: {
-    nodeData: data => {
-      return post("/admin/node/data", data);
-    },
-    nodeDetailData: data => {
-      return post("/nodes", data);
-    },
-    firstPageNodeData: data => {
-      return post("/admin/node/firstData", data);
-    },
-    nlogFlowData: data => {
-      return post("/admin/gateway/nlogFlow/data", data);
-    },
-
     getDeviceProfile: data => {
       if (!data.organizationID || common.isEmpty(data.organizationID)) {
         data.organizationID = common.getCurrentOrganizationID();
@@ -206,11 +194,41 @@ export default {
     updateNode: data => {
       return put("/device-profiles/" + data.extra, data);
     },
-    creatNode: data => {
+    createNode: data => {
       return post("/device-profiles", data);
     },
     deleteNode: data => {
       return deletes("/device-profiles/" + data.extra, data);
+    },
+
+    //get data of node from mock
+    nodeData: data => {
+      return post("/admin/nodes/data", data);
+    },
+    nodeDetailData: data => {
+      return post("/admin/node/data", data);
+    },
+    firstPageNodeData: data => {
+      return post("/admin/node/firstData", data);
+    },
+
+    upFlowData: data => {
+      return post("/admin/node/upFlowData/data", data);
+    },
+
+    //上行数据查询
+    upDataQuery: data => {
+      return get("/Devdata", data);
+    },
+
+    //下行数据查询
+    downDataQuery: data => {
+      return get("/devices/" + data.extra + "/queue", data);
+    },
+
+    //下发数据
+    downDataSend: data => {
+      return post("/devices/" + data.extra + "/queue", data);
     }
   },
   appManage: {
@@ -275,10 +293,6 @@ export default {
     }
   },
   usersManage: {
-    usersData: data => {
-      return post("/admin/users/data", data);
-    },
-
     //查询当前组织机构的用户
     getOrganizationUsers: data => {
       if (!data.organizationID || common.isEmpty(data.organizationID)) {
@@ -335,6 +349,11 @@ export default {
     updatePassword: data => {
       debugger;
       return put("/users/" + data.extra + "/password", data);
+    },
+
+    //get data of user from mock
+    usersData: data => {
+      return post("/admin/users/data", data);
     }
   },
   util: {

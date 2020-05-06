@@ -55,6 +55,11 @@ import {
   List
 } from "ant-design-vue";
 
+//设置中文
+import moment from "moment";
+import "moment/locale/zh-cn";
+moment.locale("zh-cn");
+
 //需要开启mock数据时，在store/util.state.mock开启
 // if (store.getters.getIsMock) {
 //   require("./mock/mock");

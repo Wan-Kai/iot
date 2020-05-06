@@ -1,6 +1,6 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
-    <div class="iot_view_ilogFlow_top">
+    <div class="iot_view_nlogFlow_top">
       <a-input-group compact>
         <a-input
           style="width: 20%;float: left;text-align: left"
@@ -17,12 +17,12 @@
         <a-button style="float: left" icon="search" />
       </a-input-group>
     </div>
-    <div class="iot_view_ilogFlow_table_layout">
+    <div class="iot_view_nlogFlow_table_layout">
       <a-table
         :columns="columns"
         :dataSource="interData"
         style="min-width: auto"
-        class="iot_view_ilogFlow_table"
+        class="iot_view_nlogFlow_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
       >
@@ -34,24 +34,71 @@
 <script>
 const columns = [
   {
-    title: "网关编号",
-    dataIndex: "gatewayId",
-    key: "gatewayId"
+    title: "节点编号",
+    dataIndex: "devEUI",
+    key: "devEUI"
   },
   {
-    title: "心跳时间",
-    dataIndex: "heartTime",
-    key: "heartTime"
+    title: "节点名称",
+    dataIndex: "deviceName",
+    key: "deviceName"
+  },
+
+  {
+    title: "应用编号",
+    dataIndex: "applicationID",
+    key: "applicationID"
   },
   {
-    title: "周期",
-    dataIndex: "period",
-    key: "period"
+    title: "应用名称",
+    dataIndex: "applicationName",
+    key: "applicationName"
   },
   {
-    title: "时延",
-    dataIndex: "delayTime",
-    key: "delayTime"
+    title: "上报时间",
+    dataIndex: "receivedAt",
+    key: "receivedAt"
+  },
+  {
+    title: "数据",
+    dataIndex: "data",
+    key: "data"
+  },
+  {
+    title: "是否开启自适应速率",
+    dataIndex: "adr",
+    key: "adr"
+  },
+  {
+    title: "数据率",
+    dataIndex: "dr",
+    key: "dr"
+  },
+  {
+    title: "中心频率",
+    dataIndex: "frequency",
+    key: "frequency"
+  },
+  {
+    title: "帧计数器",
+    dataIndex: "fCnt",
+    key: "fCnt"
+  },
+  {
+    title: "端口",
+    dataIndex: "fPort",
+    key: "fPort"
+  }
+  /*
+  {
+    title: "接受帧的信道",
+    dataIndex: "channel",
+    key: "channel"
+  },
+  {
+    title: "网关对帧的crc校验结果",
+    dataIndex: "crc",
+    key: "crc"
   },
   {
     title: "数据类型",
@@ -59,35 +106,11 @@ const columns = [
     key: "type"
   },
   {
-    title: "网关时间",
-    dataIndex: "gatewayTime",
-    key: "gatewayTime"
-  },
-  {
-    title: "射频侧接收的射频帧数",
-    dataIndex: "radioFrame",
-    key: "radioFrame"
-  },
-  {
-    title: "射频侧接收的CRC正确的射频包数",
-    dataIndex: "rightBagNumber",
-    key: "rightBagNumber"
-  },
-  {
-    title: "射频侧接收且需转发的射频包数",
-    dataIndex: "transportBagNumber",
-    key: "transportBagNumber"
-  },
-  {
-    title: "网络侧接受的下行包数",
-    dataIndex: "downBagNumber",
-    key: "downBagNumber"
-  },
-  {
-    title: "网络侧且转发成功的包数",
-    dataIndex: "transportSusBagNumber",
-    key: "transportSusBagNumber"
+    title: "创建时间",
+    key: "time",
+    dataIndex: "time"
   }
+  */
 ];
 export default {
   data() {
@@ -97,7 +120,7 @@ export default {
 
       pagination: {
         size: "small",
-        defaultPageSize: 5,
+        defaultPageSize: 10,
         showTotal: total => `共 ${total} 条数据`,
         buildOptionText(value) {
           return `${value.value} 条/页`;
@@ -110,10 +133,9 @@ export default {
   },
 
   beforeMount() {
-    this.$api.gateway
-      .ilogFlowData({
-        page: 0
-      })
+    this.$api.node
+      //.upFlowData({page: 0})
+      .upDataQuery({ limit: 100 })
       .then(res => {
         this.interData = res.data.result;
       })
@@ -125,15 +147,15 @@ export default {
 </script>
 
 <style>
-.iot_view_ilogFlow_top {
+.iot_view_nlogFlow_top {
   width: 100%;
   margin-top: 14px;
   margin-bottom: 14px;
 }
-.iot_view_ilogFlow_table_layout {
+.iot_view_nlogFlow_table_layout {
   min-height: fit-content;
 }
-.iot_view_ilogFlow_table {
+.iot_view_nlogFlow_table {
   font-size: 10px;
   line-height: 8px;
 }

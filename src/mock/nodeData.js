@@ -58,26 +58,24 @@ const FirstPageNodeData = Mock.mock({
   ]
 });
 
-const NlogFlowData = Mock.mock({
+const UpFlowData = Mock.mock({
   status: "OK",
   totalCount: "1",
   "result|20": [
     {
-      nodeId: "B45sadsa45",
-      checkTime: "@date('yyyy-MM-dd HH:mm:ss')",
-      appId: "@id",
-      deviceNum: "0078110",
+      devEUI: "B45sadsa45",
+      deviceName: "0078110",
+      applicationID: "@id",
+      applicationName: "0078110",
+      receivedAt: "@date('yyyy-MM-dd HH:mm:ss')",
       data: "0101s54sda54fw56",
-      upIndex: "215",
-      downIndex: "203",
+      adr: true,
+      dr: "203",
       frequency: "472.3",
-      timer: "41841285",
-      channel: "4",
-      crc: "正确",
-      type: "data",
-      time: "@date('yyyy-MM-dd HH:mm:ss')"
+      fCnt: "41841285",
+      fPort: "4"
     }
   ]
 });
 
-export { NodeData, NlogFlowData, FirstPageNodeData, nodeDetailData };
+export { NodeData, UpFlowData, FirstPageNodeData, nodeDetailData };

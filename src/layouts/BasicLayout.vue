@@ -24,53 +24,62 @@
           <Authorized :authority="['admin']">
             <a-sub-menu key="sub1">
               <span slot="title"><a-icon type="hdd" />基础管理</span>
-              <a-menu-item key="13">
+              <a-menu-item key="11">
                 <router-link to="/admin/dashboard/organization"
                   >组织机构</router-link
                 >
               </a-menu-item>
-              <a-menu-item key="2">
+              <a-menu-item key="12">
                 <router-link to="/admin/dashboard/networkServer"
                   >网络服务器</router-link
                 >
               </a-menu-item>
-              <a-menu-item key="12">
+              <a-menu-item key="13">
                 <router-link to="/admin/dashboard/serviceProfileManage"
                   >服务管理</router-link
                 >
               </a-menu-item>
+              <!--
               <a-menu-item key="3">
                 <router-link to="/admin/dashboard/message">消息</router-link>
               </a-menu-item>
+              -->
             </a-sub-menu>
           </Authorized>
           <a-sub-menu key="sub2">
             <span slot="title"><a-icon type="gateway" />网关</span>
-            <a-menu-item key="4">
+            <a-menu-item key="21">
               <router-link to="/admin/dashboard/gatewayManage"
                 >网关管理</router-link
               >
             </a-menu-item>
-            <a-menu-item key="5">
-              <router-link to="/admin/dashboard/iLogFlow">日志查询</router-link>
+            <a-menu-item key="22">
+              <router-link to="/admin/dashboard/gatewayListBoard/iLogFlow"
+                >日志查询</router-link
+              >
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="sub3">
             <span slot="title"><a-icon type="interation" />节点</span>
-            <a-menu-item key="6">
+            <a-menu-item key="23">
               <router-link to="/admin/dashboard/nodeManage"
                 >节点管理</router-link
               >
             </a-menu-item>
-            <a-menu-item key="7">
-              <router-link to="/admin/dashboard/nLogFlow"
+            <a-menu-item key="24">
+              <router-link to="/admin/dashboard/nodeBoard/upLogFlow"
                 >上行日志查询</router-link
+              >
+            </a-menu-item>
+            <a-menu-item key="25">
+              <router-link to="/admin/dashboard/nodeBoard/downLogFlow"
+                >下行日志查询</router-link
               >
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="sub4">
             <span slot="title"><a-icon type="profile" />应用</span>
-            <a-menu-item key="8">
+            <a-menu-item key="41">
               <router-link to="/admin/dashboard/appManage"
                 >应用管理</router-link
               >
@@ -79,13 +88,13 @@
           <a-sub-menu key="sub5">
             <span slot="title"><a-icon type="idcard" />用户</span>
             <Authorized :authority="['admin']">
-              <a-menu-item key="9">
+              <a-menu-item key="51">
                 <router-link to="/admin/dashboard/usersManage"
                   >用户管理</router-link
                 >
               </a-menu-item>
             </Authorized>
-            <a-menu-item key="10">
+            <a-menu-item key="52">
               <router-link to="/admin/dashboard/personData"
                 >个人资料</router-link
               >

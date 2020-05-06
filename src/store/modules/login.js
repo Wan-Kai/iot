@@ -64,13 +64,13 @@ const mutations = {
   },
 
   setSessionKey(state, sessionKey) {
-    debugger;
+    //debugger;
     state.sessionKey = sessionKey;
   },
 
   setCurrentUser(state, user) {
     //设置参数
-    debugger;
+    //debugger;
     state.currentUser = user;
 
     state.login.isLogin = true;

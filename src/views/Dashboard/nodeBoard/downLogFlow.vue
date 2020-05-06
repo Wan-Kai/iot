@@ -1,0 +1,187 @@
+<template>
+  <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
+    <div class="iot_view_nlogFlow_top">
+      <a-form :form="form" layout="flex" class="iot_view_form">
+        <a-input-group compact>
+          <a-form-item>
+            <a-input
+              style="width: 100%;float: left;text-align: left"
+              placeholder="请输入设备编号(EUI)"
+              v-decorator="[
+                'devEUI',
+                {
+                  initialValue: this.queryCondition.devEUI,
+                  rules: [{ required: true, message: '设备编号(EUI)' }]
+                }
+              ]"
+            />
+          </a-form-item>
+          <a-form-item>
+            <a-date-picker
+              style="width: 100%;float: left;text-align: left"
+              placeholder="开始时间"
+              :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')"
+              :showToday="false"
+              @change="onChangeBegin"
+            />
+          </a-form-item>
+          <a-form-item>
+            <a-date-picker
+              style="width: 100%;float: left;text-align: left"
+              placeholder="结束时间"
+              :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')"
+              :showToday="false"
+              @change="onChangeEnd"
+            />
+          </a-form-item>
+          <a-form-item>
+            <a-button style="float: left" icon="search" @click="handleQuery" />
+          </a-form-item>
+        </a-input-group>
+      </a-form>
+    </div>
+    <div class="iot_view_nlogFlow_table_layout">
+      <a-table
+        :columns="columns"
+        :dataSource="interData"
+        style="min-width: auto"
+        class="iot_view_nlogFlow_table"
+        :pagination="pagination"
+        :rowKey="record => record.uid"
+      >
+      </a-table>
+    </div>
+  </a-layout>
+</template>
+
+<script>
+import moment from "moment";
+const columns = [
+  {
+    title: "节点编号",
+    dataIndex: "devEUI",
+    key: "devEUI"
+  },
+  {
+    title: "下发时间",
+    dataIndex: "sentAt",
+    key: "sentAt"
+  },
+  {
+    title: "数据",
+    dataIndex: "data",
+    key: "data"
+  },
+  {
+    title: "json对象",
+    dataIndex: "jsonObject",
+    key: "jsonObject"
+  },
+  {
+    title: "帧计数器",
+    dataIndex: "fCnt",
+    key: "fCnt"
+  },
+  {
+    title: "端口",
+    dataIndex: "fPort",
+    key: "fPort"
+  }
+];
+export default {
+  data() {
+    return {
+      columns,
+
+      queryCondition: {
+        devEUI: "0000012020000003",
+        beginDay: "",
+        endDay: ""
+      },
+      interData: [],
+
+      pagination: {
+        size: "small",
+        defaultPageSize: 10,
+        showTotal: total => `共 ${total} 条数据`,
+        buildOptionText(value) {
+          return `${value.value} 条/页`;
+        },
+        showSizeChanger: true,
+        pageSizeOptions: ["5", "10"],
+        onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize)
+      }
+    };
+  },
+
+  beforeCreate() {
+    this.form = this.$form.createForm(this, {
+      name: "queryForm"
+    });
+  },
+
+  beforeMount() {
+    this.getDownLog();
+  },
+
+  methods: {
+    moment,
+    getCurrentData() {
+      return this.common.getNowDate();
+    },
+
+    onChangeBegin(date, dateString) {
+      this.queryCondition.beginDay = dateString;
+      console.log(date, dateString);
+    },
+
+    onChangeEnd(date, dateString) {
+      this.queryCondition.endDay = dateString;
+      console.log(date, dateString);
+    },
+
+    handleQuery() {
+      debugger;
+      this.queryCondition.devEUI = this.form.getFieldValue("devEUI");
+      this.getDownLog();
+    },
+
+    getDownLog() {
+      this.$api.node
+        .downDataQuery({ extra: this.queryCondition.devEUI, countOnly: false })
+        .then(res => {
+          this.interData = res.data.deviceQueueItems;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
+};
+</script>
+
+<style>
+.iot_view_nlogFlow_top {
+  width: 100%;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.iot_view_form {
+  float: left;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.iot_view_nlogFlow_table_layout {
+  min-height: fit-content;
+}
+.iot_view_nlogFlow_table {
+  font-size: 10px;
+  line-height: 8px;
+}
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
+  padding: 8px 8px;
+}
+</style>

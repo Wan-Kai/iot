@@ -17,7 +17,7 @@ export function getStep2State() {
 
 //初始化个人及所关联的组织机构信息
 export function initProfile() {
-  debugger;
+  //debugger;
   api.login
     .getProfile()
     .then(res => {

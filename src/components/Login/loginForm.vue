@@ -105,7 +105,7 @@ export default {
             .then(res => {
               if (res.status === 200) {
                 this.$message.success("登录成功");
-                debugger;
+                //debugger;
                 setSessionKey(res.data.jwt);
 
                 initProfile(); //{

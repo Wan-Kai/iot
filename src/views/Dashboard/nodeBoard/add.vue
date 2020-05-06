@@ -238,7 +238,7 @@ export default {
           //);
           console.log(deviceProfile);
           this.$api.node
-            .creatNode({
+            .createNode({
               deviceProfile: deviceProfile
             })
             .then(res => {

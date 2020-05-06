@@ -113,8 +113,8 @@ export default {
           console.log(res);
           let returnedData = res.data.result;
 
-          for (let i = 0; i < this.returnedData.length; i++) {
-            var item = this.returnedData[i];
+          for (let i = 0; i < returnedData.length; i++) {
+            var item = returnedData[i];
             item.organizationName = getOrganizationNameById(
               item.organizationID
             );

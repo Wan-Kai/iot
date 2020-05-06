@@ -326,22 +326,22 @@ const routes = [
 
       //日志流水
       {
-        path: "/admin/dashboard/iLogFlow",
+        path: "/admin/dashboard/gatewayListBoard/iLogFlow",
         name: "logFlow",
         meta: { title: "日志流水" },
         component: { render: h => h("router-view") },
         children: [
           {
-            path: "/admin/dashboard/iLogFlow",
-            redirect: "/admin/dashboard/iLogFlow/init"
+            path: "/admin/dashboard/gatewayListBoard/iLogFlow",
+            redirect: "/admin/dashboard/gatewayListBoard/iLogFlow/init"
           },
           {
-            path: "/admin/dashboard/iLogFlow/init",
+            path: "/admin/dashboard/gatewayListBoard/iLogFlow/init",
             name: "iLogFlowInit",
             meta: { title: "" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/ilogFlow.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/gatewayListBoard/ilogFlow.vue"
               )
           }
         ]
@@ -386,22 +386,43 @@ const routes = [
         ]
       },
       {
-        path: "/admin/dashboard/nLogFlow",
+        path: "/admin/dashboard/nodeBoard/upLogFlow",
         name: "nLogFlow",
-        meta: { title: "日志流水" },
+        meta: { title: "上行日志" },
         component: { render: h => h("router-view") },
         children: [
           {
-            path: "/admin/dashboard/nLogFlow",
-            redirect: "/admin/dashboard/nLogFlow/init"
+            path: "/admin/dashboard/nodeBoard/upLogFlow",
+            redirect: "/admin/dashboard/nodeBoard/upLogFlow/init"
           },
           {
-            path: "/admin/dashboard/nLogFlow/init",
-            name: "nLogFlowInit",
+            path: "/admin/dashboard/nodeBoard/upLogFlow/init",
+            name: "upLogFlow",
             meta: { title: "" },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/Dashboard/nLogFlow.vue"
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeBoard/upLogFlow.vue"
+              )
+          }
+        ]
+      },
+      {
+        path: "/admin/dashboard/nodeBoard/downLogFlow",
+        name: "nLogFlow",
+        meta: { title: "下行日志" },
+        component: { render: h => h("router-view") },
+        children: [
+          {
+            path: "/admin/dashboard/nodeBoard/downLogFlow",
+            redirect: "/admin/dashboard/nodeBoard/downLogFlow/init"
+          },
+          {
+            path: "/admin/dashboard/nodeBoard/downLogFlow/init",
+            name: "downLogFlow",
+            meta: { title: "" },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeBoard/downLogFlow.vue"
               )
           }
         ]

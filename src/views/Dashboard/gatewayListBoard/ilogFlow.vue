@@ -1,9 +1,9 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_ilogFlow_top">
-      <a-form :form="form" layout="flex" class="iot_view_form">
+      <a-form :form="form" layout="vertical" class="iot_view_ilogFlow_form">
         <a-input-group compact>
-          <a-form-item>
+          <a-form-item class="iot_view_ilogFlow_form_formItem">
             <a-input
               style="width: 100%;float: left;text-align: left"
               placeholder="请输入网关MAC"
@@ -16,7 +16,7 @@
               ]"
             />
           </a-form-item>
-          <a-form-item>
+          <a-form-item class="iot_view_ilogFlow_form_formItem">
             <a-date-picker
               style="width: 100%;float: left;text-align: left"
               placeholder="开始时间"
@@ -25,7 +25,7 @@
               @change="onChangeBegin"
             />
           </a-form-item>
-          <a-form-item>
+          <a-form-item class="iot_view_ilogFlow_form_formItem">
             <a-date-picker
               style="width: 100%;float: left;text-align: left"
               placeholder="结束时间"
@@ -34,7 +34,7 @@
               @change="onChangeEnd"
             />
           </a-form-item>
-          <a-form-item>
+          <a-form-item class="iot_view_ilogFlow_form_formItem">
             <a-button style="float: left" icon="search" @click="handleQuery" />
           </a-form-item>
         </a-input-group>
@@ -209,17 +209,15 @@ export default {
 <style>
 .iot_view_ilogFlow_top {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 12px;
   margin-bottom: 10px;
-  margin-left: 10px;
 }
-
-.iot_view_form {
+.iot_view_ilogFlow_form {
   float: left;
-  margin-top: 10px;
-  margin-left: 10px;
 }
-
+.iot_view_ilogFlow_form_formItem {
+  margin-bottom: 0;
+}
 .iot_view_ilogFlow_table_layout {
   min-height: fit-content;
 }

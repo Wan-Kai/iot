@@ -22,6 +22,7 @@
         class="iot_view_table"
         :pagination="pagination"
         key="netWorkServerList"
+        :rowKey="record => record.uid"
         :loading="tableLoadingState"
       >
         //style="min-width: min-content" :scroll="{ x: min-content, y:

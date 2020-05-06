@@ -1,9 +1,9 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_nlogFlow_top">
-      <a-form :form="form" layout="flex" class="iot_view_form">
+      <a-form :form="form" layout="vertical" class="iot_view_upLogFlow_form">
         <a-input-group compact>
-          <a-form-item>
+          <a-form-item class="iot_view_upLogFlow_form_formItem">
             <a-input
               style="width: 100%;float: left;text-align: left"
               placeholder="请输入设备编号(EUI)"
@@ -16,7 +16,7 @@
               ]"
             />
           </a-form-item>
-          <a-form-item>
+          <a-form-item class="iot_view_upLogFlow_form_formItem">
             <a-date-picker
               style="width: 100%;float: left;text-align: left"
               placeholder="开始时间"
@@ -25,7 +25,7 @@
               @change="onChangeBegin"
             />
           </a-form-item>
-          <a-form-item>
+          <a-form-item class="iot_view_upLogFlow_form_formItem">
             <a-date-picker
               style="width: 100%;float: left;text-align: left"
               placeholder="结束时间"
@@ -34,7 +34,7 @@
               @change="onChangeEnd"
             />
           </a-form-item>
-          <a-form-item>
+          <a-form-item class="iot_view_upLogFlow_form_formItem">
             <a-button style="float: left" icon="search" @click="handleQuery" />
           </a-form-item>
         </a-input-group>
@@ -208,6 +208,12 @@ export default {
 </script>
 
 <style>
+.iot_view_upLogFlow_form {
+  float: left;
+}
+.iot_view_upLogFlow_form_formItem {
+  margin-bottom: 0px;
+}
 .iot_view_nlogFlow_top {
   width: 100%;
   margin-top: 14px;

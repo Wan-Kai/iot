@@ -387,7 +387,7 @@ const routes = [
       },
       {
         path: "/admin/dashboard/nodeBoard/upLogFlow",
-        name: "nLogFlow",
+        name: "upLogFlowManage",
         meta: { title: "上行日志" },
         component: { render: h => h("router-view") },
         children: [
@@ -408,7 +408,7 @@ const routes = [
       },
       {
         path: "/admin/dashboard/nodeBoard/downLogFlow",
-        name: "nLogFlow",
+        name: "downLogFlowManage",
         meta: { title: "下行日志" },
         component: { render: h => h("router-view") },
         children: [

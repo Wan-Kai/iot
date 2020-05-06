@@ -1,21 +1,44 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_nlogFlow_top">
-      <a-input-group compact>
-        <a-input
-          style="width: 20%;float: left;text-align: left"
-          placeholder="请输入编号查询"
-        />
-        <a-date-picker
-          style="width: 20%;float: left;text-align: left"
-          placeholder="开始时间"
-        />
-        <a-date-picker
-          style="width: 20%;float: left;text-align: left"
-          placeholder="结束时间"
-        />
-        <a-button style="float: left" icon="search" />
-      </a-input-group>
+      <a-form :form="form" layout="flex" class="iot_view_form">
+        <a-input-group compact>
+          <a-form-item>
+            <a-input
+              style="width: 100%;float: left;text-align: left"
+              placeholder="请输入设备编号(EUI)"
+              v-decorator="[
+                'devEUI',
+                {
+                  initialValue: this.queryCondition.devEUI,
+                  rules: [{ required: true, message: '设备编号(EUI)' }]
+                }
+              ]"
+            />
+          </a-form-item>
+          <a-form-item>
+            <a-date-picker
+              style="width: 100%;float: left;text-align: left"
+              placeholder="开始时间"
+              :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')"
+              :showToday="false"
+              @change="onChangeBegin"
+            />
+          </a-form-item>
+          <a-form-item>
+            <a-date-picker
+              style="width: 100%;float: left;text-align: left"
+              placeholder="结束时间"
+              :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')"
+              :showToday="false"
+              @change="onChangeEnd"
+            />
+          </a-form-item>
+          <a-form-item>
+            <a-button style="float: left" icon="search" @click="handleQuery" />
+          </a-form-item>
+        </a-input-group>
+      </a-form>
     </div>
     <div class="iot_view_nlogFlow_table_layout">
       <a-table
@@ -32,6 +55,7 @@
 </template>
 
 <script>
+import moment from "moment";
 const columns = [
   {
     title: "节点编号",
@@ -116,6 +140,11 @@ export default {
   data() {
     return {
       columns,
+      queryCondition: {
+        devEUI: "0000012020000003",
+        beginDay: "",
+        endDay: ""
+      },
       interData: [],
 
       pagination: {
@@ -132,16 +161,48 @@ export default {
     };
   },
 
+  beforeCreate() {
+    this.form = this.$form.createForm(this, {
+      name: "queryForm"
+    });
+  },
+
   beforeMount() {
-    this.$api.node
-      //.upFlowData({page: 0})
-      .upDataQuery({ limit: 100 })
-      .then(res => {
-        this.interData = res.data.result;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getUpLog();
+  },
+
+  methods: {
+    moment,
+    getCurrentData() {
+      return this.common.getNowDate();
+    },
+    onChangeBegin(date, dateString) {
+      this.queryCondition.beginDay = dateString;
+      console.log(date, dateString);
+    },
+
+    onChangeEnd(date, dateString) {
+      this.queryCondition.endDay = dateString;
+      console.log(date, dateString);
+    },
+
+    handleQuery() {
+      debugger;
+      this.queryCondition.devEUI = this.form.getFieldValue("devEUI");
+      this.getUpLog();
+    },
+
+    getUpLog() {
+      this.$api.node
+        //.upFlowData({page: 0})
+        .upDataQuery({ limit: 100 })
+        .then(res => {
+          this.interData = res.data.result;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>

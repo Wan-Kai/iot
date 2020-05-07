@@ -28,7 +28,7 @@
         style="min-width: auto"
         class="iot_view_userManage_table"
         :pagination="pagination"
-        :rowKey="record => record.uid"
+        :rowKey="record => record.phonenumber"
       >
         <span slot="role" slot-scope="text, record">
           <span>

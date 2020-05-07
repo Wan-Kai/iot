@@ -14,7 +14,7 @@
         style="min-width: auto"
         class="iot_view_message_table"
         :pagination="pagination"
-        :rowKey="record => record.uid"
+        :rowKey="record => record.time"
       >
         <span slot="action" slot-scope="text, record">
           <a @click="showModal(record)">查看</a>

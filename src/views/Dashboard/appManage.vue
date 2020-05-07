@@ -28,7 +28,7 @@
         class="iot_view_appManage_table"
         :pagination="pagination"
         :loading="tableLoadingState"
-        :rowKey="record => record.uid"
+        :rowKey="record => record.id"
         :Key="record => record.uid"
       >
         <span slot="action" slot-scope="text, record">

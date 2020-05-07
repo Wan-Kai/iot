@@ -89,7 +89,7 @@
         style="min-width: auto"
         class="iot_view_table"
         :pagination="pagination"
-        rowKey="id"
+        :rowKey="record => record.id"
         :loading="tableLoadingState"
       >
         <span slot="state" slot-scope="state">

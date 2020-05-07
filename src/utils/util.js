@@ -18,24 +18,31 @@ export function getStep2State() {
 //初始化个人及所关联的组织机构信息
 export function initProfile() {
   //debugger;
+
+  let organizations;
   api.login
     .getProfile()
     .then(res => {
-      debugger;
       let user = res.data.user;
       store.commit("login/setCurrentUser", user);
 
-      let organizations = res.data.organizations;
+      organizations = res.data.organizations;
       store.commit("login/setCurrentOrganizations", organizations);
     })
     .catch(err => {
       //bugger;
       console.log(err);
+    })
+    .finally(() => {
+      initOrganizations();
+      initNetworkServers();
+      initServiceOptions();
     });
 }
 
 export function initOrganizations() {
   //获取所有的组织机构
+
   api.organization
     .getOrganizations({
       limit: 100
@@ -82,6 +89,8 @@ export function initOrganizations() {
         organizationData.push(temp);
       }
       store.commit("options/setOrganizations", organizationData);
+
+      console.log("initOrganizations");
     })
     .catch(err => {
       //debugger;
@@ -126,6 +135,8 @@ export function initDevProfileServices() {
         "options/setDeviceProfileService_options",
         DevProfileServices
       );
+
+      console.log("initDevProfileServices");
     })
     .catch(err => {
       console.log(err);
@@ -153,6 +164,7 @@ export function getOrganizationNameById(id) {
 
 export function initNetworkServers() {
   //debugger
+
   api.networkServer
     .getServerData({
       limit: 100
@@ -172,6 +184,8 @@ export function initNetworkServers() {
         netServerData.push(temp);
       }
       store.commit("options/setNetworkServers", netServerData);
+
+      console.log("initNetworkServers");
     })
     .catch(err => {
       console.log(err);
@@ -274,6 +288,8 @@ export function initServiceOptions() {
         options.push(temp);
       }
       store.commit("options/setServices", options);
+
+      console.log("initServiceOptions");
     })
     .catch(err => {
       console.log(err);

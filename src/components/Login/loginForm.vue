@@ -107,15 +107,12 @@ export default {
                 this.$message.success("登录成功");
                 //debugger;
                 setSessionKey(res.data.jwt);
-
                 initProfile(); //{
-
-                initOrganizations();
-                initNetworkServers();
-                initServiceOptions();
                 //initDevProfileServices();
                 //});
-
+                // initOrganizations();
+                // initNetworkServers();
+                // initServiceOptions();
                 setTimeout(() => {
                   this.$router.push("/admin/dashboard");
                 }, 300);
@@ -125,7 +122,8 @@ export default {
             })
             .catch(err => {
               console.log(err);
-            });
+            })
+            .finally(() => {});
         } else {
           console.log("Login Form in wrong");
           this.$message.error("登录失败!");

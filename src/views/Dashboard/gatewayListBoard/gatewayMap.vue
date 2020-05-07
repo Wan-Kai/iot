@@ -9,7 +9,7 @@
         </div>
         <div style="margin-top: 10px">
           <div class="iot_amap-gatewayMap_container">
-            <el-amap vid="gateway_map" :center="center"> </el-amap>
+            <el-amap vid="gateway_map"> </el-amap>
           </div>
         </div>
       </a-col>
@@ -58,9 +58,6 @@ import wifi_map from "../../../assets/wifi.png";
 export default {
   data() {
     return {
-      //默认中心，避免出现无法找到 IV 报错
-      center: [114.364131, 30.522437],
-
       //data
       gatewayNum: 10,
       online: "暂定",

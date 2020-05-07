@@ -311,9 +311,6 @@ export default {
         gatewayProfileID: ""
       },
 
-      //mapData
-      mapData: [],
-
       //modal
       ModalText: "Content of the modal",
       isShowModal: false,
@@ -352,23 +349,11 @@ export default {
     this.band_options = getBand_options();
     this.area_options = getArea();
 
-    this.getMap();
     this.getDetail(this.returnedData.id);
   },
 
   mounted() {},
   methods: {
-    getMap() {
-      this.$api.index
-        .mapMarkers({})
-        .then(res => {
-          this.mapData = res.data.result;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-
     getDetail(id) {
       debugger;
       this.$api.gateway

@@ -265,6 +265,7 @@ export default {
     this.returnedData.id = this.$route.query.id;
     this.getDetail(this.returnedData.id);
   },
+  mounted() {},
   updated() {
     this.drawLineUp();
     this.drawLineDown();

@@ -13,7 +13,7 @@
       :dataSource="interData"
       style="min-width: auto"
       class="iot_components_activeNode_table"
-      :rowKey="record => record.uid"
+      :rowKey="record => record.nodeNumber"
       :pagination="false"
     >
     </a-table>

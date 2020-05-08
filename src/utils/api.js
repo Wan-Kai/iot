@@ -218,6 +218,21 @@ export default {
 
     //上行数据查询
     upDataQuery: data => {
+      if (!data.startTimestamp || common.isEmpty(data.startTimestamp)) {
+        data.startTimestamp = common.getBeginTimestamp(new Date());
+      } else {
+        data.startTimestamp = common.getBeginTimestamp(
+          common.getDateFromStr(data.startTimestamp)
+        );
+      }
+      if (!data.endTimestamp || common.isEmpty(data.endTimestamp)) {
+        data.endTimestamp = common.getEndTimestamp(new Date());
+      } else {
+        data.endTimestamp = common.getEndTimestamp(
+          common.getDateFromStr(data.endTimestamp)
+        );
+      }
+      debugger;
       return get("/Devdata", data);
     },
 

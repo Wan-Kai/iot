@@ -20,7 +20,7 @@
             <a-date-picker
               style="width: 100%;float: left;text-align: left"
               placeholder="开始时间"
-              :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')"
+              :defaultValue="moment('2020-05-01', 'YYYY-MM-DD')"
               :showToday="false"
               @change="onChangeBegin"
             />
@@ -142,7 +142,7 @@ export default {
       columns,
       queryCondition: {
         devEUI: "0000012020000003",
-        beginDay: "",
+        beginDay: "2020-05-01",
         endDay: ""
       },
       interData: [],
@@ -193,10 +193,18 @@ export default {
     },
 
     getUpLog() {
+      var params = {
+        limit: 100,
+        search: this.queryCondition.devEUI,
+        startTimestamp: this.queryCondition.beginDay,
+        endTimestamp: this.queryCondition.endDay
+      };
+
       this.$api.node
         //.upFlowData({page: 0})
-        .upDataQuery({ limit: 100 })
+        .upDataQuery(params)
         .then(res => {
+          debugger;
           this.interData = res.data.result;
         })
         .catch(err => {

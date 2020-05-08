@@ -164,16 +164,8 @@ export default {
                 this.$message.success("注册成功");
 
                 setSessionKey(res.data.jwt);
-
+                initProfile();
                 setTimeout(() => {
-                  initProfile(); //{
-
-                  initOrganizations();
-                  initNetworkServers();
-                  initServiceOptions();
-                  //initDevProfileServices();
-                  //});
-
                   this.$router.push("/admin/dashboard");
                 }, 300);
               } else {

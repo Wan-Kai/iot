@@ -37,11 +37,11 @@
           style="width: 120px;text-align: left"
           :options="company_options"
           :default-value="[company_options[0].organizationID]"
-          allow-clear="false"
-          :field-names="{
+          :allow-clear="false"
+          :fieldNames="{
             label: 'organizationName',
             value: 'organizationID',
-            children: []
+            children: ''
           }"
           @change="onChangeCompany"
           placeholder="组织机构"

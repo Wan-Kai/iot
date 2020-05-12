@@ -306,6 +306,17 @@ export default {
     //删除节点的keys
     deleteNodeKey: data => {
       return deletes("/devices/" + data.extra + "/keys", data);
+    },
+
+    //数据转发地址
+    getAppDataTranspond: data => {
+      return get("/applications/" + data.extra + "/integrations/http", data);
+    },
+    creatAppDataTranspond: data => {
+      return post("/applications/" + data.extra + "/integrations/http", data);
+    },
+    updateAppDataTranspond: data => {
+      return put("/applications/" + data.extra + "/integrations/http", data);
     }
   },
   usersManage: {

@@ -46,6 +46,9 @@
           <a-tab-pane tab="配置修改" key="2">
             <Edit />
           </a-tab-pane>
+          <a-tab-pane tab="数据转发地址" key="3">
+            <TranspondData />
+          </a-tab-pane>
           <a-button
             slot="tabBarExtraContent"
             icon="plus"
@@ -106,10 +109,11 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import NodeList from "./nodeList";
 import Edit from "./edit.vue";
+import TranspondData from "./transpondData.vue";
 import ACol from "ant-design-vue/es/grid/Col";
 import { getOrganizationNameById } from "@/utils/util";
 export default {
-  components: { ACol, ARow, NodeList, Edit },
+  components: { ACol, ARow, NodeList, Edit, TranspondData },
   inject: ["reload"],
   data() {
     return {

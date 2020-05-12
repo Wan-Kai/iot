@@ -81,6 +81,7 @@ export default {
       if (!data.organizationID || common.isEmpty(data.organizationID)) {
         data.organizationID = common.getCurrentOrganizationID();
       }
+      debugger;
       return get("/service-profiles", data);
     },
     createService: data => {

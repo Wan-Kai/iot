@@ -28,21 +28,36 @@ const state = {
     note: ""
   },
 
-  currentOrganizations: []
+  currentOrganization: {
+    organizationID: "",
+    organizationName: ""
+  }, //当前组织机构
+  currentOrganizationList: []
 };
 
 // getters
 const getters = {
   getSessionKey() {
-    return state.sessionKey;
+    if (localStorage.getItem("current_session")) {
+      return localStorage.getItem("current_session");
+    } else return state.sessionKey;
   },
 
   getCurrentUser() {
-    return state.currentUser;
+    if (localStorage.getItem("current_user")) {
+      return JSON.parse(localStorage.getItem("current_user"));
+    } else return state.currentUser;
   },
 
-  getCurrentOrganizations() {
-    return state.currentOrganizations;
+  getCurrentOrganization() {
+    if (localStorage.getItem("current_organization")) {
+      return JSON.parse(localStorage.getItem("current_organization"));
+    } else return state.currentOrganization;
+  },
+  getCurrentOrganizationList() {
+    if (localStorage.getItem("current_organization_list")) {
+      return JSON.parse(localStorage.getItem("current_organization_list"));
+    } else return state.currentOrganizationList;
   }
 };
 
@@ -50,10 +65,18 @@ const getters = {
 const actions = {};
 
 export function getRole() {
+  if (localStorage.getItem("current_login")) {
+    var item = JSON.parse(localStorage.getItem("current_login"));
+    return item.role;
+  }
   return state.login.role;
 }
 
 export function getLoginState() {
+  if (localStorage.getItem("current_login")) {
+    var item = JSON.parse(localStorage.getItem("current_login"));
+    return item.isLogin;
+  }
   return state.login.isLogin;
 }
 
@@ -61,11 +84,13 @@ export function getLoginState() {
 const mutations = {
   setLogin(state, login) {
     state.login = login;
+    localStorage.setItem("current_login", JSON.stringify(state.login));
   },
 
   setSessionKey(state, sessionKey) {
     //debugger;
     state.sessionKey = sessionKey;
+    localStorage.setItem("current_session", state.sessionKey);
   },
 
   setCurrentUser(state, user) {
@@ -77,10 +102,45 @@ const mutations = {
     if (user.isAdmin) {
       state.login.role = "admin";
     }
+
+    localStorage.setItem("current_user", JSON.stringify(state.currentUser));
+    localStorage.setItem("current_login", JSON.stringify(state.login));
   },
 
-  setCurrentOrganizations(state, organizations) {
-    state.currentOrganizations = organizations;
+  setCurrentOrganization(state, organization) {
+    state.currentOrganization = organization;
+    localStorage.setItem("current_organization", JSON.stringify(organization));
+  },
+
+  setCurrentOrganizationList(state, organizations) {
+    state.currentOrganizationList = organizations;
+    localStorage.setItem(
+      "current_organization_list",
+      JSON.stringify(state.currentOrganizationList)
+    );
+
+    if (organizations == null || organizations.length <= 0) {
+      //this.setCurrentOrganization(state, null);
+      state.currentOrganization = {
+        organizationID: "",
+        organizationName: ""
+      };
+      localStorage.setItem("current_organization", null);
+    } else {
+      //第一次需要初始化
+      if (
+        state.currentOrganization == null ||
+        state.currentOrganization.organizationID === "" ||
+        state.currentOrganization.organizationID === null
+      ) {
+        state.currentOrganization = organizations[0];
+        localStorage.setItem(
+          "current_organization",
+          JSON.stringify(organizations[0])
+        );
+        //this.setCurrentOrganization(state, organizations[0]);
+      }
+    }
   },
 
   reset(state) {
@@ -90,7 +150,12 @@ const mutations = {
     state.sessionKey = "";
 
     state.currentUser = null;
-    state.currentOrganizations = [];
+    (state.currentOrganization = {}), (state.currentOrganizationList = []);
+
+    localStorage.setItem("current_login", JSON.stringify(state.login));
+    localStorage.setItem("current_session", "");
+    localStorage.setItem("current_user", "");
+    localStorage.setItem("current_organization", "");
   }
 };
 

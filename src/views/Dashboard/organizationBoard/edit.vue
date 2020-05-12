@@ -346,7 +346,6 @@ export default {
 
             //删除成功之后，重新更新profile
             initProfile();
-            initOrganizations();
             var _this = this;
             setTimeout(() => {
               _this.handleBack();

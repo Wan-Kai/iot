@@ -5,13 +5,39 @@ export default {
     return store.getters["login/getCurrentUser"];
   },
 
+  getCurrentOrganization: function() {
+    return store.getters["login/getCurrentOrganization"];
+  },
+
   getCurrentOrganizationID: function() {
+    /*
     var organizations = store.getters["login/getCurrentOrganizations"];
     if (organizations != null && organizations.length > 0) {
       return organizations[0].organizationID;
     }
-    return "";
+    */
+    debugger;
+    var organization = this.getCurrentOrganization();
+    if (organization == null) return "";
+    else return organization.organizationID;
+
     //return store.getters["login/getOrganizationID"];
+  },
+
+  getCurrentOrganizationList: function() {
+    return store.getters["login/getCurrentOrganizationList"];
+  },
+
+  setCurrentOrganization: function(value) {
+    debugger;
+    var list = this.getCurrentOrganizationList();
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].organizationID === value) {
+        var o = list[i];
+        store.commit("login/setCurrentOrganization", o);
+        break;
+      }
+    }
   },
 
   /**

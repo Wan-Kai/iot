@@ -224,7 +224,17 @@ export default {
     };
   },
 
-  computed: {},
+  computed: {
+    currentOrganizationID() {
+      return this.common.getCurrentOrganizationID();
+    }
+  },
+
+  watch: {
+    currentOrganizationID() {
+      this.getTable();
+    }
+  },
 
   beforeMount() {
     this.getTable();

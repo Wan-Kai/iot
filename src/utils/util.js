@@ -27,7 +27,7 @@ export function initProfile() {
       store.commit("login/setCurrentUser", user);
 
       organizations = res.data.organizations;
-      store.commit("login/setCurrentOrganizations", organizations);
+      store.commit("login/setCurrentOrganizationList", organizations);
     })
     .catch(err => {
       //bugger;
@@ -52,7 +52,8 @@ export function initOrganizations() {
       let getData = res.data.result;
 
       //仅显示在有权限的组织机构
-      let currentOrganizations = store.getters["login/getCurrentOrganizations"];
+      let currentOrganizations =
+        store.getters["login/getCurrentOrganizationList"];
       if (currentOrganizations == null || currentOrganizations.length == 0) {
         store.commit("options/setOrganizations", null);
         return;
@@ -96,10 +97,6 @@ export function initOrganizations() {
       //debugger;
       console.log(err);
     });
-}
-
-export function getCurrentOrganizations() {
-  return store.getters["login/getCurrentOrganizations"];
 }
 
 export function initDevProfileServices() {

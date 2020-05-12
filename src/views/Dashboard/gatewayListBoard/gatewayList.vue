@@ -256,6 +256,18 @@ export default {
     };
   },
 
+  computed: {
+    currentOrganizationID() {
+      return this.common.getCurrentOrganizationID();
+    }
+  },
+
+  watch: {
+    currentOrganizationID() {
+      this.getTable();
+    }
+  },
+
   beforeMount() {
     this.getTable();
   },

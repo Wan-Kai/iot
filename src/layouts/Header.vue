@@ -9,6 +9,7 @@
         size="small"
       />
     </div>
+
     <div class="iot_user">
       <a-avatar icon="user" class="iot_avatar" />
       <a-dropdown>
@@ -29,14 +30,34 @@
         </a-menu>
       </a-dropdown>
     </div>
+
+    <div class="iot_organization">
+      <div>
+        <a-cascader
+          style="width: 120px;text-align: left"
+          :options="company_options"
+          :default-value="[company_options[0].organizationID]"
+          allow-clear="false"
+          :field-names="{
+            label: 'organizationName',
+            value: 'organizationID',
+            children: []
+          }"
+          @change="onChangeCompany"
+          placeholder="组织机构"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { getOrganizationOptions } from "@/utils/util";
 export default {
   data() {
     return {
-      userName: "hh"
+      userName: "",
+      company_options: []
     };
   },
 
@@ -48,8 +69,22 @@ export default {
     }
   },
 
+  beforeMount() {
+    debugger;
+    //this.company_options = getOrganizationOptions();
+    this.company_options = this.common.getCurrentOrganizationList();
+    debugger;
+  },
+
   methods: {
-    onSearch() {}
+    onSearch() {},
+
+    onChangeCompany(value, selectedOptions) {
+      if (value == null || value.length <= 0) return;
+
+      if (!this.common.isEmpty(value[0]))
+        this.common.setCurrentOrganization(value[0]);
+    }
   }
 };
 </script>
@@ -68,6 +103,15 @@ export default {
   margin-left: 15px;
   text-align: left;
 }
+
+.iot_organization {
+  float: right;
+  width: 360px;
+  height: 26px;
+  padding-right: 10px;
+  line-height: 50px;
+}
+
 .iot_user {
   float: right;
   padding-right: 10px;

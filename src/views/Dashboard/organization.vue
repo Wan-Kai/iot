@@ -61,11 +61,7 @@
 </template>
 
 <script>
-import {
-  getAreaLabel,
-  getCurrentOrganizations,
-  initOrganizations
-} from "@/utils/util";
+import { getAreaLabel, initOrganizations } from "@/utils/util";
 const columns = [
   {
     title: "ID",
@@ -169,7 +165,7 @@ export default {
         .then(res => {
           this.returnedData = res.data.result;
 
-          var currentOrganizations = getCurrentOrganizations();
+          var currentOrganizations = this.common.getCurrentOrganizationList();
           if (currentOrganizations == null || currentOrganizations.length == 0)
             return;
 

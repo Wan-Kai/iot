@@ -99,6 +99,19 @@ export default {
       }
     };
   },
+
+  computed: {
+    currentOrganizationID() {
+      return this.common.getCurrentOrganizationID();
+    }
+  },
+
+  watch: {
+    currentOrganizationID() {
+      this.getTable();
+    }
+  },
+
   beforeMount() {
     this.getTable();
   },
@@ -111,7 +124,7 @@ export default {
         .then(res => {
           console.log(res);
           let returnedData = res.data.result;
-
+          this.tableData = [];
           for (let i = 0; i < returnedData.length; i++) {
             var item = returnedData[i];
             item.organizationName = getOrganizationNameById(

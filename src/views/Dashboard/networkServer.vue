@@ -132,6 +132,7 @@ export default {
         })
         .then(res => {
           this.returnedData = res.data.result;
+          this.tableData = [];
           for (let i = 0; i < this.returnedData.length; i++) {
             let temp = {
               id: "",

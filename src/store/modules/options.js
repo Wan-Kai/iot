@@ -73,7 +73,13 @@ const state = {
 const getters = {
   getOrganizationOptions() {
     let organization_options = [];
-    let organization = state.organization_list;
+
+    let organization = [];
+    if (localStorage.getItem("organization_list")) {
+      organization = JSON.parse(localStorage.getItem("organization_list"));
+    } else {
+      organization = state.organization_list;
+    }
 
     for (let i = 0; i < organization.length; i++) {
       let temp = {
@@ -90,7 +96,9 @@ const getters = {
   },
 
   getOrganizations() {
-    return state.organization_list;
+    if (localStorage.getItem("organization_list")) {
+      return JSON.parse(localStorage.getItem("organization_list"));
+    } else return state.organization_list;
   },
 
   getDeviceProfileService_options() {
@@ -99,7 +107,12 @@ const getters = {
 
   getNetworkServerOptions() {
     let networkServer_options = [];
-    let netServer = state.networkServer_list;
+    let netServer = [];
+    if (localStorage.getItem("networkServer_list")) {
+      netServer = JSON.parse(localStorage.getItem("networkServer_list"));
+    } else {
+      netServer = state.networkServer_list;
+    }
 
     for (let i = 0; i < netServer.length; i++) {
       let temp = {
@@ -116,7 +129,9 @@ const getters = {
   },
 
   getNetworkServers() {
-    return state.networkServer_list;
+    if (localStorage.getItem("networkServer_list")) {
+      return JSON.parse(localStorage.getItem("networkServer_list"));
+    } else return state.networkServer_list;
   },
 
   getArea() {
@@ -125,8 +140,21 @@ const getters = {
 
   getServiceOptions() {
     let service_options = [];
-    let servicesList = state.service_list;
-    let networkServerList = state.networkServer_list;
+    let servicesList = [];
+    if (localStorage.getItem("service_list")) {
+      servicesList = JSON.parse(localStorage.getItem("service_list"));
+    } else {
+      servicesList = state.service_list;
+    }
+
+    let networkServerList = [];
+    if (localStorage.getItem("networkServer_list")) {
+      networkServerList = JSON.parse(
+        localStorage.getItem("networkServer_list")
+      );
+    } else {
+      networkServerList = state.networkServer_list;
+    }
     for (let i = 0; i < servicesList.length; i++) {
       for (let j = 0; j < networkServerList.length; j++) {
         if (servicesList[i].networkServerID === networkServerList[j].id) {
@@ -168,13 +196,22 @@ const mutations = {
   setOrganizations(state, data) {
     //设置参数
     state.organization_list = data;
+    localStorage.setItem(
+      "organization_list",
+      JSON.stringify(state.organization_list)
+    );
   },
   setNetworkServers(state, data) {
     //设置参数
     state.networkServer_list = data;
+    localStorage.setItem(
+      "networkServer_list",
+      JSON.stringify(state.networkServer_list)
+    );
   },
   setServices(state, data) {
     state.service_list = data;
+    localStorage.setItem("service_list", JSON.stringify(state.service_list));
   },
   setDeviceProfileService_options(state, data) {
     state.deviceProfileService_options = data;

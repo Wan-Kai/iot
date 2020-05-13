@@ -141,7 +141,7 @@ export default {
   data() {
     return {
       //params
-      id: "",
+      appID: "",
 
       //data
       ifCreated: false,
@@ -165,7 +165,7 @@ export default {
     });
   },
   beforeMount() {
-    this.id = sessionStorage.getItem("appId");
+    this.appID = sessionStorage.getItem("appId");
     this.getDataTranspond();
   },
   methods: {
@@ -177,7 +177,7 @@ export default {
     getDataTranspond() {
       this.$api.appManage
         .getAppDataTranspond({
-          extra: this.id
+          extra: this.appID
         })
         .then(res => {
           if (res.status === 200) {
@@ -205,7 +205,7 @@ export default {
 
             this.$api.appManage
               .updateAppDataTranspond({
-                extra: this.id,
+                extra: this.appID,
                 integration: sentData
               })
               .then(res => {
@@ -221,7 +221,7 @@ export default {
           } else {
             this.$api.appManage
               .creatAppDataTranspond({
-                extra: this.id
+                extra: this.appID
               })
               .then(res => {
                 if (res.status === 200) {

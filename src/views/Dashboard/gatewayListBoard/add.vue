@@ -241,8 +241,7 @@ import {
   getNetworkServerOptions,
   getArea,
   getCommunicationMode_options,
-  getBand_options,
-  getCurrentOrganizationID
+  getBand_options
 } from "@/utils/util";
 
 export default {
@@ -360,7 +359,7 @@ export default {
             id: values.id,
             name: values.name,
             description: values.description,
-            organizationID: getCurrentOrganizationID(),
+            organizationID: this.common.getCurrentOrganizationID(),
             networkServerID: values.networkServer[0],
 
             province: values.area[0],

@@ -346,6 +346,3 @@ export function setArea(area_options) {
 export function setNetServer(netServerData) {
   store.commit("options/setNetworkServers", netServerData);
 }
-export function getCurrentOrganizationID() {
-  return common.getCurrentOrganizationID();
-}

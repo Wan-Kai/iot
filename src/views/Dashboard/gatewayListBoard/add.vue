@@ -368,16 +368,16 @@ export default {
             district: values.area[2],
 
             location: {
-              latitude: this.currentRecord.location.latitude,
-              longitude: this.currentRecord.location.longitude,
+              latitude: this.currentRecord.location.Lat,
+              longitude: this.currentRecord.location.Lng,
               altitude: 0.24,
               source: "UNKNOWN",
               accuracy: 0
             },
 
             discoveryEnabled: true,
-            modulation: values.communicationMode[0],
-            channels: values.band[0],
+            modulation: values.modulation[0],
+            channels: values.channels[0],
             gatewayProfileID: ""
           };
 

@@ -141,8 +141,8 @@ export default {
     return {
       columns,
       queryCondition: {
-        devEUI: "0000012020000003",
-        beginDay: "2020-05-01",
+        devEUI: "",
+        beginDay: "",
         endDay: ""
       },
       interData: [],

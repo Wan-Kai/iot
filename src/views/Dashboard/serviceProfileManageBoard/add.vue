@@ -312,9 +312,7 @@ export default {
 
           let sentData = {};
           sentData.name = values.name;
-          sentData.networkServerID = getNetworkServerIdByServer(
-            values.server[0]
-          );
+          sentData.networkServerID = values.server[0];
           sentData.organizationID = values.company[0];
           sentData.addGWMetaData = this.addGWMetaData;
           sentData.hrAllowed = this.hrAllowed;

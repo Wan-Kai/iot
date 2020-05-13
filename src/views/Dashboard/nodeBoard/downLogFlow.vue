@@ -94,7 +94,7 @@ export default {
       columns,
 
       queryCondition: {
-        devEUI: "0000012020000003",
+        devEUI: "",
         beginDay: "",
         endDay: ""
       },

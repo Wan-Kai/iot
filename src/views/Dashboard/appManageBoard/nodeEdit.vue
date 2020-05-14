@@ -45,7 +45,7 @@
                 v-decorator="[
                   'devEUI',
                   {
-                    initialValue: this.id
+                    initialValue: this.query.devEUI
                   }
                 ]"
                 :disabled="appEditable"
@@ -73,9 +73,9 @@
             >
               <a-input
                 v-decorator="[
-                  'appEUI',
+                  'appID',
                   {
-                    initialValue: this.appId
+                    initialValue: this.query.appID
                   }
                 ]"
                 size="small"
@@ -123,23 +123,25 @@
 
             <a-form-item
               class="iot_view_App_node_deployEdit_formitem"
-              label="节点编号："
+              label="节点规范："
               :required="true"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
             >
-              <a-input
+              <a-cascader
                 v-decorator="[
                   'devProfile',
                   {
-                    initialValue: this.returnedData.deviceProfileID
+                    rules: [{ required: true, message: '请选择节点规范' }],
+                    initialValue: [this.returnedData.deviceProfileID]
                   }
                 ]"
-                :disabled="appEditable"
+                :disabled="false"
+                :options="devProfile_options"
                 size="small"
                 style="width: 90%;float: left;text-align: left"
               >
-              </a-input>
+              </a-cascader>
             </a-form-item>
 
             <a-form-item
@@ -279,7 +281,7 @@
 
 <script>
 import wifi_map from "../../../assets/wifi.png";
-import { getDeviceProfileService_options, getArea } from "@/utils/util";
+import { getArea } from "@/utils/util";
 export default {
   name: "nodeEdit",
   data() {
@@ -288,8 +290,12 @@ export default {
       center: [114.364131, 30.522437],
 
       //params
-      id: "",
-      appId: "",
+      query: {
+        appID: "",
+        devEUI: "",
+        deviceProfileID: "",
+        deviceProfileName: ""
+      },
 
       //options
       devProfile_options: [],
@@ -344,10 +350,12 @@ export default {
   },
 
   beforeMount() {
-    this.id = sessionStorage.getItem("devEUI");
-    this.appId = sessionStorage.getItem("appId");
+    this.query.appID = sessionStorage.getItem("appID");
+    this.query.devEUI = sessionStorage.getItem("devEUI");
+    this.query.deviceProfileID = sessionStorage.getItem("deviceProfileID");
+    this.query.deviceProfileName = sessionStorage.getItem("deviceProfileName");
 
-    this.devProfile_options = getDeviceProfileService_options();
+    this.devProfile_options = this.getDeviceProfileOptions();
     this.area_options = getArea();
 
     this.getAppNodeDetail();
@@ -357,10 +365,35 @@ export default {
   },
 
   methods: {
+    getDeviceProfileOptions() {
+      const itemOptions = [];
+      this.$api.node
+        .getDeviceProfile({
+          limit: 100
+        })
+        .then(res => {
+          var result = res.data.result;
+          for (let i = 0; i < result.length; i++) {
+            var item = {
+              id: result[i].id,
+              name: result[i].id,
+              label: result[i].name,
+              value: result[i].id
+            };
+            itemOptions.push(item);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      return itemOptions;
+    },
+
     getAppNodeDetail() {
       this.$api.appManage
         .getAppNodeDetail({
-          extra: this.id
+          extra: this.query.devEUI
         })
         .then(res => {
           let infoDataTemp = res.data;
@@ -386,7 +419,7 @@ export default {
     getAppNodeKey() {
       this.$api.appManage
         .getNodeKey({
-          extra: this.id
+          extra: this.query.devEUI
         })
         .then(res => {
           let infoDataTemp = res.data;
@@ -472,6 +505,7 @@ export default {
           console.log(err);
         });
     },
+
     getMap() {
       this.$api.index
         .mapMarkers({})
@@ -538,19 +572,19 @@ export default {
           sentData.name = values.name;
           sentData.description = values.description;
           sentData.devEUI = values.devEUI;
-          sentData.deviceProfileID = values.devProfile;
-          sentData.applicationID = values.appEUI;
-          //sentData.appKey = values.appKey;
+          sentData.deviceProfileID = values.devProfile[0];
+          sentData.applicationID = values.appID;
+
           console.log(sentData);
           debugger;
           this.$api.appManage
             .updateAppNode({
-              extra: this.id,
+              extra: this.query.devEUI,
               device: sentData
             })
             .then(res => {
               if (res.status === 200) {
-                this.$message.success("成功修改节点:" + this.id);
+                this.$message.success("成功修改节点:" + this.query.devEUI);
 
                 if (this.returnedKey.hasKey) {
                   this.updateAppNodeKey(values.devEUI, values.appKey);
@@ -579,7 +613,7 @@ export default {
     },
     showModal() {
       this.deleteModalVisible = true;
-      this.ModalText = "确认删除" + ":" + this.id;
+      this.ModalText = "确认删除" + ":" + this.query.devEUI;
     },
     stateChange() {
       this.areaShow = !this.areaShow;
@@ -591,12 +625,12 @@ export default {
       this.deleteLoading = true;
       this.$api.appManage
         .deleteAppNode({
-          extra: this.id
+          extra: this.query.devEUI
         })
         .then(res => {
           console.log(res);
           if (res.status === 200) {
-            this.$message.success("成功删除：" + this.id);
+            this.$message.success("成功删除：" + this.query.devEUI);
 
             sessionStorage.setItem("tab", "1");
             setTimeout(() => {

@@ -67,7 +67,9 @@ export default {
       columns,
 
       //params
-      id: "",
+      query: {
+        appID: ""
+      },
 
       //tableData
       tableData: [],
@@ -86,14 +88,14 @@ export default {
     };
   },
   beforeMount() {
-    this.id = sessionStorage.getItem("appId");
+    this.query.appID = sessionStorage.getItem("appID");
     this.getAppNodes();
   },
   methods: {
     getAppNodes() {
       this.$api.appManage
         .getNodeInApp({
-          applicationID: this.id,
+          applicationID: this.query.appID,
           limit: 100
         })
         .then(res => {
@@ -109,17 +111,22 @@ export default {
     },
 
     checkRouter(record) {
-      sessionStorage.setItem("appId", this.id);
       sessionStorage.setItem("tab", "1");
+      sessionStorage.setItem("appID", this.query.appID);
       sessionStorage.setItem("devEUI", record.devEUI);
+      sessionStorage.setItem("deviceProfileID", record.deviceProfileID);
+      sessionStorage.setItem("deviceProfileName", record.deviceProfileName);
+      debugger;
       this.$router.push({
         name: "checkNodeInApp"
       });
     },
     editRouter(record) {
-      sessionStorage.setItem("appId", this.id);
       sessionStorage.setItem("tab", "2");
+      sessionStorage.setItem("appID", this.query.appID);
       sessionStorage.setItem("devEUI", record.devEUI);
+      sessionStorage.setItem("deviceProfileID", record.deviceProfileID);
+      sessionStorage.setItem("deviceProfileName", record.deviceProfileName);
       this.$router.push({
         name: "checkNodeInApp"
       });

@@ -74,9 +74,9 @@
               >
                 <a-input
                   v-decorator="[
-                    'appEUI',
+                    'appID',
                     {
-                      initialValue: this.id
+                      initialValue: this.query.appID
                     }
                   ]"
                   size="small"
@@ -123,7 +123,7 @@
 
               <a-form-item
                 class="iot_view_App_node_add_formitem"
-                label="节点描述："
+                label="节点规范："
                 :required="true"
                 :label-col="{ span: 8 }"
                 :wrapper-col="{ span: 16 }"
@@ -132,7 +132,7 @@
                   v-decorator="[
                     'devProfile',
                     {
-                      rules: [{ required: true, message: '请选择节点' }]
+                      rules: [{ required: true, message: '请选择节点规范' }]
                     }
                   ]"
                   style="width: 90%;float: left;text-align: left"
@@ -265,7 +265,9 @@ export default {
   data() {
     return {
       //params
-      id: "",
+      query: {
+        appID: ""
+      },
 
       //options
       area_options: [],
@@ -274,7 +276,6 @@ export default {
       appEditable: true,
 
       //data
-      AppEUI: "暂定",
       ModalText: "",
       areaShow: false,
       location: {
@@ -297,14 +298,39 @@ export default {
     });
   },
   beforeMount() {
-    this.id = sessionStorage.getItem("appId");
-    this.devProfile_options = this.getUnDeployedNodesOption();
+    this.query.appID = sessionStorage.getItem("appID");
+    this.devProfile_options = this.getDeviceProfileOptions();
   },
 
   mounted() {
     this.getMap();
   },
   methods: {
+    getDeviceProfileOptions() {
+      const itemOptions = [];
+      this.$api.node
+        .getDeviceProfile({
+          limit: 100
+        })
+        .then(res => {
+          var result = res.data.result;
+          for (let i = 0; i < result.length; i++) {
+            var item = {
+              id: result[i].id,
+              name: result[i].id,
+              label: result[i].name,
+              value: result[i].id
+            };
+            itemOptions.push(item);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+      return itemOptions;
+    },
+
     getUnDeployedNodesOption() {
       debugger;
       const itemOptions = [];
@@ -405,7 +431,7 @@ export default {
           sentData.description = values.description;
           sentData.devEUI = values.devEUI;
           sentData.deviceProfileID = values.devProfile[0];
-          sentData.applicationID = values.appEUI;
+          sentData.applicationID = values.appID;
           sentData.appKey = values.appKey;
           console.log(sentData);
 

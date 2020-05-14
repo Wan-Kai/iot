@@ -61,7 +61,7 @@
           </a-form-item>
           <a-form-item
             class="iot_view_node_deployEdit_formitem"
-            label="节点名称："
+            label="节点规范名称："
             :required="true"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"

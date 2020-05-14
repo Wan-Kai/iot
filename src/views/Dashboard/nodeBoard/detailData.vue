@@ -11,7 +11,7 @@
         <div class="iot_view_node_detail_textCard">
           <a-row class="black">
             <a-col :span="8">
-              <p class="iot_view_node_detail_textCard_p">节点ID:</p>
+              <p class="iot_view_node_detail_textCard_p">节点规范ID:</p>
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
@@ -21,7 +21,7 @@
           </a-row>
           <a-row class="light">
             <a-col :span="8">
-              <p class="iot_view_node_detail_textCard_p">节点名称:</p>
+              <p class="iot_view_node_detail_textCard_p">节点规范名称:</p>
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
@@ -59,6 +59,7 @@
               </p>
             </a-col>
           </a-row>
+          <!--
           <a-row class="light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">使用状态:</p>
@@ -69,6 +70,7 @@
               </p>
             </a-col>
           </a-row>
+          -->
           <a-row class="black">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">添加时间:</p>
@@ -84,6 +86,7 @@
       <a-col :span="14"> </a-col>
     </a-row>
 
+    <!--
     <div style="background: #fff">
       <div
         id="myChartUp"
@@ -94,6 +97,7 @@
         :style="{ width: '100%', height: '300px', marginTop: '12px' }"
       />
     </div>
+    -->
   </a-layout>
 </template>
 

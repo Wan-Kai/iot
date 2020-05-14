@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >节点编号： {{ this.id }}</span
+            >节点编号： {{ this.query.devEUI }}</span
           >
         </a-col>
       </a-row>
@@ -77,7 +77,7 @@
       <div style="height: min-content">
         <a-tabs
           type="card"
-          :defaultActiveKey="defaultTab"
+          :defaultActiveKey="query.defaultTab"
           size="small"
           style="text-align: left;padding-top: 0;height: min-content"
         >
@@ -105,13 +105,21 @@ export default {
   data() {
     return {
       //params
-      id: "",
-      defaultTab: ""
+      query: {
+        defaultTab: "",
+        appID: "",
+        devEUI: "",
+        deviceProfileID: "",
+        deviceProfileName: ""
+      }
     };
   },
   beforeMount() {
-    this.id = sessionStorage.getItem("devEUI");
-    this.defaultTab = sessionStorage.getItem("tab");
+    this.query.defaultTab = sessionStorage.getItem("tab");
+    this.query.appID = sessionStorage.getItem("appID");
+    this.query.devEUI = sessionStorage.getItem("devEUI");
+    this.query.deviceProfileID = sessionStorage.getItem("deviceProfileID");
+    this.query.deviceProfileName = sessionStorage.getItem("deviceProfileName");
   }
 };
 </script>

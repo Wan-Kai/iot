@@ -349,7 +349,7 @@ const routes = [
       {
         path: "/admin/dashboard/nodeManage",
         name: "nodeManage",
-        meta: { title: "节点管理" },
+        meta: { title: "节点规范管理" },
         component: { render: h => h("router-view") },
         children: [
           {
@@ -368,7 +368,7 @@ const routes = [
           {
             path: "/admin/dashboard/nodeManage/check",
             name: "checkNodeManage",
-            meta: { title: "查看节点" },
+            meta: { title: "查看节点规范" },
             component: () =>
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeBoard/check.vue"
@@ -377,7 +377,7 @@ const routes = [
           {
             path: "/admin/dashboard/nodeManage/add",
             name: "addNodeManage",
-            meta: { title: "添加节点" },
+            meta: { title: "添加节点规范" },
             component: () =>
               import(
                 /* webpackChunkName: "dashboard" */ "../views/Dashboard/nodeBoard/add.vue"

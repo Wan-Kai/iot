@@ -30,6 +30,7 @@
                 }
               ]"
               style="float: left;text-align: left;width: 90%"
+              :disabled="true"
             />
             <a-tooltip placement="rightTop">
               <template slot="title">
@@ -195,7 +196,9 @@ export default {
   data() {
     return {
       //params
-      id: "",
+      query: {
+        appID: ""
+      },
 
       //options
       serviceProfile_options: [],
@@ -203,6 +206,7 @@ export default {
       defaultServiceProfile: [],
 
       //data
+      id: "",
       name: "",
       capacity: "",
       description: "",
@@ -220,11 +224,11 @@ export default {
     this.AppEditform = this.$form.createForm(this, { name: "AppEdit_form" });
   },
   beforeMount() {
-    this.id = sessionStorage.getItem("appId");
+    this.query.appID = sessionStorage.getItem("appID");
     this.serviceProfile_options = getServiceOptions();
     this.$api.appManage
       .getAppDetail({
-        extra: this.id
+        extra: this.query.appID
       })
       .then(res => {
         let infoDataTemp = res.data.application;
@@ -252,7 +256,7 @@ export default {
 
           this.$api.appManage
             .updateApp({
-              extra: values.id,
+              extra: this.query.appID,
               application: sentData
             })
             .then(res => {

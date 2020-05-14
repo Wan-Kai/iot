@@ -11,11 +11,21 @@
         <div class="iot_view_node_detail_textCard">
           <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
             <a-col :span="8">
-              <p class="iot_view_node_detail_textCard_p">节点编号：</p>
+              <p class="iot_view_node_detail_textCard_p">节点规范ID：</p>
             </a-col>
             <a-col :span="16">
               <p class="iot_view_node_detail_textCard_p">
-                {{ this.returnedData.deviceProfileID }}
+                {{ this.query.deviceProfileID }}
+              </p>
+            </a-col>
+          </a-row>
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+            <a-col :span="8">
+              <p class="iot_view_node_detail_textCard_p">节点规范名称：</p>
+            </a-col>
+            <a-col :span="16">
+              <p class="iot_view_node_detail_textCard_p">
+                {{ this.query.deviceProfileName }}
               </p>
             </a-col>
           </a-row>
@@ -211,8 +221,12 @@ export default {
       center: [114.364131, 30.522437],
 
       //params
-      id: "",
-      appId: "",
+      query: {
+        appID: "",
+        devEUI: "",
+        deviceProfileID: "",
+        deviceProfileName: ""
+      },
 
       returnedData: {
         deviceProfileID: "",
@@ -240,75 +254,87 @@ export default {
     };
   },
   beforeMount() {
-    this.id = sessionStorage.getItem("devEUI");
-    this.appId = sessionStorage.getItem("appId");
+    this.query.appID = sessionStorage.getItem("appID");
+    this.query.devEUI = sessionStorage.getItem("devEUI");
+    this.query.deviceProfileID = sessionStorage.getItem("deviceProfileID");
+    this.query.deviceProfileName = sessionStorage.getItem("deviceProfileName");
+    debugger;
 
-    this.$api.appManage
-      .getAppNodeDetail({
-        extra: this.id
-      })
-      .then(res => {
-        let infoDataTemp = res.data;
-
-        this.returnedData.deviceProfileID = infoDataTemp.device.deviceProfileID;
-        this.returnedData.applicationID = infoDataTemp.device.applicationID;
-        this.returnedData.name = infoDataTemp.device.name;
-        this.returnedData.description = infoDataTemp.device.description;
-        this.returnedData.skipFCntCheck = infoDataTemp.device.skipFCntCheck;
-        this.returnedData.macVersion = "暂定";
-        this.returnedData.band = "暂定";
-        this.returnedData.class = "暂定";
-        this.returnedData.netState = "暂定";
-        this.returnedData.sign = "暂定";
-        this.returnedData.gateway = "暂定";
-        this.returnedData.appKey = "暂定";
-        this.returnedData.useState = "暂定";
-        this.returnedData.createdAt = "暂定";
-        this.returnedData.area = infoDataTemp.location;
-
-        this.returnedData.lastSeenAt = infoDataTemp.lastSeenAt;
-      })
-      .catch(err => {
-        console.log(err);
-      });
-
-    this.$api.index
-      .mapMarkers({})
-      .then(res => {
-        this.mapData = res.data.result;
-
-        this.mapObj = new AMap.Map("app_note_edit_map", {
-          // eslint-disable-line no-unused-vars
-          resizeEnable: true, //自适应大小
-          zoom: 14,
-          center: this.mapData.center
-        });
-        let _slef = this;
-        let startIcon = new AMap.Icon({
-          // 图标尺寸
-          size: new AMap.Size(25, 25),
-          // 图标的取图地址
-          image: wifi_map, // 您自己的图标
-          // 图标所用图片大小
-          imageSize: new AMap.Size(25, 25)
-        });
-        const marker = new AMap.Marker({
-          // eslint-disable-line no-unused-vars
-          map: _slef.mapObj,
-          icon: startIcon,
-          position: _slef.mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: "网关"
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getNodeDetail();
+    this.getMap();
   },
   mounted() {
     this.drawLineUp();
     this.drawLineDown();
   },
+
   methods: {
+    getNodeDetail() {
+      this.$api.appManage
+        .getAppNodeDetail({
+          extra: this.query.devEUI
+        })
+        .then(res => {
+          let infoDataTemp = res.data;
+
+          this.returnedData.deviceProfileID =
+            infoDataTemp.device.deviceProfileID;
+          this.returnedData.applicationID = infoDataTemp.device.applicationID;
+          this.returnedData.name = infoDataTemp.device.name;
+          this.returnedData.description = infoDataTemp.device.description;
+          this.returnedData.skipFCntCheck = infoDataTemp.device.skipFCntCheck;
+          this.returnedData.macVersion = "暂定";
+          this.returnedData.band = "暂定";
+          this.returnedData.class = "暂定";
+          this.returnedData.netState = "暂定";
+          this.returnedData.sign = "暂定";
+          this.returnedData.gateway = "暂定";
+          this.returnedData.appKey = "暂定";
+          this.returnedData.useState = "暂定";
+          this.returnedData.createdAt = "暂定";
+          this.returnedData.area = infoDataTemp.location;
+
+          this.returnedData.lastSeenAt = infoDataTemp.lastSeenAt;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    getMap() {
+      this.$api.index
+        .mapMarkers({})
+        .then(res => {
+          this.mapData = res.data.result;
+
+          this.mapObj = new AMap.Map("app_note_edit_map", {
+            // eslint-disable-line no-unused-vars
+            resizeEnable: true, //自适应大小
+            zoom: 14,
+            center: this.mapData.center
+          });
+          let _slef = this;
+          let startIcon = new AMap.Icon({
+            // 图标尺寸
+            size: new AMap.Size(25, 25),
+            // 图标的取图地址
+            image: wifi_map, // 您自己的图标
+            // 图标所用图片大小
+            imageSize: new AMap.Size(25, 25)
+          });
+          const marker = new AMap.Marker({
+            // eslint-disable-line no-unused-vars
+            map: _slef.mapObj,
+            icon: startIcon,
+            position: _slef.mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            title: "网关"
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     drawLineUp() {
       // 基于准备好的dom，初始化echarts实例
       let myChartUp = this.$echarts.init(document.getElementById("myChartUp"));

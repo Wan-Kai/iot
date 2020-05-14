@@ -153,7 +153,7 @@ export default {
 
     checkRouter(record) {
       console.log(record);
-      sessionStorage.setItem("appId", record.id);
+      sessionStorage.setItem("appID", record.id);
       sessionStorage.setItem("tab", "1");
       this.$router.push({
         name: "checkApp"
@@ -161,7 +161,7 @@ export default {
     },
     editRouter(record) {
       console.log(record);
-      sessionStorage.setItem("appId", record.id);
+      sessionStorage.setItem("appID", record.id);
       sessionStorage.setItem("tab", "2");
       this.$router.push({
         name: "checkApp"

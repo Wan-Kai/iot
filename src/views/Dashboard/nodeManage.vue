@@ -17,8 +17,9 @@
         </a-col>
         <a-col :span="8" :offset="8">
           <a-button type="primary" icon="plus" @click="addNode">
-            节点注册
+            新增节点规范
           </a-button>
+          <!--
           <a-button
             style="margin: 0 22px"
             icon="download"
@@ -26,6 +27,8 @@
           >
             批量导入
           </a-button>
+          -->
+          <!--
           <a-modal
             v-model="importDialogVisibleState"
             title="节点批量导入"
@@ -63,9 +66,13 @@
               <p style="margin-bottom: 0">Some contents...</p>
             </a-card>
           </a-modal>
+          -->
+          <!--
           <a-button icon="download" @click="handleExport">
             批量导出
           </a-button>
+          -->
+          <!--
           <a-modal
             v-model="exportDialogVisibleState"
             title="节点批量导出"
@@ -84,6 +91,7 @@
               确定
             </a-button>
           </a-modal>
+          -->
         </a-col>
       </a-row>
     </div>
@@ -123,12 +131,12 @@ import ACol from "ant-design-vue/es/grid/Col";
 import { getNetworkServerNameById } from "@/utils/util";
 const columns = [
   {
-    title: "节点ID",
+    title: "节点规范ID",
     dataIndex: "device_profile_id",
     key: "device_profile_id"
   },
   {
-    title: "节点描述",
+    title: "节点规范名称",
     dataIndex: "device_profile_name",
     key: "device_profile_name"
   },
@@ -148,12 +156,13 @@ const columns = [
     dataIndex: "supportsJoinType",
     key: "supportsJoinType "
   },
-  */
+
   {
     title: "使用状态",
     key: "state",
     scopedSlots: { customRender: "state" }
   },
+  */
   {
     title: "创建时间",
     key: "createdAt",
@@ -183,6 +192,7 @@ export default {
 
           organization_id: "",
 
+          /*
           device: {
             devEUI: "",
             deviceStatusBattery: "",
@@ -196,6 +206,7 @@ export default {
             firstSeenAt: "",
             lastSeenAt: ""
           },
+          */
           createdAt: "",
           updatedAt: ""
         }
@@ -242,15 +253,27 @@ export default {
   methods: {
     getTable() {
       this.$api.node
-        .getDeviceProfileAndDevice({
+        //.getDeviceProfileAndDevice({
+        .getDeviceProfile({
           limit: 100
         })
         .then(res => {
-          this.returnedData = res.data.result;
-          for (let i = 0; i < this.returnedData.length; i++) {
-            this.returnedData[i].networkServerName = getNetworkServerNameById(
-              this.returnedData[i].network_server_id
+          this.returnedData = [];
+
+          var result = res.data.result;
+          for (let i = 0; i < result.length; i++) {
+            var item = {
+              device_profile_id: result[i].id,
+              device_profile_name: result[i].name,
+              network_server_id: result[i].networkServerID,
+              networkServerName: "",
+              organization_id: result[i].organizationID,
+              createdAt: result[i].createdAt
+            };
+            item.networkServerName = getNetworkServerNameById(
+              item.network_server_id
             );
+            this.returnedData.push(item);
           }
 
           this.tableData = this.returnedData;
@@ -279,7 +302,7 @@ export default {
         name: "checkNodeManage",
         query: {
           id: data["device_profile_id"],
-          devEUI: data["device"]["devEUI"],
+          //devEUI: data["device"]["devEUI"],
           tab: "1"
         }
       });
@@ -289,7 +312,7 @@ export default {
         name: "checkNodeManage",
         query: {
           id: data["device_profile_id"],
-          devEUI: data["device"]["devEUI"],
+          //devEUI: data["device"]["devEUI"],
           tab: "2"
         }
       });

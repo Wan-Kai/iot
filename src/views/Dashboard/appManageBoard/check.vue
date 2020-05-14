@@ -4,7 +4,7 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >编号： {{ this.id }}</span
+            >应用编号： {{ this.query.appID }}</span
           >
         </a-col>
       </a-row>
@@ -36,7 +36,7 @@
       <div style="height: min-content">
         <a-tabs
           type="card"
-          :defaultActiveKey="defaultTab"
+          :defaultActiveKey="query.defaultTab"
           size="small"
           style="text-align: left;padding-top: 0;height: min-content"
         >
@@ -56,12 +56,19 @@
             @click="addNode"
             >添加节点</a-button
           >
+          <!--
           <a-button
             slot="tabBarExtraContent"
             icon="plus"
             style="margin-left: 10px"
-            @click="addNodes"
-            >批量添加</a-button
+            @click="addNodes">批量添加</a-button>
+          -->
+          <a-button
+            slot="tabBarExtraContent"
+            icon="plus"
+            style="margin-left: 10px"
+            @click="importNodes"
+            >导入</a-button
           >
         </a-tabs>
       </div>
@@ -118,9 +125,11 @@ export default {
   data() {
     return {
       //params
-      id: "1",
-      defaultTab: "1",
-      organizationName: "",
+      query: {
+        appID: "",
+        defaultTab: "1",
+        organizationName: ""
+      },
 
       //data
       returnedData: {
@@ -145,17 +154,21 @@ export default {
     };
   },
   beforeMount() {
-    this.id = sessionStorage.getItem("appId");
-    this.defaultTab = sessionStorage.getItem("tab");
+    this.query.appID = sessionStorage.getItem("appID");
+    this.query.defaultTab = sessionStorage.getItem("tab");
 
     this.getAppDetail();
   },
   mounted() {
     this.getUnDeployedNodes();
     this.getMaxNodeDevProfileId();
-    this.organizationName = getOrganizationNameById(this.id);
+    //this.organizationName = getOrganizationNameById(this.query.organizationN);
   },
   methods: {
+    importNodes() {
+      alert("正在开发中...");
+    },
+
     handleNodeChangeComfirm() {
       //this.nodeComfirmLoading = true;
       //与最开始相比，从右侧移除的节点 供参考
@@ -171,9 +184,12 @@ export default {
         //为解决闭包问题，分开写读入for函数和请求api的for函数
         for (let i = 0; i < addNodes.length; i++) {
           this.maxEndOfSix++;
-          var devEUI = this.common.generateDevEUI(this.id, this.maxEndOfSix);
+          var devEUI = this.common.generateDevEUI(
+            this.query.appID,
+            this.maxEndOfSix
+          );
           let sentDataTemp = {
-            applicationID: this.id,
+            applicationID: this.query.appID,
             devEUI: devEUI,
             description: "批量添加，第" + this.maxEndOfSix + "个",
             deviceProfileID: addNodes[i],
@@ -214,7 +230,7 @@ export default {
     getAppDetail() {
       this.$api.appManage
         .getAppDetail({
-          extra: this.id
+          extra: this.query.appID
         })
         .then(res => {
           let infoDataTemp = res.data.application;
@@ -231,7 +247,7 @@ export default {
       this.nodeListModalVisible = !this.nodeListModalVisible;
     },
     addNode() {
-      sessionStorage.setItem("appId", this.id);
+      sessionStorage.setItem("appID", this.query.appID);
       this.$router.push({
         name: "addNodeInApp"
       });
@@ -279,7 +295,7 @@ export default {
     getMaxNodeDevProfileId() {
       this.$api.appManage
         .getNodeInApp({
-          applicationID: this.id,
+          applicationID: this.query.appID,
           limit: 1000
         })
         .then(res => {

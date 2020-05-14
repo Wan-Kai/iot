@@ -141,7 +141,9 @@ export default {
   data() {
     return {
       //params
-      appID: "",
+      query: {
+        appID: ""
+      },
 
       //data
       ifCreated: false,
@@ -165,7 +167,7 @@ export default {
     });
   },
   beforeMount() {
-    this.appID = sessionStorage.getItem("appId");
+    this.query.appID = sessionStorage.getItem("appID");
     this.getDataTranspond();
   },
   methods: {
@@ -177,7 +179,7 @@ export default {
     getDataTranspond() {
       this.$api.appManage
         .getAppDataTranspond({
-          extra: this.appID
+          extra: this.query.appID
         })
         .then(res => {
           if (res.status === 200) {
@@ -198,14 +200,13 @@ export default {
         if (!err) {
           self.commitLoading = true;
 
+          var sentData = {};
+          sentData = values;
+
           if (this.ifCreated) {
-            var sentData = {};
-
-            sentData = values;
-
             this.$api.appManage
               .updateAppDataTranspond({
-                extra: this.appID,
+                extra: this.query.appID,
                 integration: sentData
               })
               .then(res => {
@@ -221,7 +222,8 @@ export default {
           } else {
             this.$api.appManage
               .creatAppDataTranspond({
-                extra: this.appID
+                extra: this.query.appID,
+                integration: sentData
               })
               .then(res => {
                 if (res.status === 200) {

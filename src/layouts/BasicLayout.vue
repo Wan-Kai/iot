@@ -63,7 +63,7 @@
             <span slot="title"><a-icon type="interation" />节点</span>
             <a-menu-item key="23">
               <router-link to="/admin/dashboard/nodeManage"
-                >节点管理</router-link
+                >节点规范管理</router-link
               >
             </a-menu-item>
             <a-menu-item key="24">

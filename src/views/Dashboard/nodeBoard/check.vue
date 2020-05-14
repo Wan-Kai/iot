@@ -4,11 +4,12 @@
       <a-row style="padding-bottom: 8px">
         <a-col :span="24">
           <span style="font-size: 16px;font-weight: normal;color: black"
-            >节点ID： {{ this.deviceProfile.id }}</span
+            >节点规范ID： {{ this.deviceProfile.id }}</span
           >
         </a-col>
       </a-row>
       <div class="iot_line" />
+      <!--
       <a-row type="flex" justify="space-around" style="margin-top: 8px">
         <a-col :span="6" style="width: 15%">
           <a-row type="flex" justify="space-around" align="middle">
@@ -71,6 +72,7 @@
           </a-row>
         </a-col>
       </a-row>
+      -->
     </a-card>
 
     <a-layout

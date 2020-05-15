@@ -4,9 +4,10 @@ import router from "../router/index";
 
 // 环境的切换
 if (process.env.NODE_ENV === "development") {
-  if (!store.getters.getIsMock) {
-    axios.defaults.baseURL = "/api";
-  }
+  // if (!store.getters.getIsMock) {
+  //   axios.defaults.baseURL = "/api";
+  // }
+  axios.defaults.baseURL = "http://188.131.172.171:8080/api";
 } else if (process.env.NODE_ENV === "debug") {
   axios.defaults.baseURL = "/pro";
 } else if (process.env.NODE_ENV === "production") {
@@ -26,14 +27,6 @@ let _self = this;
 // Authorization已在各请求体封装，无需再统一声明
 service.interceptors.request.use(
   config => {
-    config.headers["Access-Control-Allow-Origin"] = "*";
-    config.headers["Access-Control-Allow-Headers"] =
-      "Accept, Origin, XRequestedWith, Content-Type, LastModified";
-    config.headers["Access-Control-Allow-Methods"] =
-      "PUT,POST,GET,DELETE,OPTIONS";
-    // config.changeOrigin = true;
-    // config.supportsCredentials = true;
-
     return config;
   },
   error => {

@@ -65,7 +65,7 @@ moment.locale("zh-cn");
 //   require("./mock/mock");
 // }
 //暂时这样调试
-require("./mock/mock");
+//require("./mock/mock");
 
 Vue.use(Button);
 Vue.use(Layout);

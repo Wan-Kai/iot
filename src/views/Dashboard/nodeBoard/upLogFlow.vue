@@ -204,8 +204,11 @@ export default {
         //.upFlowData({page: 0})
         .upDataQuery(params)
         .then(res => {
-          debugger;
-          this.interData = res.data.result;
+          if (res.status === 200) {
+            this.interData = res.data.result;
+          } else {
+            console.log("上行日志流水获取失败");
+          }
         })
         .catch(err => {
           console.log(err);

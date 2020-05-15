@@ -356,13 +356,17 @@ export default {
         })
         .then(res => {
           console.log(res);
-          this.returnedData = res.data.serviceProfile;
-          /*
-          this.defaultNetworkServer.push(
-            getNetworkServerById(this.returnedData.networkServerID)
-          );
-          this.defaultCompany.push(this.returnedData.organizationID);
-          */
+          if (res.status === 200) {
+            this.returnedData = res.data.serviceProfile;
+            /*
+            this.defaultNetworkServer.push(
+              getNetworkServerById(this.returnedData.networkServerID)
+            );
+            this.defaultCompany.push(this.returnedData.organizationID);
+            */
+          } else {
+            console.log("获取服务配置详细信息失败");
+          }
         });
     },
 

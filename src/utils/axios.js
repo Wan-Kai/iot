@@ -27,6 +27,10 @@ let _self = this;
 // Authorization已在各请求体封装，无需再统一声明
 service.interceptors.request.use(
   config => {
+    //config.headers["Access-Control-Allow-Origin"] = "http://188.131.172.171:8080/api";
+    //config.headers["Access-Control-Allow-Methods"] =
+    //   "PUT,POST,GET,DELETE";
+
     return config;
   },
   error => {
@@ -89,17 +93,16 @@ export function login(url, data = {}) {
 //get方法
 export function get(url, data = {}) {
   data.IERealTime = new Date().getTime(); //get方法加一个时间参数,解决ie下可能缓存问题.
-  let sendObject = {
+  return service({
     url: url,
     method: "get",
-    params: data,
     headers: {
-      Authorization: store.getters["login/getSessionKey"]
-    }
-  };
-  // sendObject.data=JSON.stringify(data);
-  //debugger
-  return service(sendObject).catch(() => {});
+      "Content-Type": "application/json;charset=UTF-8",
+      "Grpc-Metadata-Authorization":
+        "Bearer " + store.getters["login/getSessionKey"]
+    },
+    params: data
+  });
 }
 
 //封装post请求
@@ -110,7 +113,8 @@ export function post(url, data = {}) {
     method: "post",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: store.getters["login/getSessionKey"]
+      "Grpc-Metadata-Authorization":
+        "Bearer " + store.getters["login/getSessionKey"]
     },
     data: data
   };
@@ -125,7 +129,8 @@ export function put(url, data = {}) {
     method: "put",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: store.getters["login/getSessionKey"]
+      "Grpc-Metadata-Authorization":
+        "Bearer " + store.getters["login/getSessionKey"]
     },
     data: JSON.stringify(data)
   });
@@ -137,7 +142,9 @@ export function deletes(url, data = {}) {
     url: url,
     method: "delete",
     headers: {
-      Authorization: store.getters["login/getSessionKey"]
+      "Content-Type": "application/json;charset=UTF-8",
+      "Grpc-Metadata-Authorization":
+        "Bearer " + store.getters["login/getSessionKey"]
     },
     data: JSON.stringify(data)
   };

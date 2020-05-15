@@ -197,19 +197,23 @@ export default {
           extra: id
         })
         .then(res => {
-          this.returnedData = res.data.gateway;
-          this.returnedData.lastSeenAt = res.data.lastSeenAt;
-          this.returnedData.firstSeenAt = res.data.firstSeenAt;
-          /*
-          if (res.data.lastSeenAt) {
-            console.log("little test");
-            this.returnedData.networkState = "测试";
-            this.returnedData.heartTime = "有数据";
+          if (res.status === 200) {
+            this.returnedData = res.data.gateway;
+            this.returnedData.lastSeenAt = res.data.lastSeenAt;
+            this.returnedData.firstSeenAt = res.data.firstSeenAt;
+            /*
+            if (res.data.lastSeenAt) {
+              console.log("little test");
+              this.returnedData.networkState = "测试";
+              this.returnedData.heartTime = "有数据";
+            } else {
+              this.returnedData.networkState = "离线";
+              this.returnedData.heartTime = "暂无数据";
+            }
+            */
           } else {
-            this.returnedData.networkState = "离线";
-            this.returnedData.heartTime = "暂无数据";
+            console.log("获取网关详情失败");
           }
-          */
         })
         .catch(err => {
           console.log(err);

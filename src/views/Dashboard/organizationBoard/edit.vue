@@ -232,17 +232,21 @@ export default {
         })
         .then(res => {
           console.log(res);
-          this.returnedData.name = res.data.organization.name;
-          this.returnedData.displayName = res.data.organization.displayName;
-          this.returnedData.canHaveGateways =
-            res.data.organization.canHaveGateways;
-          this.returnedData.profession = res.data.organization.profession;
-          this.returnedData.province = res.data.organization.province;
-          this.returnedData.city = res.data.organization.city;
-          this.returnedData.district = res.data.organization.district;
-          this.returnedData.address = res.data.organization.address;
-          this.returnedData.createdAt = res.data.createdAt;
-          this.returnedData.updatedAt = res.data.updatedAt;
+          if (res.status === 200) {
+            this.returnedData.name = res.data.organization.name;
+            this.returnedData.displayName = res.data.organization.displayName;
+            this.returnedData.canHaveGateways =
+              res.data.organization.canHaveGateways;
+            this.returnedData.profession = res.data.organization.profession;
+            this.returnedData.province = res.data.organization.province;
+            this.returnedData.city = res.data.organization.city;
+            this.returnedData.district = res.data.organization.district;
+            this.returnedData.address = res.data.organization.address;
+            this.returnedData.createdAt = res.data.createdAt;
+            this.returnedData.updatedAt = res.data.updatedAt;
+          } else {
+            console.log("获取组织初始信息失败");
+          }
         })
         .catch(err => {
           console.log(err);

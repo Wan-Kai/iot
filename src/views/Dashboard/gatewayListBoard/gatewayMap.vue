@@ -27,6 +27,7 @@
             style="min-width: auto"
             class="iot_view_internetServer_table"
             :pagination="pagination"
+            :rowKey="record => record.id"
           >
             <span slot="action" slot-scope="text, record">
               <a @click="checkGateway(record)">查看</a>
@@ -92,9 +93,13 @@ export default {
           limit: 1000
         })
         .then(res => {
-          this.gatewayNum = res.data.totalCount;
-          this.tableData = res.data.result;
-          this.drawMap();
+          if (res.status === 200) {
+            this.gatewayNum = res.data.totalCount;
+            this.tableData = res.data.result;
+            this.drawMap();
+          } else {
+            console.log("获取网关map信息失败");
+          }
         })
         .catch(err => {
           console.log(err);

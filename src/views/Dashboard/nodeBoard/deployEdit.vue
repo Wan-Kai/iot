@@ -336,17 +336,21 @@ export default {
         extra: this.returnedData.id
       })
       .then(res => {
-        let data = res.data;
+        if (res.status === 200) {
+          let data = res.data;
 
-        let infoDataTemp = data.deviceProfile;
-        this.returnedData.macVersion = infoDataTemp.macVersion;
-        this.returnedData.name = infoDataTemp.name;
+          let infoDataTemp = data.deviceProfile;
+          this.returnedData.macVersion = infoDataTemp.macVersion;
+          this.returnedData.name = infoDataTemp.name;
 
-        if (infoDataTemp.supportsJoin.toString() === "true") {
-          this.returnedData.netInValue = "1";
+          if (infoDataTemp.supportsJoin.toString() === "true") {
+            this.returnedData.netInValue = "1";
+          } else {
+            this.returnedData.netInValue = "2";
+            this.returnedData.supportsJoin = false;
+          }
         } else {
-          this.returnedData.netInValue = "2";
-          this.returnedData.supportsJoin = false;
+          console.log("获取节点配置信息失败");
         }
       })
       .catch(err => {

@@ -281,16 +281,20 @@ export default {
         })
         .then(res => {
           //console.log(res);
-          this.returnedData.name = res.data.networkServer.name;
-          this.returnedData.server = res.data.networkServer.server;
-          this.returnedData.gatewayDiscoveryEnabled =
-            res.data.networkServer.gatewayDiscoveryEnabled;
-          this.returnedData.gatewayDiscoveryInterval =
-            res.data.networkServer.gatewayDiscoveryInterval;
-          this.returnedData.gatewayDiscoveryTXFrequency =
-            res.data.networkServer.gatewayDiscoveryTXFrequency;
-          this.returnedData.gatewayDiscoveryDR =
-            res.data.networkServer.gatewayDiscoveryDR;
+          if (res.status === 200) {
+            this.returnedData.name = res.data.networkServer.name;
+            this.returnedData.server = res.data.networkServer.server;
+            this.returnedData.gatewayDiscoveryEnabled =
+              res.data.networkServer.gatewayDiscoveryEnabled;
+            this.returnedData.gatewayDiscoveryInterval =
+              res.data.networkServer.gatewayDiscoveryInterval;
+            this.returnedData.gatewayDiscoveryTXFrequency =
+              res.data.networkServer.gatewayDiscoveryTXFrequency;
+            this.returnedData.gatewayDiscoveryDR =
+              res.data.networkServer.gatewayDiscoveryDR;
+          } else {
+            console.log("获取网络服务器初始信息失败");
+          }
         })
         .catch(err => {
           console.log(err);

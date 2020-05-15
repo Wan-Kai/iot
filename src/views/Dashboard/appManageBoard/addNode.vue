@@ -313,15 +313,17 @@ export default {
           limit: 100
         })
         .then(res => {
-          var result = res.data.result;
-          for (let i = 0; i < result.length; i++) {
-            var item = {
-              id: result[i].id,
-              name: result[i].id,
-              label: result[i].name,
-              value: result[i].id
-            };
-            itemOptions.push(item);
+          if (res.status === 200) {
+            var result = res.data.result;
+            for (let i = 0; i < result.length; i++) {
+              var item = {
+                id: result[i].id,
+                name: result[i].id,
+                label: result[i].name,
+                value: result[i].id
+              };
+              itemOptions.push(item);
+            }
           }
         })
         .catch(err => {

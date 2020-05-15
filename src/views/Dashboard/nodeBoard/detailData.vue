@@ -161,15 +161,19 @@ export default {
           extra: this.returnedData.id
         })
         .then(res => {
-          let data = res.data;
-          //console.log(data);
+          if (res.status === 200) {
+            let data = res.data;
+            //console.log(data);
 
-          let infoDataTemp = data.deviceProfile;
-          this.returnedData.createdAt = data.createdAt;
-          this.returnedData.updatedAt = data.updatedAt;
-          this.returnedData.name = infoDataTemp.name;
-          this.returnedData.macVersion = infoDataTemp.macVersion;
-          this.returnedData.supportsJoin = infoDataTemp.supportsJoin;
+            let infoDataTemp = data.deviceProfile;
+            this.returnedData.createdAt = data.createdAt;
+            this.returnedData.updatedAt = data.updatedAt;
+            this.returnedData.name = infoDataTemp.name;
+            this.returnedData.macVersion = infoDataTemp.macVersion;
+            this.returnedData.supportsJoin = infoDataTemp.supportsJoin;
+          } else {
+            console.log("获取节点配置初始信息失败");
+          }
         })
         .catch(err => {
           console.log(err);

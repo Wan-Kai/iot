@@ -123,15 +123,17 @@ export default {
         })
         .then(res => {
           console.log(res);
-          let returnedData = res.data.result;
-          this.tableData = [];
-          for (let i = 0; i < returnedData.length; i++) {
-            var item = returnedData[i];
-            item.organizationName = getOrganizationNameById(
-              item.organizationID
-            );
-            if (this.common.isEmpty(item.organizationName)) continue;
-            this.tableData.push(item);
+          if (res.status === 200) {
+            let returnedData = res.data.result;
+            this.tableData = [];
+            for (let i = 0; i < returnedData.length; i++) {
+              var item = returnedData[i];
+              item.organizationName = getOrganizationNameById(
+                item.organizationID
+              );
+              if (this.common.isEmpty(item.organizationName)) continue;
+              this.tableData.push(item);
+            }
           }
         })
         .catch(err => {

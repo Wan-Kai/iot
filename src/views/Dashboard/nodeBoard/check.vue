@@ -184,9 +184,13 @@ export default {
           extra: this.deviceProfile.id
         })
         .then(res => {
-          let data = res.data;
-          console.log(data);
-          this.returnedData = data;
+          if (res.status === 200) {
+            let data = res.data;
+            console.log(data);
+            this.returnedData = data;
+          } else {
+            console.log("获取节点详情失败");
+          }
         })
         .catch(err => {
           console.log(err);
@@ -204,13 +208,17 @@ export default {
       this.$api.appManage
         .getAppNodeDetail({ extra: this.deviceDetail.devEUI })
         .then(res => {
-          let temp = res.data;
+          if (res.status === 200) {
+            let temp = res.data;
 
-          this.deviceDetail = temp.device;
-          this.deviceDetail.location = temp.location;
-          this.deviceDetail.deviceStatusBattery = temp.deviceStatusBattery;
-          this.deviceDetail.deviceStatusMargin = temp.deviceStatusMargin;
-          this.deviceDetail.lastSeenAt = temp.lastSeenAt;
+            this.deviceDetail = temp.device;
+            this.deviceDetail.location = temp.location;
+            this.deviceDetail.deviceStatusBattery = temp.deviceStatusBattery;
+            this.deviceDetail.deviceStatusMargin = temp.deviceStatusMargin;
+            this.deviceDetail.lastSeenAt = temp.lastSeenAt;
+          } else {
+            console.log("获取应用节点详情失败");
+          }
         })
         .catch(err => {
           console.log(err);

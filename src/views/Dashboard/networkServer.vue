@@ -131,40 +131,44 @@ export default {
           limit: 10
         })
         .then(res => {
-          this.returnedData = res.data.result;
-          this.tableData = [];
-          for (let i = 0; i < this.returnedData.length; i++) {
-            let temp = {
-              id: "",
-              name: "",
-              server: "",
-              ip: "",
-              port: "",
-              gatewayDiscoveryEnabled: false,
-              createdAt: "",
-              updatedAt: ""
-            };
-            if (this.returnedData[i].server.split(":")) {
-              let server = this.returnedData[i].server.split(":");
-              temp.ip = server[0];
-              temp.port = server[1];
-            } else {
-              temp.ip = this.returnedData[i].server;
-              temp.port = "";
-            }
-            temp.gatewayDiscoveryEnabled = false;
-            temp.createdAt = this.returnedData[i].createdAt;
-            temp.updatedAt = this.returnedData[i].updatedAt;
-            temp.id = this.returnedData[i].id;
-            temp.name = this.returnedData[i].name;
-            temp.server = this.returnedData[i].server;
+          if (res.status === 200) {
+            this.returnedData = res.data.result;
+            this.tableData = [];
+            for (let i = 0; i < this.returnedData.length; i++) {
+              let temp = {
+                id: "",
+                name: "",
+                server: "",
+                ip: "",
+                port: "",
+                gatewayDiscoveryEnabled: false,
+                createdAt: "",
+                updatedAt: ""
+              };
+              if (this.returnedData[i].server.split(":")) {
+                let server = this.returnedData[i].server.split(":");
+                temp.ip = server[0];
+                temp.port = server[1];
+              } else {
+                temp.ip = this.returnedData[i].server;
+                temp.port = "";
+              }
+              temp.gatewayDiscoveryEnabled = false;
+              temp.createdAt = this.returnedData[i].createdAt;
+              temp.updatedAt = this.returnedData[i].updatedAt;
+              temp.id = this.returnedData[i].id;
+              temp.name = this.returnedData[i].name;
+              temp.server = this.returnedData[i].server;
 
-            this.tableData.push(temp);
+              this.tableData.push(temp);
+            }
           }
-          this.tableLoadingState = false;
         })
         .catch(err => {
           console.log(err);
+        })
+        .finally(() => {
+          this.tableLoadingState = false;
         });
     },
 

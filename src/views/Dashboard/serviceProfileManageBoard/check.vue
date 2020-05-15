@@ -173,20 +173,25 @@ export default {
         })
         .then(res => {
           console.log(res);
-          let infoDataTemp = res.data;
-          _this.returnedData.createdAt = infoDataTemp.createdAt;
-          _this.returnedData.name = infoDataTemp.serviceProfile.name;
-          _this.returnedData.networkServerID =
-            infoDataTemp.serviceProfile.networkServerID;
-          _this.returnedData.organizationID =
-            infoDataTemp.serviceProfile.organizationID;
-          _this.returnedData.addGWMetaData =
-            infoDataTemp.serviceProfile.addGWMetaData;
-          _this.returnedData.hrAllowed = infoDataTemp.serviceProfile.hrAllowed;
-          _this.returnedData.devStatusReqFreq =
-            infoDataTemp.serviceProfile.devStatusReqFreq;
-          _this.returnedData.drMax = infoDataTemp.serviceProfile.drMax;
-          _this.returnedData.drMin = infoDataTemp.serviceProfile.drMin;
+          if (res.status === 200) {
+            let infoDataTemp = res.data;
+            _this.returnedData.createdAt = infoDataTemp.createdAt;
+            _this.returnedData.name = infoDataTemp.serviceProfile.name;
+            _this.returnedData.networkServerID =
+              infoDataTemp.serviceProfile.networkServerID;
+            _this.returnedData.organizationID =
+              infoDataTemp.serviceProfile.organizationID;
+            _this.returnedData.addGWMetaData =
+              infoDataTemp.serviceProfile.addGWMetaData;
+            _this.returnedData.hrAllowed =
+              infoDataTemp.serviceProfile.hrAllowed;
+            _this.returnedData.devStatusReqFreq =
+              infoDataTemp.serviceProfile.devStatusReqFreq;
+            _this.returnedData.drMax = infoDataTemp.serviceProfile.drMax;
+            _this.returnedData.drMin = infoDataTemp.serviceProfile.drMin;
+          } else {
+            console.log("获取服务配置详细信息失败");
+          }
         });
     }
   }

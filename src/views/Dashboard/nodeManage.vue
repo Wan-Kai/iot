@@ -260,23 +260,24 @@ export default {
         .then(res => {
           this.returnedData = [];
 
-          var result = res.data.result;
-          for (let i = 0; i < result.length; i++) {
-            var item = {
-              device_profile_id: result[i].id,
-              device_profile_name: result[i].name,
-              network_server_id: result[i].networkServerID,
-              networkServerName: "",
-              organization_id: result[i].organizationID,
-              createdAt: result[i].createdAt
-            };
-            item.networkServerName = getNetworkServerNameById(
-              item.network_server_id
-            );
-            this.returnedData.push(item);
+          if (res.status === 200) {
+            var result = res.data.result;
+            for (let i = 0; i < result.length; i++) {
+              var item = {
+                device_profile_id: result[i].id,
+                device_profile_name: result[i].name,
+                network_server_id: result[i].networkServerID,
+                networkServerName: "",
+                organization_id: result[i].organizationID,
+                createdAt: result[i].createdAt
+              };
+              item.networkServerName = getNetworkServerNameById(
+                item.network_server_id
+              );
+              this.returnedData.push(item);
+            }
+            this.tableData = this.returnedData;
           }
-
-          this.tableData = this.returnedData;
         })
         .catch(err => {
           console.log(err);

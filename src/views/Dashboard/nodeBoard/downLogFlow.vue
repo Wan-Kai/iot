@@ -150,7 +150,11 @@ export default {
       this.$api.node
         .downDataQuery({ extra: this.queryCondition.devEUI, countOnly: false })
         .then(res => {
-          this.interData = res.data.deviceQueueItems;
+          if (res.status === 200) {
+            this.interData = res.data.deviceQueueItems;
+          } else {
+            console.log("下行数据日志获取失败");
+          }
         })
         .catch(err => {
           console.log(err);

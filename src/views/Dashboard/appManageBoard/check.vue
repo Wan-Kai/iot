@@ -233,10 +233,12 @@ export default {
           extra: this.query.appID
         })
         .then(res => {
-          let infoDataTemp = res.data.application;
+          if (res.status === 200) {
+            let infoDataTemp = res.data.application;
 
-          this.returnedData.appName = infoDataTemp.name;
-          this.returnedData.description = infoDataTemp.description;
+            this.returnedData.appName = infoDataTemp.name;
+            this.returnedData.description = infoDataTemp.description;
+          }
         })
         .catch(err => {
           console.log(err);
@@ -268,16 +270,21 @@ export default {
           limit: 100
         })
         .then(res => {
-          let infoDataTemp = res.data.result;
-          for (let i = 0; i < infoDataTemp.length; i++) {
-            if (_this.isDeviceDeployed(infoDataTemp[i].device.devEUI)) continue;
+          if (res.status === 200) {
+            let infoDataTemp = res.data.result;
+            for (let i = 0; i < infoDataTemp.length; i++) {
+              if (_this.isDeviceDeployed(infoDataTemp[i].device.devEUI))
+                continue;
 
-            const data = {
-              key: infoDataTemp[i].device_profile_id,
-              title: infoDataTemp[i].device_profile_name,
-              chosen: false
-            };
-            nodeData.push(data);
+              const data = {
+                key: infoDataTemp[i].device_profile_id,
+                title: infoDataTemp[i].device_profile_name,
+                chosen: false
+              };
+              nodeData.push(data);
+            }
+          } else {
+            console.log("获取节点信息失败");
           }
         })
         .catch(err => {

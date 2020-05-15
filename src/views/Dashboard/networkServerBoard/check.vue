@@ -168,25 +168,29 @@ export default {
         })
         .then(res => {
           console.log(res);
-          this.returnedData.createdAt = res.data.createdAt;
-          this.returnedData.name = res.data.networkServer.name;
-          this.returnedData.server = res.data.networkServer.server;
-          if (this.returnedData.server.split(":")) {
-            let server = this.returnedData.server.split(":");
-            this.returnedData.ip = server[0];
-            this.returnedData.port = server[1];
+          if (res.status === 200) {
+            this.returnedData.createdAt = res.data.createdAt;
+            this.returnedData.name = res.data.networkServer.name;
+            this.returnedData.server = res.data.networkServer.server;
+            if (this.returnedData.server.split(":")) {
+              let server = this.returnedData.server.split(":");
+              this.returnedData.ip = server[0];
+              this.returnedData.port = server[1];
+            } else {
+              this.returnedData.ip = this.returnedData.server;
+              this.returnedData.port = "";
+            }
+            this.returnedData.gatewayDiscoveryEnabled =
+              res.data.networkServer.gatewayDiscoveryEnabled;
+            this.returnedData.gatewayDiscoveryInterval =
+              res.data.networkServer.gatewayDiscoveryInterval;
+            this.returnedData.gatewayDiscoveryTXFrequency =
+              res.data.networkServer.gatewayDiscoveryTXFrequency;
+            this.returnedData.gatewayDiscoveryDR =
+              res.data.networkServer.gatewayDiscoveryDR;
           } else {
-            this.returnedData.ip = this.returnedData.server;
-            this.returnedData.port = "";
+            console.log("获取网络服务器详细信息失败");
           }
-          this.returnedData.gatewayDiscoveryEnabled =
-            res.data.networkServer.gatewayDiscoveryEnabled;
-          this.returnedData.gatewayDiscoveryInterval =
-            res.data.networkServer.gatewayDiscoveryInterval;
-          this.returnedData.gatewayDiscoveryTXFrequency =
-            res.data.networkServer.gatewayDiscoveryTXFrequency;
-          this.returnedData.gatewayDiscoveryDR =
-            res.data.networkServer.gatewayDiscoveryDR;
         })
         .catch(err => {
           console.log(err);

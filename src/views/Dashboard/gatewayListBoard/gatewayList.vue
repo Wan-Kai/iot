@@ -89,6 +89,7 @@
         style="min-width: auto"
         class="iot_view_table"
         :pagination="pagination"
+        key="netWorkServerList"
         :rowKey="record => record.id"
         :loading="tableLoadingState"
       >
@@ -279,22 +280,26 @@ export default {
           limit: 100
         })
         .then(res => {
-          this.returnedData = res.data.result;
-          // this.tableData = res.data.result;
+          if (res.status === 200) {
+            this.returnedData = res.data.result;
+            // this.tableData = res.data.result;
 
-          //console.log(data);
-          for (let i = 0; i < this.returnedData.length; i++) {
-            this.returnedData[i].state = "off";
-            this.returnedData[i].area = getAreaLabel(
-              this.returnedData[i].province,
-              this.returnedData[i].city,
-              this.returnedData[i].district
-            );
-            this.returnedData[i].networkServerName = getNetworkServerNameById(
-              this.returnedData[i].networkServerID
-            );
+            //console.log(data);
+            for (let i = 0; i < this.returnedData.length; i++) {
+              this.returnedData[i].state = "off";
+              this.returnedData[i].area = getAreaLabel(
+                this.returnedData[i].province,
+                this.returnedData[i].city,
+                this.returnedData[i].district
+              );
+              this.returnedData[i].networkServerName = getNetworkServerNameById(
+                this.returnedData[i].networkServerID
+              );
+            }
+            this.tableData = this.returnedData;
+          } else {
+            console.log("获取网关列表失败");
           }
-          this.tableData = this.returnedData;
         })
         .catch(err => {
           console.log("出现错误");

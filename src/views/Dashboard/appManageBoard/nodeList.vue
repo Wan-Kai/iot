@@ -99,11 +99,15 @@ export default {
           limit: 100
         })
         .then(res => {
-          let infoDataTemp = res.data.result;
-          infoDataTemp.forEach(item => {
-            item.state = "off";
-          });
-          this.tableData = res.data.result;
+          if (res.status === 200) {
+            let infoDataTemp = res.data.result;
+            infoDataTemp.forEach(item => {
+              item.state = "off";
+            });
+            this.tableData = res.data.result;
+          } else {
+            console.log("获取节点列表失败");
+          }
         })
         .catch(err => {
           console.log(err);

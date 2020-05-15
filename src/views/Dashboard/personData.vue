@@ -228,15 +228,17 @@ export default {
         .getUserDetail({ extra: this.returnedData.id })
         .then(res => {
           console.log(res);
-          this.returnedData.createdAt = res.data.createdAt;
-          this.returnedData.updatedAt = res.data.updatedAt;
-          this.returnedData.id = res.data.user.id;
-          this.returnedData.username = res.data.user.username;
-          this.returnedData.phonenumber = res.data.user.phonenumber;
-          this.returnedData.email = res.data.user.email;
-          this.returnedData.note = res.data.user.note;
-          this.returnedData.isAdmin = res.data.user.isAdmin;
-          this.returnedData.isActive = res.data.user.isActive;
+          if (res.status === 200) {
+            this.returnedData.createdAt = res.data.createdAt;
+            this.returnedData.updatedAt = res.data.updatedAt;
+            this.returnedData.id = res.data.user.id;
+            this.returnedData.username = res.data.user.username;
+            this.returnedData.phonenumber = res.data.user.phonenumber;
+            this.returnedData.email = res.data.user.email;
+            this.returnedData.note = res.data.user.note;
+            this.returnedData.isAdmin = res.data.user.isAdmin;
+            this.returnedData.isActive = res.data.user.isActive;
+          }
         })
         .catch(err => {
           console.log(err);

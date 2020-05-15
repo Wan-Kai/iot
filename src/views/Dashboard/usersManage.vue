@@ -146,7 +146,9 @@ export default {
           limit: 100
         })
         .then(res => {
-          this.returnedData = res.data.result;
+          if (res.status === 200) {
+            this.returnedData = res.data.result;
+          }
         })
         .catch(err => {
           console.log(err);

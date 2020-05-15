@@ -14,6 +14,7 @@
         style="min-width: auto"
         class="iot_view_message_table"
         :pagination="pagination"
+        :loading="tableLoadingState"
         :rowKey="record => record.time"
       >
         <span slot="action" slot-scope="text, record">
@@ -96,6 +97,9 @@ export default {
 
       visible: false,
 
+      //loading
+      tableLoadingState: true,
+
       pagination: {
         size: "small",
         defaultPageSize: 5,
@@ -116,10 +120,15 @@ export default {
         page: 0
       })
       .then(res => {
-        this.interData = res.data.result;
+        if (res.status === 200) {
+          this.interData = res.data.result;
+        }
       })
       .catch(err => {
         console.log(err);
+      })
+      .finally(() => {
+        this.tableLoadingState = false;
       });
   },
   methods: {

@@ -49,7 +49,9 @@ export default {
         page: 0
       })
       .then(res => {
-        this.interData = res.data.result.slice(0, 8);
+        if (res.status === 200) {
+          this.interData = res.data.result.slice(0, 8);
+        }
       })
       .catch(err => {
         console.log(err);

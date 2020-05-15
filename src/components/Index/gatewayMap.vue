@@ -35,8 +35,10 @@ export default {
           limit: 1000
         })
         .then(res => {
-          this.tableData = res.data.result;
-          this.drawMap();
+          if (res.status === 200) {
+            this.tableData = res.data.result;
+            this.drawMap();
+          }
         })
         .catch(err => {
           console.log(err);

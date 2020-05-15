@@ -277,50 +277,55 @@ export default {
           extra: id
         })
         .then(res => {
-          let infoData = res.data;
-          this.returnedData.id = infoData.gateway.id;
-          this.returnedData.name = infoData.gateway.name;
-          this.returnedData.description = infoData.gateway.description;
-          this.returnedData.gatewayProfileID =
-            infoData.gateway.gatewayProfileID;
-          this.returnedData.networkServerID = infoData.gateway.networkServerID;
+          if (res.status === 200) {
+            let infoData = res.data;
+            this.returnedData.id = infoData.gateway.id;
+            this.returnedData.name = infoData.gateway.name;
+            this.returnedData.description = infoData.gateway.description;
+            this.returnedData.gatewayProfileID =
+              infoData.gateway.gatewayProfileID;
+            this.returnedData.networkServerID =
+              infoData.gateway.networkServerID;
 
-          this.returnedData.modulation = infoData.gateway.modulation;
-          this.returnedData.channels = infoData.gateway.channels;
+            this.returnedData.modulation = infoData.gateway.modulation;
+            this.returnedData.channels = infoData.gateway.channels;
 
-          this.returnedData.province = infoData.gateway.province;
-          this.returnedData.city = infoData.gateway.city;
-          this.returnedData.district = infoData.gateway.district;
-          this.returnedData.location = infoData.gateway.location;
+            this.returnedData.province = infoData.gateway.province;
+            this.returnedData.city = infoData.gateway.city;
+            this.returnedData.district = infoData.gateway.district;
+            this.returnedData.location = infoData.gateway.location;
 
-          this.returnedData.lastSeenAt = infoData.lastSeenAt;
-          this.returnedData.createdAt = infoData.createdAt;
+            this.returnedData.lastSeenAt = infoData.lastSeenAt;
+            this.returnedData.createdAt = infoData.createdAt;
 
-          let mapObj = new AMap.Map("gateway_detail", {
-            // eslint-disable-line no-unused-vars
-            resizeEnable: true, //自适应大小
-            zoom: 14,
-            center: [
-              this.returnedData.location.longitude,
-              this.returnedData.location.latitude
-            ]
-          });
-          console.log(mapObj);
-          let startIcon = new AMap.Icon({
-            // 图标尺寸
-            size: new AMap.Size(25, 25),
-            // 图标的取图地址
-            image: wifi_map, // 您自己的图标
-            // 图标所用图片大小
-            imageSize: new AMap.Size(25, 25)
-          });
-          const marker = new AMap.Marker({
-            // eslint-disable-line no-unused-vars
-            map: mapObj,
-            icon: startIcon,
-            position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-            title: "网关"
-          });
+            let mapObj = new AMap.Map("gateway_detail", {
+              // eslint-disable-line no-unused-vars
+              resizeEnable: true, //自适应大小
+              zoom: 14,
+              center: [
+                this.returnedData.location.longitude,
+                this.returnedData.location.latitude
+              ]
+            });
+            console.log(mapObj);
+            let startIcon = new AMap.Icon({
+              // 图标尺寸
+              size: new AMap.Size(25, 25),
+              // 图标的取图地址
+              image: wifi_map, // 您自己的图标
+              // 图标所用图片大小
+              imageSize: new AMap.Size(25, 25)
+            });
+            const marker = new AMap.Marker({
+              // eslint-disable-line no-unused-vars
+              map: mapObj,
+              icon: startIcon,
+              position: mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              title: "网关"
+            });
+          } else {
+            console.log("获取网关节点详情失败");
+          }
         })
         .catch(err => {
           console.log(err);

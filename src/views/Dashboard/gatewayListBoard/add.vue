@@ -301,48 +301,52 @@ export default {
       this.$api.index
         .mapMarkers({})
         .then(res => {
-          this.mapData = res.data.result;
-          let mapObj = new AMap.Map("gateway_add_map", {
-            // eslint-disable-line no-unused-vars
-            resizeEnable: true, //自适应大小
-            zoom: this.mapData.zoom,
-            center: this.mapData.center
-          });
-          this.currentRecord.location.Lng = this.mapData.center[0];
-          this.currentRecord.location.Lat = this.mapData.center[1];
-          let startIcon = new AMap.Icon({
-            // 图标尺寸
-            size: new AMap.Size(25, 25),
-            // 图标的取图地址
-            image: wifi_map, // 您自己的图标
-            // 图标所用图片大小
-            imageSize: new AMap.Size(25, 25)
-          });
-
-          let address = "";
-          let _self = this;
-          mapObj.on("click", function(e) {
-            _self.currentRecord.location.Lng = e.lnglat.getLng();
-            _self.currentRecord.location.Lat = e.lnglat.getLat();
-            mapObj.clearMap();
-            const marker = new AMap.Marker({
+          if (res.status === 200) {
+            this.mapData = res.data.result;
+            let mapObj = new AMap.Map("gateway_add_map", {
               // eslint-disable-line no-unused-vars
-              map: mapObj,
-              icon: startIcon,
-              position: [
-                _self.currentRecord.location.Lng,
-                _self.currentRecord.location.Lat
-              ], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-              title: "网关"
+              resizeEnable: true, //自适应大小
+              zoom: this.mapData.zoom,
+              center: this.mapData.center
             });
-            address =
-              _self.currentRecord.location.Lng.toString() +
-              "," +
-              _self.currentRecord.location.Lat.toString();
-            _self.addForm.setFieldsValue({
-              address: address
+            this.currentRecord.location.Lng = this.mapData.center[0];
+            this.currentRecord.location.Lat = this.mapData.center[1];
+            let startIcon = new AMap.Icon({
+              // 图标尺寸
+              size: new AMap.Size(25, 25),
+              // 图标的取图地址
+              image: wifi_map, // 您自己的图标
+              // 图标所用图片大小
+              imageSize: new AMap.Size(25, 25)
             });
-          });
+
+            let address = "";
+            let _self = this;
+            mapObj.on("click", function(e) {
+              _self.currentRecord.location.Lng = e.lnglat.getLng();
+              _self.currentRecord.location.Lat = e.lnglat.getLat();
+              mapObj.clearMap();
+              const marker = new AMap.Marker({
+                // eslint-disable-line no-unused-vars
+                map: mapObj,
+                icon: startIcon,
+                position: [
+                  _self.currentRecord.location.Lng,
+                  _self.currentRecord.location.Lat
+                ], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title: "网关"
+              });
+              address =
+                _self.currentRecord.location.Lng.toString() +
+                "," +
+                _self.currentRecord.location.Lat.toString();
+              _self.addForm.setFieldsValue({
+                address: address
+              });
+            });
+          } else {
+            console.log("获取map信息失败");
+          }
         })
         .catch(err => {
           console.log(err);

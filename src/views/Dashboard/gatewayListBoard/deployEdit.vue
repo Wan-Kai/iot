@@ -361,76 +361,63 @@ export default {
           extra: id
         })
         .then(res => {
-          let infoData = res.data;
-          let address = "";
+          if (res.status === 200) {
+            let infoData = res.data;
+            let address = "";
 
-          /*
-          this.defaultModulation.push(infoDataTemp.gateway.modulation);
-          this.defaultArea.push(infoDataTemp.gateway.province);
-          this.defaultArea.push(infoDataTemp.gateway.city);
-          this.defaultArea.push(infoDataTemp.gateway.district);
-          */
-          this.returnedData.id = infoData.gateway.id;
-          this.returnedData.name = infoData.gateway.name;
-          this.returnedData.description = infoData.gateway.description;
-          this.returnedData.gatewayProfileID =
-            infoData.gateway.gatewayProfileID;
-          this.returnedData.networkServerID = infoData.gateway.networkServerID;
+            /*
+            this.defaultModulation.push(infoDataTemp.gateway.modulation);
+            this.defaultArea.push(infoDataTemp.gateway.province);
+            this.defaultArea.push(infoDataTemp.gateway.city);
+            this.defaultArea.push(infoDataTemp.gateway.district);
+            */
+            this.returnedData.id = infoData.gateway.id;
+            this.returnedData.name = infoData.gateway.name;
+            this.returnedData.description = infoData.gateway.description;
+            this.returnedData.gatewayProfileID =
+              infoData.gateway.gatewayProfileID;
+            this.returnedData.networkServerID =
+              infoData.gateway.networkServerID;
 
-          this.returnedData.modulation = infoData.gateway.modulation;
-          this.returnedData.channels = infoData.gateway.channels;
+            this.returnedData.modulation = infoData.gateway.modulation;
+            this.returnedData.channels = infoData.gateway.channels;
 
-          this.returnedData.province = infoData.gateway.province;
-          this.returnedData.city = infoData.gateway.city;
-          this.returnedData.district = infoData.gateway.district;
-          this.returnedData.location = infoData.gateway.location;
+            this.returnedData.province = infoData.gateway.province;
+            this.returnedData.city = infoData.gateway.city;
+            this.returnedData.district = infoData.gateway.district;
+            this.returnedData.location = infoData.gateway.location;
 
-          this.returnedData.lastSeenAt = infoData.lastSeenAt;
-          this.returnedData.createdAt = infoData.createdAt;
+            this.returnedData.lastSeenAt = infoData.lastSeenAt;
+            this.returnedData.createdAt = infoData.createdAt;
 
-          /*
-          address =
-            infoDataTemp.gateway.location.longitude.toString() +
-            "," +
-            infoDataTemp.gateway.location.latitude.toString();
-          this.gatewayDeployForm.setFieldsValue({
-            address: address
-          });
-          */
-          let mapObj = new AMap.Map("gateway_edit_map", {
-            // eslint-disable-line no-unused-vars
-            resizeEnable: true, //自适应大小
-            zoom: 14,
-            center: [
-              infoData.gateway.location.longitude,
-              infoData.gateway.location.latitude
-            ]
-          });
-          let startIcon = new AMap.Icon({
-            // 图标尺寸
-            size: new AMap.Size(25, 25),
-            // 图标的取图地址
-            image: wifi_map, // 您自己的图标
-            // 图标所用图片大小
-            imageSize: new AMap.Size(25, 25)
-          });
+            /*
+            address =
+              infoDataTemp.gateway.location.longitude.toString() +
+              "," +
+              infoDataTemp.gateway.location.latitude.toString();
+            this.gatewayDeployForm.setFieldsValue({
+              address: address
+            });
+            */
+            let mapObj = new AMap.Map("gateway_edit_map", {
+              // eslint-disable-line no-unused-vars
+              resizeEnable: true, //自适应大小
+              zoom: 14,
+              center: [
+                infoData.gateway.location.longitude,
+                infoData.gateway.location.latitude
+              ]
+            });
+            let startIcon = new AMap.Icon({
+              // 图标尺寸
+              size: new AMap.Size(25, 25),
+              // 图标的取图地址
+              image: wifi_map, // 您自己的图标
+              // 图标所用图片大小
+              imageSize: new AMap.Size(25, 25)
+            });
 
-          let _self = this;
-          const marker = new AMap.Marker({
-            // eslint-disable-line no-unused-vars
-            map: mapObj,
-            icon: startIcon,
-            position: [
-              _self.returnedData.location.longitude,
-              _self.returnedData.location.latitude
-            ], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-            title: "网关"
-          });
-
-          mapObj.on("click", function(e) {
-            _self.returnedData.location.longitude = e.lnglat.getLng();
-            _self.returnedData.location.latitude = e.lnglat.getLat();
-            mapObj.clearMap();
+            let _self = this;
             const marker = new AMap.Marker({
               // eslint-disable-line no-unused-vars
               map: mapObj,
@@ -441,14 +428,32 @@ export default {
               ], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
               title: "网关"
             });
-            address =
-              _self.returnedData.location.longitude.toString() +
-              "," +
-              _self.returnedData.location.latitude.toString();
-            _self.gatewayDeployForm.setFieldsValue({
-              location: address
+
+            mapObj.on("click", function(e) {
+              _self.returnedData.location.longitude = e.lnglat.getLng();
+              _self.returnedData.location.latitude = e.lnglat.getLat();
+              mapObj.clearMap();
+              const marker = new AMap.Marker({
+                // eslint-disable-line no-unused-vars
+                map: mapObj,
+                icon: startIcon,
+                position: [
+                  _self.returnedData.location.longitude,
+                  _self.returnedData.location.latitude
+                ], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title: "网关"
+              });
+              address =
+                _self.returnedData.location.longitude.toString() +
+                "," +
+                _self.returnedData.location.latitude.toString();
+              _self.gatewayDeployForm.setFieldsValue({
+                location: address
+              });
             });
-          });
+          } else {
+            console.log("获取网关节点初始信息失败");
+          }
         })
         .catch(err => {
           console.log(err);

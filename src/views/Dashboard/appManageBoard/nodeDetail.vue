@@ -275,26 +275,30 @@ export default {
           extra: this.query.devEUI
         })
         .then(res => {
-          let infoDataTemp = res.data;
+          if (res.status === 200) {
+            let infoDataTemp = res.data;
 
-          this.returnedData.deviceProfileID =
-            infoDataTemp.device.deviceProfileID;
-          this.returnedData.applicationID = infoDataTemp.device.applicationID;
-          this.returnedData.name = infoDataTemp.device.name;
-          this.returnedData.description = infoDataTemp.device.description;
-          this.returnedData.skipFCntCheck = infoDataTemp.device.skipFCntCheck;
-          this.returnedData.macVersion = "暂定";
-          this.returnedData.band = "暂定";
-          this.returnedData.class = "暂定";
-          this.returnedData.netState = "暂定";
-          this.returnedData.sign = "暂定";
-          this.returnedData.gateway = "暂定";
-          this.returnedData.appKey = "暂定";
-          this.returnedData.useState = "暂定";
-          this.returnedData.createdAt = "暂定";
-          this.returnedData.area = infoDataTemp.location;
+            this.returnedData.deviceProfileID =
+              infoDataTemp.device.deviceProfileID;
+            this.returnedData.applicationID = infoDataTemp.device.applicationID;
+            this.returnedData.name = infoDataTemp.device.name;
+            this.returnedData.description = infoDataTemp.device.description;
+            this.returnedData.skipFCntCheck = infoDataTemp.device.skipFCntCheck;
+            this.returnedData.macVersion = "暂定";
+            this.returnedData.band = "暂定";
+            this.returnedData.class = "暂定";
+            this.returnedData.netState = "暂定";
+            this.returnedData.sign = "暂定";
+            this.returnedData.gateway = "暂定";
+            this.returnedData.appKey = "暂定";
+            this.returnedData.useState = "暂定";
+            this.returnedData.createdAt = "暂定";
+            this.returnedData.area = infoDataTemp.location;
 
-          this.returnedData.lastSeenAt = infoDataTemp.lastSeenAt;
+            this.returnedData.lastSeenAt = infoDataTemp.lastSeenAt;
+          } else {
+            console.log("获取节点详情失败");
+          }
         })
         .catch(err => {
           console.log(err);

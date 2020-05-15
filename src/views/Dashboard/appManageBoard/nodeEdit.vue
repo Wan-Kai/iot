@@ -372,15 +372,19 @@ export default {
           limit: 100
         })
         .then(res => {
-          var result = res.data.result;
-          for (let i = 0; i < result.length; i++) {
-            var item = {
-              id: result[i].id,
-              name: result[i].id,
-              label: result[i].name,
-              value: result[i].id
-            };
-            itemOptions.push(item);
+          if (res.status === 200) {
+            var result = res.data.result;
+            for (let i = 0; i < result.length; i++) {
+              var item = {
+                id: result[i].id,
+                name: result[i].id,
+                label: result[i].name,
+                value: result[i].id
+              };
+              itemOptions.push(item);
+            }
+          } else {
+            console.log("获取节点初始信息失败");
           }
         })
         .catch(err => {
@@ -396,19 +400,23 @@ export default {
           extra: this.query.devEUI
         })
         .then(res => {
-          let infoDataTemp = res.data;
+          if (res.status === 200) {
+            let infoDataTemp = res.data;
 
-          this.returnedData.deviceProfileID =
-            infoDataTemp.device.deviceProfileID;
-          this.returnedData.applicationID = infoDataTemp.device.applicationID;
-          this.returnedData.name = infoDataTemp.device.name;
-          this.returnedData.description = infoDataTemp.device.description;
+            this.returnedData.deviceProfileID =
+              infoDataTemp.device.deviceProfileID;
+            this.returnedData.applicationID = infoDataTemp.device.applicationID;
+            this.returnedData.name = infoDataTemp.device.name;
+            this.returnedData.description = infoDataTemp.device.description;
 
-          if (infoDataTemp.location) {
-            this.areaShow = true;
-            this.defaultArea.push(infoDataTemp.device.province);
-            this.defaultArea.push(infoDataTemp.device.city);
-            this.defaultArea.push(infoDataTemp.device.district);
+            if (infoDataTemp.location) {
+              this.areaShow = true;
+              this.defaultArea.push(infoDataTemp.device.province);
+              this.defaultArea.push(infoDataTemp.device.city);
+              this.defaultArea.push(infoDataTemp.device.district);
+            }
+          } else {
+            console.log("获取应用节点详情失败");
           }
         })
         .catch(err => {
@@ -422,12 +430,16 @@ export default {
           extra: this.query.devEUI
         })
         .then(res => {
-          let infoDataTemp = res.data;
+          if (res.status === 200) {
+            let infoDataTemp = res.data;
 
-          this.returnedKey.hasKey = true;
-          this.returnedKey.appKey = infoDataTemp.deviceKeys.appKey;
-          this.returnedKey.genAppKey = infoDataTemp.deviceKeys.genAppKey;
-          this.returnedKey.nwkKey = infoDataTemp.deviceKeys.nwkKey;
+            this.returnedKey.hasKey = true;
+            this.returnedKey.appKey = infoDataTemp.deviceKeys.appKey;
+            this.returnedKey.genAppKey = infoDataTemp.deviceKeys.genAppKey;
+            this.returnedKey.nwkKey = infoDataTemp.deviceKeys.nwkKey;
+          } else {
+            console.log("获取应用节点key值失败");
+          }
         })
         .catch(err => {
           console.log(err);
@@ -510,53 +522,57 @@ export default {
       this.$api.index
         .mapMarkers({})
         .then(res => {
-          this.mapData = res.data.result;
-          this.mapObj = new AMap.Map("App_note_edit_map", {
-            // eslint-disable-line no-unused-vars
-            resizeEnable: true, //自适应大小
-            zoom: this.mapData.zoom,
-            center: this.mapData.center
-          });
-          let startIcon = new AMap.Icon({
-            // 图标尺寸
-            size: new AMap.Size(25, 25),
-            // 图标的取图地址
-            image: wifi_map, // 您自己的图标
-            // 图标所用图片大小
-            imageSize: new AMap.Size(25, 25)
-          });
-          if (this.mapData.center) {
-            const marker = new AMap.Marker({
+          if (res.status === 200) {
+            this.mapData = res.data.result;
+            this.mapObj = new AMap.Map("App_note_edit_map", {
               // eslint-disable-line no-unused-vars
-              map: this.mapObj,
-              icon: startIcon,
-              position: this.mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-              title: "网关"
+              resizeEnable: true, //自适应大小
+              zoom: this.mapData.zoom,
+              center: this.mapData.center
             });
-          }
-          let _self = this;
-          let address = "";
-          this.mapObj.on("click", function(e) {
-            if (_self.areaShow) {
-              _self.location.Lng = e.lnglat.getLng();
-              _self.location.Lat = e.lnglat.getLat();
-              _self.mapObj.clearMap();
+            let startIcon = new AMap.Icon({
+              // 图标尺寸
+              size: new AMap.Size(25, 25),
+              // 图标的取图地址
+              image: wifi_map, // 您自己的图标
+              // 图标所用图片大小
+              imageSize: new AMap.Size(25, 25)
+            });
+            if (this.mapData.center) {
               const marker = new AMap.Marker({
                 // eslint-disable-line no-unused-vars
-                map: _self.mapObj,
+                map: this.mapObj,
                 icon: startIcon,
-                position: [e.lnglat.getLng(), e.lnglat.getLat()], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                position: this.mapObj.center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                 title: "网关"
               });
-              address =
-                _self.location.Lng.toString() +
-                "," +
-                _self.location.Lat.toString();
-              _self.nodeDeployFormMap.setFieldsValue({
-                address: address
-              });
             }
-          });
+            let _self = this;
+            let address = "";
+            this.mapObj.on("click", function(e) {
+              if (_self.areaShow) {
+                _self.location.Lng = e.lnglat.getLng();
+                _self.location.Lat = e.lnglat.getLat();
+                _self.mapObj.clearMap();
+                const marker = new AMap.Marker({
+                  // eslint-disable-line no-unused-vars
+                  map: _self.mapObj,
+                  icon: startIcon,
+                  position: [e.lnglat.getLng(), e.lnglat.getLat()], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                  title: "网关"
+                });
+                address =
+                  _self.location.Lng.toString() +
+                  "," +
+                  _self.location.Lat.toString();
+                _self.nodeDeployFormMap.setFieldsValue({
+                  address: address
+                });
+              }
+            });
+          } else {
+            console.log("获取map信息失败");
+          }
         })
         .catch(err => {
           console.log(err);

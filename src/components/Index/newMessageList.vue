@@ -56,19 +56,56 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
-      interData: [],
+      interData: [
+        {
+          list: [
+            {
+              title: "编号",
+              time: "1min",
+              read: true
+            },
+            {
+              title: "编号",
+              time: "2min",
+              read: true
+            },
+            {
+              title: "编号",
+              time: "3min",
+              read: false
+            },
+            {
+              title: "编号",
+              time: "4min",
+              read: true
+            },
+            {
+              title: "编号",
+              time: "5min",
+              read: true
+            },
+            {
+              title: "编号",
+              time: "6min",
+              read: false
+            }
+          ]
+        }
+      ],
       message: 0
     };
   },
   beforeMount() {
     this.$api.index.message({}).then(res => {
-      this.interData = res.data.result;
+      if (res.status === 200) {
+        this.interData = res.data.result;
 
-      this.interData.list.forEach(item => {
-        if (!item.read) {
-          this.message++;
-        }
-      });
+        this.interData.list.forEach(item => {
+          if (!item.read) {
+            this.message++;
+          }
+        });
+      }
     });
   },
   methods: {

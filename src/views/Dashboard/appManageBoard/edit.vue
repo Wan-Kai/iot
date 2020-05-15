@@ -231,11 +231,15 @@ export default {
         extra: this.query.appID
       })
       .then(res => {
-        let infoDataTemp = res.data.application;
-        this.id = infoDataTemp.id;
-        this.name = infoDataTemp.name;
-        this.description = infoDataTemp.description;
-        this.defaultServiceProfile.push(infoDataTemp.serviceProfileID);
+        if (res.status === 200) {
+          let infoDataTemp = res.data.application;
+          this.id = infoDataTemp.id;
+          this.name = infoDataTemp.name;
+          this.description = infoDataTemp.description;
+          this.defaultServiceProfile.push(infoDataTemp.serviceProfileID);
+        } else {
+          console.log("获取初始信息失败");
+        }
       })
       .catch(err => {
         console.log(err);

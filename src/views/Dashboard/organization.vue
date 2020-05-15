@@ -163,55 +163,59 @@ export default {
           limit: 100
         })
         .then(res => {
-          this.returnedData = res.data.result;
+          if (res.status === 200) {
+            this.returnedData = res.data.result;
 
-          var currentOrganizations = this.common.getCurrentOrganizationList();
-          if (currentOrganizations == null || currentOrganizations.length == 0)
-            return;
+            var currentOrganizations = this.common.getCurrentOrganizationList();
+            if (
+              currentOrganizations == null ||
+              currentOrganizations.length == 0
+            )
+              return;
 
-          for (let i = 0; i < this.returnedData.length; i++) {
-            var existed = false;
-            var id = this.returnedData[i].id;
-            for (let j = 0; j < currentOrganizations.length; j++) {
-              if (currentOrganizations[j].organizationID === id) {
-                existed = true;
-                break;
+            for (let i = 0; i < this.returnedData.length; i++) {
+              var existed = false;
+              var id = this.returnedData[i].id;
+              for (let j = 0; j < currentOrganizations.length; j++) {
+                if (currentOrganizations[j].organizationID === id) {
+                  existed = true;
+                  break;
+                }
               }
-            }
-            if (existed == false) continue;
+              if (existed == false) continue;
 
-            let temp = {
-              id: "",
-              name: "",
-              displayName: "",
-              profession: "",
-              province: "",
-              city: "",
-              district: "",
-              address: "",
-              canHaveGateways: "",
-              createdAt: "",
-              updatedAt: ""
-            };
-            temp.id = this.returnedData[i].id;
-            temp.name = this.returnedData[i].name;
-            temp.displayName = this.returnedData[i].displayName;
-            temp.profession = this.returnedData[i].profession;
-            temp.province = this.returnedData[i].province;
-            temp.city = this.returnedData[i].city;
-            temp.district = this.returnedData[i].district;
-            temp.address = this.returnedData[i].address;
-            temp.location = getAreaLabel(
-              this.returnedData[i].province,
-              this.returnedData[i].city,
-              this.returnedData[i].district
-            );
-            temp.canHaveGateways = this.returnedData[i].canHaveGateways;
-            temp.createdAt = this.returnedData[i].createdAt;
-            temp.updatedAt = this.returnedData[i].updatedAt;
-            this.tableData.push(temp);
+              let temp = {
+                id: "",
+                name: "",
+                displayName: "",
+                profession: "",
+                province: "",
+                city: "",
+                district: "",
+                address: "",
+                canHaveGateways: "",
+                createdAt: "",
+                updatedAt: ""
+              };
+              temp.id = this.returnedData[i].id;
+              temp.name = this.returnedData[i].name;
+              temp.displayName = this.returnedData[i].displayName;
+              temp.profession = this.returnedData[i].profession;
+              temp.province = this.returnedData[i].province;
+              temp.city = this.returnedData[i].city;
+              temp.district = this.returnedData[i].district;
+              temp.address = this.returnedData[i].address;
+              temp.location = getAreaLabel(
+                this.returnedData[i].province,
+                this.returnedData[i].city,
+                this.returnedData[i].district
+              );
+              temp.canHaveGateways = this.returnedData[i].canHaveGateways;
+              temp.createdAt = this.returnedData[i].createdAt;
+              temp.updatedAt = this.returnedData[i].updatedAt;
+              this.tableData.push(temp);
+            }
           }
-          this.tableLoadingState = false;
         })
         .catch(err => {
           console.log(err);

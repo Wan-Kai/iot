@@ -163,13 +163,16 @@ export default {
           limit: 100
         })
         .then(res => {
+          console.log(res);
           if (res.status === 200) {
+            console.log("正确啊");
             this.returnedData = res.data.result;
 
             var currentOrganizations = this.common.getCurrentOrganizationList();
+            console.log(currentOrganizations.length);
             if (
               currentOrganizations == null ||
-              currentOrganizations.length == 0
+              currentOrganizations.length === 0
             )
               return;
 
@@ -182,7 +185,7 @@ export default {
                   break;
                 }
               }
-              if (existed == false) continue;
+              if (existed === false) continue;
 
               let temp = {
                 id: "",
@@ -205,15 +208,18 @@ export default {
               temp.city = this.returnedData[i].city;
               temp.district = this.returnedData[i].district;
               temp.address = this.returnedData[i].address;
+
               temp.location = getAreaLabel(
                 this.returnedData[i].province,
                 this.returnedData[i].city,
                 this.returnedData[i].district
               );
+              console.log("constinu");
               temp.canHaveGateways = this.returnedData[i].canHaveGateways;
               temp.createdAt = this.returnedData[i].createdAt;
               temp.updatedAt = this.returnedData[i].updatedAt;
               this.tableData.push(temp);
+              console.log(this.tableData);
             }
           }
         })

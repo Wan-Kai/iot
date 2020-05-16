@@ -163,14 +163,9 @@ export default {
     }
   },
   beforeMount() {
-    this.$api.util
-      .getAreaData()
-      .then(res => {
-        setArea(res.data.area_options);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    //setArea(res.data.area_options);
+    let areaData = this.$api.util.getAreaData();
+    setArea(areaData.area_options);
   },
   methods: {
     onCollapse(collapsed, type) {

@@ -1,6 +1,7 @@
 // 引入 axios 封装方法
-import { post, get, put, deletes, login, getLocal } from "./axios";
+import { post, get, put, deletes, login } from "./axios";
 import common from "./common";
+import areaData from "../../public/util/areaData.json";
 
 export default {
   login: {
@@ -210,7 +211,7 @@ export default {
       return post("/admin/node/data", data);
     },
     firstPageNodeData: data => {
-      return post("/admin/node/firstData", data);
+      return get("/admin/node/firstData", data);
     },
 
     upFlowData: data => {
@@ -384,8 +385,11 @@ export default {
     }
   },
   util: {
+    // getAreaData: data => {
+    //   return getLocal("../../util/areaData.json");
+    // }
     getAreaData: data => {
-      return getLocal("../../util/areaData.json");
+      return areaData;
     }
   }
 };

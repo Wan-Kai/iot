@@ -112,7 +112,7 @@ mock.mock(`/api/admin/node/data`, "post", () => {
 mock.mock(`/api/admin/node/upFlowData/data`, "post", () => {
   return node.UpFlowData;
 });
-mock.mock(`/api/admin/node/firstData`, "post", () => {
+mock.mock(RegExp(`/api/admin/node/firstData` + ".*"), "get", () => {
   return node.FirstPageNodeData;
 });
 

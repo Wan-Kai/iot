@@ -67,16 +67,6 @@ service.interceptors.response.use(
   }
 );
 
-//get方法
-export function getLocal(url, data = {}) {
-  let sendObject = {
-    url: url,
-    method: "get",
-    headers: {}
-  };
-  return service(sendObject).catch(() => {});
-}
-
 //login
 export function login(url, data = {}) {
   //默认配置

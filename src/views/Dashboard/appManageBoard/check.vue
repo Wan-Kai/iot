@@ -394,18 +394,25 @@ export default {
       formData.append(filename, file);
 
       this.$api.appManage
-        .uploadNode(formData, {
-          onUploadProgress: ({ total, loaded }) => {
-            onProgress(
-              { percent: Math.round((loaded / total) * 100).toFixed(2) },
-              file
-            );
+        .uploadNode(
+          formData
+          //         {
+          //   onUploadProgress: ({ total, loaded }) => {
+          //     onProgress(
+          //       { percent: Math.round((loaded / total) * 100).toFixed(2) },file);
+          //   }
+          // }
+        )
+        .then(res => {
+          if (res.data.status === 200) {
+            onSuccess(res, file);
+          } else {
+            onError();
           }
         })
-        .then(res => {
-          onSuccess(res, file);
-        })
-        .catch(onError);
+        .catch(err => {
+          console.log(err);
+        });
       return {
         abort() {
           console.log("upload progress is aborted.");

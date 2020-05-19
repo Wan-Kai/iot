@@ -36,12 +36,12 @@
         <a-cascader
           style="width: 120px;text-align: left"
           :options="company_options"
-          :default-value="[company_options[0].organizationID]"
+          :default-value="[this.currentOrganizationID]"
           :allow-clear="false"
           :fieldNames="{
             label: 'organizationName',
             value: 'organizationID',
-            children: ''
+            children: []
           }"
           @change="onChangeCompany"
           placeholder="组织机构"
@@ -66,6 +66,10 @@ export default {
       var user = this.common.getCurrentUser();
       if (user) return user.username;
       return "";
+    },
+
+    currentOrganizationID() {
+      return this.common.getCurrentOrganizationID();
     }
   },
 

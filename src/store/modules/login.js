@@ -50,9 +50,16 @@ const getters = {
   },
 
   getCurrentOrganization() {
-    if (localStorage.getItem("current_organization")) {
-      return JSON.parse(localStorage.getItem("current_organization"));
-    } else return state.currentOrganization;
+    debugger;
+    var result = state.currentOrganization;
+    if (result == null || result.organizationID == "") {
+      var temp = localStorage.getItem("current_organization");
+      if (temp) {
+        result = JSON.parse(temp);
+      }
+    }
+    debugger;
+    return result;
   },
   getCurrentOrganizationList() {
     if (localStorage.getItem("current_organization_list")) {

@@ -102,6 +102,7 @@ export default {
 
   computed: {
     currentOrganizationID() {
+      debugger;
       return this.common.getCurrentOrganizationID();
     }
   },

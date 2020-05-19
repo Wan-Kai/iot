@@ -141,3 +141,18 @@ export function deletes(url, data = {}) {
   // sendObject.data=JSON.stringify(data);
   return service(sendObject).catch(() => {});
 }
+
+export function upload(url, data = {}) {
+  let sendObject = {
+    url: url,
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Grpc-Metadata-Authorization":
+        "Bearer " + store.getters["login/getSessionKey"]
+    },
+    data: JSON.stringify(data)
+  };
+  // sendObject.data=JSON.stringify(data);
+  return service(sendObject).catch(() => {});
+}

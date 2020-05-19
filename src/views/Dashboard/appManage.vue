@@ -130,21 +130,7 @@ export default {
   },
 
   beforeMount() {
-    this.$api.appManage
-      .getAppList({
-        limit: 100
-      })
-      .then(res => {
-        if (res.status === 200) {
-          this.interData = res.data.result;
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .finally(() => {
-        this.tableLoadingState = false;
-      });
+    this.getTable();
   },
   methods: {
     createApp() {
@@ -153,6 +139,23 @@ export default {
       });
     },
 
+    getTable() {
+      this.$api.appManage
+        .getAppList({
+          limit: 100
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.interData = res.data.result;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.tableLoadingState = false;
+        });
+    },
     checkRouter(record) {
       console.log(record);
       sessionStorage.setItem("appID", record.id);

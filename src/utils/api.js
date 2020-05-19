@@ -1,5 +1,5 @@
 // 引入 axios 封装方法
-import { post, get, put, deletes, login } from "./axios";
+import { post, get, put, deletes, login, upload } from "./axios";
 import common from "./common";
 import areaData from "../../public/util/areaData.json";
 
@@ -318,6 +318,11 @@ export default {
     },
     updateAppDataTranspond: data => {
       return put("/applications/" + data.extra + "/integrations/http", data);
+    },
+
+    //上传
+    uploadNode: data => {
+      return upload("/upload", data);
     }
   },
   usersManage: {

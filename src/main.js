@@ -52,7 +52,8 @@ import {
   Select,
   Radio,
   Transfer,
-  List
+  List,
+  Upload
 } from "ant-design-vue";
 
 //设置中文
@@ -95,6 +96,7 @@ Vue.use(Select);
 Vue.use(Radio);
 Vue.use(Transfer);
 Vue.use(List);
+Vue.use(Upload);
 Vue.component("Authorized", Authorized);
 /**
  * 引用公用的api里面的方法，所有页面可调用

@@ -50,7 +50,7 @@ const getters = {
   },
 
   getCurrentOrganization() {
-    debugger;
+    //debugger;
     var result = state.currentOrganization;
     if (result == null || result.organizationID == "") {
       var temp = localStorage.getItem("current_organization");
@@ -58,7 +58,7 @@ const getters = {
         result = JSON.parse(temp);
       }
     }
-    debugger;
+    //debugger;
     return result;
   },
   getCurrentOrganizationList() {

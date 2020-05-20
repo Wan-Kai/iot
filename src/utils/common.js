@@ -16,7 +16,7 @@ export default {
       return organizations[0].organizationID;
     }
     */
-    debugger;
+    //debugger;
     var organization = this.getCurrentOrganization();
     if (organization == null) return "";
     else return organization.organizationID;
@@ -33,7 +33,7 @@ export default {
   },
 
   setCurrentOrganization: function(value) {
-    debugger;
+    //debugger;
     var list = this.getCurrentOrganizationList();
     for (var i = 0; i < list.length; i++) {
       if (list[i].organizationID === value) {

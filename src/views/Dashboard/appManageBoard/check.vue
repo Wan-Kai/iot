@@ -119,8 +119,9 @@
         <div>
           <a-upload
             name="fileUpload"
-            :multiple="true"
+            :multiple="false"
             :customRequest="customRequest"
+            :remove="uploadRemove"
             @change="uploadHandleChange"
           >
             <a-button style="margin-bottom: 10px">
@@ -166,6 +167,7 @@ export default {
           "Bearer " + store.getters["login/getSessionKey"]
       },
       textAvailable: false,
+      fileList: [],
 
       //data
       returnedData: {
@@ -362,16 +364,25 @@ export default {
     },
     uploadHandleModalCancel() {
       this.uploadModalVisible = false;
+      this.reload();
     },
     uploadHandleChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
+      // let fileList = [...info.fileList];
+      //
+      // fileList = fileList.map(file => {
+      //   file.icon = null;
+      //   return file;
+      // });
+
+      // this.fileList = fileList;
       if (info.file.status === "done") {
         this.$message.success(`${info.file.name} 文件上传成功`);
       } else if (info.file.status === "error") {
         this.$message.error(`${info.file.name} 文件上传失败`);
       }
+    },
+    uploadRemove() {
+      return true;
     },
     customRequest({
       action,

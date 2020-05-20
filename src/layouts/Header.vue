@@ -41,7 +41,7 @@
           :fieldNames="{
             label: 'organizationName',
             value: 'organizationID',
-            children: []
+            children: ''
           }"
           @change="onChangeCompany"
           placeholder="组织机构"

@@ -151,8 +151,8 @@ export default {
   },
 
   mounted() {
-    this.drawLineUp();
-    this.drawLineDown();
+    // this.drawLineUp();
+    // this.drawLineDown();
   },
   methods: {
     getDeviceProfileDetail() {

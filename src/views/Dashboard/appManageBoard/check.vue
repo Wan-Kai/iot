@@ -143,8 +143,6 @@ import NodeList from "./nodeList";
 import Edit from "./edit.vue";
 import TranspondData from "./transpondData.vue";
 import ACol from "ant-design-vue/es/grid/Col";
-import { base } from "../../../utils/axios";
-import store from "../../../store/index";
 import { getOrganizationNameById } from "@/utils/util";
 export default {
   components: { ACol, ARow, NodeList, Edit, TranspondData },
@@ -159,13 +157,6 @@ export default {
       },
 
       //configuration
-      url: base + "/upload",
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "text/plain",
-        "Grpc-Metadata-Authorization":
-          "Bearer " + store.getters["login/getSessionKey"]
-      },
       textAvailable: false,
       fileList: [],
 
@@ -417,10 +408,16 @@ export default {
           // }
         )
         .then(res => {
-          if (res.data.status === 200) {
+          if (res.status === 200) {
             onSuccess(res, file);
+            console.log("成功");
+            console.log(res.status);
+            console.log(res);
           } else {
             onError();
+            console.log("失败");
+            console.log(res.status);
+            console.log(res);
           }
         })
         .catch(err => {

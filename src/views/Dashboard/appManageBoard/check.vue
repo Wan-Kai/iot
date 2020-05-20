@@ -213,7 +213,7 @@ export default {
       let addNodes = this.targetKeys.filter(
         temp => !this.targetKeysTemp.includes(temp)
       );
-      debugger;
+      //debugger;
       if (addNodes.length > 0) {
         //为解决闭包问题，分开写读入for函数和请求api的for函数
         for (let i = 0; i < addNodes.length; i++) {

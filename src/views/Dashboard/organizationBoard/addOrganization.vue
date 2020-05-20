@@ -200,7 +200,7 @@ export default {
                 this.commitLoading = false;
                 this.$message.success("添加企业成功");
 
-                debugger;
+                //debugger;
                 //需要将当前用户添加到组织机构中
                 var newOrganizationID = res.data.id;
                 var currentUser = this.common.getCurrentUser();

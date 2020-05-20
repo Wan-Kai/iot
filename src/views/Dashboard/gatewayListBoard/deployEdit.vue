@@ -355,7 +355,6 @@ export default {
   mounted() {},
   methods: {
     getDetail(id) {
-      debugger;
       this.$api.gateway
         .gatewayDetail({
           extra: id

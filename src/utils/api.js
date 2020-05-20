@@ -82,7 +82,7 @@ export default {
       if (!data.organizationID || common.isEmpty(data.organizationID)) {
         data.organizationID = common.getCurrentOrganizationID();
       }
-      debugger;
+
       return get("/service-profiles", data);
     },
     createService: data => {
@@ -234,7 +234,7 @@ export default {
           common.getDateFromStr(data.endTimestamp)
         );
       }
-      debugger;
+
       return get("/Devdata", data);
     },
 
@@ -344,7 +344,7 @@ export default {
       if (!data.organizationID || common.isEmpty(data.organizationID)) {
         data.organizationID = common.getCurrentOrganizationID();
       }
-      debugger;
+
       var temp = {
         organizations: [
           {
@@ -364,7 +364,7 @@ export default {
           note: data.note //电话号码
         }
       };
-      debugger;
+
       return post("/users", temp);
     },
 
@@ -380,7 +380,6 @@ export default {
 
     //更新用户密码
     updatePassword: data => {
-      debugger;
       return put("/users/" + data.extra + "/password", data);
     },
 

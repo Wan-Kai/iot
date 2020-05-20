@@ -312,7 +312,7 @@ export default {
             isActive: this.returnedData.isAdmin
           };
 
-          debugger;
+          //debugger;
           this.$api.usersManage
             .updateUser({
               extra: this.returnedData.id,

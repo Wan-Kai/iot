@@ -120,7 +120,7 @@ export default {
       sessionStorage.setItem("devEUI", record.devEUI);
       sessionStorage.setItem("deviceProfileID", record.deviceProfileID);
       sessionStorage.setItem("deviceProfileName", record.deviceProfileName);
-      debugger;
+      //debugger;
       this.$router.push({
         name: "checkNodeInApp"
       });

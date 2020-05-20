@@ -141,7 +141,7 @@ export default {
     },
 
     handleQuery() {
-      debugger;
+      //debugger;
       this.queryCondition.devEUI = this.form.getFieldValue("devEUI");
       this.getDownLog();
     },

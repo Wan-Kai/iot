@@ -145,7 +145,6 @@ export default {
 
   computed: {
     getNodeState() {
-      debugger;
       if (
         this.common.isEmpty(this.deviceDetail.devEUI) ||
         this.deviceDetail.devEUI === "0000000000000000"
@@ -198,7 +197,6 @@ export default {
     },
 
     getDeviceDetail() {
-      debugger;
       if (
         this.common.isEmpty(this.deviceDetail.devEUI) ||
         this.deviceDetail.devEUI === "0000000000000000"

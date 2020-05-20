@@ -224,7 +224,7 @@ export default {
   },
   methods: {
     getDetail() {
-      debugger;
+      //debugger;
       this.$api.organization
         .getOrganization({
           limit: 1,

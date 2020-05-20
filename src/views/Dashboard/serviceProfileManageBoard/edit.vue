@@ -399,7 +399,7 @@ export default {
           sentData.drMax = values.maxDataRate;
           sentData.drMin = values.minDataRate;
           //console.log(sentData);
-          debugger;
+
           this.$api.serviceProfile
             .updateService({
               extra: this.returnedData.id,

@@ -142,7 +142,7 @@ export default {
   },
 
   mounted() {
-    debugger;
+    //debugger;
     this.$api.organization
       .getOrganization({
         limit: 1,

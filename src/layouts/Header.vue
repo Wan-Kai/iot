@@ -87,10 +87,8 @@ export default {
   },
 
   beforeMount() {
-    debugger;
     //this.company_options = getOrganizationOptions();
     this.company_options = this.common.getCurrentOrganizationList();
-    debugger;
   },
 
   methods: {

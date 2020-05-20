@@ -298,7 +298,6 @@ export default {
       });
     },
     check(data) {
-      debugger;
       this.$router.push({
         name: "checkNodeManage",
         query: {

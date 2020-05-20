@@ -9,9 +9,11 @@ if (process.env.NODE_ENV === "development") {
   // }
   axios.defaults.baseURL = "http://188.131.172.171:8080/api";
 } else if (process.env.NODE_ENV === "debug") {
-  axios.defaults.baseURL = "/pro";
+  axios.defaults.baseURL = "http://188.131.172.171:8080/api";
 } else if (process.env.NODE_ENV === "production") {
-  axios.defaults.baseURL = "/pro";
+  axios.defaults.baseURL = "http://188.131.172.171:8080/api";
+} else {
+  axios.defaults.baseURL = "http://188.131.172.171:8080/api";
 }
 
 // 项目地址加端口
@@ -154,7 +156,7 @@ export function upload(url, data = {}) {
     },
     data: data
   };
-  debugger;
+
   // sendObject.data=JSON.stringify(data);
   return service(sendObject).catch(() => {});
 }

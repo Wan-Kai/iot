@@ -592,7 +592,7 @@ export default {
           sentData.applicationID = values.appID;
 
           console.log(sentData);
-          debugger;
+          //debugger;
           this.$api.appManage
             .updateAppNode({
               extra: this.query.devEUI,

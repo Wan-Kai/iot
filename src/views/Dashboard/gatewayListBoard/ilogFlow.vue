@@ -172,7 +172,7 @@ export default {
     },
 
     handleQuery() {
-      debugger;
+      //debugger;
       this.queryCondition.gatewayID = this.form.getFieldValue("gatewayID");
       this.getGatewayStat();
     },

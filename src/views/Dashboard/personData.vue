@@ -262,7 +262,7 @@ export default {
             isActive: this.returnedData.isActive
           };
 
-          debugger;
+          //debugger;
           this.$api.usersManage
             .updateUser({
               extra: this.returnedData.id,

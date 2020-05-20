@@ -68,7 +68,7 @@ const getters = {
   },
 
   getCurrentOrganizationListChangedTimes() {
-    debugger;
+    //debugger;
     const changedTimes = localStorage.getItem(
       "current_organization_list_changedTimes"
     );

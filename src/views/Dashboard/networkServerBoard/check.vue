@@ -160,7 +160,7 @@ export default {
 
   methods: {
     getDetail() {
-      debugger;
+      //debugger;
       this.$api.networkServer
         .getServerDetail({
           limit: 1,

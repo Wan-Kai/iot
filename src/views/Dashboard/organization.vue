@@ -258,7 +258,7 @@ export default {
     },
 
     handleDeleteOk(e) {
-      debugger;
+      //debugger;
       this.confirmLoading = true;
       this.$api.organization
         .deleteOrganization({

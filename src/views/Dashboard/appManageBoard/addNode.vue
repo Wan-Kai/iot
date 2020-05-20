@@ -334,7 +334,7 @@ export default {
     },
 
     getUnDeployedNodesOption() {
-      debugger;
+      //debugger;
       const itemOptions = [];
       this.$api.node
         .getDeviceProfileAndDevice({
@@ -344,7 +344,7 @@ export default {
           let infoDataTemp = res.data.result;
           for (let i = 0; i < infoDataTemp.length; i++) {
             if (this.isDeviceDeployed(infoDataTemp[i].device.devEUI)) continue;
-            debugger;
+            //debugger;
             let item = {
               label: infoDataTemp[i].device_profile_name,
               name: infoDataTemp[i].device_profile_id,

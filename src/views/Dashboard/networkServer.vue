@@ -178,7 +178,7 @@ export default {
       }, 100);
     },
     checkNetworkServer(currentRecord) {
-      debugger;
+      //debugger;
       this.$router.push({
         name: "checkNetworkServer",
         query: {

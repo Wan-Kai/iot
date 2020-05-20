@@ -258,7 +258,7 @@ export default {
     this.query.devEUI = sessionStorage.getItem("devEUI");
     this.query.deviceProfileID = sessionStorage.getItem("deviceProfileID");
     this.query.deviceProfileName = sessionStorage.getItem("deviceProfileName");
-    debugger;
+    //debugger;
 
     this.getNodeDetail();
     this.getMap();

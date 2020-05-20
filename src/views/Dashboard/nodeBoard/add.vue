@@ -263,7 +263,7 @@ export default {
       });
     },
     radioOnChange(e) {
-      debugger;
+      //debugger;
       if (e.target.value === "OTTA") {
         this.currentRecord.supportsJoin = true;
         this.currentRecord.supportsJoinType = "1";

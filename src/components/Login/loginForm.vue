@@ -107,12 +107,7 @@ export default {
                 this.$message.success("登录成功");
                 //debugger;
                 setSessionKey(res.data.jwt);
-                initProfile(); //{
-                //initDevProfileServices();
-                //});
-                // initOrganizations();
-                // initNetworkServers();
-                // initServiceOptions();
+                initProfile();
                 setTimeout(() => {
                   this.$router.push("/admin/dashboard");
                 }, 300);

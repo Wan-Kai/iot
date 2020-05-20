@@ -148,11 +148,13 @@ export function upload(url, data = {}) {
     method: "post",
     headers: {
       "Content-Type": "multipart/form-data",
+      Accept: "text/plain",
       "Grpc-Metadata-Authorization":
         "Bearer " + store.getters["login/getSessionKey"]
     },
-    data: JSON.stringify(data)
+    data: data
   };
+  debugger;
   // sendObject.data=JSON.stringify(data);
   return service(sendObject).catch(() => {});
 }

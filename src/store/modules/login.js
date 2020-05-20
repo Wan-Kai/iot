@@ -50,7 +50,7 @@ const getters = {
   },
 
   getCurrentOrganization() {
-    debugger;
+    //debugger;
     var result = state.currentOrganization;
     if (result == null || result.organizationID == "") {
       var temp = localStorage.getItem("current_organization");
@@ -58,13 +58,22 @@ const getters = {
         result = JSON.parse(temp);
       }
     }
-    debugger;
+    //debugger;
     return result;
   },
   getCurrentOrganizationList() {
     if (localStorage.getItem("current_organization_list")) {
       return JSON.parse(localStorage.getItem("current_organization_list"));
     } else return state.currentOrganizationList;
+  },
+
+  getCurrentOrganizationListChangedTimes() {
+    debugger;
+    const changedTimes = localStorage.getItem(
+      "current_organization_list_changedTimes"
+    );
+    if (changedTimes) return changedTimes;
+    else return 0;
   }
 };
 
@@ -126,6 +135,16 @@ const mutations = {
       JSON.stringify(state.currentOrganizationList)
     );
 
+    var changedTimes = localStorage.getItem(
+      "current_organization_list_changedTimes"
+    );
+    if (changedTimes == null) {
+      localStorage.setItem("current_organization_list_changedTimes", "1");
+    } else {
+      var x = Number(changedTimes) + 1;
+      localStorage.setItem("current_organization_list_changedTimes", x);
+    }
+
     if (organizations == null || organizations.length <= 0) {
       //this.setCurrentOrganization(state, null);
       state.currentOrganization = {
@@ -145,6 +164,7 @@ const mutations = {
           "current_organization",
           JSON.stringify(organizations[0])
         );
+
         //this.setCurrentOrganization(state, organizations[0]);
       }
     }

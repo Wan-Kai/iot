@@ -34,7 +34,7 @@ export function initProfile() {
       console.log(err);
     })
     .finally(() => {
-      initOrganizations();
+      //initOrganizations();
       initNetworkServers();
       initServiceOptions();
     });
@@ -89,9 +89,8 @@ export function initOrganizations() {
         temp.updatedAt = getData[i].updatedAt;
         organizationData.push(temp);
       }
-      store.commit("options/setOrganizations", organizationData);
-
-      console.log("initOrganizations");
+      //store.commit("options/setOrganizations", organizationData);
+      //console.log("initOrganizations");
     })
     .catch(err => {
       //debugger;
@@ -149,10 +148,13 @@ export function getOrganizationOptions() {
 }
 
 export function getOrganizationNameById(id) {
-  let organizations = store.getters["options/getOrganizations"];
+  //let organizations = store.getters["options/getOrganizations"];
+  let organizations = store.getters["login/getCurrentOrganizationList"];
   for (let i = 0; i < organizations.length; i++) {
-    if (organizations[i].id === id) {
-      return organizations[i].name;
+    //if (organizations[i].id === id) {
+    if (organizations[i].organizationID === id) {
+      //return organizations[i].name;
+      return organizations[i].organizationName;
     }
   }
 

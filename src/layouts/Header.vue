@@ -31,6 +31,9 @@
       </a-dropdown>
     </div>
 
+    <!--
+    <p>{{ this.currentOrganizationListChangedTimes }}</p>
+    -->
     <div class="iot_organization">
       <div>
         <a-cascader
@@ -70,6 +73,16 @@ export default {
 
     currentOrganizationID() {
       return this.common.getCurrentOrganizationID();
+    },
+
+    currentOrganizationListChangedTimes() {
+      return this.common.getCurrentOrganizationListChangedTimes();
+    }
+  },
+
+  watch: {
+    currentOrganizationListChangedTimes() {
+      this.company_options = this.common.getCurrentOrganizationList();
     }
   },
 

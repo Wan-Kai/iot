@@ -396,14 +396,16 @@ export default {
       withCredentials
     }) {
       // EXAMPLE: post form-data with 'axios'
-      const formData = new FormData();
+      debugger;
+      let formData = new FormData();
       if (data) {
         Object.keys(data).forEach(key => {
           formData.append(key, data[key]);
         });
       }
-      formData.append(filename, file);
-
+      debugger;
+      formData.append("file", file);
+      console.log(formData.get("file"));
       this.$api.appManage
         .uploadNode(
           formData

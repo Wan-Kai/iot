@@ -301,7 +301,7 @@ export default {
               if (res.status === 200) {
                 this.$message.success("成功修改组织机构信息");
 
-                initOrganizations();
+                initProfile();
                 var _this = this;
                 setTimeout(() => {
                   _this.handleBack();

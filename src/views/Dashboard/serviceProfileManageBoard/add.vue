@@ -32,6 +32,11 @@
                 style="width: 90%;float: left;text-align: left"
                 size="small"
                 :options="company_options"
+                :fieldNames="{
+                  label: 'organizationName',
+                  value: 'organizationID',
+                  children: []
+                }"
                 placeholder=""
               />
               <a-tooltip placement="rightTop">
@@ -299,7 +304,8 @@ export default {
     this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
   },
   beforeMount() {
-    this.company_options = getOrganizationOptions();
+    //this.company_options = getOrganizationOptions();
+    this.company_options = this.common.getCurrentOrganizationList();
     this.netserver_options = getNetworkServerOptions();
   },
   methods: {

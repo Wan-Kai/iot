@@ -28,6 +28,10 @@ export default {
     return store.getters["login/getCurrentOrganizationList"];
   },
 
+  getCurrentOrganizationListChangedTimes: function() {
+    return store.getters["login/getCurrentOrganizationListChangedTimes"];
+  },
+
   setCurrentOrganization: function(value) {
     debugger;
     var list = this.getCurrentOrganizationList();

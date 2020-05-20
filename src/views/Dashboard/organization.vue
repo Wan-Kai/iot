@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { getAreaLabel, initOrganizations } from "@/utils/util";
+import { getAreaLabel, initOrganizations, initProfile } from "@/utils/util";
 const columns = [
   {
     title: "ID",
@@ -269,7 +269,7 @@ export default {
             this.confirmLoading = false;
             this.$message.success("成功删除组织机构");
 
-            initOrganizations();
+            initProfile();
 
             setTimeout(() => {
               this.$router.push({

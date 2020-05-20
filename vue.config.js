@@ -34,9 +34,8 @@ module.exports = {
       .set("_c", resolve("src/components"));
   },
   devServer: {
-    host: "localhost",
     port: 8080, // 端口号
-    https: true, // https:{type:Boolean}
+    https: false, // https:{type:Boolean}
     open: true //配置自动启动浏览器
     //proxy: 'http://188.131.172.171:8080' // 配置跨域处理,只有一个代理
 

@@ -121,6 +121,7 @@
             name="fileUpload"
             :multiple="false"
             :customRequest="customRequest"
+            :fileList="fileList"
             :remove="uploadRemove"
             @change="uploadHandleChange"
           >
@@ -362,8 +363,8 @@ export default {
     },
     uploadHandleChange(info) {
       let fileList = [...info.fileList];
-
       this.fileList = fileList;
+
       if (info.file.status === "done") {
         this.$message.success(`${info.file.name} 文件上传成功`);
       } else if (info.file.status === "error") {
@@ -371,6 +372,7 @@ export default {
       }
     },
     uploadRemove() {
+      this.$message.error("不支持删除已经上传的文件");
       return false;
     },
     customRequest({
@@ -405,14 +407,9 @@ export default {
         .then(res => {
           if (res.status === 200) {
             onSuccess(res, file);
-            console.log("成功");
-            console.log(res.status);
-            console.log(res);
           } else {
             onError();
-            console.log("失败");
-            console.log(res.status);
-            console.log(res);
+            this.fileList = [];
           }
         })
         .catch(err => {

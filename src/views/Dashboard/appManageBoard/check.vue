@@ -124,7 +124,10 @@
             :remove="uploadRemove"
             @change="uploadHandleChange"
           >
-            <a-button style="margin-bottom: 10px">
+            <a-button
+              style="margin-bottom: 10px"
+              :disabled="fileList.length > 0"
+            >
               <a-icon type="upload" /> 点击上传文件
             </a-button>
           </a-upload>
@@ -358,14 +361,9 @@ export default {
       this.reload();
     },
     uploadHandleChange(info) {
-      // let fileList = [...info.fileList];
-      //
-      // fileList = fileList.map(file => {
-      //   file.icon = null;
-      //   return file;
-      // });
+      let fileList = [...info.fileList];
 
-      // this.fileList = fileList;
+      this.fileList = fileList;
       if (info.file.status === "done") {
         this.$message.success(`${info.file.name} 文件上传成功`);
       } else if (info.file.status === "error") {
@@ -373,7 +371,7 @@ export default {
       }
     },
     uploadRemove() {
-      return true;
+      return false;
     },
     customRequest({
       action,
@@ -387,26 +385,23 @@ export default {
       withCredentials
     }) {
       // EXAMPLE: post form-data with 'axios'
-      debugger;
       let formData = new FormData();
       if (data) {
         Object.keys(data).forEach(key => {
           formData.append(key, data[key]);
         });
       }
-      debugger;
       formData.append("file", file);
       console.log(formData.get("file"));
       this.$api.appManage
-        .uploadNode(
-          formData
-          //         {
-          //   onUploadProgress: ({ total, loaded }) => {
-          //     onProgress(
-          //       { percent: Math.round((loaded / total) * 100).toFixed(2) },file);
-          //   }
-          // }
-        )
+        .uploadNode(formData, {
+          onUploadProgress: ({ total, loaded }) => {
+            onProgress(
+              { percent: Math.round((loaded / total) * 100).toFixed(2) },
+              file
+            );
+          }
+        })
         .then(res => {
           if (res.status === 200) {
             onSuccess(res, file);

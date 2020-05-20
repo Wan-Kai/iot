@@ -102,7 +102,7 @@
         style="min-width: auto"
         class="iot_view_table"
         :pagination="pagination"
-        :rowKey="record => record.device_profile_id"
+        :rowKey="record => record.uid"
         :loading="tableLoadingState"
       >
         <span slot="state" slot-scope="text, record">

@@ -108,6 +108,30 @@
           </span>
         </a-transfer>
       </a-modal>
+      <a-modal
+        title="导入文件"
+        :visible="uploadModalVisible"
+        @cancel="uploadHandleModalCancel"
+      >
+        <template slot="footer">
+          <a-button key="back" @click="uploadHandleModalCancel">完成</a-button>
+        </template>
+        <div>
+          <a-upload
+            name="fileUpload"
+            :multiple="true"
+            :customRequest="customRequest"
+            @change="uploadHandleChange"
+          >
+            <a-button style="margin-bottom: 10px">
+              <a-icon type="upload" /> 点击上传文件
+            </a-button>
+          </a-upload>
+          <!--          <div style="margin: 10px auto">-->
+          <!--            <textarea :rows="8" readonly style="cursor: default;width: 100%;background: #E0E0E0"/>-->
+          <!--          </div>-->
+        </div>
+      </a-modal>
     </a-layout>
   </a-layout>
 </template>
@@ -118,6 +142,8 @@ import NodeList from "./nodeList";
 import Edit from "./edit.vue";
 import TranspondData from "./transpondData.vue";
 import ACol from "ant-design-vue/es/grid/Col";
+import { base } from "../../../utils/axios";
+import store from "../../../store/index";
 import { getOrganizationNameById } from "@/utils/util";
 export default {
   components: { ACol, ARow, NodeList, Edit, TranspondData },
@@ -130,6 +156,16 @@ export default {
         defaultTab: "1",
         organizationName: ""
       },
+
+      //configuration
+      url: base + "/upload",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "text/plain",
+        "Grpc-Metadata-Authorization":
+          "Bearer " + store.getters["login/getSessionKey"]
+      },
+      textAvailable: false,
 
       //data
       returnedData: {
@@ -150,7 +186,9 @@ export default {
       sentData: [],
 
       //loading
-      nodeComfirmLoading: false
+      nodeComfirmLoading: false,
+      uploadModalVisible: false,
+      uploadLoading: false
     };
   },
   beforeMount() {
@@ -166,7 +204,7 @@ export default {
   },
   methods: {
     importNodes() {
-      alert("正在开发中...");
+      this.uploadModalVisible = true;
     },
 
     handleNodeChangeComfirm() {
@@ -321,6 +359,65 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    uploadHandleModalCancel() {
+      this.uploadModalVisible = false;
+    },
+    uploadHandleChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        this.$message.success(`${info.file.name} 文件上传成功`);
+      } else if (info.file.status === "error") {
+        this.$message.error(`${info.file.name} 文件上传失败`);
+      }
+    },
+    customRequest({
+      action,
+      data,
+      file,
+      filename,
+      headers,
+      onError,
+      onProgress,
+      onSuccess,
+      withCredentials
+    }) {
+      // EXAMPLE: post form-data with 'axios'
+      const formData = new FormData();
+      if (data) {
+        Object.keys(data).forEach(key => {
+          formData.append(key, data[key]);
+        });
+      }
+      formData.append(filename, file);
+
+      this.$api.appManage
+        .uploadNode(
+          formData
+          //         {
+          //   onUploadProgress: ({ total, loaded }) => {
+          //     onProgress(
+          //       { percent: Math.round((loaded / total) * 100).toFixed(2) },file);
+          //   }
+          // }
+        )
+        .then(res => {
+          if (res.data.status === 200) {
+            onSuccess(res, file);
+          } else {
+            onError();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      return {
+        abort() {
+          console.log("upload progress is aborted.");
+        }
+      };
     }
   }
 };

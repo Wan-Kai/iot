@@ -306,7 +306,6 @@
 
 <script>
 import {
-  getOrganizationOptions,
   getNetworkServerOptions,
   getNetworkServerById,
   getNetworkServerIdByServer,
@@ -346,7 +345,6 @@ export default {
   },
   beforeMount() {
     this.returnedData.id = this.$route.query.id;
-    //this.company_options = getOrganizationOptions();
     this.company_options = this.common.getCurrentOrganizationList();
     this.networkServer_options = getNetworkServerOptions();
   },

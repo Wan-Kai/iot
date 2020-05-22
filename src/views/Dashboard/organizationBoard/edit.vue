@@ -164,12 +164,7 @@
 </template>
 
 <script>
-import {
-  initProfile,
-  initOrganizations,
-  getArea,
-  getProfessionOptions
-} from "@/utils/util";
+import { initProfile, getArea, getProfessionOptions } from "@/utils/util";
 import { setNetServer } from "@/utils/util";
 
 export default {

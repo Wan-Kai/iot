@@ -54,43 +54,6 @@ export function initOrganizations() {
       //仅显示在有权限的组织机构
       let currentOrganizations =
         store.getters["login/getCurrentOrganizationList"];
-      if (currentOrganizations == null || currentOrganizations.length == 0) {
-        store.commit("options/setOrganizations", null);
-        return;
-      }
-
-      let organizationData = [];
-      for (let i = 0; i < getData.length; i++) {
-        var existed = false;
-        var id = getData[i].id;
-        for (let j = 0; j < currentOrganizations.length; j++) {
-          if (currentOrganizations[j].organizationID === id) {
-            existed = true;
-            break;
-          }
-        }
-        if (existed == false) continue;
-
-        let temp = {
-          id: "",
-          name: "",
-          displayName: "",
-          canHaveGateways: "",
-          createdAt: "",
-          updatedAt: ""
-        };
-        temp.id = getData[i].id;
-        temp.name = getData[i].name;
-        temp.value = getData[i].id;
-        temp.label = getData[i].name;
-        temp.displayName = getData[i].displayName;
-        temp.canHaveGateways = getData[i].canHaveGateways;
-        temp.createdAt = getData[i].createdAt;
-        temp.updatedAt = getData[i].updatedAt;
-        organizationData.push(temp);
-      }
-      //store.commit("options/setOrganizations", organizationData);
-      //console.log("initOrganizations");
     })
     .catch(err => {
       //debugger;
@@ -139,21 +102,14 @@ export function initDevProfileServices() {
     });
 }
 
-export function getDeviceProfileService_options() {
-  return store.getters["options/getDeviceProfileService_options"];
-}
-
-export function getOrganizationOptions() {
-  return store.getters["options/getOrganizationOptions"];
+export function getDeviceProfile_options() {
+  return store.getters["options/getDeviceProfile_options"];
 }
 
 export function getOrganizationNameById(id) {
-  //let organizations = store.getters["options/getOrganizations"];
   let organizations = store.getters["login/getCurrentOrganizationList"];
   for (let i = 0; i < organizations.length; i++) {
-    //if (organizations[i].id === id) {
     if (organizations[i].organizationID === id) {
-      //return organizations[i].name;
       return organizations[i].organizationName;
     }
   }
@@ -229,7 +185,7 @@ export function getNetworkServerNameById(id) {
 }
 
 export function getArea() {
-  return store.getters["options/getArea"];
+  return store.getters["options/getAreaOptions"];
 }
 
 export function getCommunicationMode_options() {
@@ -241,7 +197,7 @@ export function getBand_options() {
 }
 
 export function getAreaLabel(province, city, district) {
-  let area = store.getters["options/getArea"];
+  let area = store.getters["options/getAreaOptions"];
   for (let i = 0; i < area.length; i++) {
     if (area[i].value === province) {
       for (let j = 0; j < area[i].children.length; j++) {
@@ -342,7 +298,7 @@ export function resetData() {
 }
 
 export function setArea(area_options) {
-  store.commit("options/setArea", area_options);
+  store.commit("options/setAreaOptions", area_options);
 }
 
 export function setNetServer(netServerData) {

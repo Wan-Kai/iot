@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { getAreaLabel, initOrganizations, initProfile } from "@/utils/util";
+import { getAreaLabel, initProfile } from "@/utils/util";
 const columns = [
   {
     title: "ID",

@@ -259,7 +259,8 @@
 
 <script>
 import wifi_map from "@/assets/wifi.png";
-import { getDeviceProfileService_options } from "@/utils/util";
+import { getArea } from "@/utils/util";
+
 export default {
   name: "addNode",
   data() {
@@ -300,6 +301,7 @@ export default {
   beforeMount() {
     this.query.appID = sessionStorage.getItem("appID");
     this.devProfile_options = this.getDeviceProfileOptions();
+    this.area_options = getArea();
   },
 
   mounted() {

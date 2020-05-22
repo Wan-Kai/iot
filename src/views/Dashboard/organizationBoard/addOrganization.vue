@@ -117,7 +117,6 @@
 
 <script>
 import {
-  initOrganizations,
   getArea,
   getProfessionOptions,
   initProfile,

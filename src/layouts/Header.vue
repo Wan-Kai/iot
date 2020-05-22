@@ -44,7 +44,7 @@
           :fieldNames="{
             label: 'organizationName',
             value: 'organizationID',
-            children: ''
+            children: []
           }"
           @change="onChangeCompany"
           placeholder="组织机构"
@@ -55,7 +55,6 @@
 </template>
 
 <script>
-import { getOrganizationOptions } from "@/utils/util";
 export default {
   data() {
     return {
@@ -87,7 +86,6 @@ export default {
   },
 
   beforeMount() {
-    //this.company_options = getOrganizationOptions();
     this.company_options = this.common.getCurrentOrganizationList();
   },
 

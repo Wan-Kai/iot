@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { getAreaLabel, initOrganizations } from "@/utils/util";
+import { getAreaLabel } from "@/utils/util";
 
 export default {
   data() {

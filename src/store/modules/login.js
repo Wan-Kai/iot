@@ -32,7 +32,9 @@ const state = {
     organizationID: "",
     organizationName: ""
   }, //当前组织机构
-  currentOrganizationList: []
+  currentOrganizationList: [],
+
+  current_organization_list_changedTimes: ""
 };
 
 // getters
@@ -62,13 +64,22 @@ const getters = {
     return result;
   },
   getCurrentOrganizationList() {
-    if (localStorage.getItem("current_organization_list")) {
-      return JSON.parse(localStorage.getItem("current_organization_list"));
-    } else return state.currentOrganizationList;
+    var result = state.currentOrganizationList;
+    if (result == null || result.length === 0) {
+      var temp = localStorage.getItem("current_organization_list");
+      if (temp) {
+        result = JSON.parse(temp);
+      }
+    }
+    return result;
   },
 
   getCurrentOrganizationListChangedTimes() {
     //debugger;
+    var result = state.current_organization_list_changedTimes;
+    if (result && result >= 0) {
+      return result;
+    }
     const changedTimes = localStorage.getItem(
       "current_organization_list_changedTimes"
     );
@@ -135,18 +146,27 @@ const mutations = {
       JSON.stringify(state.currentOrganizationList)
     );
 
-    var changedTimes = localStorage.getItem(
-      "current_organization_list_changedTimes"
-    );
-    if (changedTimes == null) {
-      localStorage.setItem("current_organization_list_changedTimes", "1");
+    var changedTimes = state.current_organization_list_changedTimes;
+    if (changedTimes && changedTimes >= 0) {
+      changedTimes = Number(changedTimes) + 1;
+      state.current_organization_list_changedTimes = changedTimes;
+      localStorage.setItem(
+        "current_organization_list_changedTimes",
+        changedTimes
+      );
     } else {
-      var x = Number(changedTimes) + 1;
-      localStorage.setItem("current_organization_list_changedTimes", x);
+      var x = localStorage.getItem("current_organization_list_changedTimes");
+      if (x == null) {
+        state.current_organization_list_changedTimes = 1;
+        localStorage.setItem("current_organization_list_changedTimes", "1");
+      } else {
+        x = Number(x) + 1;
+        state.current_organization_list_changedTimes = x;
+        localStorage.setItem("current_organization_list_changedTimes", x);
+      }
     }
 
     if (organizations == null || organizations.length <= 0) {
-      //this.setCurrentOrganization(state, null);
       state.currentOrganization = {
         organizationID: "",
         organizationName: ""
@@ -164,8 +184,6 @@ const mutations = {
           "current_organization",
           JSON.stringify(organizations[0])
         );
-
-        //this.setCurrentOrganization(state, organizations[0]);
       }
     }
   },

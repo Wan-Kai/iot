@@ -1,8 +1,7 @@
 const state = {
-  organization_list: [],
   networkServer_list: [],
   service_list: [],
-
+  deviceProfile_options: [],
   area_options: [],
   communicationMode_options: [
     {
@@ -49,7 +48,6 @@ const state = {
     }
   ],
 
-  deviceProfileService_options: [],
   profession_options: [
     {
       value: "航天",
@@ -71,38 +69,8 @@ const state = {
 };
 
 const getters = {
-  getOrganizationOptions() {
-    let organization_options = [];
-
-    let organization = [];
-    if (localStorage.getItem("organization_list")) {
-      organization = JSON.parse(localStorage.getItem("organization_list"));
-    } else {
-      organization = state.organization_list;
-    }
-
-    for (let i = 0; i < organization.length; i++) {
-      let temp = {
-        value: "",
-        label: "",
-        id: ""
-      };
-      temp.label = organization[i].name;
-      temp.value = organization[i].id;
-      temp.id = organization[i].id;
-      organization_options.push(temp);
-    }
-    return organization_options;
-  },
-
-  getOrganizations() {
-    if (localStorage.getItem("organization_list")) {
-      return JSON.parse(localStorage.getItem("organization_list"));
-    } else return state.organization_list;
-  },
-
-  getDeviceProfileService_options() {
-    return state.deviceProfileService_options;
+  getDeviceProfile_options() {
+    return state.deviceProfile_options;
   },
 
   getNetworkServerOptions() {
@@ -134,7 +102,7 @@ const getters = {
     } else return state.networkServer_list;
   },
 
-  getArea() {
+  getAreaOptions() {
     return state.area_options;
   },
 
@@ -189,18 +157,11 @@ const getters = {
 const actions = {};
 
 const mutations = {
-  setArea(state, data) {
+  setAreaOptions(state, data) {
     //设置参数
     state.area_options = data;
   },
-  setOrganizations(state, data) {
-    //设置参数
-    state.organization_list = data;
-    localStorage.setItem(
-      "organization_list",
-      JSON.stringify(state.organization_list)
-    );
-  },
+
   setNetworkServers(state, data) {
     //设置参数
     state.networkServer_list = data;
@@ -213,8 +174,8 @@ const mutations = {
     state.service_list = data;
     localStorage.setItem("service_list", JSON.stringify(state.service_list));
   },
-  setDeviceProfileService_options(state, data) {
-    state.deviceProfileService_options = data;
+  setDeviceProfile_options(state, data) {
+    state.deviceProfile_options = data;
   }
 };
 

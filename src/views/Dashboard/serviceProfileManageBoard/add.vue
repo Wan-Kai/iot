@@ -283,7 +283,6 @@
 
 <script>
 import {
-  getOrganizationOptions,
   getNetworkServerOptions,
   getNetworkServerIdByServer,
   initServiceOptions
@@ -304,7 +303,6 @@ export default {
     this.form = this.$form.createForm(this, { name: "dynamic_form_item" });
   },
   beforeMount() {
-    //this.company_options = getOrganizationOptions();
     this.company_options = this.common.getCurrentOrganizationList();
     this.netserver_options = getNetworkServerOptions();
   },

@@ -75,14 +75,7 @@
 </template>
 
 <script>
-import {
-  initNetworkServers,
-  initServiceOptions,
-  initOrganizations,
-  setSessionKey,
-  initProfile,
-  initDevProfileServices
-} from "@/utils/util";
+import { setSessionKey, initProfile } from "@/utils/util";
 export default {
   data() {
     this.form = this.$form.createForm(this);

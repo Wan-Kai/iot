@@ -16,7 +16,12 @@
           </a-input-group>
         </a-col>
         <a-col :span="8" :offset="8">
-          <a-button type="primary" icon="plus" @click="addNode">
+          <a-button
+            type="primary"
+            icon="plus"
+            @click="addNode"
+            style="float:right;"
+          >
             新增节点规范
           </a-button>
           <!--

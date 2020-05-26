@@ -15,11 +15,11 @@ export default {
 
   mounted() {
     setTimeout(() => {
-      this.drawLineUp();
+      this.drawLine();
     });
   },
   methods: {
-    drawLineUp() {
+    drawLine() {
       // 基于准备好的dom，初始化echarts实例
       let myChartUp = this.$echarts.init(
         document.getElementById("gatewayChart")
@@ -34,7 +34,7 @@ export default {
           subtext: "单位KBs"
         },
         tooltip: {
-          trigger: "axis",
+          trigger: "none",
           axisPointer: {
             type: "cross",
             label: {
@@ -43,12 +43,9 @@ export default {
           }
         },
         legend: {
-          data: ["发送", "接收"]
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
+          data: ["发送", "接收"],
+          icon: "circle",
+          right: 14
         },
         grid: {
           left: "20",
@@ -69,12 +66,37 @@ export default {
               "01-14",
               "01-15",
               "01-16"
-            ]
+            ],
+            axisLine: {
+              show: false
+            },
+            axisPointer: {
+              label: {
+                formatter: function(params) {
+                  return (
+                    "发送 " +
+                    params.value +
+                    (params.seriesData.length
+                      ? ": " + params.seriesData[0].data
+                      : "") +
+                    "\n" +
+                    "接收 " +
+                    params.value +
+                    (params.seriesData.length
+                      ? ": " + params.seriesData[1].data
+                      : "")
+                  );
+                }
+              }
+            }
           }
         ],
         yAxis: [
           {
-            type: "value"
+            type: "value",
+            axisLine: {
+              show: false
+            }
           }
         ],
         series: [
@@ -83,12 +105,12 @@ export default {
             type: "line",
             stack: "总量",
             data: [120, 132, 101, 134, 90, 230, 210, 220],
-            color: "#33FF66",
+            color: "#2fe2ad",
             areaStyle: {
               color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 0,
-                  color: "#33FF66"
+                  color: "#2fe2ad"
                 },
                 {
                   offset: 1,
@@ -111,7 +133,7 @@ export default {
               color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                   offset: 0,
-                  color: "#0066FF"
+                  color: "#3bc5ff"
                 },
                 {
                   offset: 1,
@@ -120,7 +142,7 @@ export default {
               ])
             },
             data: [220, 182, 191, 234, 290, 330, 310, 360],
-            color: "#0066FF"
+            color: "#3bc5ff"
           }
         ]
       });

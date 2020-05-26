@@ -26,7 +26,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="加入通知URL："
+          :label="joinNotificationURLLabel"
           :required="false"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
@@ -44,7 +44,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="设备状态通知URL："
+          :label="statusNotificationURL"
           :required="false"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
@@ -62,7 +62,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="位置通知URL："
+          :label="locationNotificationURL"
           :required="false"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
@@ -80,7 +80,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="ACK通知URL："
+          :label="ackNotificationURL"
           :required="false"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
@@ -98,7 +98,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="错误通知URL："
+          :label="errorNotificationURL"
           :required="false"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
@@ -140,6 +140,13 @@ export default {
   name: "transpondData",
   data() {
     return {
+      //label need align
+      joinNotificationURLLabel: "\xa0\xa0\xa0" + "加入通知URL：",
+      statusNotificationURL: "\xa0\xa0\xa0" + "设备状态通知URL：",
+      locationNotificationURL: "\xa0\xa0\xa0" + "位置通知URL：",
+      ackNotificationURL: "\xa0\xa0\xa0" + "ACK通知URL：",
+      errorNotificationURL: "\xa0\xa0\xa0" + "错误通知URL：",
+
       //params
       query: {
         appID: ""

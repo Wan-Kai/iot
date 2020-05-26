@@ -25,7 +25,7 @@
             }
           ]"
           size="small"
-          style="width: 90%;float: left;text-align: left"
+          style="width: 80%;float: left;text-align: left"
         />
       </a-form-item>
       <a-form-item
@@ -48,7 +48,7 @@
               rules: [{ required: true, message: '是否拥有网关' }]
             }
           ]"
-          style="margin-left: 10px;float: left"
+          style="float: left"
         >
         </a-switch>
       </a-form-item>
@@ -68,7 +68,7 @@
               rules: [{ required: false, message: '请选择行业' }]
             }
           ]"
-          style="float: left;text-align: left"
+          style="float: left;text-align: left;width: 80%"
           size="small"
           :options="profession_options"
           placeholder=""
@@ -77,7 +77,7 @@
 
       <a-form-item
         class="iot_view_edit_formItem"
-        label="所在区域："
+        :label="areaLabel"
         :required="false"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
@@ -94,7 +94,7 @@
               rules: [{ required: false, message: '请选择所在区域' }]
             }
           ]"
-          style="margin-left:0px;float:left;text-align:left"
+          style="width: 80%;margin-left:0px;float:left;text-align:left"
           size="small"
           :options="area_options"
           placeholder=""
@@ -102,7 +102,7 @@
       </a-form-item>
       <a-form-item
         class="iot_view_edit_formItem"
-        label="详细地址："
+        :label="addresLabel"
         :required="false"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
@@ -115,7 +115,7 @@
             }
           ]"
           size="small"
-          style="float: left;text-align: left;width: 100%"
+          style="width: 80%;float: left;text-align: left"
         />
       </a-form-item>
 
@@ -136,7 +136,6 @@
               >删除</a-button
             >
             <a-button
-              type="danger"
               icon="delete"
               style="margin-left: 16px"
               @click="handleBack"
@@ -170,6 +169,10 @@ import { setNetServer } from "@/utils/util";
 export default {
   data() {
     return {
+      //label need align
+      areaLabel: "\xa0\xa0\xa0" + "所在区域：",
+      addresLabel: "\xa0\xa0\xa0" + "详细地址：",
+
       area_options: [],
       profession_options: [],
       /*

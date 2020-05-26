@@ -19,7 +19,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">节点规范名称：</p>
             </a-col>
@@ -29,7 +29,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">应用编号：</p>
             </a-col>
@@ -39,7 +39,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">节点名称：</p>
             </a-col>
@@ -49,7 +49,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">入网方式：</p>
             </a-col>
@@ -59,7 +59,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">协议版本：</p>
             </a-col>
@@ -69,7 +69,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">频段：</p>
             </a-col>
@@ -79,7 +79,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">Class：</p>
             </a-col>
@@ -89,7 +89,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">"网络状态：</p>
             </a-col>
@@ -99,7 +99,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">信号：</p>
             </a-col>
@@ -109,7 +109,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">所在网关：</p>
             </a-col>
@@ -119,7 +119,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">AppKey：</p>
             </a-col>
@@ -129,7 +129,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">超时周期（分钟）：</p>
             </a-col>
@@ -139,7 +139,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">最后心跳时间：</p>
             </a-col>
@@ -149,7 +149,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">使用状态：</p>
             </a-col>
@@ -159,7 +159,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">添加时间：</p>
             </a-col>
@@ -169,7 +169,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">地理位置：</p>
             </a-col>
@@ -179,7 +179,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_gatewayList_detail_textCard_text_dark">
+          <a-row class="iot_view_gatewayList_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">节点描述：</p>
             </a-col>

@@ -120,7 +120,7 @@
                 checkedChildren="开"
                 unCheckedChildren="关"
                 @change="stateChange"
-                style="margin-left: 10px;float: left"
+                style="float: left"
               />
               <a-tooltip
                 placement="rightTop"
@@ -148,7 +148,7 @@
                 checkedChildren="开"
                 unCheckedChildren="关"
                 @change="areaChange"
-                style="margin-left: 10px;float: left"
+                style="float: left"
               />
               <a-tooltip
                 placement="rightTop"

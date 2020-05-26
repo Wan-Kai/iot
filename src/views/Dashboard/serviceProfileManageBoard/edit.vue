@@ -119,7 +119,7 @@
             unCheckedChildren="关"
             :checked="returnedData.addGWMetaData"
             @change="stateChange"
-            style="margin-left: 10px;float: left"
+            style="float: left"
             v-decorator="[
               'addGWMetaData',
               {
@@ -152,7 +152,7 @@
             unCheckedChildren="关"
             :checked="returnedData.hrAllowed"
             @change="areaChange"
-            style="margin-left: 10px;float: left"
+            style="float: left"
             v-decorator="[
               'hrAllowed',
               {

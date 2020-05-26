@@ -62,7 +62,7 @@
           checkedChildren="开"
           unCheckedChildren="关"
           @change="stateChange"
-          style="margin-left: 10px;float: left"
+          style="float: left"
           v-decorator="[
             'gatewayDiscoveryEnabled',
             { rules: [{ required: true, message: '是否启用网关发现' }] }

@@ -46,7 +46,7 @@
                 checkedChildren="是"
                 unCheckedChildren="否"
                 @change="stateChange"
-                style="margin-left: 10px;float: left"
+                style="float: left"
                 v-decorator="[
                   'isAdmin',
                   {
@@ -95,7 +95,7 @@
 
             <a-form-item
               class="iot_view_usersManage_edit_formItem"
-              label="备注："
+              :label="descriptionLabel"
               :label-col="{ span: 4 }"
               :wrapper-col="{ span: 12 }"
             >
@@ -114,26 +114,31 @@
             </a-form-item>
             <div class="iot_view_usersManage_edit_button_content">
               <a-row>
-                <a-col :span="12" :offset="4">
+                <a-col :span="20" :offset="4">
                   <a-button
                     type="primary"
                     html-type="submit"
                     :loading="commitLoading"
+                    style="float: left"
                     >确定</a-button
                   >
                   <a-button
                     type="danger"
                     icon="delete"
-                    style="margin-left: 16px"
+                    style="margin-left: 16px;float: left"
                     @click="handleDelete"
                     >删除</a-button
                   >
 
-                  <a-button style="margin-left: 20px" @click="changePassword"
+                  <a-button
+                    style="margin-left: 20px;float: left"
+                    @click="changePassword"
                     >修改密码</a-button
                   >
 
-                  <a-button style="margin-left: 30px" @click="handleBack"
+                  <a-button
+                    style="margin-left: 20px;float: left"
+                    @click="handleBack"
                     >返回</a-button
                   >
                 </a-col>
@@ -217,6 +222,9 @@
 export default {
   data() {
     return {
+      //label need align
+      descriptionLabel: "\xa0\xa0\xa0" + "备注：",
+
       returnedData: {
         id: "",
         username: "",

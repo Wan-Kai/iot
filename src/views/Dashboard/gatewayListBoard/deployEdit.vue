@@ -151,7 +151,7 @@
             </a-form-item>
             <a-form-item
               class="iot_view_edit_formitem"
-              label="网关描述："
+              :label="gatewayDecription"
               :required="false"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
@@ -268,6 +268,9 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
+      //label need align
+      gatewayDecription: "\xa0\xa0\xa0" + "网关描述：",
+
       //options
       networkServer_options: [],
       communicationMode_options: [],

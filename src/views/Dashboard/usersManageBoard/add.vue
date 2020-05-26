@@ -74,7 +74,7 @@
                 checkedChildren="是"
                 unCheckedChildren="否"
                 @change="stateChange"
-                style="margin-left: 10px;float: left"
+                style="float: left"
                 v-decorator="[
                   'isAdmin',
                   { rules: [{ required: true, message: '是否管理员' }] }
@@ -114,7 +114,7 @@
 
             <a-form-item
               class="iot_view_usersManage_add_formItem"
-              label="备注："
+              :label="descriptionLabel"
               :label-col="{ span: 5 }"
               :wrapper-col="{ span: 14 }"
             >
@@ -155,6 +155,9 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
+      //label need align
+      descriptionLabel: "\xa0\xa0\xa0" + "备注：",
+
       currentRecord: {
         isAdmin: false
       },

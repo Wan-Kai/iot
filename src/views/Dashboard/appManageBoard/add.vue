@@ -82,7 +82,7 @@
         </a-form-item>
         <a-form-item
           class="iot_view_app_add_formItem"
-          label="应用描述："
+          :label="appDescription"
           :required="false"
           :label-col="{ span: 3 }"
           :wrapper-col="{ span: 7 }"
@@ -119,6 +119,9 @@ import { getServiceOptions } from "@/utils/util";
 export default {
   data() {
     return {
+      //label need align
+      appDescription: "\xa0\xa0\xa0" + "应用描述：",
+
       //options
       serviceProfile_options: [],
 

@@ -64,8 +64,8 @@
         <a-form-item
           label="是否添加网关元数据："
           :required="true"
-          :label-col="{ span: 6 }"
-          :wrapper-col="{ span: 12 }"
+          :label-col="{ span: 4 }"
+          :wrapper-col="{ span: 20 }"
           class="iot_view_check_formItem"
         >
           <span style="float: left">
@@ -75,8 +75,8 @@
         <a-form-item
           label="启用地理位置："
           :required="true"
-          :label-col="{ span: 6 }"
-          :wrapper-col="{ span: 12 }"
+          :label-col="{ span: 4 }"
+          :wrapper-col="{ span: 20 }"
           class="iot_view_check_formItem"
         >
           <span style="float: left"> {{ this.returnedData.hrAllowed }}</span>
@@ -84,8 +84,8 @@
         <a-form-item
           label="设备状态请求频率："
           :required="true"
-          :label-col="{ span: 6 }"
-          :wrapper-col="{ span: 12 }"
+          :label-col="{ span: 4 }"
+          :wrapper-col="{ span: 20 }"
           class="iot_view_check_formItem"
         >
           <span style="float: left">
@@ -95,8 +95,8 @@
         <a-form-item
           label="最低允许数据速率："
           :required="true"
-          :label-col="{ span: 6 }"
-          :wrapper-col="{ span: 12 }"
+          :label-col="{ span: 4 }"
+          :wrapper-col="{ span: 20 }"
           class="iot_view_check_formItem"
         >
           <span style="float: left"> {{ this.returnedData.drMin }}</span>
@@ -104,8 +104,8 @@
         <a-form-item
           label="最高允许数据速率："
           :required="true"
-          :label-col="{ span: 6 }"
-          :wrapper-col="{ span: 12 }"
+          :label-col="{ span: 4 }"
+          :wrapper-col="{ span: 20 }"
           class="iot_view_check_formItem"
         >
           <span style="float: left"> {{ this.returnedData.drMax }}</span>

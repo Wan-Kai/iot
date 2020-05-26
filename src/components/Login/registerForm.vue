@@ -9,24 +9,24 @@
       <a class="iot_register_layout_text_content">注册</a>
     </div>
     <a-form :form="form" @submit="handleSubmit">
-      <a-form-item>
+      <a-form-item class="iot_register_formItem">
         <a-input
           v-decorator="[
             'username',
             { rules: [{ required: true, message: '请输入用户姓名!' }] }
           ]"
           placeholder="用户名"
-          style="float: left;text-align: left"
+          style="text-align: left"
         />
       </a-form-item>
-      <a-form-item>
+      <a-form-item class="iot_register_formItem">
         <a-input
           v-decorator="[
             'email',
             { rules: [{ required: true, message: '请输入电子邮箱!' }] }
           ]"
           placeholder="电子邮箱"
-          style="float: left;text-align: left"
+          style="text-align: left"
         />
       </a-form-item>
 
@@ -189,7 +189,7 @@ export default {
 .registerForm {
   margin: auto;
   width: 30%;
-  height: 410px;
+  height: 450px;
 }
 .iot_register_layout_text {
   height: 40px;
@@ -209,8 +209,10 @@ export default {
   color: black;
   letter-spacing: 2px;
 }
+.iot_register_formItem {
+  margin-bottom: 12px;
+}
 .iot_register_phoneNumber {
-  margin-top: 30px;
   margin-bottom: 12px;
 }
 .iot_register_note {
@@ -236,15 +238,17 @@ export default {
   border-top-left-radius: 0;
 }
 .register_form_submit_button {
+  margin-top: 24px;
+
   width: 100%;
   background: #1eaf84;
   border-radius: 1px;
   border-color: #1eaf84;
-  margin-top: 18px;
+  font-size: 14px;
 }
 .iot_register_text_content {
   float: right;
-  margin-top: 20px;
+  margin-top: 8px;
 }
 .iot_register_text {
   color: #1eaf84;

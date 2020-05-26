@@ -146,7 +146,7 @@
 
             <a-form-item
               class="iot_view_App_node_deployEdit_formitem"
-              label="节点描述："
+              :label="nodeDescription"
               :required="false"
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
@@ -286,6 +286,8 @@ export default {
   name: "nodeEdit",
   data() {
     return {
+      //label need align
+      nodeDescription: "\xa0\xa0\xa0" + "节点描述：",
       //默认中心，避免出现无法找到 IV 报错
       center: [114.364131, 30.522437],
 

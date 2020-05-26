@@ -92,7 +92,7 @@
     >
       <div style="height: min-content">
         <a-tabs
-          type="card"
+          type="line"
           :defaultActiveKey="defaultTab"
           :active-key="defaultTab"
           @change="changeTab"

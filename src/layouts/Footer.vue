@@ -1,6 +1,6 @@
 <template>
   <div class="iot_footer_text">
-    <div class="iot_footer_line" />
+    <!--    <div class="iot_footer_line" />-->
     武汉卓目科技有限公司
   </div>
 </template>

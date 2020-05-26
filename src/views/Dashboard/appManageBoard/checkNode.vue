@@ -76,7 +76,7 @@
     >
       <div style="height: min-content">
         <a-tabs
-          type="card"
+          type="line"
           :defaultActiveKey="query.defaultTab"
           size="small"
           style="text-align: left;padding-top: 0;height: min-content"

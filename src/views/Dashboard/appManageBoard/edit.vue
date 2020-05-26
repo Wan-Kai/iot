@@ -127,7 +127,7 @@
 
           <a-form-item
             class="iot_view_app_edit_formItem"
-            label="应用描述："
+            :label="appDescription"
             :required="false"
             :label-col="{ span: 8 }"
             :wrapper-col="{ span: 16 }"
@@ -195,6 +195,9 @@ export default {
   components: { ARow },
   data() {
     return {
+      //label need align
+      appDescription: "\xa0\xa0\xa0" + "应用描述：",
+
       //params
       query: {
         appID: ""

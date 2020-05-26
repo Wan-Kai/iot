@@ -1,12 +1,17 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0">
-    <a-form :form="edit_form" layout="vertical" class="iot_view_edit_form">
+    <a-form
+      :form="edit_form"
+      layout="vertical"
+      class="iot_view_edit_form"
+      labelAlign="right"
+    >
       <a-form-item
         label="ID"
         :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
-        class="iot_view_edit_formItem"
+        class="iot_view_edit_formItem_temp"
       >
         <span style="float: left">{{ returnedData.id }}</span>
       </a-form-item>
@@ -20,7 +25,7 @@
         <span style="float: left">{{ returnedData.name }}</span>
       </a-form-item>
       <a-form-item
-        label="是否拥有网关："
+        label="网关发现："
         :required="true"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
@@ -39,7 +44,7 @@
               rules: [{ required: true, message: '是否拥有网关' }]
             }
           ]"
-          style="margin-left: 10px;float: left"
+          style="float: left"
         >
         </a-switch>
       </a-form-item>
@@ -56,7 +61,7 @@
 
       <a-form-item
         class="iot_view_edit_formItem"
-        label="所在区域："
+        :label="areaLabel"
         :required="false"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
@@ -65,7 +70,7 @@
       </a-form-item>
       <a-form-item
         class="iot_view_edit_formItem"
-        label="详细地址："
+        :label="addresLabel"
         :required="false"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
@@ -74,15 +79,9 @@
       </a-form-item>
 
       <a-row>
-        <a-col :span="12" :offset="3">
+        <a-col :span="10" :offset="3">
           <div class="iot_view_edit_form_left">
-            <a-button
-              type="danger"
-              icon="delete"
-              style="margin-left: 16px"
-              @click="handleBack"
-              >返回</a-button
-            >
+            <a-button icon="delete" style="" @click="handleBack">返回</a-button>
           </div>
         </a-col>
       </a-row>
@@ -96,6 +95,10 @@ import { getAreaLabel } from "@/utils/util";
 export default {
   data() {
     return {
+      //label need align
+      areaLabel: "\xa0\xa0\xa0" + "所在区域：",
+      addresLabel: "\xa0\xa0\xa0" + "详细地址：",
+
       /*
         edit_form: this.$form.createForm(this, {
           name: "edit_form"
@@ -193,5 +196,8 @@ export default {
 }
 .ant-form-item {
   margin-bottom: 10px;
+}
+.iot_view_edit_formItem_temp {
+  margin-bottom: 8px;
 }
 </style>

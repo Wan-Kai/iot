@@ -105,7 +105,7 @@ export default {
                   this.$router.push("/admin/dashboard");
                 }, 300);
               } else {
-                this.$message.error("请检查用户名和密码!");
+                this.$message.error("请输入正确的用户名和密码!");
               }
             })
             .catch(err => {
@@ -114,7 +114,7 @@ export default {
             .finally(() => {});
         } else {
           console.log("Login Form in wrong");
-          this.$message.error("登录失败!");
+          this.$message.error("请检查用户名和密码!");
         }
       });
     }

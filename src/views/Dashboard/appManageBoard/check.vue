@@ -35,7 +35,7 @@
     >
       <div style="height: min-content">
         <a-tabs
-          type="card"
+          type="line"
           :defaultActiveKey="query.defaultTab"
           size="small"
           style="text-align: left;padding-top: 0;height: min-content"
@@ -53,6 +53,7 @@
             slot="tabBarExtraContent"
             icon="plus"
             type="primary"
+            style="margin-top: 0;margin-bottom: 0;line-height: 24px;height: 24px"
             @click="addNode"
             >添加节点</a-button
           >
@@ -66,7 +67,7 @@
           <a-button
             slot="tabBarExtraContent"
             icon="plus"
-            style="margin-left: 10px"
+            style="margin-left: 10px;margin-top: 0;margin-bottom: 0;line-height: 24px;height: 24px"
             @click="importNodes"
             >导入</a-button
           >

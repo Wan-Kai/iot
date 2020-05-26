@@ -71,7 +71,7 @@
             </a-col>
           </a-row>
           -->
-          <a-row class="black">
+          <a-row class="light">
             <a-col :span="8">
               <p class="iot_view_node_detail_textCard_p">添加时间:</p>
             </a-col>

@@ -39,7 +39,7 @@
             'canHaveGateways',
             { rules: [{ required: true, message: '是否拥有网关' }] }
           ]"
-          style="margin-left: 10px;float: left"
+          style="float: left"
         >
         </a-switch>
       </a-form-item>
@@ -67,7 +67,7 @@
 
       <a-form-item
         class="iot_view_add_formItem"
-        label="所在区域："
+        :label="areaLabel"
         :required="false"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
@@ -87,7 +87,7 @@
       </a-form-item>
       <a-form-item
         class="iot_view_add_formItem"
-        label="详细地址："
+        :label="addresLabel"
         :required="false"
         :label-col="{ span: 3 }"
         :wrapper-col="{ span: 7 }"
@@ -126,6 +126,10 @@ import {
 export default {
   data() {
     return {
+      //label need align
+      areaLabel: "\xa0\xa0\xa0" + "所在区域：",
+      addresLabel: "\xa0\xa0\xa0" + "详细地址：",
+
       profession_options: [],
       area_options: [],
       currentRecord: {

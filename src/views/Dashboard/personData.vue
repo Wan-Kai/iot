@@ -73,7 +73,7 @@
 
             <a-form-item
               class="iot_view_person_add_formitem"
-              label="备注："
+              :label="descriptionLabel"
               :label-col="{ span: 6 }"
               :wrapper-col="{ span: 12 }"
             >
@@ -92,7 +92,7 @@
             </a-form-item>
             <a-form-item
               class="iot_view_person_add_formitem"
-              label="角色："
+              :label="roleLabel"
               :label-col="{ span: 6 }"
               :wrapper-col="{ span: 12 }"
             >
@@ -163,6 +163,10 @@ export default {
   components: { ACol, ARow },
   data() {
     return {
+      //label need align
+      descriptionLabel: "\xa0\xa0\xa0" + "备注：",
+      roleLabel: "\xa0\xa0\xa0" + "角色：",
+
       returnedData: {
         id: "",
         username: "",

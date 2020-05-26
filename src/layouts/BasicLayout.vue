@@ -25,18 +25,35 @@
             <a-sub-menu key="sub1">
               <span slot="title"><a-icon type="hdd" />基础管理</span>
               <a-menu-item key="11">
-                <router-link to="/admin/dashboard/organization"
-                  >组织机构</router-link
+                <router-link
+                  to="/admin/dashboard/organization"
+                  style="color: #606060"
+                >
+                  <a-icon
+                    type="caret-right"
+                    style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                  />
+                  组织机构</router-link
                 >
               </a-menu-item>
               <a-menu-item key="12">
-                <router-link to="/admin/dashboard/networkServer"
-                  >网络服务器</router-link
+                <router-link
+                  to="/admin/dashboard/networkServer"
+                  style="color: #606060"
+                  ><a-icon
+                    type="caret-right"
+                    style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                  />网络服务器</router-link
                 >
               </a-menu-item>
               <a-menu-item key="13">
-                <router-link to="/admin/dashboard/serviceProfileManage"
-                  >服务管理</router-link
+                <router-link
+                  to="/admin/dashboard/serviceProfileManage"
+                  style="color: #606060"
+                  ><a-icon
+                    type="caret-right"
+                    style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                  />服务管理</router-link
                 >
               </a-menu-item>
               <!--
@@ -49,39 +66,69 @@
           <a-sub-menu key="sub2">
             <span slot="title"><a-icon type="gateway" />网关</span>
             <a-menu-item key="21">
-              <router-link to="/admin/dashboard/gatewayManage"
-                >网关管理</router-link
+              <router-link
+                to="/admin/dashboard/gatewayManage"
+                style="color: #606060"
+                ><a-icon
+                  type="caret-right"
+                  style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                />网关管理</router-link
               >
             </a-menu-item>
             <a-menu-item key="22">
-              <router-link to="/admin/dashboard/gatewayListBoard/iLogFlow"
-                >日志查询</router-link
+              <router-link
+                to="/admin/dashboard/gatewayListBoard/iLogFlow"
+                style="color: #606060"
+                ><a-icon
+                  type="caret-right"
+                  style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                />日志查询</router-link
               >
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="sub3">
             <span slot="title"><a-icon type="interation" />节点</span>
             <a-menu-item key="23">
-              <router-link to="/admin/dashboard/nodeManage"
-                >节点规范管理</router-link
+              <router-link
+                to="/admin/dashboard/nodeManage"
+                style="color: #606060"
+                ><a-icon
+                  type="caret-right"
+                  style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                />节点规范管理</router-link
               >
             </a-menu-item>
             <a-menu-item key="24">
-              <router-link to="/admin/dashboard/nodeBoard/upLogFlow"
-                >上行日志查询</router-link
+              <router-link
+                to="/admin/dashboard/nodeBoard/upLogFlow"
+                style="color: #606060"
+                ><a-icon
+                  type="caret-right"
+                  style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                />上行日志查询</router-link
               >
             </a-menu-item>
             <a-menu-item key="25">
-              <router-link to="/admin/dashboard/nodeBoard/downLogFlow"
-                >下行日志查询</router-link
+              <router-link
+                to="/admin/dashboard/nodeBoard/downLogFlow"
+                style="color: #606060"
+                ><a-icon
+                  type="caret-right"
+                  style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                />下行日志查询</router-link
               >
             </a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="sub4">
             <span slot="title"><a-icon type="profile" />应用</span>
             <a-menu-item key="41">
-              <router-link to="/admin/dashboard/appManage"
-                >应用管理</router-link
+              <router-link
+                to="/admin/dashboard/appManage"
+                style="color: #606060"
+                ><a-icon
+                  type="caret-right"
+                  style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                />应用管理</router-link
               >
             </a-menu-item>
           </a-sub-menu>
@@ -89,14 +136,24 @@
             <span slot="title"><a-icon type="idcard" />用户</span>
             <Authorized :authority="['admin']">
               <a-menu-item key="51">
-                <router-link to="/admin/dashboard/usersManage"
-                  >用户管理</router-link
+                <router-link
+                  to="/admin/dashboard/usersManage"
+                  style="color: #606060"
+                  ><a-icon
+                    type="caret-right"
+                    style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                  />用户管理</router-link
                 >
               </a-menu-item>
             </Authorized>
             <a-menu-item key="52">
-              <router-link to="/admin/dashboard/personData"
-                >个人资料</router-link
+              <router-link
+                to="/admin/dashboard/personData"
+                style="color: #606060"
+                ><a-icon
+                  type="caret-right"
+                  style="margin-right: 0px;color: #C0C0C0;font-size: 0.8em"
+                />个人资料</router-link
               >
             </a-menu-item>
           </a-sub-menu>
@@ -213,6 +270,7 @@ export default {
   margin-bottom: 10px;
 }
 .iot_menu_base {
+  text-align: left;
 }
 .ant-menu-inline .ant-menu-item,
 .ant-menu-inline .ant-menu-submenu-title {
@@ -244,6 +302,16 @@ export default {
 .ant-menu-vertical-right .ant-menu-item:not(:last-child),
 .ant-menu-inline .ant-menu-item:not(:last-child) {
   margin-bottom: 2px;
+}
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: #f0f0f0;
+  border-left: 3px solid #1eaf84;
+}
+.ant-menu-vertical .ant-menu-item::after,
+.ant-menu-vertical-left .ant-menu-item::after,
+.ant-menu-vertical-right .ant-menu-item::after,
+.ant-menu-inline .ant-menu-item::after {
+  border-right: 0 solid #1eaf84;
 }
 #components-layout-demo-top-side-2 .logo {
   width: 120px;

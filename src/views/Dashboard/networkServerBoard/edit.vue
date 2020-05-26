@@ -17,7 +17,7 @@
             }
           ]"
           size="small"
-          style="width: 90%;float: left;text-align: left"
+          style="width: 80%;float: left;text-align: left"
         />
       </a-form-item>
 
@@ -37,7 +37,7 @@
             }
           ]"
           size="small"
-          style="width: 90%;float: left;text-align: left"
+          style="width: 80%;float: left;text-align: left"
         />
       </a-form-item>
       <a-form-item
@@ -56,7 +56,7 @@
             }
           ]"
           size="small"
-          style="width: 90%;float: left;text-align: left"
+          style="width: 80%;float: left;text-align: left"
         />
       </a-form-item>
 
@@ -72,7 +72,7 @@
           checkedChildren="开"
           unCheckedChildren="关"
           @change="stateChange"
-          style="margin-left: 10px;float: left"
+          style="float: left"
           v-decorator="[
             'gatewayDiscoveryEnabled',
             {
@@ -100,7 +100,7 @@
               rules: [{ required: true, message: '请输入间隔（每天）!' }]
             }
           ]"
-          style="float: left;text-align: left;width: 90%"
+          style="float: left;text-align: left;width: 80%"
         />
       </a-form-item>
 
@@ -121,7 +121,7 @@
               rules: [{ required: true, message: '请输入发射频率（Hz）!' }]
             }
           ]"
-          style="float: left;text-align: left;width: 90%"
+          style="float: left;text-align: left;width: 80%"
         />
         <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
           <template slot="title">
@@ -152,7 +152,7 @@
               rules: [{ required: true, message: '请输入发送数据率!' }]
             }
           ]"
-          style="float: left;text-align: left;width: 90%"
+          style="float: left;text-align: left;width: 80%"
         />
         <a-tooltip placement="rightTop" style="float: left;margin-left: 10px">
           <template slot="title">
@@ -183,7 +183,6 @@
               >删除</a-button
             >
             <a-button
-              type="danger"
               icon="delete"
               style="margin-left: 16px"
               @click="handleBack"

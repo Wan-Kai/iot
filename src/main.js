@@ -1,6 +1,8 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
+let Base64 = require("js-base64/base64");
+
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -105,6 +107,7 @@ Vue.component("Authorized", Authorized);
 Vue.prototype.$api = API;
 Vue.prototype.$message = message;
 Vue.prototype.$echarts = echarts;
+//Vue.prototype.$Base64 = Base64;
 
 /**
  * 引用公用的js方法，所有页面可调用

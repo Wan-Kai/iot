@@ -43,12 +43,15 @@
     <div class="iot_view_nlogFlow_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="interData"
+        :dataSource="returnedData"
         style="min-width: auto"
         class="iot_view_nlogFlow_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
       >
+        <span slot="data" slot-scope="text, record">
+          {{ record.data }}
+        </span>
       </a-table>
     </div>
   </a-layout>
@@ -56,6 +59,7 @@
 
 <script>
 import moment from "moment";
+const Base64 = require("js-base64").Base64;
 const columns = [
   {
     title: "节点编号",
@@ -71,6 +75,7 @@ const columns = [
     title: "数据",
     dataIndex: "data",
     key: "data"
+    //scopedSlots: { customRender: "data" }
   },
   {
     title: "json对象",
@@ -98,7 +103,7 @@ export default {
         beginDay: "",
         endDay: ""
       },
-      interData: [],
+      returnedData: [],
 
       pagination: {
         size: "small",
@@ -143,6 +148,10 @@ export default {
     handleQuery() {
       //debugger;
       this.queryCondition.devEUI = this.form.getFieldValue("devEUI");
+
+      //let Base64 = require('js-base64').Base64;
+      //alert(Base64.encode("xxx"));
+      //alert(Base64.decode("AQ=="));
       this.getDownLog();
     },
 
@@ -151,7 +160,13 @@ export default {
         .downDataQuery({ extra: this.queryCondition.devEUI, countOnly: false })
         .then(res => {
           if (res.status === 200) {
-            this.interData = res.data.deviceQueueItems;
+            this.returnedData = res.data.deviceQueueItems;
+
+            for (let i = 0; i < this.returnedData.length; i++) {
+              var d = this.returnedData[i].data;
+              if (this.common.isBase64(d))
+                this.returnedData[i].data = Base64.decode(d);
+            }
           } else {
             console.log("下行数据日志获取失败");
           }

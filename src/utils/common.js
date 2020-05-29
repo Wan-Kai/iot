@@ -84,6 +84,29 @@ export default {
     }
   },
 
+  isBase64: function(str) {
+    const notBase64 = /[^A-Z0-9+=]/i;
+    const len = str.length;
+    if (!len || len % 4 !== 0 || notBase64.test(str)) {
+      return false;
+    }
+    const firstPaddingChar = str.indexOf("=");
+    return (
+      firstPaddingChar === -1 ||
+      firstPaddingChar === len - 1 ||
+      (firstPaddingChar === len - 2 && str[len - 1] === "=")
+    );
+
+    /*for ie10 or above
+    if (str ==='' || str.trim() ===''){ return false; }
+    try {
+      return btoa(atob(str)) == str;
+    } catch (err) {
+      return false;
+    }
+    */
+  },
+
   getBeginTimestamp: function(date) {
     var day = this.formatDate(date, "yyyy-MM-dd");
     day += "T00:00:00Z";

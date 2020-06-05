@@ -214,7 +214,7 @@
 <script>
 import wifi_map from "@/assets/wifi.png";
 export default {
-  name: "nodeDetails",
+  name: "nodeDetail",
   data() {
     return {
       //默认中心，避免出现无法找到 IV 报错

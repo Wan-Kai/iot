@@ -1,9 +1,10 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_nlogFlow_top">
-      <a-form :form="form" layout="vertical" class="iot_view_downLogFlow_form">
+      <a-form :form="form" layout="vertical" class="iot_view_upLogFlow_form">
         <a-input-group compact>
-          <a-form-item class="iot_view_downLogFlow_form_formItem">
+          <!--
+          <a-form-item class="iot_view_upLogFlow_form_formItem">
             <a-input
               style="width: 100%;float: left;text-align: left"
               placeholder="请输入设备编号(EUI)"
@@ -16,16 +17,17 @@
               ]"
             />
           </a-form-item>
-          <a-form-item class="iot_view_downLogFlow_form_formItem">
+          -->
+          <a-form-item class="iot_view_upLogFlow_form_formItem">
             <a-date-picker
               style="width: 100%;float: left;text-align: left"
               placeholder="开始时间"
-              :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')"
+              :defaultValue="moment('2020-05-01', 'YYYY-MM-DD')"
               :showToday="false"
               @change="onChangeBegin"
             />
           </a-form-item>
-          <a-form-item class="iot_view_downLogFlow_form_formItem">
+          <a-form-item class="iot_view_upLogFlow_form_formItem">
             <a-date-picker
               style="width: 100%;float: left;text-align: left"
               placeholder="结束时间"
@@ -34,7 +36,7 @@
               @change="onChangeEnd"
             />
           </a-form-item>
-          <a-form-item class="iot_view_downLogFlow_form_formItem">
+          <a-form-item class="iot_view_upLogFlow_form_formItem">
             <a-button style="float: left" icon="search" @click="handleQuery" />
           </a-form-item>
         </a-input-group>
@@ -43,15 +45,12 @@
     <div class="iot_view_nlogFlow_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="returnedData"
+        :dataSource="interData"
         style="min-width: auto"
         class="iot_view_nlogFlow_table"
         :pagination="pagination"
         :rowKey="record => record.uid"
       >
-        <span slot="data" slot-scope="text, record">
-          {{ record.data }}
-        </span>
       </a-table>
     </div>
   </a-layout>
@@ -59,7 +58,6 @@
 
 <script>
 import moment from "moment";
-const Base64 = require("js-base64").Base64;
 const columns = [
   {
     title: "节点编号",
@@ -67,20 +65,45 @@ const columns = [
     key: "devEUI"
   },
   {
-    title: "下发时间",
-    dataIndex: "createdAt",
-    key: "sentAt"
+    title: "节点名称",
+    dataIndex: "deviceName",
+    key: "deviceName"
+  },
+
+  {
+    title: "应用编号",
+    dataIndex: "applicationID",
+    key: "applicationID"
+  },
+  {
+    title: "应用名称",
+    dataIndex: "applicationName",
+    key: "applicationName"
+  },
+  {
+    title: "上报时间",
+    dataIndex: "receivedAt",
+    key: "receivedAt"
   },
   {
     title: "数据",
     dataIndex: "data",
     key: "data"
-    //scopedSlots: { customRender: "data" }
   },
   {
-    title: "json对象",
-    dataIndex: "jsonObject",
-    key: "jsonObject"
+    title: "是否开启自适应速率",
+    dataIndex: "adr",
+    key: "adr"
+  },
+  {
+    title: "数据率",
+    dataIndex: "dr",
+    key: "dr"
+  },
+  {
+    title: "中心频率",
+    dataIndex: "frequency",
+    key: "frequency"
   },
   {
     title: "帧计数器",
@@ -92,18 +115,40 @@ const columns = [
     dataIndex: "fPort",
     key: "fPort"
   }
+  /*
+  {
+    title: "接受帧的信道",
+    dataIndex: "channel",
+    key: "channel"
+  },
+  {
+    title: "网关对帧的crc校验结果",
+    dataIndex: "crc",
+    key: "crc"
+  },
+  {
+    title: "数据类型",
+    dataIndex: "type",
+    key: "type"
+  },
+  {
+    title: "创建时间",
+    key: "time",
+    dataIndex: "time"
+  }
+  */
 ];
 export default {
+  name: "nodeUplog",
   data() {
     return {
       columns,
-
       queryCondition: {
         devEUI: "",
         beginDay: "",
         endDay: ""
       },
-      returnedData: [],
+      interData: [],
 
       pagination: {
         size: "small",
@@ -126,7 +171,8 @@ export default {
   },
 
   beforeMount() {
-    this.getDownLog();
+    this.queryCondition.devEUI = sessionStorage.getItem("devEUI");
+    this.getUpLog();
   },
 
   methods: {
@@ -134,7 +180,6 @@ export default {
     getCurrentData() {
       return this.common.getNowDate();
     },
-
     onChangeBegin(date, dateString) {
       this.queryCondition.beginDay = dateString;
       console.log(date, dateString);
@@ -147,41 +192,26 @@ export default {
 
     handleQuery() {
       //debugger;
-      this.queryCondition.devEUI = this.form.getFieldValue("devEUI");
-
-      //let Base64 = require('js-base64').Base64;
-      //alert(Base64.encode("xxx"));
-      //alert(Base64.decode("AQ=="));
-      this.getDownLog();
+      //this.queryCondition.devEUI = this.form.getFieldValue("devEUI");
+      this.getUpLog();
     },
 
-    getDownLog() {
+    getUpLog() {
+      var params = {
+        limit: 100,
+        search: this.queryCondition.devEUI,
+        startTimestamp: this.queryCondition.beginDay,
+        endTimestamp: this.queryCondition.endDay
+      };
+
       this.$api.node
-        .downDataQuery({ extra: this.queryCondition.devEUI, countOnly: false })
+        //.upFlowData({page: 0})
+        .upDataQuery(params)
         .then(res => {
           if (res.status === 200) {
-            this.returnedData = res.data.deviceQueueItems;
-
-            for (let i = 0; i < this.returnedData.length; i++) {
-              var d = this.returnedData[i].data;
-              /*
-              if (i===0)
-                d = "AQ==";
-              else if (i===1)
-                d = "AA==";
-              else if (i===2)
-                d = "EjSrzQ==";
-              */
-              if (this.common.isBase64(d)) {
-                //this.returnedData[i].data = this.common.Bytes2HexString(Base64.decode(d));
-                //this.returnedData[i].data = Base64.decode(d);
-                this.returnedData[i].data = this.common.CharToHex(
-                  this.common.base64decode(d)
-                );
-              }
-            }
+            this.interData = res.data.result;
           } else {
-            console.log("下行数据日志获取失败");
+            console.log("上行日志流水获取失败");
           }
         })
         .catch(err => {
@@ -193,10 +223,10 @@ export default {
 </script>
 
 <style>
-.iot_view_downLogFlow_form {
+.iot_view_upLogFlow_form {
   float: left;
 }
-.iot_view_downLogFlow_form_formItem {
+.iot_view_upLogFlow_form_formItem {
   margin-bottom: 0px;
 }
 .iot_view_nlogFlow_top {
@@ -204,7 +234,6 @@ export default {
   margin-top: 14px;
   margin-bottom: 14px;
 }
-
 .iot_view_nlogFlow_table_layout {
   min-height: fit-content;
 }

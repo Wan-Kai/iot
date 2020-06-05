@@ -82,10 +82,18 @@
           style="text-align: left;padding-top: 0;height: min-content"
         >
           <a-tab-pane tab="详细信息" key="1">
-            <detailData />
+            <nodeDetail />
           </a-tab-pane>
           <a-tab-pane tab="配置修改" key="2">
-            <deployEdit />
+            <nodeEdit />
+          </a-tab-pane>
+
+          <a-tab-pane tab="上行日志" key="3">
+            <nodeUplog />
+          </a-tab-pane>
+
+          <a-tab-pane tab="下行日志" key="4">
+            <nodeDownlog />
           </a-tab-pane>
         </a-tabs>
       </div>
@@ -94,13 +102,17 @@
 </template>
 
 <script>
-import detailData from "./nodeDetail";
-import deployEdit from "./nodeEdit";
+import nodeDetail from "./nodeDetail";
+import nodeEdit from "./nodeEdit";
+import nodeUplog from "./upLogFlow";
+import nodeDownlog from "./downLogFlow";
 export default {
   name: "checkNode",
   components: {
-    detailData,
-    deployEdit
+    nodeDetail,
+    nodeEdit,
+    nodeUplog,
+    nodeDownlog
   },
   data() {
     return {

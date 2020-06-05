@@ -123,6 +123,16 @@ export default {
   },
 
   gateway: {
+    getGatewayCount: data => {
+      var param = {
+        organizationID: common.getCurrentOrganizationID()
+      };
+      if (data && !common.isEmpty(data.organizationID)) {
+        param.organizationID = data.organizationID;
+      }
+      return get("/gateways", param);
+    },
+
     //获取表格数据
     gatewayList: data => {
       if (!data.organizationID || common.isEmpty(data.organizationID)) {
@@ -193,6 +203,17 @@ export default {
     getDeviceProfileById: data => {
       return get("/device-profiles/" + data.extra, data);
     },
+
+    getNodeCount: data => {
+      var param = {
+        organizationID: common.getCurrentOrganizationID()
+      };
+      if (data && !common.isEmpty(data.organizationID)) {
+        param.organizationID = data.organizationID;
+      }
+      return get("/devices", param);
+    },
+
     updateNode: data => {
       return put("/device-profiles/" + data.extra, data);
     },
@@ -249,6 +270,16 @@ export default {
     }
   },
   appManage: {
+    getAppCount: data => {
+      var param = {
+        organizationID: common.getCurrentOrganizationID()
+      };
+      if (data && !common.isEmpty(data.organizationID)) {
+        param.organizationID = data.organizationID;
+      }
+      return get("/applications", param);
+    },
+
     getAppList: data => {
       if (!data.organizationID || common.isEmpty(data.organizationID)) {
         data.organizationID = common.getCurrentOrganizationID();

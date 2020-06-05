@@ -17,18 +17,22 @@
               <p
                 style="color: white;font-size: 26px;font-weight: bold;margin-bottom: 8px"
               >
-                20
+                {{ this.gatewayCount }}
               </p>
             </a-col>
           </a-row>
           <a-row>
             <a-col :span="12" style="text-align: left">
               <div class="iot_index_point" style="background-color: #1eaf84" />
-              <span style="color: white;margin-left: 10px">在线：18</span>
+              <span style="color: white;margin-left: 10px"
+                >在线：{{ this.gatewayCountOnline }}</span
+              >
             </a-col>
             <a-col :span="12" style="text-align: right">
               <div class="iot_index_point" style="background-color: grey" />
-              <span style="color: white;margin-left: 10px">掉线：2</span>
+              <span style="color: white;margin-left: 10px"
+                >掉线：{{ this.gatewayCountOff }}</span
+              >
             </a-col>
           </a-row>
         </a-col>
@@ -48,18 +52,22 @@
               <p
                 style="color: white;font-size: 26px;font-weight: bold;margin-bottom: 8px"
               >
-                2320
+                {{ this.deviceCount }}
               </p>
             </a-col>
           </a-row>
           <a-row>
             <a-col :span="12" style="text-align: left">
               <div class="iot_index_point" style="background-color: #1eaf84" />
-              <span style="color: white;margin-left: 10px">在线：2300</span>
+              <span style="color: white;margin-left: 10px"
+                >在线：{{ this.deviceCountOnline }}</span
+              >
             </a-col>
             <a-col :span="12" style="text-align: right">
               <div class="iot_index_point" style="background-color: grey" />
-              <span style="color: white;margin-left: 10px">掉线：20</span>
+              <span style="color: white;margin-left: 10px"
+                >掉线：{{ this.deviceCountOff }}</span
+              >
             </a-col>
           </a-row>
         </a-col>
@@ -79,7 +87,7 @@
               <p
                 style="color: white;font-size: 26px;font-weight: bold;margin-bottom: 8px"
               >
-                546
+                {{ this.applicationCount }}
               </p>
             </a-col>
           </a-row>
@@ -129,6 +137,77 @@ export default {
     ActiveNodeList,
     GatewayMap,
     NewMessageList
+  },
+  data() {
+    return {
+      gatewayCount: 0,
+      gatewayCountOnline: 0,
+      deviceCount: 0,
+      deviceCountOnline: 0,
+      applicationCount: 0
+    };
+  },
+  computed: {
+    gatewayCountOff() {
+      return this.gatewayCount - this.gatewayCountOnline;
+    },
+
+    deviceCountOff() {
+      return this.deviceCount - this.deviceCountOnline;
+    }
+  },
+
+  beforeMount() {
+    this.getGatewayCount();
+    this.getDeviceCount();
+    this.getApplicationCount();
+  },
+
+  methods: {
+    getGatewayCount() {
+      this.$api.gateway
+        .getGatewayCount({
+          organizationID: ""
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.gatewayCount = res.data.totalCount;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    getDeviceCount() {
+      this.$api.node
+        .getNodeCount({
+          organizationID: ""
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.deviceCount = res.data.totalCount;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    getApplicationCount() {
+      this.$api.appManage
+        .getAppCount({
+          organizationID: ""
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.applicationCount = res.data.totalCount;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>

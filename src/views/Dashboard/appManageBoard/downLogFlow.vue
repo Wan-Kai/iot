@@ -3,6 +3,7 @@
     <div class="iot_view_nlogFlow_top">
       <a-form :form="form" layout="vertical" class="iot_view_downLogFlow_form">
         <a-input-group compact>
+          <!--
           <a-form-item class="iot_view_downLogFlow_form_formItem">
             <a-input
               style="width: 100%;float: left;text-align: left"
@@ -16,6 +17,7 @@
               ]"
             />
           </a-form-item>
+          -->
           <a-form-item class="iot_view_downLogFlow_form_formItem">
             <a-date-picker
               style="width: 100%;float: left;text-align: left"
@@ -94,6 +96,7 @@ const columns = [
   }
 ];
 export default {
+  name: "nodeDownlog",
   data() {
     return {
       columns,
@@ -126,6 +129,7 @@ export default {
   },
 
   beforeMount() {
+    this.queryCondition.devEUI = sessionStorage.getItem("devEUI");
     this.getDownLog();
   },
 
@@ -147,7 +151,7 @@ export default {
 
     handleQuery() {
       //debugger;
-      this.queryCondition.devEUI = this.form.getFieldValue("devEUI");
+      //this.queryCondition.devEUI = this.form.getFieldValue("devEUI");
 
       //let Base64 = require('js-base64').Base64;
       //alert(Base64.encode("xxx"));

@@ -10,54 +10,61 @@
     <a-divider style="margin: 8px 0" />
     <a-table
       :columns="columns"
-      :dataSource="interData"
+      :dataSource="returnedData"
       style="min-width: auto"
       class="iot_components_activeNode_table"
-      :rowKey="record => record.nodeNumber"
+      :rowKey="record => record.devEUI"
       :pagination="false"
     >
     </a-table>
+    <!--
     <div style="display: block;margin-top: 10px">
       <a @click="checkMessage">查看更多节点...</a>
     </div>
+    -->
   </div>
 </template>
 
 <script>
 const columns = [
   {
-    title: "节点编号",
-    dataIndex: "nodeNumber",
-    key: "nodeNumber"
+    title: "节点编号(devEUI)",
+    dataIndex: "devEUI",
+    key: "devEUI"
   },
   {
     title: "上报时间",
-    dataIndex: "upTime",
-    key: "upTime"
+    dataIndex: "lastSeenAt",
+    key: "lastSeenAt"
   }
 ];
 export default {
   data() {
     return {
       columns,
-      interData: []
+      returnedData: []
     };
   },
   beforeMount() {
-    this.$api.node
-      .firstPageNodeData({
-        page: 0
-      })
-      .then(res => {
-        if (res.status === 200) {
-          this.interData = res.data.result.slice(0, 8);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getActiveNode();
   },
   methods: {
+    getActiveNode() {
+      var param = {
+        lastSeenAt: 10080
+      };
+      this.$api.node
+        .getNodeLatest()
+        .then(res => {
+          if (res.status === 200) {
+            this.returnedData = res.data.result;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     checkMessage() {
       this.$router.push("/admin/dashboard/nodeManage");
     }

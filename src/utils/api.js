@@ -133,6 +133,16 @@ export default {
       return get("/gateways", param);
     },
 
+    getGatewayOnCount: data => {
+      var param = {
+        organizationID: common.getCurrentOrganizationID(),
+        lastSeenAt: 10
+      };
+      if (data && !common.isEmpty(data.organizationID)) {
+        param.organizationID = data.organizationID;
+      }
+      return get("/gateways", param);
+    },
     //获取表格数据
     gatewayList: data => {
       if (!data.organizationID || common.isEmpty(data.organizationID)) {
@@ -210,6 +220,36 @@ export default {
       };
       if (data && !common.isEmpty(data.organizationID)) {
         param.organizationID = data.organizationID;
+      }
+      return get("/devices", param);
+    },
+
+    getNodeOnCount: data => {
+      var param = {
+        organizationID: common.getCurrentOrganizationID(),
+        lastSeenAt: 10
+      };
+      if (data && !common.isEmpty(data.organizationID)) {
+        param.organizationID = data.organizationID;
+      }
+      return get("/devices", param);
+    },
+
+    getNodeLatest: data => {
+      var param = {
+        organizationID: common.getCurrentOrganizationID(),
+        //lastSeenAt: 1440,
+        limit: 9,
+        orderBy: "last_seen_at desc nulls last"
+      };
+      if (data && !common.isEmpty(data.organizationID)) {
+        param.organizationID = data.organizationID;
+      }
+      if (data && !common.isEmpty(data.lastSeenAt)) {
+        param.lastSeenAt = data.lastSeenAt;
+      }
+      if (data && !common.isEmpty(data.limit)) {
+        param.limit = data.limit;
       }
       return get("/devices", param);
     },

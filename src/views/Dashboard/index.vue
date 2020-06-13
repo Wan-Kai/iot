@@ -94,7 +94,7 @@
         </a-col>
       </div>
     </a-row>
-
+    <!--
     <a-row
       justify="space-between"
       style="margin-top: 10px;height: 400px"
@@ -107,6 +107,7 @@
         <NewMessageList />
       </a-col>
     </a-row>
+    -->
     <a-row
       justify="space-between"
       style="margin-top: 10px;height: 400px"
@@ -125,18 +126,18 @@
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
-import GatewayChart from "../../components/Index/gatewayChart";
+//import GatewayChart from "../../components/Index/gatewayChart";
 import ActiveNodeList from "../../components/Index/activeNodeList";
 import GatewayMap from "../../components/Index/gatewayMap";
-import NewMessageList from "../../components/Index/newMessageList";
+//import NewMessageList from "../../components/Index/newMessageList";
 export default {
   components: {
     ACol,
     ARow,
-    GatewayChart,
+    //GatewayChart,
     ActiveNodeList,
-    GatewayMap,
-    NewMessageList
+    GatewayMap
+    //NewMessageList
   },
   data() {
     return {
@@ -159,7 +160,9 @@ export default {
 
   beforeMount() {
     this.getGatewayCount();
+    this.getGatewayOnCount();
     this.getDeviceCount();
+    this.getDeviceOnCount();
     this.getApplicationCount();
   },
 
@@ -179,6 +182,21 @@ export default {
         });
     },
 
+    getGatewayOnCount() {
+      this.$api.gateway
+        .getGatewayOnCount({
+          organizationID: ""
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.gatewayCountOnline = res.data.totalCount;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     getDeviceCount() {
       this.$api.node
         .getNodeCount({
@@ -187,6 +205,21 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.deviceCount = res.data.totalCount;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    getDeviceOnCount() {
+      this.$api.node
+        .getNodeOnCount({
+          organizationID: ""
+        })
+        .then(res => {
+          if (res.status === 200) {
+            this.deviceCountOnline = res.data.totalCount;
           }
         })
         .catch(err => {

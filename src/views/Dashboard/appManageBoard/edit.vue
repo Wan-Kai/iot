@@ -94,7 +94,7 @@
               />
             </a-tooltip>
           </a-form-item>
-
+          <!--
           <a-form-item
             label="设备分配容量："
             :required="true"
@@ -124,7 +124,7 @@
               />
             </a-tooltip>
           </a-form-item>
-
+          -->
           <a-form-item
             class="iot_view_app_edit_formItem"
             :label="appDescription"
@@ -160,7 +160,7 @@
                   icon="delete"
                   type="danger"
                   @click="showDeleteAppModal"
-                  >删除设备</a-button
+                  >删除</a-button
                 >
                 <a-modal title="删除提示" :visible="deleteModalVisible">
                   <template slot="footer">

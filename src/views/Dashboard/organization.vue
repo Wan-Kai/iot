@@ -1,10 +1,12 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_top">
+      <!--
       <a-input-search
         class="iot_view_top_search"
         placeholder="请输入要查找的企业"
       />
+      -->
       <a-button
         class="iot_view_top_add"
         type="primary"
@@ -216,8 +218,12 @@ export default {
               );
               console.log("constinu");
               temp.canHaveGateways = this.returnedData[i].canHaveGateways;
-              temp.createdAt = this.returnedData[i].createdAt;
-              temp.updatedAt = this.returnedData[i].updatedAt;
+              temp.createdAt = this.common.timestamp2LocalDateTime(
+                this.returnedData[i].createdAt
+              );
+              temp.updatedAt = this.common.timestamp2LocalDateTime(
+                this.returnedData[i].updatedAt
+              );
               this.tableData.push(temp);
               console.log(this.tableData);
             }

@@ -5,7 +5,8 @@
         <a-col :span="12">
           <a-input-search
             class="iot_view_appManage_top_search"
-            placeholder="请输入要查找的内容"
+            placeholder="请输入要查找的应用名称或描述"
+            v-model="searchKey"
           />
         </a-col>
         <a-col :span="8" :offset="4">
@@ -23,7 +24,7 @@
     <div class="iot_view_appManage_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="interData"
+        :dataSource="filteredTable"
         style="min-width: auto"
         class="iot_view_appManage_table"
         :pagination="pagination"
@@ -37,6 +38,7 @@
           <a @click="editRouter(record)">编辑</a>
         </span>
       </a-table>
+      <!--
       <div class="iot_view_appManage_button">
         <a-button>批量选择</a-button>
         <a-button @click="handleDelete" style="margin: 0 20px" icon="delete"
@@ -44,6 +46,7 @@
         >
         <a-button icon="download">导出</a-button>
       </div>
+      -->
     </div>
   </a-layout>
 </template>
@@ -67,16 +70,7 @@ const columns = [
     key: "serviceProfileName",
     dataIndex: "serviceProfileName"
   },
-  {
-    title: "设备分配容量",
-    key: "capacity",
-    dataIndex: "capacity"
-  },
-  {
-    title: "设备使用容量",
-    key: "usedCapacity",
-    dataIndex: "usedCapacity"
-  },
+
   {
     title: "应用描述",
     key: "description",
@@ -99,7 +93,8 @@ export default {
   data() {
     return {
       columns,
-      interData: [],
+      searchKey: "",
+      returnedData: [],
       messageDetail: [],
       tableLoadingState: true,
 
@@ -120,6 +115,23 @@ export default {
   computed: {
     currentOrganizationID() {
       return this.common.getCurrentOrganizationID();
+    },
+    filteredTable: function() {
+      var searchKey = this.searchKey;
+      var array = this.returnedData;
+      if (this.common.isEmpty(searchKey)) return array;
+
+      searchKey = searchKey.trim().toLowerCase();
+      array = array.filter(function(item) {
+        if (
+          item.name.toLowerCase().indexOf(searchKey) !== -1 ||
+          item.description.toLowerCase().indexOf(searchKey) !== -1
+        ) {
+          return item;
+        }
+      });
+
+      return array;
     }
   },
 
@@ -146,7 +158,12 @@ export default {
         })
         .then(res => {
           if (res.status === 200) {
-            this.interData = res.data.result;
+            this.returnedData = res.data.result;
+            for (let i = 0; i < this.returnedData.length; i++) {
+              this.returnedData[i].time = this.common.timestamp2LocalDateTime(
+                this.returnedData[i].time
+              );
+            }
           }
         })
         .catch(err => {

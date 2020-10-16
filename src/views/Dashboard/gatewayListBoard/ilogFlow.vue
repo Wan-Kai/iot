@@ -88,6 +88,8 @@ const columns = [
   */
   {
     title: "网关时间",
+    //dataIndex: "timestamp",
+    //key: "timestamp"
     dataIndex: "timestamp",
     key: "timestamp"
   },
@@ -118,7 +120,7 @@ export default {
       columns,
 
       queryCondition: {
-        gatewayID: "0000000000000020",
+        gatewayID: "",
         beginDay: "",
         endDay: ""
       },
@@ -146,7 +148,7 @@ export default {
   },
 
   beforeMount() {
-    this.getGatewayStat();
+    //this.getGatewayStat();
   },
 
   methods: {
@@ -197,6 +199,11 @@ export default {
         .statGateway(params)
         .then(res => {
           this.interData = res.data.result;
+          for (let i = 0; i < this.interData.length; i++) {
+            this.interData[i].timestamp = this.common.timestamp2LocalDateTime(
+              this.interData[i].timestamp
+            );
+          }
         })
         .catch(err => {
           console.log(err);

@@ -5,8 +5,9 @@
         <a-col :span="8" style="float: left">
           <a-input-search
             class="iot_view_userManage_top_search"
-            placeholder="请输入要查找的内容"
+            placeholder="请输入要查找的用户姓名或手机号"
             style="width: 300px;float: left"
+            v-model="searchKey"
           />
         </a-col>
         <a-col :span="8" :offset="8">
@@ -24,7 +25,7 @@
     <div class="iot_view_userManage_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="returnedData"
+        :dataSource="filteredTable"
         style="min-width: auto"
         class="iot_view_userManage_table"
         :pagination="pagination"
@@ -42,9 +43,11 @@
           <a @click="editRouter(record)">编辑</a>
         </span>
       </a-table>
+      <!--
       <div class="iot_view_userManage_button_content">
         <a-button icon="delete">删除</a-button>
       </div>
+      -->
     </div>
   </a-layout>
 </template>
@@ -94,6 +97,7 @@ export default {
   data() {
     return {
       columns,
+      searchKey: "",
       tableData: [],
 
       returnedData: [
@@ -127,6 +131,23 @@ export default {
   computed: {
     currentOrganizationID() {
       return this.common.getCurrentOrganizationID();
+    },
+    filteredTable: function() {
+      var searchKey = this.searchKey;
+      var array = this.returnedData;
+      if (this.common.isEmpty(searchKey)) return array;
+
+      searchKey = searchKey.trim().toLowerCase();
+      array = array.filter(function(item) {
+        if (
+          item.username.toLowerCase().indexOf(searchKey) !== -1 ||
+          item.phonenumber.toLowerCase().indexOf(searchKey) !== -1
+        ) {
+          return item;
+        }
+      });
+
+      return array;
     }
   },
 
@@ -148,6 +169,18 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.returnedData = res.data.result;
+            for (let i = 0; i < this.returnedData.length; i++) {
+              this.returnedData[
+                i
+              ].createdAt = this.common.timestamp2LocalDateTime(
+                this.returnedData[i].createdAt
+              );
+              this.returnedData[
+                i
+              ].updatedAt = this.common.timestamp2LocalDateTime(
+                this.returnedData[i].updatedAt
+              );
+            }
           }
         })
         .catch(err => {

@@ -133,10 +133,11 @@ export default {
       return get("/gateways", param);
     },
 
+    //60分钟以内有数据/心跳的网关
     getGatewayOnCount: data => {
       var param = {
         organizationID: common.getCurrentOrganizationID(),
-        lastSeenAt: 10
+        lastSeenAt: 60
       };
       if (data && !common.isEmpty(data.organizationID)) {
         param.organizationID = data.organizationID;
@@ -224,10 +225,11 @@ export default {
       return get("/devices", param);
     },
 
+    //1天（1440分钟）以内有数据的节点为在线
     getNodeOnCount: data => {
       var param = {
         organizationID: common.getCurrentOrganizationID(),
-        lastSeenAt: 10
+        lastSeenAt: 1440
       };
       if (data && !common.isEmpty(data.organizationID)) {
         param.organizationID = data.organizationID;
@@ -235,10 +237,11 @@ export default {
       return get("/devices", param);
     },
 
+    //默认显示1天内（1440分钟）活跃的节点
     getNodeLatest: data => {
       var param = {
         organizationID: common.getCurrentOrganizationID(),
-        //lastSeenAt: 1440,
+        lastSeenAt: 1440,
         limit: 9,
         orderBy: "last_seen_at desc nulls last"
       };
@@ -295,7 +298,8 @@ export default {
           common.getDateFromStr(data.endTimestamp)
         );
       }
-
+      console.log("start:" + data.startTimestamp);
+      console.log("end:" + data.endTimestamp);
       return get("/Devdata", data);
     },
 

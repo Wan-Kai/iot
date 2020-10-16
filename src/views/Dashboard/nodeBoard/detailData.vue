@@ -166,8 +166,12 @@ export default {
             //console.log(data);
 
             let infoDataTemp = data.deviceProfile;
-            this.returnedData.createdAt = data.createdAt;
-            this.returnedData.updatedAt = data.updatedAt;
+            this.returnedData.createdAt = this.common.timestamp2LocalDateTime(
+              data.createdAt
+            );
+            this.returnedData.updatedAt = this.common.timestamp2LocalDateTime(
+              data.updatedAt
+            );
             this.returnedData.name = infoDataTemp.name;
             this.returnedData.macVersion = infoDataTemp.macVersion;
             this.returnedData.supportsJoin = infoDataTemp.supportsJoin;

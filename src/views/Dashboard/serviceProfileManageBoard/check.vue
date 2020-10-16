@@ -175,7 +175,9 @@ export default {
           console.log(res);
           if (res.status === 200) {
             let infoDataTemp = res.data;
-            _this.returnedData.createdAt = infoDataTemp.createdAt;
+            _this.returnedData.createdAt = this.common.timestamp2LocalDateTime(
+              infoDataTemp.createdAt
+            );
             _this.returnedData.name = infoDataTemp.serviceProfile.name;
             _this.returnedData.networkServerID =
               infoDataTemp.serviceProfile.networkServerID;

@@ -169,7 +169,9 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === 200) {
-            this.returnedData.createdAt = res.data.createdAt;
+            this.returnedData.createdAt = this.common.timestamp2LocalDateTime(
+              res.data.createdAt
+            );
             this.returnedData.name = res.data.networkServer.name;
             this.returnedData.server = res.data.networkServer.server;
             if (this.returnedData.server.split(":")) {

@@ -2,12 +2,14 @@
   <div style="width: 100%">
     <div class="iot_searchLayout">
       <img src="../assets/logo.png" />
+      <!--
       <a-input-search
         placeholder="input search text"
         class="iot_search"
         @search="onSearch"
         size="small"
       />
+      -->
     </div>
 
     <div class="iot_user">

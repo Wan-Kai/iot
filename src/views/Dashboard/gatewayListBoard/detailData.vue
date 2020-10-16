@@ -79,6 +79,7 @@
               </p>
             </a-col>
           </a-row>
+          <!--
           <a-row class="iot_view_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_detail_textCard_p">
@@ -103,6 +104,7 @@
               </p>
             </a-col>
           </a-row>
+          -->
           <a-row class="iot_view_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_detail_textCard_p">
@@ -178,6 +180,7 @@
       </a-col>
     </a-row>
 
+    <!--
     <div style="background: #fff">
       <div
         id="gateway_myChartUp"
@@ -185,6 +188,7 @@
       ></div>
       <div id="gateway_myChartDown" style="width: auto; height:300px"></div>
     </div>
+    -->
   </a-layout>
 </template>
 
@@ -295,8 +299,12 @@ export default {
             this.returnedData.district = infoData.gateway.district;
             this.returnedData.location = infoData.gateway.location;
 
-            this.returnedData.lastSeenAt = infoData.lastSeenAt;
-            this.returnedData.createdAt = infoData.createdAt;
+            this.returnedData.lastSeenAt = this.common.timestamp2LocalDateTime(
+              infoData.lastSeenAt
+            );
+            this.returnedData.createdAt = this.common.timestamp2LocalDateTime(
+              infoData.createdAt
+            );
 
             let mapObj = new AMap.Map("gateway_detail", {
               // eslint-disable-line no-unused-vars

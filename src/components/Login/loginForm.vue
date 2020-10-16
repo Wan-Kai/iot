@@ -52,6 +52,7 @@
         >
           登录
         </a-button>
+        <!--
         <div class="iot_userNameForm_item_layout">
           <router-link
             to="/user/retrieve/step"
@@ -69,6 +70,7 @@
             >
           </div>
         </div>
+        -->
       </a-form-item>
     </a-form>
   </a-card>

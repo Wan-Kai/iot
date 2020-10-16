@@ -7,10 +7,11 @@
             <a-input
               style="width: 100%;float: left;text-align: left"
               placeholder="请输入设备编号(EUI)"
+              v-model="queryCondition.searchKey"
               v-decorator="[
                 'devEUI',
                 {
-                  initialValue: this.queryCondition.devEUI,
+                  initialValue: this.queryCondition.searchKey,
                   rules: [{ required: true, message: '设备编号(EUI)' }]
                 }
               ]"
@@ -43,7 +44,7 @@
     <div class="iot_view_nlogFlow_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="returnedData"
+        :dataSource="filteredTable"
         style="min-width: auto"
         class="iot_view_nlogFlow_table"
         :pagination="pagination"
@@ -68,7 +69,7 @@ const columns = [
   },
   {
     title: "下发时间",
-    dataIndex: "createdAt",
+    dataIndex: "sentAt",
     key: "sentAt"
   },
   {
@@ -99,7 +100,7 @@ export default {
       columns,
 
       queryCondition: {
-        devEUI: "",
+        searchKey: "",
         beginDay: "",
         endDay: ""
       },
@@ -117,6 +118,27 @@ export default {
         onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize)
       }
     };
+  },
+
+  computed: {
+    currentOrganizationID() {
+      return this.common.getCurrentOrganizationID();
+    },
+
+    filteredTable: function() {
+      var searchKey = this.queryCondition.searchKey;
+      var array = this.returnedData;
+      if (this.common.isEmpty(searchKey)) return array;
+
+      searchKey = searchKey.trim().toLowerCase();
+      array = array.filter(function(item) {
+        if (item.devEUI.toLowerCase().indexOf(searchKey) !== -1) {
+          return item;
+        }
+      });
+
+      return array;
+    }
   },
 
   beforeCreate() {
@@ -147,7 +169,7 @@ export default {
 
     handleQuery() {
       //debugger;
-      this.queryCondition.devEUI = this.form.getFieldValue("devEUI");
+      this.queryCondition.searchKey = this.form.getFieldValue("devEUI");
 
       //let Base64 = require('js-base64').Base64;
       //alert(Base64.encode("xxx"));
@@ -157,12 +179,18 @@ export default {
 
     getDownLog() {
       this.$api.node
-        .downDataQuery({ extra: this.queryCondition.devEUI, countOnly: false })
+        .downDataQuery({
+          extra: this.queryCondition.searchKey,
+          countOnly: false
+        })
         .then(res => {
           if (res.status === 200) {
             this.returnedData = res.data.deviceQueueItems;
 
             for (let i = 0; i < this.returnedData.length; i++) {
+              this.returnedData[i].sentAt = this.common.timestamp2LocalDateTime(
+                this.returnedData[i].sentAt
+              );
               var d = this.returnedData[i].data;
               /*
               if (i===0)

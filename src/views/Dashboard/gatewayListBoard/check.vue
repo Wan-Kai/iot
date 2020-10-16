@@ -102,9 +102,11 @@
           <a-tab-pane tab="详细信息" key="1">
             <Detail ref="gatewayDetail" />
           </a-tab-pane>
+          <!--
           <a-tab-pane tab="最新一帧上行数据" key="2" forceRender>
             暂定
           </a-tab-pane>
+          -->
           <a-tab-pane tab="配置修改" key="3">
             <DeployEdit ref="gatewayEdit" />
           </a-tab-pane>
@@ -199,8 +201,12 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.returnedData = res.data.gateway;
-            this.returnedData.lastSeenAt = res.data.lastSeenAt;
-            this.returnedData.firstSeenAt = res.data.firstSeenAt;
+            this.returnedData.lastSeenAt = this.common.timestamp2LocalDateTime(
+              res.data.lastSeenAt
+            );
+            this.returnedData.firstSeenAt = this.common.timestamp2LocalDateTime(
+              res.data.firstSeenAt
+            );
             /*
             if (res.data.lastSeenAt) {
               console.log("little test");

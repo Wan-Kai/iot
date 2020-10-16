@@ -54,6 +54,7 @@
           </a-tooltip>
         </a-form-item>
 
+        <!--
         <a-form-item
           label="设备分配容量："
           :required="true"
@@ -80,6 +81,7 @@
             />
           </a-tooltip>
         </a-form-item>
+        -->
         <a-form-item
           class="iot_view_app_add_formItem"
           :label="appDescription"
@@ -151,7 +153,7 @@ export default {
           sentData.name = values.name;
           sentData.description = values.description;
           sentData.organizationID = this.common.getCurrentOrganizationID();
-          sentData.capacity = values.capacity;
+          //sentData.capacity = values.capacity;
           console.log(sentData);
           this.$api.appManage
             .createApp({

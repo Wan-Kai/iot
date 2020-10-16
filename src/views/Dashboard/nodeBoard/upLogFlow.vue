@@ -6,12 +6,13 @@
           <a-form-item class="iot_view_upLogFlow_form_formItem">
             <a-input
               style="width: 100%;float: left;text-align: left"
-              placeholder="请输入设备编号(EUI)"
+              placeholder="请输入节点编号或名称"
+              v-model="queryCondition.searchKey"
               v-decorator="[
                 'devEUI',
                 {
-                  initialValue: this.queryCondition.devEUI,
-                  rules: [{ required: true, message: '设备编号(EUI)' }]
+                  initialValue: this.queryCondition.searchKey,
+                  rules: [{ required: true, message: '设备编号(EUI)或名称' }]
                 }
               ]"
             />
@@ -20,7 +21,7 @@
             <a-date-picker
               style="width: 100%;float: left;text-align: left"
               placeholder="开始时间"
-              :defaultValue="moment('2020-05-01', 'YYYY-MM-DD')"
+              :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')"
               :showToday="false"
               @change="onChangeBegin"
             />
@@ -43,7 +44,7 @@
     <div class="iot_view_nlogFlow_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="interData"
+        :dataSource="filteredTable"
         style="min-width: auto"
         class="iot_view_nlogFlow_table"
         :pagination="pagination"
@@ -140,12 +141,13 @@ export default {
   data() {
     return {
       columns,
+
       queryCondition: {
-        devEUI: "",
+        searchKey: "",
         beginDay: "",
         endDay: ""
       },
-      interData: [],
+      returnedData: [],
 
       pagination: {
         size: "small",
@@ -159,6 +161,30 @@ export default {
         onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize)
       }
     };
+  },
+
+  computed: {
+    currentOrganizationID() {
+      return this.common.getCurrentOrganizationID();
+    },
+
+    filteredTable: function() {
+      var searchKey = this.queryCondition.searchKey;
+      var array = this.returnedData;
+      if (this.common.isEmpty(searchKey)) return array;
+
+      searchKey = searchKey.trim().toLowerCase();
+      array = array.filter(function(item) {
+        if (
+          item.devEUI.toLowerCase().indexOf(searchKey) !== -1 ||
+          item.deviceName.toLowerCase().indexOf(searchKey) !== -1
+        ) {
+          return item;
+        }
+      });
+
+      return array;
+    }
   },
 
   beforeCreate() {
@@ -188,11 +214,19 @@ export default {
 
     handleQuery() {
       //debugger;
-      this.queryCondition.devEUI = this.form.getFieldValue("devEUI");
+      this.queryCondition.searchKey = this.form.getFieldValue("devEUI");
       this.getUpLog();
     },
 
     getUpLog() {
+      if (this.common.isEmpty(this.queryCondition.beginDay)) {
+        this.queryCondition.beginDay = this.getCurrentData();
+      }
+
+      if (this.common.isEmpty(this.queryCondition.endDay)) {
+        this.queryCondition.endDay = this.getCurrentData();
+      }
+
       var params = {
         limit: 100,
         search: this.queryCondition.devEUI,
@@ -205,7 +239,15 @@ export default {
         .upDataQuery(params)
         .then(res => {
           if (res.status === 200) {
-            this.interData = res.data.result;
+            this.returnedData = res.data.result;
+
+            for (let i = 0; i < this.returnedData.length; i++) {
+              this.returnedData[
+                i
+              ].receivedAt = this.common.timestamp2LocalDateTime(
+                this.returnedData[i].receivedAt
+              );
+            }
           } else {
             console.log("上行日志流水获取失败");
           }

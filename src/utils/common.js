@@ -470,5 +470,24 @@ export default {
     str = str.replace(/s|S/g, d.getSeconds());
 
     return str;
+  },
+
+  timestamp2LocalDateTime(strTimestamp) {
+    if (strTimestamp) {
+      var dd = new Date(strTimestamp);
+      var tt = new Date(dd.setHours(dd.getHours() - 16));
+      return this.formatDate(tt, "yyyy-MM-dd HH:mm:ss");
+    } else {
+      return "";
+    }
+
+    /*
+    if (strTimestamp) {
+      var arr1 = strTimestamp.split(" ");
+      var arr2 = arr1[0].split("T");
+      var sdate = arr2[0] + " " + arr2[1];
+
+    }
+    */
   }
 };

@@ -7,9 +7,11 @@ if (process.env.NODE_ENV === "development") {
   // if (!store.getters.getIsMock) {
   //   axios.defaults.baseURL = "/api";
   // }
-  axios.defaults.baseURL = "http://188.131.172.171:8080/api";
+  //axios.defaults.baseURL = "http://188.131.172.171:8080/api";
+  axios.defaults.baseURL = "http://ns.zmvision.cn:8080/api";
 } else if (process.env.NODE_ENV === "production") {
   axios.defaults.baseURL = "http://188.131.172.171:8080/api";
+  //axios.defaults.baseURL = "http://ns.zmvision.cn:8080/api";
 } else {
   axios.defaults.baseURL = "http://188.131.172.171:8080/api";
 }

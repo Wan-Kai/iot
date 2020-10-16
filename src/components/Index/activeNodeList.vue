@@ -51,7 +51,7 @@ export default {
   methods: {
     getActiveNode() {
       var param = {
-        lastSeenAt: 10080
+        lastSeenAt: 1440 * 4
       };
       this.$api.node
         .getNodeLatest()

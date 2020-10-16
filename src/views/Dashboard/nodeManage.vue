@@ -6,13 +6,16 @@
           <a-input-group compact style="float: left;width: 100%">
             <a-input
               style="width: 40%;float: left;text-align: left"
-              placeholder="请输入编号查询"
+              placeholder="请输入节点规范名称"
+              v-model="searchKey"
             />
+            <!--
             <a-select style="width: 40%;float: left;text-align: left">
               <a-select-option value="0">未部署</a-select-option>
               <a-select-option value="1">已部署</a-select-option>
             </a-select>
-            <a-button style="float: left" icon="search" />
+            -->
+            <a-button style="float: left" icon="search" @click="handleQuery" />
           </a-input-group>
         </a-col>
         <a-col :span="8" :offset="8">
@@ -103,7 +106,7 @@
     <div class="iot_view_table_layout">
       <a-table
         :columns="columns"
-        :dataSource="tableData"
+        :dataSource="filteredTable"
         style="min-width: auto"
         class="iot_view_table"
         :pagination="pagination"
@@ -122,10 +125,12 @@
           <a @click="edit(record)">编辑</a>
         </span>
       </a-table>
+      <!--
       <div class="iot_view_button_layout">
         <a-button class="iot_view_button_delete" icon="delete">删除</a-button>
         <a-button class="iot_view_button_export" icon="download">导出</a-button>
       </div>
+      -->
     </div>
   </a-layout>
 </template>
@@ -185,6 +190,7 @@ export default {
     return {
       //table
       columns,
+      searchKey: "",
       tableData: [],
       tableLoadingState: true,
 
@@ -243,6 +249,21 @@ export default {
   computed: {
     currentOrganizationID() {
       return this.common.getCurrentOrganizationID();
+    },
+
+    filteredTable: function() {
+      var searchKey = this.searchKey;
+      var array = this.returnedData;
+      if (this.common.isEmpty(searchKey)) return array;
+
+      searchKey = searchKey.trim().toLowerCase();
+      array = array.filter(function(item) {
+        if (item.device_profile_name.toLowerCase().indexOf(searchKey) !== -1) {
+          return item;
+        }
+      });
+
+      return array;
     }
   },
 
@@ -274,7 +295,9 @@ export default {
                 network_server_id: result[i].networkServerID,
                 networkServerName: "",
                 organization_id: result[i].organizationID,
-                createdAt: result[i].createdAt
+                createdAt: this.common.timestamp2LocalDateTime(
+                  result[i].createdAt
+                )
               };
               item.networkServerName = getNetworkServerNameById(
                 item.network_server_id
@@ -292,6 +315,7 @@ export default {
         });
     },
 
+    handleQuery() {},
     getServerName(record) {
       //alert(record.network_server_id);
       return getNetworkServerNameById(record.network_server_id);

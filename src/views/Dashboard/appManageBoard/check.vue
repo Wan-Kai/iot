@@ -13,12 +13,14 @@
         <span style="margin-left: 30px;margin-bottom: 8px"
           >应用名称：{{ this.returnedData.appName }}</span
         >
+        <!--
         <span style="margin-left: 30px;margin-bottom: 8px"
           >设备分配容量：{{ this.returnedData.capacity }}</span
         >
         <span style="margin-left: 30px;margin-bottom: 8px"
           >设备使用容量：{{ this.returnedData.usedCapacity }}</span
         >
+        -->
         <span style="margin-left: 30px;margin-bottom: 8px"
           >创建时间：{{ this.returnedData.time }}</span
         >

@@ -1,10 +1,12 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_top">
+      <!--
       <a-input-search
         class="iot_view_top_search"
         placeholder="请输入要查找的网络服务器"
       />
+      -->
       <a-button
         class="iot_view_top_add"
         type="primary"
@@ -154,8 +156,12 @@ export default {
                 temp.port = "";
               }
               temp.gatewayDiscoveryEnabled = false;
-              temp.createdAt = this.returnedData[i].createdAt;
-              temp.updatedAt = this.returnedData[i].updatedAt;
+              temp.createdAt = this.common.timestamp2LocalDateTime(
+                this.returnedData[i].createdAt
+              );
+              temp.updatedAt = this.common.timestamp2LocalDateTime(
+                this.returnedData[i].updatedAt
+              );
               temp.id = this.returnedData[i].id;
               temp.name = this.returnedData[i].name;
               temp.server = this.returnedData[i].server;

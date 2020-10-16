@@ -5,11 +5,14 @@
         class="iot_view_top_search"
         placeholder="请输入要查找的网关"
         style="width: 300px"
+        v-model="searchKey"
       />
+
       <div class="iot_view_top_right">
         <a-button type="primary" icon="plus" @click="addGateway">
           添加
         </a-button>
+        <!--
         <a-button
           icon="download"
           style="margin-left: 20px"
@@ -17,6 +20,7 @@
         >
           批量导入
         </a-button>
+        -->
         <a-modal
           v-model="importDialogVisibleState"
           title="节点批量导入"
@@ -54,6 +58,7 @@
             <p style="margin-bottom: 0">Some contents...</p>
           </a-card>
         </a-modal>
+        <!--
         <a-button
           icon="download"
           style="margin-left: 20px"
@@ -61,6 +66,7 @@
         >
           批量导出
         </a-button>
+        -->
         <a-modal
           v-model="exportDialogVisibleState"
           title="节点批量导出"
@@ -82,10 +88,13 @@
       </div>
     </div>
     <div>
+      <!--多选
       <a-table
-        :rowSelection="rowSelection"
+      :rowSelection="rowSelection"-->
+      -->
+      <a-table
         :columns="columns"
-        :dataSource="tableData"
+        :dataSource="filteredTable"
         style="min-width: auto"
         class="iot_view_table"
         :pagination="pagination"
@@ -105,6 +114,7 @@
           <a @click="editGateway(record)">编辑</a>
         </span>
       </a-table>
+      <!--
       <div class="iot_view_button_layout">
         <a-button
           class="iot_view_button_delete"
@@ -119,6 +129,7 @@
           >导出</a-button
         >
       </div>
+      -->
     </div>
   </a-layout>
 </template>
@@ -198,6 +209,7 @@ export default {
   data() {
     return {
       columns,
+      searchKey: "",
       tableData: [],
 
       returnedData: [
@@ -260,6 +272,20 @@ export default {
   computed: {
     currentOrganizationID() {
       return this.common.getCurrentOrganizationID();
+    },
+    filteredTable: function() {
+      var searchKey = this.searchKey;
+      var array = this.returnedData;
+      if (this.common.isEmpty(searchKey)) return array;
+
+      searchKey = searchKey.trim().toLowerCase();
+      array = array.filter(function(item) {
+        if (item.name.toLowerCase().indexOf(searchKey) !== -1) {
+          return item;
+        }
+      });
+
+      return array;
     }
   },
 

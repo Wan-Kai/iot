@@ -2,13 +2,15 @@
   <a-layout style="background: #fff;padding: 0 14px 0;min-height: fit-content">
     <div class="iot_view_top">
       <a-row>
+        <!--
         <a-col :span="12">
           <a-input-search
             class="iot_view_top_search"
             placeholder="请输入要查找的内容"
           />
         </a-col>
-        <a-col :span="8" :offset="4">
+        -->
+        <a-col :span="12" :offset="12">
           <a-button
             type="primary"
             icon="plus"
@@ -36,6 +38,7 @@
           <a @click="editRouter(record)">编辑</a>
         </span>
       </a-table>
+      <!--
       <div class="iot_view_button">
         <a-button v-if="!tableLoadingState">批量选择</a-button>
         <a-button
@@ -46,6 +49,7 @@
           >删除</a-button
         >
       </div>
+      -->
     </div>
   </a-layout>
 </template>
@@ -130,6 +134,9 @@ export default {
               var item = returnedData[i];
               item.organizationName = getOrganizationNameById(
                 item.organizationID
+              );
+              item.createdAt = this.common.timestamp2LocalDateTime(
+                item.createdAt
               );
               if (this.common.isEmpty(item.organizationName)) continue;
               this.tableData.push(item);

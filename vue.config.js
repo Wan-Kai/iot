@@ -4,10 +4,12 @@ const resolve = dir => {
   return path.join(__dirname, dir);
 };
 
-const BASE_URL = process.env.NODE_ENV === "production" ? "/iotp/" : "/iotp/";
+//const BASE_URL = process.env.NODE_ENV === "production" ? "/iotp/" : "/iotp/";
+
+const publicPath = process.env.BASE_URL;
 
 module.exports = {
-  publicPath: BASE_URL,
+  publicPath: publicPath,
 
   css: {
     loaderOptions: {

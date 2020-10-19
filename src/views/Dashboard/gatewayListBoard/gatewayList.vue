@@ -90,7 +90,7 @@
     <div>
       <!--多选
       <a-table
-      :rowSelection="rowSelection"-->
+      :rowSelection="rowSelection"
       -->
       <a-table
         :columns="columns"

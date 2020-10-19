@@ -1,0 +1,3 @@
+applicationID,description,devEUI,deviceProfileID,name,referenceAltitude,skipFCntCheck,tags,variables,appKey,genAppKey,nwkKey
+1,b02d,5A4D564913C1B011,f5b27c28-b791-453f-a4fa-73d2eade3155,b02d,0,TRUE,{},{},,,4348494e415a4d564953494f4e373059
+1,b062,5A4D564913C1B012,f5b27c28-b791-453f-a4fa-73d2eade3155,b062,0,TRUE,{},{},,,4348494e415a4d564953494f4e373059

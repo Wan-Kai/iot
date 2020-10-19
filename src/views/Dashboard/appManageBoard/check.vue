@@ -1,4 +1,4 @@
-<template>
+<template xmlns:a="http://www.w3.org/1999/html">
   <a-layout>
     <a-card style="width: 100%">
       <a-row style="padding-bottom: 8px">
@@ -139,6 +139,25 @@
           <!--            <textarea :rows="8" readonly style="cursor: default;width: 100%;background: #E0E0E0"/>-->
           <!--          </div>-->
         </div>
+
+        <div>
+          <!--
+              <a:button style="margin-left: 10px;margin-top: 0;margin-bottom: 10;line-height: 24px;height: 24px"
+                    @click="downloadTemplate">
+               <a-icon type="download" /> 下载模板
+          </a:button>
+          -->
+
+          <a href="../../../../util/devices.csv">下载模板1</a>
+
+          <!--
+          <a href="`${BASE_URL}util/devices.csv`">下载模板2</a>
+
+          <a href='`${publicPath}util/devices.csv`'>下载模板3334444</a>
+
+          <a href='`${process.env.BASE_URL}util/devices.csv`'>下载模板4</a>
+          -->
+        </div>
       </a-modal>
     </a-layout>
   </a-layout>
@@ -188,7 +207,10 @@ export default {
       //loading
       nodeComfirmLoading: false,
       uploadModalVisible: false,
-      uploadLoading: false
+      uploadLoading: false,
+
+      publicPath: process.env.BASE_URL
+      //publicPath : publicPath,
     };
   },
   beforeMount() {
@@ -207,6 +229,15 @@ export default {
       this.uploadModalVisible = true;
     },
 
+    downloadTemplate() {
+      //window.open("`${BASE_URL}/util/devices.csv`");
+      //this.$message.error("${publicPath}");
+      //this.$message.error("`${publicPath}`");
+      //this.$message.error("${BASE_URL}");
+      window.open("../../../../util/devices.csv");
+
+      //window.open("/iotp/util/devices.csv");
+    },
     handleNodeChangeComfirm() {
       //this.nodeComfirmLoading = true;
       //与最开始相比，从右侧移除的节点 供参考

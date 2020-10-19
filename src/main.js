@@ -100,6 +100,7 @@ Vue.use(Radio);
 Vue.use(Transfer);
 Vue.use(List);
 Vue.use(Upload);
+
 Vue.component("Authorized", Authorized);
 /**
  * 引用公用的api里面的方法，所有页面可调用

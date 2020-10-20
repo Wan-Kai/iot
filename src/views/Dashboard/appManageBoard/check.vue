@@ -21,15 +21,16 @@
           >设备使用容量：{{ this.returnedData.usedCapacity }}</span
         >
         -->
-        <span style="margin-left: 30px;margin-bottom: 8px"
+        <!-- <span style="margin-left: 30px;margin-bottom: 8px"
           >创建时间：{{ this.returnedData.time }}</span
-        >
-      </a-row>
-      <a-row style="display: flex">
-        <span style="margin-left: 30px;margin-bottom: 2px"
+        > -->
+        <span style="margin-left: 30px;margin-bottom: 8px"
           >应用描述：{{ this.returnedData.description }}</span
         >
       </a-row>
+      <!-- <a-row style="display: flex">
+        
+      </a-row> -->
     </a-card>
 
     <a-layout
@@ -304,9 +305,9 @@ export default {
         .then(res => {
           if (res.status === 200) {
             let infoDataTemp = res.data.application;
-
             this.returnedData.appName = infoDataTemp.name;
             this.returnedData.description = infoDataTemp.description;
+            console.log(infoDataTemp);
           }
         })
         .catch(err => {

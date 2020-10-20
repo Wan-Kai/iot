@@ -45,15 +45,15 @@ const columns = [
     dataIndex: "state",
     scopedSlots: { customRender: "state" }
   },
-  {
-    title: "信号强度",
-    key: "signal",
-    dataIndex: "signal"
-  },
+  // {
+  //   title: "信号强度",
+  //   key: "signal",
+  //   dataIndex: "signal"
+  // },
   {
     title: "最后心跳时间",
-    key: "heartTime",
-    dataIndex: "heartTime"
+    key: "lastSeenAt",
+    dataIndex: "lastSeenAt"
   },
   {
     title: "操作",
@@ -93,6 +93,7 @@ export default {
   },
   methods: {
     getAppNodes() {
+      var th = this;
       this.$api.appManage
         .getNodeInApp({
           applicationID: this.query.appID,
@@ -102,8 +103,17 @@ export default {
           if (res.status === 200) {
             let infoDataTemp = res.data.result;
             infoDataTemp.forEach(item => {
-              item.state = "off";
+              //比较
+              var ls = item.lastSeenAt;
+              item.lastSeenAt = th.common.utc2beijing(ls);
+              var ps = th.common.checkUTCpast(ls);
+              if (ps !== "" && ps < 24 * 60 * 60 * 1000) {
+                item.state = "ON";
+              } else {
+                item.state = "OFF";
+              }
             });
+            console.log(res.data.result);
             this.tableData = res.data.result;
           } else {
             console.log("获取节点列表失败");

@@ -22,7 +22,7 @@
             <a-date-picker
               style="width: 100%;float: left;text-align: left"
               placeholder="开始时间"
-              :defaultValue="moment('2020-05-01', 'YYYY-MM-DD')"
+              :defaultValue="moment(getCurrentData(), 'YYYY-MM-DD')"
               :showToday="false"
               @change="onChangeBegin"
             />
@@ -90,11 +90,11 @@ const columns = [
     dataIndex: "data",
     key: "data"
   },
-  {
-    title: "是否开启自适应速率",
-    dataIndex: "adr",
-    key: "adr"
-  },
+  // {
+  //   title: "是否开启自适应速率",
+  //   dataIndex: "adr",
+  //   key: "adr"
+  // },
   {
     title: "数据率",
     dataIndex: "dr",
@@ -114,6 +114,16 @@ const columns = [
     title: "端口",
     dataIndex: "fPort",
     key: "fPort"
+  },
+  {
+    title: "信号",
+    dataIndex: "rssi",
+    key: "rssi"
+  },
+  {
+    title: "网关",
+    dataIndex: "gatewayId",
+    key: "gatewayId"
   }
   /*
   {
@@ -203,13 +213,21 @@ export default {
         startTimestamp: this.queryCondition.beginDay,
         endTimestamp: this.queryCondition.endDay
       };
-
+      var _this = this;
       this.$api.node
         //.upFlowData({page: 0})
         .upDataQuery(params)
         .then(res => {
           if (res.status === 200) {
-            this.interData = res.data.result;
+            let list = res.data.result;
+            list.forEach(item => {
+              if (item.receivedAt) {
+                item.receivedAt = _this.common.timestamp2LocalDateTime(
+                  item.receivedAt
+                );
+              }
+            });
+            this.interData = list;
           } else {
             console.log("上行日志流水获取失败");
           }

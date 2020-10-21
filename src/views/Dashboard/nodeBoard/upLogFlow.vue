@@ -12,7 +12,7 @@
                 'devEUI',
                 {
                   initialValue: this.queryCondition.searchKey,
-                  rules: [{ required: true, message: '设备编号(EUI)或名称' }]
+                  rules: [{ required: false, message: '设备编号(EUI)或名称' }]
                 }
               ]"
             />
@@ -89,11 +89,11 @@ const columns = [
     dataIndex: "data",
     key: "data"
   },
-  {
-    title: "是否开启自适应速率",
-    dataIndex: "adr",
-    key: "adr"
-  },
+  // {
+  //   title: "是否开启自适应速率",
+  //   dataIndex: "adr",
+  //   key: "adr"
+  // },
   {
     title: "数据率",
     dataIndex: "dr",
@@ -113,6 +113,16 @@ const columns = [
     title: "端口",
     dataIndex: "fPort",
     key: "fPort"
+  },
+  {
+    title: "信号",
+    dataIndex: "rssi",
+    key: "rssi"
+  },
+  {
+    title: "网关",
+    dataIndex: "gatewayId",
+    key: "gatewayId"
   }
   /*
   {

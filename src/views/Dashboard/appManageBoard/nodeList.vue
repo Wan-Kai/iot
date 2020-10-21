@@ -15,8 +15,8 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <a @click="checkRouter(record)">查看</a>
-        <a-divider type="vertical" />
-        <a @click="editRouter(record)">编辑</a>
+        <!-- <a-divider type="vertical" />
+        <a @click="editRouter(record)">编辑</a> -->
       </span>
     </a-table>
     <div class="iot_view_nodeManage_table_button_content">
@@ -45,15 +45,15 @@ const columns = [
     dataIndex: "state",
     scopedSlots: { customRender: "state" }
   },
-  // {
-  //   title: "信号强度",
-  //   key: "signal",
-  //   dataIndex: "signal"
-  // },
+  {
+    title: "创建时间",
+    key: "createdAt",
+    dataIndex: "createdAt"
+  },
   {
     title: "最后心跳时间",
-    key: "lastSeenAt",
-    dataIndex: "lastSeenAt"
+    key: "heartAt",
+    dataIndex: "heartAt"
   },
   {
     title: "操作",
@@ -105,7 +105,10 @@ export default {
             infoDataTemp.forEach(item => {
               //比较
               var ls = item.lastSeenAt;
-              item.lastSeenAt = th.common.utc2beijing(ls);
+              item.heartAt = th.common.timestamp2LocalDateTime(ls);
+              item.createdAt = th.common.timestamp2LocalDateTime(
+                item.createdAt
+              );
               var ps = th.common.checkUTCpast(ls);
               if (ps !== "" && ps < 24 * 60 * 60 * 1000) {
                 item.state = "ON";
@@ -128,23 +131,24 @@ export default {
       sessionStorage.setItem("tab", "1");
       sessionStorage.setItem("appID", this.query.appID);
       sessionStorage.setItem("devEUI", record.devEUI);
-      sessionStorage.setItem("deviceProfileID", record.deviceProfileID);
-      sessionStorage.setItem("deviceProfileName", record.deviceProfileName);
+      sessionStorage.setItem("lastSeenAt", record.lastSeenAt);
+      // sessionStorage.setItem("deviceProfileID", record.deviceProfileID);
+      // sessionStorage.setItem("deviceProfileName", record.deviceProfileName);
       //debugger;
       this.$router.push({
         name: "checkNodeInApp"
       });
-    },
-    editRouter(record) {
-      sessionStorage.setItem("tab", "2");
-      sessionStorage.setItem("appID", this.query.appID);
-      sessionStorage.setItem("devEUI", record.devEUI);
-      sessionStorage.setItem("deviceProfileID", record.deviceProfileID);
-      sessionStorage.setItem("deviceProfileName", record.deviceProfileName);
-      this.$router.push({
-        name: "checkNodeInApp"
-      });
     }
+    // editRouter(record) {
+    //   sessionStorage.setItem("tab", "2");
+    //   sessionStorage.setItem("appID", this.query.appID);
+    //   sessionStorage.setItem("devEUI", record.devEUI);
+    //   sessionStorage.setItem("deviceProfileID", record.deviceProfileID);
+    //   sessionStorage.setItem("deviceProfileName", record.deviceProfileName);
+    //   this.$router.push({
+    //     name: "checkNodeInApp"
+    //   });
+    // }
   }
 };
 </script>

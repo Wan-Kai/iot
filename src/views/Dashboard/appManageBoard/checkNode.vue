@@ -8,8 +8,8 @@
           >
         </a-col>
       </a-row>
-      <div class="iot_line" />
-      <a-row type="flex" justify="space-around" style="margin-top: 8px">
+      <!-- <div class="iot_line" /> -->
+      <!-- - <a-row type="flex" justify="space-around" style="margin-top: 8px">
         <a-col :span="6" style="width: 15%">
           <a-row type="flex" justify="space-around" align="middle">
             <a-col :span="8" style="height: 100%">
@@ -21,7 +21,7 @@
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">网络状态</div>
               <div style="font-size: 12px">
-                状态
+                {{this.query.netstatus}}
               </div>
             </a-col>
           </a-row>
@@ -36,7 +36,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">信号强度</div>
-              <div style="font-size: 12px">强度</div>
+              <div style="font-size: 12px">{{this.query.rssi}}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -50,7 +50,7 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">所在网关</div>
-              <div style="font-size: 12px">网关</div>
+              <div style="font-size: 12px">{{this.query.gatewayId}}</div>
             </a-col>
           </a-row>
         </a-col>
@@ -64,11 +64,11 @@
             </a-col>
             <a-col :span="16" style="text-align: left">
               <div style="font-size: 8px;color: #b0b0b0">最后心跳时间</div>
-              <div style="font-size: 12px">心跳时间</div>
+              <div style="font-size: 12px">{{this.query.lastSeenAt}}</div>
             </a-col>
           </a-row>
         </a-col>
-      </a-row>
+      </a-row> -->
     </a-card>
 
     <a-layout
@@ -81,18 +81,18 @@
           size="small"
           style="text-align: left;padding-top: 0;height: min-content"
         >
-          <a-tab-pane tab="详细信息" key="1">
+          <!-- <a-tab-pane tab="详细信息" key="1">
             <nodeDetail />
-          </a-tab-pane>
-          <a-tab-pane tab="配置修改" key="2">
+          </a-tab-pane> -->
+          <a-tab-pane tab="配置修改" key="1">
             <nodeEdit />
           </a-tab-pane>
 
-          <a-tab-pane tab="上行日志" key="3">
+          <a-tab-pane tab="上行日志" key="2">
             <nodeUplog />
           </a-tab-pane>
 
-          <a-tab-pane tab="下行日志" key="4">
+          <a-tab-pane tab="下行日志" key="3">
             <nodeDownlog />
           </a-tab-pane>
         </a-tabs>
@@ -109,7 +109,7 @@ import nodeDownlog from "./downLogFlow";
 export default {
   name: "checkNode",
   components: {
-    nodeDetail,
+    // nodeDetail,
     nodeEdit,
     nodeUplog,
     nodeDownlog
@@ -121,8 +121,12 @@ export default {
         defaultTab: "",
         appID: "",
         devEUI: "",
-        deviceProfileID: "",
-        deviceProfileName: ""
+        netstatus: "",
+        rssi: "",
+        gatewayId: "",
+        lastSeenAt: ""
+        // deviceProfileID: "",
+        // deviceProfileName: ""
       }
     };
   },
@@ -130,8 +134,10 @@ export default {
     this.query.defaultTab = sessionStorage.getItem("tab");
     this.query.appID = sessionStorage.getItem("appID");
     this.query.devEUI = sessionStorage.getItem("devEUI");
-    this.query.deviceProfileID = sessionStorage.getItem("deviceProfileID");
-    this.query.deviceProfileName = sessionStorage.getItem("deviceProfileName");
+    // this.query.lastSeenAt = sessionStorage.getItem("lastSeenAt");
+    //   this.query.deviceProfileID = sessionStorage.getItem("deviceProfileID");
+    //   this.query.deviceProfileName = sessionStorage.getItem("deviceProfileName");
+    // this.getUpLog();
   }
 };
 </script>

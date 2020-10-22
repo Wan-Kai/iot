@@ -149,7 +149,7 @@
           </a:button>
           -->
 
-          <a href="../../../../util/devices.csv">下载模板1</a>
+          <a href="../../../../util/devices.csv">下载模板</a>
 
           <!--
           <a href="`${BASE_URL}util/devices.csv`">下载模板2</a>
@@ -307,7 +307,7 @@ export default {
             let infoDataTemp = res.data.application;
             this.returnedData.appName = infoDataTemp.name;
             this.returnedData.description = infoDataTemp.description;
-            console.log(infoDataTemp);
+            // console.log(infoDataTemp);
           }
         })
         .catch(err => {
@@ -416,11 +416,11 @@ export default {
       file,
       filename,
       headers,
-      onError,
       onProgress,
       onSuccess,
       withCredentials
     }) {
+      var _this = this;
       // EXAMPLE: post form-data with 'axios'
       let formData = new FormData();
       if (data) {
@@ -441,9 +441,11 @@ export default {
         })
         .then(res => {
           if (res.status === 200) {
-            onSuccess(res, file);
+            onSuccess();
+            // _this.$message.success("添加成功");
           } else {
-            onError();
+            //     onError();
+            _this.$message.error(res.data, 3);
             this.fileList = [];
           }
         })

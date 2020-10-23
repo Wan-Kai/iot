@@ -127,7 +127,7 @@
 
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
-import { getNetworkServerNameById, getAreaLabel } from "../../../utils/util";
+import { getNetworkServerNameById } from "../../../utils/util";
 import Detail from "./detailData";
 import DeployEdit from "./deployEdit";
 export default {
@@ -170,14 +170,6 @@ export default {
 
     getDown() {
       return "";
-    },
-
-    getArea() {
-      return getAreaLabel(
-        this.returnedData.province,
-        this.returnedData.city,
-        this.returnedData.district
-      );
     },
 
     getServerName() {

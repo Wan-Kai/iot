@@ -1,7 +1,7 @@
 import store from "../store/index";
-import options from "../store/modules/options";
+// import options from "../store/modules/options";
 import api from "./api";
-import common from "./common";
+// import common from "./common";
 
 export function getPhoneNumber() {
   return store.getters["retrieve/getPhoneNumber"];

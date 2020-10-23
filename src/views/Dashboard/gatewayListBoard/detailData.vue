@@ -135,7 +135,7 @@
               <p class="iot_view_detail_textCard_p">
                 {{
                   this.returnedData.location.latitude +
-                    "/" +
+                    "," +
                     this.returnedData.location.longitude
                 }}
               </p>
@@ -157,7 +157,11 @@
             </a-col>
             <a-col :span="16">
               <p class="iot_view_detail_textCard_p">
-                {{ this.getArea }}
+                {{
+                  this.returnedData.province +
+                    this.returnedData.city +
+                    this.returnedData.district
+                }}
               </p>
             </a-col>
           </a-row>
@@ -196,7 +200,7 @@
 import ARow from "ant-design-vue/es/grid/Row";
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
-import { getNetworkServerNameById, getAreaLabel } from "../../../utils/util";
+import { getNetworkServerNameById } from "../../../utils/util";
 export default {
   components: { ACol, ARow },
 
@@ -249,14 +253,6 @@ export default {
 
     getDown() {
       return "";
-    },
-
-    getArea() {
-      return getAreaLabel(
-        this.returnedData.province,
-        this.returnedData.city,
-        this.returnedData.district
-      );
     },
 
     getServerName() {

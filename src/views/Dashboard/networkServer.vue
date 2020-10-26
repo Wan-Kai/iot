@@ -73,12 +73,12 @@ const columns = [
     dataIndex: "port",
     key: "port"
   },
-  {
-    title: "网关发现",
-    dataIndex: "gatewayDiscoveryEnabled",
-    key: "gatewayDiscoveryEnabled",
-    scopedSlots: { customRender: "gatewayDiscoveryEnabled" }
-  },
+  // {
+  //   title: "网关发现",
+  //   dataIndex: "gatewayDiscoveryEnabled",
+  //   key: "gatewayDiscoveryEnabled",
+  //   scopedSlots: { customRender: "gatewayDiscoveryEnabled" }
+  // },
   {
     title: "创建时间",
     key: "createdAt",

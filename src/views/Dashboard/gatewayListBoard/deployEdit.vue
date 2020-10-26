@@ -32,16 +32,6 @@
                 style="width: 90%;float: left"
               >
               </a-input>
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
             </a-form-item>
 
             <a-form-item
@@ -81,16 +71,6 @@
                 placeholder=""
                 @change="networkServerChange"
               />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
             </a-form-item>
 
             <a-form-item
@@ -110,16 +90,6 @@
                 :options="communicationMode_options"
                 placeholder=""
               />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
             </a-form-item>
             <a-form-item
               class="iot_view_edit_formitem"
@@ -138,16 +108,6 @@
                 :options="band_options"
                 placeholder=""
               />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
             </a-form-item>
             <a-form-item
               class="iot_view_edit_formitem"
@@ -206,13 +166,18 @@
               <a-col :offset="8">
                 <p style="margin-bottom: 2px;text-align: left">详细位置</p>
                 <a-input
-                  v-decorator="['location', { initialValue: this.getLocation }]"
+                  v-model="returnedData.location.longitude"
                   size="small"
-                  style="width: 90%;float: left;margin-bottom: 0px"
+                  style="width: 40%;float: left;margin-bottom: 0px"
+                />
+                <a-input
+                  v-model="returnedData.location.latitude"
+                  size="small"
+                  style="width: 40%;float: left;margin-bottom: 0px"
                 />
                 <a-tooltip placement="rightTop">
                   <template slot="title">
-                    prompt text
+                    经纬度信息
                   </template>
                   <a-icon
                     type="exclamation-circle"
@@ -331,20 +296,7 @@ export default {
     };
   },
 
-  computed: {
-    getLocation() {
-      if (
-        !this.common.isEmpty(this.returnedData.location.longitude) &&
-        !this.common.isEmpty(this.returnedData.location.latitude)
-      )
-        return (
-          this.returnedData.location.longitude.toString() +
-          "," +
-          this.returnedData.location.latitude.toString()
-        );
-      return "";
-    }
-  },
+  computed: {},
 
   beforeCreate() {
     this.gatewayDeployForm = this.$form.createForm(this, {
@@ -473,13 +425,13 @@ export default {
                 ], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                 title: "网关"
               });
-              address =
-                _self.returnedData.location.longitude.toString() +
-                "," +
-                _self.returnedData.location.latitude.toString();
-              _self.gatewayDeployForm.setFieldsValue({
-                location: address
-              });
+              // address =
+              //   _self.returnedData.location.longitude.toString() +
+              //   "," +
+              //   _self.returnedData.location.latitude.toString();
+              // _self.gatewayDeployForm.setFieldsValue({
+              //   location: address
+              // });
             });
           } else {
             console.log("获取网关节点初始信息失败");

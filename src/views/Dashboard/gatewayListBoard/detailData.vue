@@ -59,7 +59,7 @@
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_detail_textCard_text_light">
+          <!-- <a-row class="iot_view_detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_detail_textCard_p">状态：</p>
             </a-col>
@@ -78,7 +78,7 @@
                 {{ this.getSign }}
               </p>
             </a-col>
-          </a-row>
+          </a-row> -->
           <!--
           <a-row class="iot_view_detail_textCard_text_light">
             <a-col :span="8">
@@ -134,14 +134,14 @@
             <a-col :span="16">
               <p class="iot_view_detail_textCard_p">
                 {{
-                  this.returnedData.location.latitude +
+                  this.returnedData.location.longitude +
                     "," +
-                    this.returnedData.location.longitude
+                    this.returnedData.location.latitude
                 }}
               </p>
             </a-col>
           </a-row>
-          <a-row class="iot_view_detail_textCard_text_dark">
+          <!-- <a-row class="iot_view_detail_textCard_text_dark">
             <a-col :span="8">
               <p class="iot_view_detail_textCard_p">海拔：</p>
             </a-col>
@@ -150,7 +150,7 @@
                 {{ this.returnedData.location.altitude }}
               </p>
             </a-col>
-          </a-row>
+          </a-row> -->
           <a-row class="iot_view__detail_textCard_text_light">
             <a-col :span="8">
               <p class="iot_view_detail_textCard_p">地理位置：</p>

@@ -362,7 +362,7 @@ export default {
 
   getEndTimestamp: function(date) {
     var day = this.formatDate(date, "yyyy-MM-dd");
-    day += "T16:00:00Z";
+    day += "T15:59:59Z";
     return day;
   },
 
@@ -476,6 +476,24 @@ export default {
       var dd = new Date(strTimestamp);
       // var tt = new Date(dd.setHours(dd.getHours() -16));
       return this.formatDate(dd, "yyyy-MM-dd HH:mm:ss");
+    } else {
+      return "";
+    }
+
+    /*
+    if (strTimestamp) {
+      var arr1 = strTimestamp.split(" ");
+      var arr2 = arr1[0].split("T");
+      var sdate = arr2[0] + " " + arr2[1];
+
+    }
+    */
+  },
+  timestamp2LocalDate(strTimestamp) {
+    if (strTimestamp) {
+      var dd = new Date(strTimestamp);
+      // var tt = new Date(dd.setHours(dd.getHours() -16));
+      return this.formatDate(dd, "yyyy-MM-dd");
     } else {
       return "";
     }

@@ -9,7 +9,7 @@
         </a-col>
       </a-row>
       <div class="iot_line" />
-      <a-row type="flex" justify="space-around" style="margin-top: 8px">
+      <!-- <a-row type="flex" justify="space-around" style="margin-top: 8px">
         <a-col :span="5" style="width: 15%">
           <a-row type="flex" justify="space-around" align="middle">
             <a-col :span="8" style="height: 100%">
@@ -84,7 +84,7 @@
             </a-col>
           </a-row>
         </a-col>
-      </a-row>
+      </a-row> -->
     </a-card>
 
     <a-layout

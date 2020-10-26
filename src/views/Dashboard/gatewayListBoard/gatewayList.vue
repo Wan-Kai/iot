@@ -164,9 +164,9 @@ const columns = [
     key: "name"
   },
   {
-    title: "网络服务器",
-    key: "networkServerName",
-    dataIndex: "networkServerName"
+    title: "网络服务器ID",
+    key: "networkServerID",
+    dataIndex: "networkServerID"
   },
   {
     title: "通信模式",
@@ -179,21 +179,26 @@ const columns = [
     dataIndex: "channels"
   },
   {
-    title: "状态",
-    key: "state",
-    dataIndex: "state",
-    scopedSlots: { customRender: "state" }
+    title: "最后心跳时间",
+    key: "lastSeenAt",
+    dataIndex: "lastSeenAt"
   },
-  {
-    title: "上行数据量(24h)",
-    key: "up",
-    dataIndex: "up"
-  },
-  {
-    title: "下行数据量(24h)",
-    key: "down",
-    dataIndex: "down"
-  },
+  // {
+  //   title: "状态",
+  //   key: "state",
+  //   dataIndex: "state",
+  //   scopedSlots: { customRender: "state" }
+  // },
+  // {
+  //   title: "上行数据量(24h)",
+  //   key: "up",
+  //   dataIndex: "up"
+  // },
+  // {
+  //   title: "下行数据量(24h)",
+  //   key: "down",
+  //   dataIndex: "down"
+  // },
   {
     title: "所在区域",
     key: "area",
@@ -210,8 +215,6 @@ export default {
     return {
       columns,
       searchKey: "",
-      tableData: [],
-
       returnedData: [
         {
           id: "",
@@ -219,7 +222,7 @@ export default {
           description: "",
 
           networkServerID: "",
-          networkServerName: "", //根据networkServerID计算得到
+          //      networkServerName: "", //根据networkServerID计算得到
 
           organizationID: "",
 
@@ -235,8 +238,8 @@ export default {
           updatedAt: "",
 
           firstSeenAt: "",
-          lastSeenAt: "",
-          state: "" //根据最近在线时间计算
+          lastSeenAt: ""
+          //         state: "" //根据最近在线时间计算
         }
       ],
       rowSelection,
@@ -280,7 +283,10 @@ export default {
 
       searchKey = searchKey.trim().toLowerCase();
       array = array.filter(function(item) {
-        if (item.name.toLowerCase().indexOf(searchKey) !== -1) {
+        if (
+          item.name.toLowerCase().indexOf(searchKey) !== -1 ||
+          item.id.toLowerCase().indexOf(searchKey) !== -1
+        ) {
           return item;
         }
       });
@@ -301,28 +307,22 @@ export default {
 
   methods: {
     getTable() {
-      this.$api.gateway
+      var _this = this;
+      _this.$api.gateway
         .gatewayList({
           limit: 100
         })
         .then(res => {
           if (res.status === 200) {
-            this.returnedData = res.data.result;
-            // this.tableData = res.data.result;
-
-            //console.log(data);
-            for (let i = 0; i < this.returnedData.length; i++) {
-              this.returnedData[i].state = "off";
-              this.returnedData[i].area = getAreaLabel(
-                this.returnedData[i].province,
-                this.returnedData[i].city,
-                this.returnedData[i].district
-              );
-              this.returnedData[i].networkServerName = getNetworkServerNameById(
-                this.returnedData[i].networkServerID
+            var returnedData = res.data.result;
+            for (let i = 0; i < returnedData.length; i++) {
+              var item = returnedData[i];
+              item.area = item.province + item.city + item.district;
+              item.lastSeenAt = _this.common.timestamp2LocalDateTime(
+                item.lastSeenAt
               );
             }
-            this.tableData = this.returnedData;
+            _this.returnedData = returnedData;
           } else {
             console.log("获取网关列表失败");
           }
@@ -410,8 +410,8 @@ export default {
   margin-top: -40px;
 }
 
-.iot_view_button_delete {
-}
+/* .iot_view_button_delete {
+} */
 
 .iot_view_button_import {
   margin-left: 10px;

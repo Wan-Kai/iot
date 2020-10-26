@@ -205,9 +205,14 @@
               <a-col :offset="6">
                 <p style="margin-bottom: 2px;text-align: left">详细位置</p>
                 <a-input
-                  v-decorator="['address']"
+                  v-model="currentRecord.location.Lng"
                   size="small"
-                  style="width: 90%;float: left;text-align: left;margin-bottom: 12px"
+                  style="width: 45%;float: left;text-align: left;margin-bottom: 12px"
+                />
+                <a-input
+                  v-model="currentRecord.location.Lat"
+                  size="small"
+                  style="width: 45%;float: left;text-align: left;margin-bottom: 12px"
                 />
                 <a-tooltip placement="rightTop">
                   <template slot="title">

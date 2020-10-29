@@ -175,35 +175,53 @@
               :wrapper-col="{ span: 18 }"
             >
               <p style="margin-bottom: 2px;text-align: left">所在区域</p>
-              <a-cascader
-                v-decorator="[
-                  'area',
-                  {
-                    rules: [{ required: true, message: '请选择所在区域' }]
-                  }
-                ]"
-                style="width: 90%;float: left;text-align: left"
+              <a-input
+                v-model="currentRecord.province"
                 size="small"
-                :options="area_options"
-                placeholder=""
+                style="width: 30%;float: left;text-align: left;margin-bottom: 12px"
               />
+              <a-input
+                v-model="currentRecord.city"
+                size="small"
+                style="width: 30%;float: left;text-align: left;margin-bottom: 12px"
+              />
+              <a-input
+                v-model="currentRecord.district"
+                size="small"
+                style="width: 30%;float: left;text-align: left;margin-bottom: 12px"
+              />
+              <a-tooltip placement="rightTop">
+                <template slot="title">
+                  省市区信息,点击地图获取
+                </template>
+                <a-icon
+                  type="exclamation-circle"
+                  style="height: 24px;line-height: 24px;width: 24px;
+                     vertical-align: text-top"
+                />
+              </a-tooltip>
             </a-form-item>
             <a-form-item class="iot_view_add_formitem" :required="true">
               <a-col :offset="6">
                 <p style="margin-bottom: 2px;text-align: left">详细位置</p>
                 <a-input
-                  v-decorator="['address']"
+                  v-model="currentRecord.location.Lng"
                   size="small"
-                  style="width: 90%;float: left;text-align: left;margin-bottom: 12px"
+                  style="width: 45%;float: left;text-align: left;margin-bottom: 12px"
+                />
+                <a-input
+                  v-model="currentRecord.location.Lat"
+                  size="small"
+                  style="width: 45%;float: left;text-align: left;margin-bottom: 12px"
                 />
                 <a-tooltip placement="rightTop">
                   <template slot="title">
-                    prompt text
+                    经纬度信息,点击地图获取
                   </template>
                   <a-icon
                     type="exclamation-circle"
                     style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
+                            vertical-align: text-top"
                   />
                 </a-tooltip>
               </a-col>
@@ -239,7 +257,6 @@ import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
 import {
   getNetworkServerOptions,
-  getArea,
   getCommunicationMode_options,
   getBand_options
 } from "@/utils/util";
@@ -292,7 +309,6 @@ export default {
 
   beforeMount() {
     this.networkServer_options = getNetworkServerOptions();
-    this.area_options = getArea();
     this.communicationMode_options = getCommunicationMode_options();
     this.band_options = getBand_options();
 
@@ -322,12 +338,33 @@ export default {
               // 图标所用图片大小
               imageSize: new AMap.Size(25, 25)
             });
-
+            let geocoder = new AMap.Geocoder({
+              radius: 1000,
+              extensions: "all"
+            });
             let address = "";
             let _self = this;
             mapObj.on("click", function(e) {
               _self.currentRecord.location.Lng = e.lnglat.getLng();
               _self.currentRecord.location.Lat = e.lnglat.getLat();
+              geocoder.getAddress(
+                [e.lnglat.getLng(), e.lnglat.getLat()],
+                function(status, result) {
+                  if (status === "complete" && result.info === "OK") {
+                    if (result && result.regeocode) {
+                      // 具体地址
+                      _self.currentRecord.province =
+                        result.regeocode.addressComponent.province;
+                      _self.currentRecord.city =
+                        result.regeocode.addressComponent.city;
+                      _self.currentRecord.district =
+                        result.regeocode.addressComponent.district;
+                    }
+                  } else {
+                    //alert('地址获取失败')
+                  }
+                }
+              );
               mapObj.clearMap();
               const marker = new AMap.Marker({
                 // eslint-disable-line no-unused-vars
@@ -369,9 +406,9 @@ export default {
             organizationID: this.common.getCurrentOrganizationID(),
             networkServerID: values.networkServer[0],
 
-            province: values.area[0],
-            city: values.area[1],
-            district: values.area[2],
+            province: this.currentRecord.province,
+            city: this.currentRecord.city,
+            district: this.currentRecord.district,
 
             location: {
               latitude: this.currentRecord.location.Lat,

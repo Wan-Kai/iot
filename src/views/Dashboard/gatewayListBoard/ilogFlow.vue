@@ -87,7 +87,7 @@ const columns = [
   },
   */
   {
-    title: "网关时间",
+    title: "日期",
     //dataIndex: "timestamp",
     //key: "timestamp"
     dataIndex: "timestamp",
@@ -188,7 +188,8 @@ export default {
       var params = {
         extra: this.queryCondition.gatewayID,
         startTimestamp: this.queryCondition.beginDay,
-        endTimestamp: this.queryCondition.endDay
+        endTimestamp: this.queryCondition.endDay,
+        interval: "day"
       };
 
       this.$api.gateway
@@ -200,8 +201,9 @@ export default {
         .then(res => {
           this.interData = res.data.result;
           for (let i = 0; i < this.interData.length; i++) {
-            this.interData[i].timestamp = this.common.timestamp2LocalDateTime(
-              this.interData[i].timestamp
+            console.log(res.data.result[i].timestampTest);
+            this.interData[i].timestamp = this.common.timestamp2LocalDate(
+              this.interData[i].timestampTest
             );
           }
         })

@@ -85,8 +85,8 @@ const columns = [
   {
     title: "地址",
     dataIndex: "location",
-    key: "location",
-    scopedSlots: { customRender: "location" }
+    key: "location"
+    // scopedSlots: { customRender: "location" }
   },
   {
     title: "是否拥有网关",
@@ -151,10 +151,8 @@ export default {
   },
   computed: {
     getLocation(currentRecord) {
-      return getAreaLabel(
-        currentRecord.province,
-        currentRecord.city,
-        currentRecord.district
+      return (
+        currentRecord.province + currentRecord.city + currentRecord.district
       );
     }
   },
@@ -167,7 +165,6 @@ export default {
         .then(res => {
           console.log(res);
           if (res.status === 200) {
-            console.log("正确啊");
             this.returnedData = res.data.result;
 
             var currentOrganizations = this.common.getCurrentOrganizationList();
@@ -211,12 +208,10 @@ export default {
               temp.district = this.returnedData[i].district;
               temp.address = this.returnedData[i].address;
 
-              temp.location = getAreaLabel(
-                this.returnedData[i].province,
-                this.returnedData[i].city,
-                this.returnedData[i].district
-              );
-              console.log("constinu");
+              temp.location =
+                this.returnedData[i].province +
+                this.returnedData[i].city +
+                this.returnedData[i].district;
               temp.canHaveGateways = this.returnedData[i].canHaveGateways;
               temp.createdAt = this.common.timestamp2LocalDateTime(
                 this.returnedData[i].createdAt

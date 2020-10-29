@@ -1,7 +1,7 @@
 <template>
   <a-layout style="background: #fff;padding: 0 14px 0">
     <a-row :gutter="16">
-      <a-col :span="16">
+      <a-col :span="24">
         <div>
           <span style="font-size: 14px">网关数：{{ gatewayNum }}</span>
           <span style="font-size: 14px;margin: 0 20px">在线：{{ online }}</span>
@@ -13,7 +13,7 @@
           </div>
         </div>
       </a-col>
-      <a-col :span="8">
+      <!-- <a-col :span="8">
         <div style="margin-top: 8px">
           <a-input-search
             class="iot_view_gatewayMap_top_search"
@@ -36,50 +36,51 @@
             </span>
           </a-table>
         </div>
-      </a-col>
+      </a-col> -->
     </a-row>
   </a-layout>
 </template>
 
 <script>
-const columns = [
-  {
-    title: "网关编号",
-    dataIndex: "id",
-    key: "id"
-  },
-  {
-    title: "管理",
-    key: "action",
-    scopedSlots: { customRender: "action" }
-  }
-];
+// const columns = [
+//   {
+//     title: "网关编号",
+//     dataIndex: "id",
+//     key: "id"
+//   },
+//   {
+//     title: "管理",
+//     key: "action",
+//     scopedSlots: { customRender: "action" }
+//   }
+// ];
 import ACol from "ant-design-vue/es/grid/Col";
 import wifi_map from "../../../assets/wifi.png";
+import wifi_map_miss from "../../../assets/wifi_miss.png";
 export default {
   data() {
     return {
       //data
-      gatewayNum: 10,
-      online: "暂定",
-      outline: "暂定",
+      gatewayNum: "",
+      online: "",
+      outline: "",
 
       //tableData
-      columns,
-      tableData: [],
-      mapData: {},
+      // columns,
+      // tableData: [],
+      mapData: {}
 
-      pagination: {
-        size: "small",
-        defaultPageSize: 10,
-        showTotal: total => `共 ${total} 条数据`,
-        buildOptionText(value) {
-          return `${value.value} 条/页`;
-        },
-        showSizeChanger: true,
-        pageSizeOptions: ["5", "10"],
-        onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize)
-      }
+      // pagination: {
+      //   size: "small",
+      //   defaultPageSize: 10,
+      //   showTotal: total => `共 ${total} 条数据`,
+      //   buildOptionText(value) {
+      //     return `${value.value} 条/页`;
+      //   },
+      //   showSizeChanger: true,
+      //   pageSizeOptions: ["5", "10"],
+      //   onShowSizeChange: (current, pageSize) => (this.pageSize = pageSize)
+      // }
     };
   },
   beforeMount() {
@@ -123,20 +124,44 @@ export default {
         // 图标所用图片大小
         imageSize: new AMap.Size(25, 25)
       });
-
+      let startIcon_miss = new AMap.Icon({
+        // 图标尺寸
+        size: new AMap.Size(25, 25),
+        // 图标的取图地址
+        image: wifi_map_miss, // 您自己的图标
+        // 图标所用图片大小
+        imageSize: new AMap.Size(25, 25)
+      });
+      var _this = this;
+      var miss = 0;
       this.tableData.forEach(item => {
+        let icon = startIcon;
+        if (
+          !item.lastSeenAt ||
+          _this.common.checkUTCpast(item.lastSeenAt) > 24 * 60 * 60 * 1000
+        ) {
+          icon = startIcon_miss;
+          miss++;
+        }
         const marker = new AMap.Marker({
           // eslint-disable-line no-unused-vars
           map: mapObj,
-          icon: startIcon,
+          icon: icon,
           position: new AMap.LngLat(
             item.location.longitude,
             item.location.latitude
           ), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-          title: item.name
+          title: item.name + "(" + item.id + ")"
+        });
+        marker.on("click", function() {
+          _this.$router.push({
+            name: "checkGatewayManage",
+            query: { id: item.id, tab: "1" }
+          });
         });
       });
-
+      this.outline = miss;
+      this.online = this.gatewayNum - this.outline;
       //自适应多个标记点
       let newCenter = mapObj.setFitView(); // eslint-disable-line no-unused-vars
     },
@@ -162,7 +187,7 @@ export default {
   width: 100%;
 }
 .iot_amap-gatewayMap_container {
-  height: 400px;
+  height: 600px;
   width: 100%;
 }
 </style>

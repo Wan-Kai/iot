@@ -9,7 +9,7 @@
         </a-col>
       </a-row>
       <div class="iot_line" />
-      <a-row type="flex" justify="space-around" style="margin-top: 8px">
+      <!-- <a-row type="flex" justify="space-around" style="margin-top: 8px">
         <a-col :span="5" style="width: 15%">
           <a-row type="flex" justify="space-around" align="middle">
             <a-col :span="8" style="height: 100%">
@@ -84,7 +84,7 @@
             </a-col>
           </a-row>
         </a-col>
-      </a-row>
+      </a-row> -->
     </a-card>
 
     <a-layout
@@ -127,7 +127,7 @@
 
 <script>
 import ARow from "ant-design-vue/es/grid/Row";
-import { getNetworkServerNameById, getAreaLabel } from "../../../utils/util";
+import { getNetworkServerNameById } from "../../../utils/util";
 import Detail from "./detailData";
 import DeployEdit from "./deployEdit";
 export default {
@@ -170,14 +170,6 @@ export default {
 
     getDown() {
       return "";
-    },
-
-    getArea() {
-      return getAreaLabel(
-        this.returnedData.province,
-        this.returnedData.city,
-        this.returnedData.district
-      );
     },
 
     getServerName() {

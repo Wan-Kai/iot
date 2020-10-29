@@ -5,7 +5,7 @@ const mapMarkers = Mock.mock({
   totalCount: "2",
   "result|1": [
     {
-      zoom: 14,
+      zoom: 5,
       center: [114.362272, 30.532565],
       markers: [
         {

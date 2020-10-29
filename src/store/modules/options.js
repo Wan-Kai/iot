@@ -64,6 +64,10 @@ const state = {
     {
       value: "路政",
       label: "路政"
+    },
+    {
+      value: "其它",
+      label: "其它"
     }
   ]
 };

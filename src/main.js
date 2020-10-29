@@ -120,7 +120,8 @@ Vue.config.productionTip = false;
 // 初始化vue-amap
 VueAMap.initAMapApiLoader({
   // 高德的key
-  key: "abafdec30e675bce4bff374d9c458739",
+  // key: "abafdec30e675bce4bff374d9c458739",
+  key: "b1d71c1dd5933a706662265d4181a437",
   // 插件集合 （插件按需引入）
   plugin: [
     "AMap.Autocomplete",

@@ -32,16 +32,6 @@
                 style="width: 90%;float: left"
               >
               </a-input>
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
             </a-form-item>
 
             <a-form-item
@@ -81,16 +71,6 @@
                 placeholder=""
                 @change="networkServerChange"
               />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
             </a-form-item>
 
             <a-form-item
@@ -110,16 +90,6 @@
                 :options="communicationMode_options"
                 placeholder=""
               />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
             </a-form-item>
             <a-form-item
               class="iot_view_edit_formitem"
@@ -138,16 +108,6 @@
                 :options="band_options"
                 placeholder=""
               />
-              <a-tooltip placement="rightTop">
-                <template slot="title">
-                  prompt text
-                </template>
-                <a-icon
-                  type="exclamation-circle"
-                  style="height: 24px;line-height: 24px;width: 24px;
-          vertical-align: text-top"
-                />
-              </a-tooltip>
             </a-form-item>
             <a-form-item
               class="iot_view_edit_formitem"
@@ -175,35 +135,49 @@
               :label-col="{ span: 8 }"
               :wrapper-col="{ span: 16 }"
             >
-              <p style="text-align: left;margin-bottom: 2px;">所在区域</p>
-              <a-cascader
-                v-decorator="[
-                  'area',
-                  {
-                    initialValue: [
-                      this.returnedData.province,
-                      this.returnedData.city,
-                      this.returnedData.district
-                    ]
-                  }
-                ]"
-                style="width: 90%;float: left"
+              <p style="margin-bottom: 2px;text-align: left">所在区域</p>
+              <a-input
+                v-model="returnedData.province"
                 size="small"
-                :options="area_options"
-                placeholder=""
+                style="width: 30%;float: left;text-align: left;margin-bottom: 12px"
               />
+              <a-input
+                v-model="returnedData.city"
+                size="small"
+                style="width: 30%;float: left;text-align: left;margin-bottom: 12px"
+              />
+              <a-input
+                v-model="returnedData.district"
+                size="small"
+                style="width: 30%;float: left;text-align: left;margin-bottom: 12px"
+              />
+              <a-tooltip placement="rightTop">
+                <template slot="title">
+                  省市区信息
+                </template>
+                <a-icon
+                  type="exclamation-circle"
+                  style="height: 24px;line-height: 24px;width: 24px;
+                     vertical-align: text-top"
+                />
+              </a-tooltip>
             </a-form-item>
             <a-form-item class="iot_view_edit_formitem" :required="true">
               <a-col :offset="8">
                 <p style="margin-bottom: 2px;text-align: left">详细位置</p>
                 <a-input
-                  v-decorator="['location', { initialValue: this.getLocation }]"
+                  v-model="returnedData.location.longitude"
                   size="small"
-                  style="width: 90%;float: left;margin-bottom: 0px"
+                  style="width: 40%;float: left;margin-bottom: 0px"
+                />
+                <a-input
+                  v-model="returnedData.location.latitude"
+                  size="small"
+                  style="width: 40%;float: left;margin-bottom: 0px"
                 />
                 <a-tooltip placement="rightTop">
                   <template slot="title">
-                    prompt text
+                    经纬度信息
                   </template>
                   <a-icon
                     type="exclamation-circle"
@@ -259,7 +233,6 @@ import {
   getNetworkServerById,
   getNetworkServerIdByServer,
   getCommunicationMode_options,
-  getArea,
   getBand_options,
   getNetworkServerOptions
 } from "@/utils/util";
@@ -323,20 +296,7 @@ export default {
     };
   },
 
-  computed: {
-    getLocation() {
-      if (
-        !this.common.isEmpty(this.returnedData.location.longitude) &&
-        !this.common.isEmpty(this.returnedData.location.latitude)
-      )
-        return (
-          this.returnedData.location.longitude.toString() +
-          "," +
-          this.returnedData.location.latitude.toString()
-        );
-      return "";
-    }
-  },
+  computed: {},
 
   beforeCreate() {
     this.gatewayDeployForm = this.$form.createForm(this, {
@@ -350,8 +310,6 @@ export default {
     this.networkServer_options = getNetworkServerOptions();
     this.communicationMode_options = getCommunicationMode_options();
     this.band_options = getBand_options();
-    this.area_options = getArea();
-
     this.getDetail(this.returnedData.id);
   },
 
@@ -418,7 +376,10 @@ export default {
               // 图标所用图片大小
               imageSize: new AMap.Size(25, 25)
             });
-
+            let geocoder = new AMap.Geocoder({
+              radius: 1000,
+              extensions: "all"
+            });
             let _self = this;
             const marker = new AMap.Marker({
               // eslint-disable-line no-unused-vars
@@ -434,6 +395,25 @@ export default {
             mapObj.on("click", function(e) {
               _self.returnedData.location.longitude = e.lnglat.getLng();
               _self.returnedData.location.latitude = e.lnglat.getLat();
+              geocoder.getAddress(
+                [e.lnglat.getLng(), e.lnglat.getLat()],
+                function(status, result) {
+                  if (status === "complete" && result.info === "OK") {
+                    if (result && result.regeocode) {
+                      // 具体地址
+                      _self.returnedData.province =
+                        result.regeocode.addressComponent.province;
+                      _self.returnedData.city =
+                        result.regeocode.addressComponent.city;
+                      _self.returnedData.district =
+                        result.regeocode.addressComponent.district;
+                      // console.log(result.regeocode.addressComponent);
+                    }
+                  } else {
+                    //alert('地址获取失败')
+                  }
+                }
+              );
               mapObj.clearMap();
               const marker = new AMap.Marker({
                 // eslint-disable-line no-unused-vars
@@ -445,13 +425,13 @@ export default {
                 ], // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
                 title: "网关"
               });
-              address =
-                _self.returnedData.location.longitude.toString() +
-                "," +
-                _self.returnedData.location.latitude.toString();
-              _self.gatewayDeployForm.setFieldsValue({
-                location: address
-              });
+              // address =
+              //   _self.returnedData.location.longitude.toString() +
+              //   "," +
+              //   _self.returnedData.location.latitude.toString();
+              // _self.gatewayDeployForm.setFieldsValue({
+              //   location: address
+              // });
             });
           } else {
             console.log("获取网关节点初始信息失败");
@@ -474,9 +454,9 @@ export default {
             organizationID: this.common.getCurrentOrganizationID(),
             networkServerID: values.networkServer[0],
 
-            province: values.area[0],
-            city: values.area[1],
-            district: values.area[2],
+            province: this.returnedData.province || "",
+            city: this.returnedData.city || "",
+            district: this.returnedData.district || "",
 
             location: {
               latitude: this.returnedData.location.latitude,

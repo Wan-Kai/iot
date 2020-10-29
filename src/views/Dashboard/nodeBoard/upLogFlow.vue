@@ -8,13 +8,6 @@
               style="width: 100%;float: left;text-align: left"
               placeholder="请输入节点编号或名称"
               v-model="queryCondition.searchKey"
-              v-decorator="[
-                'devEUI',
-                {
-                  initialValue: this.queryCondition.searchKey,
-                  rules: [{ required: true, message: '设备编号(EUI)或名称' }]
-                }
-              ]"
             />
           </a-form-item>
           <a-form-item class="iot_view_upLogFlow_form_formItem">
@@ -89,11 +82,11 @@ const columns = [
     dataIndex: "data",
     key: "data"
   },
-  {
-    title: "是否开启自适应速率",
-    dataIndex: "adr",
-    key: "adr"
-  },
+  // {
+  //   title: "是否开启自适应速率",
+  //   dataIndex: "adr",
+  //   key: "adr"
+  // },
   {
     title: "数据率",
     dataIndex: "dr",
@@ -113,6 +106,16 @@ const columns = [
     title: "端口",
     dataIndex: "fPort",
     key: "fPort"
+  },
+  {
+    title: "信号",
+    dataIndex: "rssi",
+    key: "rssi"
+  },
+  {
+    title: "网关",
+    dataIndex: "gatewayId",
+    key: "gatewayId"
   }
   /*
   {
@@ -169,21 +172,20 @@ export default {
     },
 
     filteredTable: function() {
-      var searchKey = this.queryCondition.searchKey;
-      var array = this.returnedData;
-      if (this.common.isEmpty(searchKey)) return array;
-
-      searchKey = searchKey.trim().toLowerCase();
-      array = array.filter(function(item) {
-        if (
-          item.devEUI.toLowerCase().indexOf(searchKey) !== -1 ||
-          item.deviceName.toLowerCase().indexOf(searchKey) !== -1
-        ) {
-          return item;
-        }
-      });
-
-      return array;
+      return this.returnedData;
+      // var searchKey = this.queryCondition.searchKey;
+      // var array = this.returnedData;
+      // if (this.common.isEmpty(searchKey)) return array;
+      // searchKey = searchKey.trim().toLowerCase();
+      // array = array.filter(function(item) {
+      //   if (
+      //     item.devEUI.toLowerCase().indexOf(searchKey) !== -1 ||
+      //     item.deviceName.toLowerCase().indexOf(searchKey) !== -1
+      //   ) {
+      //     return item;
+      //   }
+      // });
+      // return array;
     }
   },
 
@@ -214,7 +216,7 @@ export default {
 
     handleQuery() {
       //debugger;
-      this.queryCondition.searchKey = this.form.getFieldValue("devEUI");
+      // this.queryCondition.searchKey = this.form.getFieldValue("devEUI");
       this.getUpLog();
     },
 
@@ -229,7 +231,7 @@ export default {
 
       var params = {
         limit: 100,
-        search: this.queryCondition.devEUI,
+        search: this.queryCondition.searchKey,
         startTimestamp: this.queryCondition.beginDay,
         endTimestamp: this.queryCondition.endDay
       };

@@ -8,12 +8,12 @@ if (process.env.NODE_ENV === "development") {
   //   axios.defaults.baseURL = "/api";
   // }
   //axios.defaults.baseURL = "http://188.131.172.171:8080/api";
-  axios.defaults.baseURL = "http://ns.zmvision.cn:8080/api";
+  axios.defaults.baseURL = "http://127.0.0.1:8080/api";
 } else if (process.env.NODE_ENV === "production") {
-  axios.defaults.baseURL = "http://188.131.172.171:8080/api";
+  axios.defaults.baseURL = "http://127.0.0.1:8080/api";
   //axios.defaults.baseURL = "http://ns.zmvision.cn:8080/api";
 } else {
-  axios.defaults.baseURL = "http://188.131.172.171:8080/api";
+  axios.defaults.baseURL = "http://127.0.0.1:8080/api";
 }
 
 // 项目地址加端口

@@ -25,6 +25,7 @@ export default {
     },
 
     getProfile: data => {
+      debugger;
       return get("/internal/profile", data);
     }
   },

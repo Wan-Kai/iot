@@ -92,6 +92,7 @@ export function get(url, data = {}) {
       "Content-Type": "application/json;charset=UTF-8",
       "Grpc-Metadata-Authorization":
         "Bearer " + store.getters["login/getSessionKey"]
+      // "Bearer " + sessionStorage.getItem("current_session")
     },
     params: data
   });
@@ -107,6 +108,7 @@ export function post(url, data = {}) {
       "Content-Type": "application/json;charset=UTF-8",
       "Grpc-Metadata-Authorization":
         "Bearer " + store.getters["login/getSessionKey"]
+      //"Bearer " + sessionStorage.getItem("current_session")
     },
     data: data
   };
@@ -123,6 +125,7 @@ export function put(url, data = {}) {
       "Content-Type": "application/json;charset=UTF-8",
       "Grpc-Metadata-Authorization":
         "Bearer " + store.getters["login/getSessionKey"]
+      // "Bearer " + sessionStorage.getItem("current_session")
     },
     data: JSON.stringify(data)
   });
@@ -137,6 +140,7 @@ export function deletes(url, data = {}) {
       "Content-Type": "application/json;charset=UTF-8",
       "Grpc-Metadata-Authorization":
         "Bearer " + store.getters["login/getSessionKey"]
+      //"Bearer " + sessionStorage.getItem("current_session")
     },
     data: JSON.stringify(data)
   };
@@ -153,6 +157,7 @@ export function upload(url, data = {}) {
       Accept: "text/plain",
       "Grpc-Metadata-Authorization":
         "Bearer " + store.getters["login/getSessionKey"]
+      // "Bearer " + sessionStorage.getItem("current_session")
     },
     data: data
   };

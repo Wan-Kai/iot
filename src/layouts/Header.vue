@@ -25,9 +25,10 @@
           </a-menu-item>
           -->
           <a-menu-item>
-            <router-link to="/user/login" id="router" class="iot_register_text"
-              >退出</router-link
-            >
+            <!--
+            <router-link to="/user/login" id="router" class="iot_register_text>退出</router-link>
+            -->
+            <a @click="logout">退出</a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -99,6 +100,13 @@ export default {
 
       if (!this.common.isEmpty(value[0]))
         this.common.setCurrentOrganization(value[0]);
+    },
+
+    logout() {
+      sessionStorage.clear();
+      this.$router.push({
+        path: "/user/login"
+      });
     }
   }
 };

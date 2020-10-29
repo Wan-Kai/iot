@@ -40,22 +40,37 @@ const state = {
 // getters
 const getters = {
   getSessionKey() {
-    if (localStorage.getItem("current_session")) {
-      return localStorage.getItem("current_session");
+    var result = state.sessionKey;
+    if (result == null || result == "") {
+      result = sessionStorage.getItem("current_session");
+    }
+    return result;
+    /*
+    if (sessionStorage.getItem("current_session")) {
+      return sessionStorage.getItem("current_session");
     } else return state.sessionKey;
+    */
   },
 
   getCurrentUser() {
-    if (localStorage.getItem("current_user")) {
-      return JSON.parse(localStorage.getItem("current_user"));
+    /*
+    debugger
+    if (sessionStorage.getItem("current_user")) {
+      return JSON.parse(sessionStorage.getItem("current_user"));
     } else return state.currentUser;
+    */
+    var result = state.currentUser;
+    if (result == null || result.id == "") {
+      result = JSON.parse(sessionStorage.getItem("current_user"));
+    }
+    return result;
   },
 
   getCurrentOrganization() {
     //debugger;
     var result = state.currentOrganization;
     if (result == null || result.organizationID == "") {
-      var temp = localStorage.getItem("current_organization");
+      var temp = sessionStorage.getItem("current_organization");
       if (temp) {
         result = JSON.parse(temp);
       }
@@ -66,7 +81,7 @@ const getters = {
   getCurrentOrganizationList() {
     var result = state.currentOrganizationList;
     if (result == null || result.length === 0) {
-      var temp = localStorage.getItem("current_organization_list");
+      var temp = sessionStorage.getItem("current_organization_list");
       if (temp) {
         result = JSON.parse(temp);
       }
@@ -80,7 +95,7 @@ const getters = {
     if (result && result >= 0) {
       return result;
     }
-    const changedTimes = localStorage.getItem(
+    const changedTimes = sessionStorage.getItem(
       "current_organization_list_changedTimes"
     );
     if (changedTimes) return changedTimes;
@@ -92,16 +107,16 @@ const getters = {
 const actions = {};
 
 export function getRole() {
-  if (localStorage.getItem("current_login")) {
-    var item = JSON.parse(localStorage.getItem("current_login"));
+  if (sessionStorage.getItem("current_login")) {
+    var item = JSON.parse(sessionStorage.getItem("current_login"));
     return item.role;
   }
   return state.login.role;
 }
 
 export function getLoginState() {
-  if (localStorage.getItem("current_login")) {
-    var item = JSON.parse(localStorage.getItem("current_login"));
+  if (sessionStorage.getItem("current_login")) {
+    var item = JSON.parse(sessionStorage.getItem("current_login"));
     return item.isLogin;
   }
   return state.login.isLogin;
@@ -111,13 +126,13 @@ export function getLoginState() {
 const mutations = {
   setLogin(state, login) {
     state.login = login;
-    localStorage.setItem("current_login", JSON.stringify(state.login));
+    sessionStorage.setItem("current_login", JSON.stringify(state.login));
   },
 
   setSessionKey(state, sessionKey) {
     //debugger;
     state.sessionKey = sessionKey;
-    localStorage.setItem("current_session", state.sessionKey);
+    sessionStorage.setItem("current_session", state.sessionKey);
   },
 
   setCurrentUser(state, user) {
@@ -129,19 +144,22 @@ const mutations = {
     if (user.isAdmin) {
       state.login.role = "admin";
     }
-
-    localStorage.setItem("current_user", JSON.stringify(state.currentUser));
-    localStorage.setItem("current_login", JSON.stringify(state.login));
+    debugger;
+    sessionStorage.setItem("current_user", JSON.stringify(state.currentUser));
+    sessionStorage.setItem("current_login", JSON.stringify(state.login));
   },
 
   setCurrentOrganization(state, organization) {
     state.currentOrganization = organization;
-    localStorage.setItem("current_organization", JSON.stringify(organization));
+    sessionStorage.setItem(
+      "current_organization",
+      JSON.stringify(organization)
+    );
   },
 
   setCurrentOrganizationList(state, organizations) {
     state.currentOrganizationList = organizations;
-    localStorage.setItem(
+    sessionStorage.setItem(
       "current_organization_list",
       JSON.stringify(state.currentOrganizationList)
     );
@@ -150,19 +168,19 @@ const mutations = {
     if (changedTimes && changedTimes >= 0) {
       changedTimes = Number(changedTimes) + 1;
       state.current_organization_list_changedTimes = changedTimes;
-      localStorage.setItem(
+      sessionStorage.setItem(
         "current_organization_list_changedTimes",
         changedTimes
       );
     } else {
-      var x = localStorage.getItem("current_organization_list_changedTimes");
+      var x = sessionStorage.getItem("current_organization_list_changedTimes");
       if (x == null) {
         state.current_organization_list_changedTimes = 1;
-        localStorage.setItem("current_organization_list_changedTimes", "1");
+        sessionStorage.setItem("current_organization_list_changedTimes", "1");
       } else {
         x = Number(x) + 1;
         state.current_organization_list_changedTimes = x;
-        localStorage.setItem("current_organization_list_changedTimes", x);
+        sessionStorage.setItem("current_organization_list_changedTimes", x);
       }
     }
 
@@ -171,7 +189,7 @@ const mutations = {
         organizationID: "",
         organizationName: ""
       };
-      localStorage.setItem("current_organization", null);
+      sessionStorage.setItem("current_organization", null);
     } else {
       //第一次需要初始化
       if (
@@ -180,7 +198,7 @@ const mutations = {
         state.currentOrganization.organizationID === null
       ) {
         state.currentOrganization = organizations[0];
-        localStorage.setItem(
+        sessionStorage.setItem(
           "current_organization",
           JSON.stringify(organizations[0])
         );
@@ -197,10 +215,10 @@ const mutations = {
     state.currentUser = null;
     (state.currentOrganization = {}), (state.currentOrganizationList = []);
 
-    localStorage.setItem("current_login", JSON.stringify(state.login));
-    localStorage.setItem("current_session", "");
-    localStorage.setItem("current_user", "");
-    localStorage.setItem("current_organization", "");
+    sessionStorage.setItem("current_login", JSON.stringify(state.login));
+    sessionStorage.setItem("current_session", "");
+    sessionStorage.setItem("current_user", "");
+    sessionStorage.setItem("current_organization", "");
   }
 };
 

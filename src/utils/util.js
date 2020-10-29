@@ -16,13 +16,16 @@ export function getStep2State() {
 }
 
 //初始化个人及所关联的组织机构信息
-export function initProfile() {
+export function initProfile(sessionKey) {
   //debugger;
+  store.commit("login/setSessionKey", sessionKey);
+  //sessionStorage.setItem("current_session",sessionKey);
 
   let organizations;
   api.login
     .getProfile()
     .then(res => {
+      debugger;
       let user = res.data.user;
       store.commit("login/setCurrentUser", user);
 

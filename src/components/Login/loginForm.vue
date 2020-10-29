@@ -101,8 +101,8 @@ export default {
               if (res.status === 200) {
                 this.$message.success("登录成功");
                 //debugger;
-                setSessionKey(res.data.jwt);
-                initProfile();
+                //setSessionKey(res.data.jwt);debugger;
+                initProfile(res.data.jwt);
                 setTimeout(() => {
                   this.$router.push("/admin/dashboard");
                 }, 300);
